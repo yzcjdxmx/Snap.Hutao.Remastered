@@ -6,6 +6,9 @@
     xmlns:cwcont="using:CommunityToolkit.WinUI.Controls"
     xmlns:cwconv="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shux="using:Snap.Hutao.Remastered.UI.Xaml"
     xmlns:shuxc="using:Snap.Hutao.Remastered.UI.Xaml.Control"
@@ -175,16 +178,64 @@
                                 TextTrimming="None"
                                 TextWrapping="NoWrap"/>
                         </Viewbox>
-                        <ToggleButton
-                            x:Name="CombinedModeToggle"
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_9122"
                             Margin="0,0,4,0"
                             VerticalAlignment="Center"
-                            FontSize="14"
-                            FontWeight="Bold"
-                            ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewControlStatisticsCardCombinedModeTooltip}"
-                            Visibility="{x:Bind ShowCombinedModeToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
-                            <TextBlock FontSize="14" Text="&#x2605;"/>
-                        </ToggleButton>
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:ToggleButton"
+                            Visibility="{Binding Visibility, ElementName=CombinedModeToggle, Mode=OneWay}"
+                            Value="{Binding ToggleButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <ToggleButton
+                                    x:Name="CombinedModeToggle"
+                                    VerticalAlignment="Center"
+                                    DataContext="{Binding DataContext, ElementName=GlassPresenter_9122, Mode=OneWay}"
+                                    FontSize="14"
+                                    FontWeight="Bold"
+                                    RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_9122, Mode=OneWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewControlStatisticsCardCombinedModeTooltip}"
+                                    Visibility="{x:Bind ShowCombinedModeToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                                    <TextBlock FontSize="14" Text="&#x2605;"/>
+                                </ToggleButton>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassToggleButton
+                                    x:Name="CombinedModeToggleGlass"
+                                    Width="{Binding Width, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    Height="{Binding Height, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    MinWidth="{Binding MinWidth, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    MinHeight="{Binding MinHeight, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    MaxWidth="{Binding MaxWidth, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    MaxHeight="{Binding MaxHeight, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    Padding="{Binding Padding, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    VerticalAlignment="Center"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=CombinedModeToggle}"
+                                    BorderThickness="{Binding BorderThickness, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    Command="{Binding Command, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    CommandParameter="{Binding CommandParameter, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    FlowDirection="{Binding FlowDirection, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    FontFamily="{Binding FontFamily, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    FontSize="{Binding FontSize, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    FontStyle="{Binding FontStyle, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    FontWeight="{Binding FontWeight, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    Foreground="{Binding Foreground, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    IsChecked="{Binding IsChecked, ElementName=CombinedModeToggle, Mode=TwoWay}"
+                                    IsEnabled="{Binding IsEnabled, ElementName=CombinedModeToggle, Mode=OneWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewControlStatisticsCardCombinedModeTooltip}">
+                                    <TextBlock FontSize="14" Text="&#x2605;"/>
+                                </materialcontrols:LiquidGlassToggleButton>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                         <shuxc:LayoutSwitch
                             x:Name="ItemsPanelSelector"
                             Margin="6,0,0,0"

@@ -4,6 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shuxm="using:Snap.Hutao.Remastered.UI.Xaml.Markup"
     Title="{shuxm:ResourceString Name=ViewDialogUserTitle}"
@@ -14,11 +17,35 @@
     mc:Ignorable="d">
 
     <StackPanel>
-        <TextBox
+        <materialcases:SwitchPresenter
+            x:Name="GlassPresenter_832"
             Margin="0,0,0,8"
             VerticalAlignment="Top"
-            PlaceholderText="{shuxm:ResourceString Name=ViewDialogUserInputPlaceholder}"
-            Text="{x:Bind Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            IsTabStop="False"
+            Tag="LiquidGlass:TextBox"
+            Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>0</x:Int32>
+                </materialcases:Case.Value>
+                <TextBox
+                    VerticalAlignment="Top"
+                    PlaceholderText="{shuxm:ResourceString Name=ViewDialogUserInputPlaceholder}"
+                    Text="{x:Bind Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </materialcases:Case>
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>1</x:Int32>
+                </materialcases:Case.Value>
+                <materialcontrols:LiquidGlassTextBox
+                    VerticalAlignment="Top"
+                    materialtheme:ControlMaterialState.IsManaged="True"
+                    PlaceholderText="{shuxm:ResourceString Name=ViewDialogUserInputPlaceholder}"
+                    Text="{x:Bind Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </materialcases:Case>
+        </materialcases:SwitchPresenter>
         <StackPanel Margin="0,0,0,0">
             <StackPanel.Resources>
                 <x:Double x:Key="SettingsCardWrapThreshold">0</x:Double>
@@ -30,11 +57,34 @@
                 Description="{shuxm:ResourceString Name=ViewDialogUserDocumentDescription}"
                 Header="{shuxm:ResourceString Name=ViewDialogUserDocumentHeader}"
                 HeaderIcon="{shuxm:FontIcon Glyph=&#xEB41;}">
-                <HyperlinkButton
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_1738"
                     Margin="12,0,0,0"
-                    Padding="6"
-                    Content="{shuxm:ResourceString Name=ViewDialogUserDocumentAction}"
-                    NavigateUri="{StaticResource DocumentLink_MhyAccountSwitch}"/>
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:HyperlinkButton"
+                    Value="{Binding HyperlinkButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <HyperlinkButton
+                            Padding="6"
+                            Content="{shuxm:ResourceString Name=ViewDialogUserDocumentAction}"
+                            NavigateUri="{StaticResource DocumentLink_MhyAccountSwitch}"/>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassHyperlinkButton
+                            Padding="6"
+                            materialtheme:ControlMaterialState.IsManaged="True"
+                            Content="{shuxm:ResourceString Name=ViewDialogUserDocumentAction}"
+                            NavigateUri="{StaticResource DocumentLink_MhyAccountSwitch}"/>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
             </cwc:SettingsCard>
         </StackPanel>
     </StackPanel>

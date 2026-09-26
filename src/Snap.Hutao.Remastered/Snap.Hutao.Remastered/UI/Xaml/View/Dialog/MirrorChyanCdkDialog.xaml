@@ -3,6 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shuxm="using:Snap.Hutao.Remastered.UI.Xaml.Markup"
     Title="{shuxm:ResourceString Name=ViewDialogMirrorChyanCdkTitle}"
@@ -13,9 +16,7 @@
     mc:Ignorable="d">
 
     <StackPanel Spacing="12">
-        <TextBlock
-            Style="{ThemeResource CaptionTextBlockStyle}"
-            TextWrapping="Wrap">
+        <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" TextWrapping="Wrap">
             <TextBlock.Inlines>
                 <Run Text="{shuxm:ResourceString Name=ViewDialogMirrorChyanCdkHint}"/>
                 <Hyperlink NavigateUri="https://mirrorchyan.com/zh/projects?rid=SnapHutaoRemastered">
@@ -23,6 +24,25 @@
                 </Hyperlink>
             </TextBlock.Inlines>
         </TextBlock>
-        <TextBox Text="{x:Bind Text, Mode=TwoWay}"/>
+        <materialcases:SwitchPresenter
+            x:Name="GlassPresenter_1318"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            IsTabStop="False"
+            Tag="LiquidGlass:TextBox"
+            Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>0</x:Int32>
+                </materialcases:Case.Value>
+                <TextBox Text="{x:Bind Text, Mode=TwoWay}"/>
+            </materialcases:Case>
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>1</x:Int32>
+                </materialcases:Case.Value>
+                <materialcontrols:LiquidGlassTextBox materialtheme:ControlMaterialState.IsManaged="True" Text="{x:Bind Text, Mode=TwoWay}"/>
+            </materialcases:Case>
+        </materialcases:SwitchPresenter>
     </StackPanel>
 </ContentDialog>

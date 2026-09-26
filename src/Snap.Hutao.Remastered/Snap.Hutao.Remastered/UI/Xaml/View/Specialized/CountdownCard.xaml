@@ -4,6 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cw="using:CommunityToolkit.WinUI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shuxc="using:Snap.Hutao.Remastered.UI.Xaml.Control"
     xmlns:shuxcc="using:Snap.Hutao.Remastered.UI.Xaml.Control.Card"
@@ -100,51 +103,115 @@
                         Text="{Binding FormattedVersionOrder}"/>
                 </Grid>
 
-                <Button
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_4862"
                     Grid.Column="2"
-                    MinWidth="32"
-                    MinHeight="32"
-                    Padding="0"
                     VerticalAlignment="Bottom"
-                    Content="&#xE81C;"
-                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                    Opacity="0.7"
-                    Style="{ThemeResource SettingButtonStyle}">
-                    <Button.Flyout>
-                        <Flyout
-                            FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding0Style}"
-                            Placement="Right"
-                            ShouldConstrainToRootBounds="False">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Grid
-                                    Grid.Row="0"
-                                    Background="{ThemeResource HutaoSurfaceBrush}"
-                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                    BorderThickness="0,0,0,1">
-                                    <TextBlock
-                                        MaxWidth="300"
-                                        Margin="8"
-                                        VerticalAlignment="Center"
-                                        HorizontalTextAlignment="Center"
-                                        Style="{StaticResource BodyTextBlockStyle}"
-                                        Text="{Binding FormattedHistoryCount}"/>
-                                </Grid>
-                                <ListView
-                                    Grid.Row="1"
-                                    MaxHeight="640"
-                                    Margin="8,4,8,8"
-                                    ItemContainerStyle="{ThemeResource NoneSelectionListViewItemStyle}"
-                                    ItemTemplate="{StaticResource CountdownHistoryTemplate}"
-                                    ItemsSource="{x:Bind Histories}"
-                                    SelectionMode="None"/>
-                            </Grid>
-                        </Flyout>
-                    </Button.Flyout>
-                </Button>
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:Button"
+                    Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <Button
+                            MinWidth="32"
+                            MinHeight="32"
+                            Padding="0"
+                            VerticalAlignment="Bottom"
+                            Content="&#xE81C;"
+                            FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                            Opacity="0.7"
+                            Style="{ThemeResource SettingButtonStyle}">
+                            <Button.Flyout>
+                                <Flyout
+                                    FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding0Style}"
+                                    Placement="Right"
+                                    ShouldConstrainToRootBounds="False">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid
+                                            Grid.Row="0"
+                                            Background="{ThemeResource HutaoSurfaceBrush}"
+                                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                            BorderThickness="0,0,0,1">
+                                            <TextBlock
+                                                MaxWidth="300"
+                                                Margin="8"
+                                                VerticalAlignment="Center"
+                                                HorizontalTextAlignment="Center"
+                                                Style="{StaticResource BodyTextBlockStyle}"
+                                                Text="{Binding FormattedHistoryCount}"/>
+                                        </Grid>
+                                        <ListView
+                                            Grid.Row="1"
+                                            MaxHeight="640"
+                                            Margin="8,4,8,8"
+                                            ItemContainerStyle="{ThemeResource NoneSelectionListViewItemStyle}"
+                                            ItemTemplate="{StaticResource CountdownHistoryTemplate}"
+                                            ItemsSource="{x:Bind Histories}"
+                                            SelectionMode="None"/>
+                                    </Grid>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassButton
+                            MinWidth="32"
+                            MinHeight="32"
+                            Padding="0"
+                            VerticalAlignment="Bottom"
+                            materialtheme:ControlMaterialState.IsManaged="True"
+                            Content="&#xE81C;"
+                            FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                            Opacity="0.7"
+                            Style="{ThemeResource SettingButtonStyle}">
+                            <materialcontrols:LiquidGlassButton.Flyout>
+                                <Flyout
+                                    FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding0Style}"
+                                    Placement="Right"
+                                    ShouldConstrainToRootBounds="False">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid
+                                            Grid.Row="0"
+                                            Background="{ThemeResource HutaoSurfaceBrush}"
+                                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                            BorderThickness="0,0,0,1">
+                                            <TextBlock
+                                                MaxWidth="300"
+                                                Margin="8"
+                                                VerticalAlignment="Center"
+                                                HorizontalTextAlignment="Center"
+                                                Style="{StaticResource BodyTextBlockStyle}"
+                                                Text="{Binding FormattedHistoryCount}"/>
+                                        </Grid>
+                                        <ListView
+                                            Grid.Row="1"
+                                            MaxHeight="640"
+                                            Margin="8,4,8,8"
+                                            ItemContainerStyle="{ThemeResource NoneSelectionListViewItemStyle}"
+                                            ItemTemplate="{StaticResource CountdownHistoryTemplate}"
+                                            ItemsSource="{x:Bind Histories}"
+                                            SelectionMode="None"/>
+                                    </Grid>
+                                </Flyout>
+                            </materialcontrols:LiquidGlassButton.Flyout>
+                        </materialcontrols:LiquidGlassButton>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
             </Grid>
         </DataTemplate>
     </UserControl.Resources>

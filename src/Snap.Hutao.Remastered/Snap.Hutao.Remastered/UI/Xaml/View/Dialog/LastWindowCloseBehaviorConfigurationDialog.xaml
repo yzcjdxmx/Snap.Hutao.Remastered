@@ -3,6 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shuxm="using:Snap.Hutao.Remastered.UI.Xaml.Markup"
     Title="{shuxm:ResourceString Name=ViewDialogCloseButtonBehaviorSetDialogTitle}"
@@ -23,8 +26,104 @@
             Grid.Row="1"
             Margin="0,8,0,16"
             SelectedIndex="0">
-            <RadioButton Content="{shuxm:ResourceString Name=ServiceCloseButtonBehaviorTypeMinimize}"/>
-            <RadioButton Content="{shuxm:ResourceString Name=ServiceCloseButtonBehaviorTypeExit}"/>
+            <materialcases:SwitchPresenter
+                x:Name="GlassPresenter_1276"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                IsTabStop="False"
+                Tag="LiquidGlass:RadioButton"
+                Visibility="{Binding Visibility, ElementName=GlassNative_1276, Mode=OneWay}"
+                Value="{Binding RadioButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                <materialcases:Case>
+                    <materialcases:Case.Value>
+                        <x:Int32>0</x:Int32>
+                    </materialcases:Case.Value>
+                    <RadioButton
+                        x:Name="GlassNative_1276"
+                        Content="{shuxm:ResourceString Name=ServiceCloseButtonBehaviorTypeMinimize}"
+                        DataContext="{Binding DataContext, ElementName=GlassPresenter_1276, Mode=OneWay}"
+                        GroupName="GlassRadioGroup_1115"
+                        RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_1276, Mode=OneWay}"/>
+                </materialcases:Case>
+                <materialcases:Case>
+                    <materialcases:Case.Value>
+                        <x:Int32>1</x:Int32>
+                    </materialcases:Case.Value>
+                    <materialcontrols:LiquidGlassRadioButton
+                        x:Name="GlassNative_1276Glass"
+                        Width="{Binding Width, ElementName=GlassNative_1276, Mode=OneWay}"
+                        Height="{Binding Height, ElementName=GlassNative_1276, Mode=OneWay}"
+                        MinWidth="{Binding MinWidth, ElementName=GlassNative_1276, Mode=OneWay}"
+                        MinHeight="{Binding MinHeight, ElementName=GlassNative_1276, Mode=OneWay}"
+                        MaxWidth="{Binding MaxWidth, ElementName=GlassNative_1276, Mode=OneWay}"
+                        MaxHeight="{Binding MaxHeight, ElementName=GlassNative_1276, Mode=OneWay}"
+                        Padding="{Binding Padding, ElementName=GlassNative_1276, Mode=OneWay}"
+                        materialtheme:ControlMaterialState.IsManaged="True"
+                        materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=GlassNative_1276}"
+                        BorderThickness="{Binding BorderThickness, ElementName=GlassNative_1276, Mode=OneWay}"
+                        Command="{Binding Command, ElementName=GlassNative_1276, Mode=OneWay}"
+                        CommandParameter="{Binding CommandParameter, ElementName=GlassNative_1276, Mode=OneWay}"
+                        Content="{Binding Content, ElementName=GlassNative_1276, Mode=OneWay}"
+                        FlowDirection="{Binding FlowDirection, ElementName=GlassNative_1276, Mode=OneWay}"
+                        FontFamily="{Binding FontFamily, ElementName=GlassNative_1276, Mode=OneWay}"
+                        FontSize="{Binding FontSize, ElementName=GlassNative_1276, Mode=OneWay}"
+                        FontStyle="{Binding FontStyle, ElementName=GlassNative_1276, Mode=OneWay}"
+                        FontWeight="{Binding FontWeight, ElementName=GlassNative_1276, Mode=OneWay}"
+                        Foreground="{Binding Foreground, ElementName=GlassNative_1276, Mode=OneWay}"
+                        GroupName="GlassRadioGroup_1115Glass"
+                        IsChecked="{Binding IsChecked, ElementName=GlassNative_1276, Mode=TwoWay}"
+                        IsEnabled="{Binding IsEnabled, ElementName=GlassNative_1276, Mode=OneWay}"/>
+                </materialcases:Case>
+            </materialcases:SwitchPresenter>
+            <materialcases:SwitchPresenter
+                x:Name="GlassPresenter_1380"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                IsTabStop="False"
+                Tag="LiquidGlass:RadioButton"
+                Visibility="{Binding Visibility, ElementName=GlassNative_1380, Mode=OneWay}"
+                Value="{Binding RadioButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                <materialcases:Case>
+                    <materialcases:Case.Value>
+                        <x:Int32>0</x:Int32>
+                    </materialcases:Case.Value>
+                    <RadioButton
+                        x:Name="GlassNative_1380"
+                        Content="{shuxm:ResourceString Name=ServiceCloseButtonBehaviorTypeExit}"
+                        DataContext="{Binding DataContext, ElementName=GlassPresenter_1380, Mode=OneWay}"
+                        GroupName="GlassRadioGroup_1115"
+                        RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_1380, Mode=OneWay}"/>
+                </materialcases:Case>
+                <materialcases:Case>
+                    <materialcases:Case.Value>
+                        <x:Int32>1</x:Int32>
+                    </materialcases:Case.Value>
+                    <materialcontrols:LiquidGlassRadioButton
+                        x:Name="GlassNative_1380Glass"
+                        Width="{Binding Width, ElementName=GlassNative_1380, Mode=OneWay}"
+                        Height="{Binding Height, ElementName=GlassNative_1380, Mode=OneWay}"
+                        MinWidth="{Binding MinWidth, ElementName=GlassNative_1380, Mode=OneWay}"
+                        MinHeight="{Binding MinHeight, ElementName=GlassNative_1380, Mode=OneWay}"
+                        MaxWidth="{Binding MaxWidth, ElementName=GlassNative_1380, Mode=OneWay}"
+                        MaxHeight="{Binding MaxHeight, ElementName=GlassNative_1380, Mode=OneWay}"
+                        Padding="{Binding Padding, ElementName=GlassNative_1380, Mode=OneWay}"
+                        materialtheme:ControlMaterialState.IsManaged="True"
+                        materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=GlassNative_1380}"
+                        BorderThickness="{Binding BorderThickness, ElementName=GlassNative_1380, Mode=OneWay}"
+                        Command="{Binding Command, ElementName=GlassNative_1380, Mode=OneWay}"
+                        CommandParameter="{Binding CommandParameter, ElementName=GlassNative_1380, Mode=OneWay}"
+                        Content="{Binding Content, ElementName=GlassNative_1380, Mode=OneWay}"
+                        FlowDirection="{Binding FlowDirection, ElementName=GlassNative_1380, Mode=OneWay}"
+                        FontFamily="{Binding FontFamily, ElementName=GlassNative_1380, Mode=OneWay}"
+                        FontSize="{Binding FontSize, ElementName=GlassNative_1380, Mode=OneWay}"
+                        FontStyle="{Binding FontStyle, ElementName=GlassNative_1380, Mode=OneWay}"
+                        FontWeight="{Binding FontWeight, ElementName=GlassNative_1380, Mode=OneWay}"
+                        Foreground="{Binding Foreground, ElementName=GlassNative_1380, Mode=OneWay}"
+                        GroupName="GlassRadioGroup_1115Glass"
+                        IsChecked="{Binding IsChecked, ElementName=GlassNative_1380, Mode=TwoWay}"
+                        IsEnabled="{Binding IsEnabled, ElementName=GlassNative_1380, Mode=OneWay}"/>
+                </materialcases:Case>
+            </materialcases:SwitchPresenter>
         </RadioButtons>
         <TextBlock
             Grid.Row="2"

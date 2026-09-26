@@ -3,6 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shuxm="using:Snap.Hutao.Remastered.UI.Xaml.Markup"
     Title="{shuxm:ResourceString Name=ViewDialogHutaoPassportResetUserNameTitle}"
@@ -13,50 +16,220 @@
     mc:Ignorable="d">
 
     <StackPanel Margin="0,8,0,0" Spacing="16">
-        <TextBox
-            x:Name="UserNameTextBox"
-            InputScope="EmailSmtpAddress"
-            IsSpellCheckEnabled="False"
-            PlaceholderText="{shuxm:ResourceString Name=ViewPageHutaoPassportUserNameHint}"
-            Text="{x:Bind UserName, Mode=TwoWay}"/>
+        <materialcases:SwitchPresenter
+            x:Name="GlassPresenter_852"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            IsTabStop="False"
+            Tag="LiquidGlass:TextBox"
+            Visibility="{Binding Visibility, ElementName=UserNameTextBox, Mode=OneWay}"
+            Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>0</x:Int32>
+                </materialcases:Case.Value>
+                <TextBox
+                    x:Name="UserNameTextBox"
+                    DataContext="{Binding DataContext, ElementName=GlassPresenter_852, Mode=OneWay}"
+                    InputScope="EmailSmtpAddress"
+                    IsSpellCheckEnabled="False"
+                    PlaceholderText="{shuxm:ResourceString Name=ViewPageHutaoPassportUserNameHint}"
+                    RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_852, Mode=OneWay}"
+                    Text="{x:Bind UserName, Mode=TwoWay}"/>
+            </materialcases:Case>
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>1</x:Int32>
+                </materialcases:Case.Value>
+                <materialcontrols:LiquidGlassTextBox
+                    x:Name="UserNameTextBoxGlass"
+                    Width="{Binding Width, ElementName=UserNameTextBox, Mode=OneWay}"
+                    Height="{Binding Height, ElementName=UserNameTextBox, Mode=OneWay}"
+                    MinWidth="{Binding MinWidth, ElementName=UserNameTextBox, Mode=OneWay}"
+                    MinHeight="{Binding MinHeight, ElementName=UserNameTextBox, Mode=OneWay}"
+                    MaxWidth="{Binding MaxWidth, ElementName=UserNameTextBox, Mode=OneWay}"
+                    MaxHeight="{Binding MaxHeight, ElementName=UserNameTextBox, Mode=OneWay}"
+                    Padding="{Binding Padding, ElementName=UserNameTextBox, Mode=OneWay}"
+                    materialtheme:ControlMaterialState.IsManaged="True"
+                    materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=UserNameTextBox}"
+                    AcceptsReturn="{Binding AcceptsReturn, ElementName=UserNameTextBox, Mode=OneWay}"
+                    BorderThickness="{Binding BorderThickness, ElementName=UserNameTextBox, Mode=OneWay}"
+                    CharacterCasing="{Binding CharacterCasing, ElementName=UserNameTextBox, Mode=OneWay}"
+                    FlowDirection="{Binding FlowDirection, ElementName=UserNameTextBox, Mode=OneWay}"
+                    FontFamily="{Binding FontFamily, ElementName=UserNameTextBox, Mode=OneWay}"
+                    FontSize="{Binding FontSize, ElementName=UserNameTextBox, Mode=OneWay}"
+                    FontStyle="{Binding FontStyle, ElementName=UserNameTextBox, Mode=OneWay}"
+                    FontWeight="{Binding FontWeight, ElementName=UserNameTextBox, Mode=OneWay}"
+                    Foreground="{Binding Foreground, ElementName=UserNameTextBox, Mode=OneWay}"
+                    Header="{Binding Header, ElementName=UserNameTextBox, Mode=OneWay}"
+                    HeaderTemplate="{Binding HeaderTemplate, ElementName=UserNameTextBox, Mode=OneWay}"
+                    InputScope="{Binding InputScope, ElementName=UserNameTextBox, Mode=OneWay}"
+                    IsEnabled="{Binding IsEnabled, ElementName=UserNameTextBox, Mode=OneWay}"
+                    IsReadOnly="{Binding IsReadOnly, ElementName=UserNameTextBox, Mode=OneWay}"
+                    IsSpellCheckEnabled="False"
+                    MaxLength="{Binding MaxLength, ElementName=UserNameTextBox, Mode=OneWay}"
+                    PlaceholderText="{Binding PlaceholderText, ElementName=UserNameTextBox, Mode=OneWay}"
+                    SelectionHighlightColor="{Binding SelectionHighlightColor, ElementName=UserNameTextBox, Mode=OneWay}"
+                    Text="{Binding Text, ElementName=UserNameTextBox, Mode=TwoWay}"
+                    TextAlignment="{Binding TextAlignment, ElementName=UserNameTextBox, Mode=OneWay}"
+                    TextWrapping="{Binding TextWrapping, ElementName=UserNameTextBox, Mode=OneWay}"/>
+            </materialcases:Case>
+        </materialcases:SwitchPresenter>
         <Grid ColumnSpacing="16">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox
+            <materialcases:SwitchPresenter
+                x:Name="GlassPresenter_1330"
                 Grid.Column="0"
-                PlaceholderText="{shuxm:ResourceString Name=ViewPageHutaoPassportVerifyCodeHint}"
-                Text="{x:Bind VerifyCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                IsTabStop="False"
+                Tag="LiquidGlass:TextBox"
+                Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                <materialcases:Case>
+                    <materialcases:Case.Value>
+                        <x:Int32>0</x:Int32>
+                    </materialcases:Case.Value>
+                    <TextBox PlaceholderText="{shuxm:ResourceString Name=ViewPageHutaoPassportVerifyCodeHint}" Text="{x:Bind VerifyCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </materialcases:Case>
+                <materialcases:Case>
+                    <materialcases:Case.Value>
+                        <x:Int32>1</x:Int32>
+                    </materialcases:Case.Value>
+                    <materialcontrols:LiquidGlassTextBox
+                        materialtheme:ControlMaterialState.IsManaged="True"
+                        PlaceholderText="{shuxm:ResourceString Name=ViewPageHutaoPassportVerifyCodeHint}"
+                        Text="{x:Bind VerifyCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </materialcases:Case>
+            </materialcases:SwitchPresenter>
+            <materialcases:SwitchPresenter
+                x:Name="GlassPresenter_1576"
                 Grid.Column="1"
                 VerticalAlignment="Stretch"
-                Command="{x:Bind VerifyOldCommand}"
-                Content="{shuxm:ResourceString Name=ViewPageHutaoPassportVerifyCodeAction}"/>
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                IsTabStop="False"
+                Tag="LiquidGlass:Button"
+                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                <materialcases:Case>
+                    <materialcases:Case.Value>
+                        <x:Int32>0</x:Int32>
+                    </materialcases:Case.Value>
+                    <Button
+                        VerticalAlignment="Stretch"
+                        Command="{x:Bind VerifyOldCommand}"
+                        Content="{shuxm:ResourceString Name=ViewPageHutaoPassportVerifyCodeAction}"/>
+                </materialcases:Case>
+                <materialcases:Case>
+                    <materialcases:Case.Value>
+                        <x:Int32>1</x:Int32>
+                    </materialcases:Case.Value>
+                    <materialcontrols:LiquidGlassButton
+                        VerticalAlignment="Stretch"
+                        materialtheme:ControlMaterialState.IsManaged="True"
+                        Command="{x:Bind VerifyOldCommand}"
+                        Content="{shuxm:ResourceString Name=ViewPageHutaoPassportVerifyCodeAction}"/>
+                </materialcases:Case>
+            </materialcases:SwitchPresenter>
         </Grid>
         <StackPanel Spacing="16" Visibility="{x:Bind VerifyCode, Converter={StaticResource EmptyStringToVisibilityConverter}, Mode=OneWay}">
-            <TextBox
-                InputScope="EmailSmtpAddress"
-                IsEnabled="{x:Bind VerifyCode, Converter={StaticResource EmptyStringToBoolConverter}, Mode=OneWay}"
-                IsSpellCheckEnabled="False"
-                PlaceholderText="{shuxm:ResourceString Name=ViewPageHutaoPassportNewUserNameHint}"
-                Text="{x:Bind NewUserName, Mode=TwoWay}"/>
+            <materialcases:SwitchPresenter
+                x:Name="GlassPresenter_1975"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                IsTabStop="False"
+                Tag="LiquidGlass:TextBox"
+                Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                <materialcases:Case>
+                    <materialcases:Case.Value>
+                        <x:Int32>0</x:Int32>
+                    </materialcases:Case.Value>
+                    <TextBox
+                        InputScope="EmailSmtpAddress"
+                        IsEnabled="{x:Bind VerifyCode, Converter={StaticResource EmptyStringToBoolConverter}, Mode=OneWay}"
+                        IsSpellCheckEnabled="False"
+                        PlaceholderText="{shuxm:ResourceString Name=ViewPageHutaoPassportNewUserNameHint}"
+                        Text="{x:Bind NewUserName, Mode=TwoWay}"/>
+                </materialcases:Case>
+                <materialcases:Case>
+                    <materialcases:Case.Value>
+                        <x:Int32>1</x:Int32>
+                    </materialcases:Case.Value>
+                    <materialcontrols:LiquidGlassTextBox
+                        materialtheme:ControlMaterialState.IsManaged="True"
+                        InputScope="EmailSmtpAddress"
+                        IsEnabled="{x:Bind VerifyCode, Converter={StaticResource EmptyStringToBoolConverter}, Mode=OneWay}"
+                        IsSpellCheckEnabled="False"
+                        PlaceholderText="{shuxm:ResourceString Name=ViewPageHutaoPassportNewUserNameHint}"
+                        Text="{x:Bind NewUserName, Mode=TwoWay}"/>
+                </materialcases:Case>
+            </materialcases:SwitchPresenter>
             <Grid ColumnSpacing="16">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_2578"
                     Grid.Column="0"
-                    IsEnabled="{x:Bind VerifyCode, Converter={StaticResource EmptyStringToBoolConverter}, Mode=OneWay}"
-                    PlaceholderText="{shuxm:ResourceString Name=ViewPageHutaoPassportVerifyCodeHint}"
-                    Text="{x:Bind NewVerifyCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:TextBox"
+                    Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <TextBox
+                            IsEnabled="{x:Bind VerifyCode, Converter={StaticResource EmptyStringToBoolConverter}, Mode=OneWay}"
+                            PlaceholderText="{shuxm:ResourceString Name=ViewPageHutaoPassportVerifyCodeHint}"
+                            Text="{x:Bind NewVerifyCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassTextBox
+                            materialtheme:ControlMaterialState.IsManaged="True"
+                            IsEnabled="{x:Bind VerifyCode, Converter={StaticResource EmptyStringToBoolConverter}, Mode=OneWay}"
+                            PlaceholderText="{shuxm:ResourceString Name=ViewPageHutaoPassportVerifyCodeHint}"
+                            Text="{x:Bind NewVerifyCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_2963"
                     Grid.Column="1"
                     VerticalAlignment="Stretch"
-                    Command="{x:Bind VerifyNewCommand}"
-                    Content="{shuxm:ResourceString Name=ViewPageHutaoPassportVerifyCodeAction}"
-                    IsEnabled="{x:Bind VerifyCode, Converter={StaticResource EmptyStringToBoolConverter}, Mode=OneWay}"/>
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:Button"
+                    Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <Button
+                            VerticalAlignment="Stretch"
+                            Command="{x:Bind VerifyNewCommand}"
+                            Content="{shuxm:ResourceString Name=ViewPageHutaoPassportVerifyCodeAction}"
+                            IsEnabled="{x:Bind VerifyCode, Converter={StaticResource EmptyStringToBoolConverter}, Mode=OneWay}"/>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassButton
+                            VerticalAlignment="Stretch"
+                            materialtheme:ControlMaterialState.IsManaged="True"
+                            Command="{x:Bind VerifyNewCommand}"
+                            Content="{shuxm:ResourceString Name=ViewPageHutaoPassportVerifyCodeAction}"
+                            IsEnabled="{x:Bind VerifyCode, Converter={StaticResource EmptyStringToBoolConverter}, Mode=OneWay}"/>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
             </Grid>
         </StackPanel>
     </StackPanel>

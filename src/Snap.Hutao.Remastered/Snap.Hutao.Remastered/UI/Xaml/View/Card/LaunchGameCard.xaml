@@ -1,9 +1,13 @@
-<Button
+<materialcard:MaterialCardButton
     x:Class="Snap.Hutao.Remastered.UI.Xaml.View.Card.LaunchGameCard"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcard="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shuxb="using:Snap.Hutao.Remastered.UI.Xaml.Behavior"
@@ -22,7 +26,6 @@
     BorderBrush="{x:Null}"
     BorderThickness="0"
     Command="{Binding NavigateCommand}"
-    Style="{ThemeResource DefaultButtonStyle}"
     mc:Ignorable="d">
     <mxi:Interaction.Behaviors>
         <shuxb:InvokeCommandOnLoadedBehavior Command="{Binding LoadCommand}"/>
@@ -112,38 +115,130 @@
                     </cwc:Case>
                 </cwc:SwitchPresenter>
 
-                <ComboBox
-                    Padding="12"
-                    DisplayMemberPath="Name"
-                    ItemsSource="{Binding CurrentSchemeFilteredGameAccountsView.View}"
-                    PlaceholderText="{shuxm:ResourceString Name=ViewCardLaunchGameSelectAccountPlaceholder}"
-                    SelectedItem="{Binding CurrentSchemeFilteredGameAccountsView.View.CurrentItem, FallbackValue={x:Null}, Mode=TwoWay}"
-                    Style="{ThemeResource ShimmerComboBoxStyle}"
-                    Visibility="{Binding LaunchOptions.UsingHoyolabAccount.Value, Converter={StaticResource BoolToVisibilityRevertConverter}}"/>
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_5872"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:ComboBox"
+                    Visibility="{Binding Visibility, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                    Value="{Binding ComboBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <ComboBox
+                            x:Name="GlassPresenter_5872_State"
+                            Padding="12"
+                            DataContext="{Binding DataContext, ElementName=GlassPresenter_5872, Mode=OneWay}"
+                            DisplayMemberPath="Name"
+                            ItemsSource="{Binding CurrentSchemeFilteredGameAccountsView.View}"
+                            PlaceholderText="{shuxm:ResourceString Name=ViewCardLaunchGameSelectAccountPlaceholder}"
+                            RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_5872, Mode=OneWay}"
+                            SelectedItem="{Binding CurrentSchemeFilteredGameAccountsView.View.CurrentItem, FallbackValue={x:Null}, Mode=TwoWay}"
+                            Style="{ThemeResource ShimmerComboBoxStyle}"
+                            Visibility="{Binding LaunchOptions.UsingHoyolabAccount.Value, Converter={StaticResource BoolToVisibilityRevertConverter}}"/>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassComboBox
+                            x:Name="GlassPresenter_5872_StateGlass"
+                            Width="{Binding Width, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            Height="{Binding Height, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            MinWidth="{Binding MinWidth, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            MinHeight="{Binding MinHeight, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            MaxWidth="{Binding MaxWidth, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            MaxHeight="{Binding MaxHeight, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            Padding="{Binding Padding, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            materialtheme:ControlMaterialState.IsManaged="True"
+                            materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=GlassPresenter_5872_State}"
+                            BorderThickness="{Binding BorderThickness, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            DisplayMemberPath="{Binding DisplayMemberPath, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            FlowDirection="{Binding FlowDirection, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            FontFamily="{Binding FontFamily, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            FontSize="{Binding FontSize, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            FontStyle="{Binding FontStyle, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            FontWeight="{Binding FontWeight, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            Foreground="{Binding Foreground, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            Header="{Binding Header, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            HeaderTemplate="{Binding HeaderTemplate, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            IsDropDownOpen="{Binding IsDropDownOpen, ElementName=GlassPresenter_5872_State, Mode=TwoWay}"
+                            IsEditable="{Binding IsEditable, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            IsEnabled="{Binding IsEnabled, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            IsTextSearchEnabled="{Binding IsTextSearchEnabled, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            ItemsSource="{Binding ItemsSource, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            MaxDropDownHeight="{Binding MaxDropDownHeight, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            PlaceholderText="{Binding PlaceholderText, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            SelectedIndex="{Binding SelectedIndex, ElementName=GlassPresenter_5872_State, Mode=TwoWay}"
+                            SelectedValuePath="{Binding SelectedValuePath, ElementName=GlassPresenter_5872_State, Mode=OneWay}"
+                            Style="{ThemeResource ShimmerComboBoxStyle}"/>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
             </StackPanel>
 
-            <Button
+            <materialcases:SwitchPresenter
+                x:Name="GlassPresenter_6542"
                 Grid.Row="2"
                 VerticalAlignment="Stretch"
-                Command="{Binding LaunchCommand}"
-                IsEnabled="{Binding LaunchOptions.IsGameRunning.Value, Converter={StaticResource BoolNegationConverter}}"
-                Style="{ThemeResource SettingButtonStyle}">
-                <StackPanel Spacing="3">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        Style="{ThemeResource SubtitleTextBlockStyle}"
-                        Text="{shuxm:ResourceString Name=ViewPageLaunchGameAction}"/>
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                IsTabStop="False"
+                Tag="LiquidGlass:Button"
+                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                <materialcases:Case>
+                    <materialcases:Case.Value>
+                        <x:Int32>0</x:Int32>
+                    </materialcases:Case.Value>
+                    <Button
+                        VerticalAlignment="Stretch"
+                        Command="{Binding LaunchCommand}"
+                        IsEnabled="{Binding LaunchOptions.IsGameRunning.Value, Converter={StaticResource BoolNegationConverter}}"
+                        Style="{ThemeResource SettingButtonStyle}">
+                        <StackPanel Spacing="3">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Style="{ThemeResource SubtitleTextBlockStyle}"
+                                Text="{shuxm:ResourceString Name=ViewPageLaunchGameAction}"/>
 
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        Opacity="0.7"
-                        Style="{StaticResource CaptionTextBlockStyle}"
-                        Text="{Binding LaunchStatusOptions.LaunchStatus.Description, FallbackValue={x:Null}, Mode=OneWay}"
-                        Visibility="{Binding LaunchStatusOptions.LaunchStatus, Converter={StaticResource EmptyObjectToVisibilityConverter}, Mode=OneWay}"/>
-                </StackPanel>
-            </Button>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Opacity="0.7"
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Text="{Binding LaunchStatusOptions.LaunchStatus.Description, FallbackValue={x:Null}, Mode=OneWay}"
+                                Visibility="{Binding LaunchStatusOptions.LaunchStatus, Converter={StaticResource EmptyObjectToVisibilityConverter}, Mode=OneWay}"/>
+                        </StackPanel>
+                    </Button>
+                </materialcases:Case>
+                <materialcases:Case>
+                    <materialcases:Case.Value>
+                        <x:Int32>1</x:Int32>
+                    </materialcases:Case.Value>
+                    <materialcontrols:LiquidGlassButton
+                        VerticalAlignment="Stretch"
+                        materialtheme:ControlMaterialState.IsManaged="True"
+                        Command="{Binding LaunchCommand}"
+                        IsEnabled="{Binding LaunchOptions.IsGameRunning.Value, Converter={StaticResource BoolNegationConverter}}"
+                        Style="{ThemeResource SettingButtonStyle}">
+                        <StackPanel Spacing="3">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Style="{ThemeResource SubtitleTextBlockStyle}"
+                                Text="{shuxm:ResourceString Name=ViewPageLaunchGameAction}"/>
+
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Opacity="0.7"
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Text="{Binding LaunchStatusOptions.LaunchStatus.Description, FallbackValue={x:Null}, Mode=OneWay}"
+                                Visibility="{Binding LaunchStatusOptions.LaunchStatus, Converter={StaticResource EmptyObjectToVisibilityConverter}, Mode=OneWay}"/>
+                        </StackPanel>
+                    </materialcontrols:LiquidGlassButton>
+                </materialcases:Case>
+            </materialcases:SwitchPresenter>
         </Grid>
 
         <shuxc:Loading IsLoading="{Binding IsInitialized, Converter={StaticResource BoolNegationConverter}}" Style="{ThemeResource DefaultLoadingCardStyle}"/>
     </Grid>
-</Button>
+</materialcard:MaterialCardButton>

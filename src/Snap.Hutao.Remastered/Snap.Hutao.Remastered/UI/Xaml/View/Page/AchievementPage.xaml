@@ -5,6 +5,9 @@
     xmlns:cw="using:CommunityToolkit.WinUI"
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shux="using:Snap.Hutao.Remastered.UI.Xaml"
@@ -154,15 +157,41 @@
                     </Grid.ColumnDefinitions>
 
                     <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                    <CheckBox
+                    <materialcases:SwitchPresenter
+                        x:Name="GlassPresenter_8192"
                         Grid.Column="0"
-                        MinWidth="0"
-                        MinHeight="0"
                         Margin="8,0"
-                        Padding="0,0,0,0"
-                        Command="{Binding Path=DataContext.SaveAchievementCommand, Source={StaticResource BindingProxy}}"
-                        CommandParameter="{Binding}"
-                        IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        IsTabStop="False"
+                        Tag="LiquidGlass:CheckBox"
+                        Value="{Binding CheckBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>0</x:Int32>
+                            </materialcases:Case.Value>
+                            <CheckBox
+                                MinWidth="0"
+                                MinHeight="0"
+                                Padding="0,0,0,0"
+                                Command="{Binding Path=DataContext.SaveAchievementCommand, Source={StaticResource BindingProxy}}"
+                                CommandParameter="{Binding}"
+                                IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                        </materialcases:Case>
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>1</x:Int32>
+                            </materialcases:Case.Value>
+                            <materialcontrols:LiquidGlassCheckBox
+                                MinWidth="0"
+                                MinHeight="0"
+                                Padding="0,0,0,0"
+                                materialtheme:ControlMaterialState.IsManaged="True"
+                                Command="{Binding Path=DataContext.SaveAchievementCommand, Source={StaticResource BindingProxy}}"
+                                CommandParameter="{Binding}"
+                                IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                        </materialcases:Case>
+                    </materialcases:SwitchPresenter>
                     <Grid Grid.Column="1" Margin="8,0,0,0">
                         <Grid.ColumnDefinitions>
                             <!--  text  -->
@@ -266,12 +295,37 @@
                             HorizontalAlignment="Center"
                             Style="{StaticResource SubtitleTextBlockStyle}"
                             Text="{shuxm:ResourceString Name=ViewPageAchievementAddArchiveHint}"/>
-                        <Button
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_13882"
                             Margin="0,16,0,0"
-                            Padding="16,8"
                             HorizontalAlignment="Stretch"
-                            Command="{Binding AddArchiveCommand}"
-                            Content="{shuxm:ResourceString Name=ViewPageAchievementAddArchive}"/>
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:Button"
+                            Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <Button
+                                    Padding="16,8"
+                                    HorizontalAlignment="Stretch"
+                                    Command="{Binding AddArchiveCommand}"
+                                    Content="{shuxm:ResourceString Name=ViewPageAchievementAddArchive}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassButton
+                                    Padding="16,8"
+                                    HorizontalAlignment="Stretch"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Command="{Binding AddArchiveCommand}"
+                                    Content="{shuxm:ResourceString Name=ViewPageAchievementAddArchive}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                     </StackPanel>
                 </Border>
             </Border>
@@ -317,36 +371,139 @@
                         </CommandBar.Resources>
 
                         <CommandBar.Content>
-                            <AutoSuggestBox
-                                Width="300"
-                                Height="36"
+                            <materialcases:SwitchPresenter
+                                x:Name="SearchPresenter_19087"
                                 Margin="4,6,6,0"
                                 HorizontalAlignment="Stretch"
-                                VerticalContentAlignment="Center"
-                                PlaceholderText="{shuxm:ResourceString Name=ViewPageAchievementSearchPlaceholder}"
-                                QueryIcon="{shuxm:FontIcon Glyph=&#xE721;}"
-                                Text="{Binding SearchText, Mode=TwoWay}">
-                                <AutoSuggestBox.TextBoxStyle>
-                                    <Style BasedOn="{StaticResource AutoSuggestBoxTextBoxStyle}" TargetType="TextBox">
-                                        <Setter Property="IsSpellCheckEnabled" Value="False"/>
-                                        <Setter Property="Padding" Value="10,1,0,0"/>
-                                    </Style>
-                                </AutoSuggestBox.TextBoxStyle>
-                                <mxi:Interaction.Behaviors>
-                                    <mxi:EventTriggerBehavior EventName="QuerySubmitted">
-                                        <mxi:InvokeCommandAction Command="{Binding SearchAchievementCommand}" CommandParameter="{Binding SearchText}"/>
-                                    </mxi:EventTriggerBehavior>
-                                </mxi:Interaction.Behaviors>
-                            </AutoSuggestBox>
+                                HorizontalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Value="{Binding SearchBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <AutoSuggestBox
+                                        x:Name="NativeSearch_19087"
+                                        Width="300"
+                                        Height="36"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalContentAlignment="Center"
+                                        DataContext="{Binding DataContext, ElementName=SearchPresenter_19087, Mode=OneWay}"
+                                        PlaceholderText="{shuxm:ResourceString Name=ViewPageAchievementSearchPlaceholder}"
+                                        QueryIcon="{shuxm:FontIcon Glyph=&#xE721;}"
+                                        RequestedTheme="{Binding ActualTheme, ElementName=SearchPresenter_19087, Mode=OneWay}"
+                                        Text="{Binding SearchText, Mode=TwoWay}">
+                                        <AutoSuggestBox.TextBoxStyle>
+                                            <Style BasedOn="{StaticResource AutoSuggestBoxTextBoxStyle}" TargetType="TextBox">
+                                                <Setter Property="IsSpellCheckEnabled" Value="False"/>
+                                                <Setter Property="Padding" Value="10,1,0,0"/>
+                                            </Style>
+                                        </AutoSuggestBox.TextBoxStyle>
+                                        <mxi:Interaction.Behaviors>
+                                            <mxi:EventTriggerBehavior EventName="QuerySubmitted">
+                                                <mxi:InvokeCommandAction Command="{Binding SearchAchievementCommand}" CommandParameter="{Binding SearchText}"/>
+                                            </mxi:EventTriggerBehavior>
+                                        </mxi:Interaction.Behaviors>
+                                    </AutoSuggestBox>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassSearchBox
+                                        x:Name="NativeSearch_19087Glass"
+                                        Width="300"
+                                        Height="36"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalContentAlignment="Center"
+                                        materialtheme:ControlMaterialState.IsManaged="True"
+                                        materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=NativeSearch_19087}"
+                                        Description="{Binding Description, ElementName=NativeSearch_19087, Mode=OneWay}"
+                                        Foreground="{Binding Foreground, ElementName=NativeSearch_19087, Mode=OneWay}"
+                                        Header="{Binding Header, ElementName=NativeSearch_19087, Mode=OneWay}"
+                                        IsEnabled="{Binding IsEnabled, ElementName=NativeSearch_19087, Mode=OneWay}"
+                                        IsSuggestionListOpen="{Binding IsSuggestionListOpen, ElementName=NativeSearch_19087, Mode=TwoWay}"
+                                        ItemTemplate="{Binding ItemTemplate, ElementName=NativeSearch_19087, Mode=OneWay}"
+                                        ItemsSource="{Binding ItemsSource, ElementName=NativeSearch_19087, Mode=OneWay}"
+                                        MaxSuggestionListHeight="{Binding MaxSuggestionListHeight, ElementName=NativeSearch_19087, Mode=OneWay}"
+                                        PlaceholderText="{Binding PlaceholderText, ElementName=NativeSearch_19087, Mode=OneWay}"
+                                        QueryIcon="{shuxm:FontIcon Glyph=&#xE721;}"
+                                        RequestedTheme="{Binding ActualTheme, ElementName=SearchPresenter_19087, Mode=OneWay}"
+                                        Text="{Binding Text, ElementName=NativeSearch_19087, Mode=TwoWay}"
+                                        TextMemberPath="{Binding TextMemberPath, ElementName=NativeSearch_19087, Mode=OneWay}"
+                                        UpdateTextOnSelect="{Binding UpdateTextOnSelect, ElementName=NativeSearch_19087, Mode=OneWay}">
+                                        <materialcontrols:LiquidGlassSearchBox.TextBoxStyle>
+                                            <Style BasedOn="{StaticResource AutoSuggestBoxTextBoxStyle}" TargetType="TextBox">
+                                                <Setter Property="IsSpellCheckEnabled" Value="False"/>
+                                                <Setter Property="Padding" Value="10,1,0,0"/>
+                                            </Style>
+                                        </materialcontrols:LiquidGlassSearchBox.TextBoxStyle>
+
+                                    </materialcontrols:LiquidGlassSearchBox>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
                         </CommandBar.Content>
 
                         <AppBarElementContainer AllowFocusOnInteraction="True">
                             <shuxc:SizeRestrictedContentControl Margin="2,6,3,6">
-                                <ComboBox
-                                    DisplayMemberPath="Name"
-                                    ItemsSource="{Binding Archives, Mode=OneWay}"
-                                    SelectedItem="{Binding Archives.CurrentItem, Mode=TwoWay}"
-                                    Style="{ThemeResource CommandBarComboBoxStyle}"/>
+                                <materialcases:SwitchPresenter
+                                    x:Name="GlassPresenter_18149"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    IsTabStop="False"
+                                    Tag="LiquidGlass:ComboBox"
+                                    Visibility="{Binding Visibility, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                    Value="{Binding ComboBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                    <materialcases:Case>
+                                        <materialcases:Case.Value>
+                                            <x:Int32>0</x:Int32>
+                                        </materialcases:Case.Value>
+                                        <ComboBox
+                                            x:Name="GlassPresenter_18149_State"
+                                            DataContext="{Binding DataContext, ElementName=GlassPresenter_18149, Mode=OneWay}"
+                                            DisplayMemberPath="Name"
+                                            ItemsSource="{Binding Archives, Mode=OneWay}"
+                                            RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_18149, Mode=OneWay}"
+                                            SelectedItem="{Binding Archives.CurrentItem, Mode=TwoWay}"
+                                            Style="{ThemeResource CommandBarComboBoxStyle}"/>
+                                    </materialcases:Case>
+                                    <materialcases:Case>
+                                        <materialcases:Case.Value>
+                                            <x:Int32>1</x:Int32>
+                                        </materialcases:Case.Value>
+                                        <materialcontrols:LiquidGlassComboBox
+                                            x:Name="GlassPresenter_18149_StateGlass"
+                                            Width="{Binding Width, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            Height="{Binding Height, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            MinWidth="{Binding MinWidth, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            MinHeight="{Binding MinHeight, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            MaxWidth="{Binding MaxWidth, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            MaxHeight="{Binding MaxHeight, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            Padding="{Binding Padding, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            materialtheme:ControlMaterialState.IsManaged="True"
+                                            materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=GlassPresenter_18149_State}"
+                                            BorderThickness="{Binding BorderThickness, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            DisplayMemberPath="{Binding DisplayMemberPath, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            FlowDirection="{Binding FlowDirection, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            FontFamily="{Binding FontFamily, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            FontSize="{Binding FontSize, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            FontStyle="{Binding FontStyle, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            FontWeight="{Binding FontWeight, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            Foreground="{Binding Foreground, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            Header="{Binding Header, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            HeaderTemplate="{Binding HeaderTemplate, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            IsDropDownOpen="{Binding IsDropDownOpen, ElementName=GlassPresenter_18149_State, Mode=TwoWay}"
+                                            IsEditable="{Binding IsEditable, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            IsEnabled="{Binding IsEnabled, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            IsTextSearchEnabled="{Binding IsTextSearchEnabled, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            ItemsSource="{Binding ItemsSource, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            MaxDropDownHeight="{Binding MaxDropDownHeight, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            PlaceholderText="{Binding PlaceholderText, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            SelectedIndex="{Binding SelectedIndex, ElementName=GlassPresenter_18149_State, Mode=TwoWay}"
+                                            SelectedValuePath="{Binding SelectedValuePath, ElementName=GlassPresenter_18149_State, Mode=OneWay}"
+                                            Style="{ThemeResource CommandBarComboBoxStyle}"/>
+                                    </materialcases:Case>
+                                </materialcases:SwitchPresenter>
                             </shuxc:SizeRestrictedContentControl>
                         </AppBarElementContainer>
                         <AppBarButton

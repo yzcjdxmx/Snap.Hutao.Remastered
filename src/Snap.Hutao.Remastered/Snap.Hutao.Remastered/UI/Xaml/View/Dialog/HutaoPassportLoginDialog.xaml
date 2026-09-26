@@ -3,6 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shuxm="using:Snap.Hutao.Remastered.UI.Xaml.Markup"
     Title="{shuxm:ResourceString Name=ViewDialogHutaoPassportLoginTitle}"
@@ -13,14 +16,81 @@
     mc:Ignorable="d">
 
     <StackPanel Margin="0,8,0,0" Spacing="16">
-        <TextBox
-            InputScope="EmailSmtpAddress"
-            IsSpellCheckEnabled="False"
-            PlaceholderText="{x:Bind PassportUserNameHint}"
-            Text="{x:Bind UserName, Mode=TwoWay}"/>
-        <PasswordBox
-            Password="{x:Bind Password, Mode=TwoWay}"
-            PasswordChar="*"
-            PlaceholderText="{shuxm:ResourceString Name=ViewPageHutaoPassportPasswordHint}"/>
+        <materialcases:SwitchPresenter
+            x:Name="GlassPresenter_836"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            IsTabStop="False"
+            Tag="LiquidGlass:TextBox"
+            Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>0</x:Int32>
+                </materialcases:Case.Value>
+                <TextBox
+                    InputScope="EmailSmtpAddress"
+                    IsSpellCheckEnabled="False"
+                    PlaceholderText="{x:Bind PassportUserNameHint}"
+                    Text="{x:Bind UserName, Mode=TwoWay}"/>
+            </materialcases:Case>
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>1</x:Int32>
+                </materialcases:Case.Value>
+                <materialcontrols:LiquidGlassTextBox
+                    materialtheme:ControlMaterialState.IsManaged="True"
+                    InputScope="EmailSmtpAddress"
+                    IsSpellCheckEnabled="False"
+                    PlaceholderText="{x:Bind PassportUserNameHint}"
+                    Text="{x:Bind UserName, Mode=TwoWay}"/>
+            </materialcases:Case>
+        </materialcases:SwitchPresenter>
+        <materialcases:SwitchPresenter
+            x:Name="GlassPresenter_1047"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            IsTabStop="False"
+            Tag="LiquidGlass:PasswordBox"
+            Visibility="{Binding Visibility, ElementName=GlassNative_1047, Mode=OneWay}"
+            Value="{Binding PasswordBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>0</x:Int32>
+                </materialcases:Case.Value>
+                <PasswordBox
+                    x:Name="GlassNative_1047"
+                    DataContext="{Binding DataContext, ElementName=GlassPresenter_1047, Mode=OneWay}"
+                    Password="{x:Bind Password, Mode=TwoWay}"
+                    PasswordChar="*"
+                    PlaceholderText="{shuxm:ResourceString Name=ViewPageHutaoPassportPasswordHint}"
+                    RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_1047, Mode=OneWay}"/>
+            </materialcases:Case>
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>1</x:Int32>
+                </materialcases:Case.Value>
+                <materialcontrols:LiquidGlassPasswordBox
+                    x:Name="GlassNative_1047Glass"
+                    Width="{Binding Width, ElementName=GlassNative_1047, Mode=OneWay}"
+                    Height="{Binding Height, ElementName=GlassNative_1047, Mode=OneWay}"
+                    MinWidth="{Binding MinWidth, ElementName=GlassNative_1047, Mode=OneWay}"
+                    MinHeight="{Binding MinHeight, ElementName=GlassNative_1047, Mode=OneWay}"
+                    MaxWidth="{Binding MaxWidth, ElementName=GlassNative_1047, Mode=OneWay}"
+                    MaxHeight="{Binding MaxHeight, ElementName=GlassNative_1047, Mode=OneWay}"
+                    Padding="{Binding Padding, ElementName=GlassNative_1047, Mode=OneWay}"
+                    materialtheme:ControlMaterialState.IsManaged="True"
+                    materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=GlassNative_1047}"
+                    BorderThickness="{Binding BorderThickness, ElementName=GlassNative_1047, Mode=OneWay}"
+                    FlowDirection="{Binding FlowDirection, ElementName=GlassNative_1047, Mode=OneWay}"
+                    FontFamily="{Binding FontFamily, ElementName=GlassNative_1047, Mode=OneWay}"
+                    FontSize="{Binding FontSize, ElementName=GlassNative_1047, Mode=OneWay}"
+                    FontStyle="{Binding FontStyle, ElementName=GlassNative_1047, Mode=OneWay}"
+                    FontWeight="{Binding FontWeight, ElementName=GlassNative_1047, Mode=OneWay}"
+                    Foreground="{Binding Foreground, ElementName=GlassNative_1047, Mode=OneWay}"
+                    IsEnabled="{Binding IsEnabled, ElementName=GlassNative_1047, Mode=OneWay}"
+                    Password="{Binding Password, ElementName=GlassNative_1047, Mode=TwoWay}"
+                    PlaceholderText="{Binding PlaceholderText, ElementName=GlassNative_1047, Mode=OneWay}"/>
+            </materialcases:Case>
+        </materialcases:SwitchPresenter>
     </StackPanel>
 </ContentDialog>

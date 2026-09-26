@@ -3,6 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shuxm="using:Snap.Hutao.Remastered.UI.Xaml.Markup"
     Title="{shuxm:ResourceString Name=ViewDialogBackpackArchivePickerTitle}"
@@ -13,11 +16,64 @@
     mc:Ignorable="d">
 
     <Grid>
-        <ComboBox
-            x:Name="ArchiveComboBox"
-            MinWidth="240"
+        <materialcases:SwitchPresenter
+            x:Name="GlassPresenter_806"
             Margin="0,0,0,8"
             VerticalAlignment="Top"
-            DisplayMemberPath="Name"/>
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            IsTabStop="False"
+            Tag="LiquidGlass:ComboBox"
+            Visibility="{Binding Visibility, ElementName=ArchiveComboBox, Mode=OneWay}"
+            Value="{Binding ComboBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>0</x:Int32>
+                </materialcases:Case.Value>
+                <ComboBox
+                    x:Name="ArchiveComboBox"
+                    MinWidth="240"
+                    VerticalAlignment="Top"
+                    DataContext="{Binding DataContext, ElementName=GlassPresenter_806, Mode=OneWay}"
+                    DisplayMemberPath="Name"
+                    RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_806, Mode=OneWay}"/>
+            </materialcases:Case>
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>1</x:Int32>
+                </materialcases:Case.Value>
+                <materialcontrols:LiquidGlassComboBox
+                    x:Name="ArchiveComboBoxGlass"
+                    Width="{Binding Width, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    Height="{Binding Height, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    MinWidth="{Binding MinWidth, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    MinHeight="{Binding MinHeight, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    MaxWidth="{Binding MaxWidth, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    MaxHeight="{Binding MaxHeight, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    Padding="{Binding Padding, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    VerticalAlignment="Top"
+                    materialtheme:ControlMaterialState.IsManaged="True"
+                    materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=ArchiveComboBox}"
+                    BorderThickness="{Binding BorderThickness, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    DisplayMemberPath="{Binding DisplayMemberPath, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    FlowDirection="{Binding FlowDirection, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    FontFamily="{Binding FontFamily, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    FontSize="{Binding FontSize, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    FontStyle="{Binding FontStyle, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    FontWeight="{Binding FontWeight, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    Foreground="{Binding Foreground, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    Header="{Binding Header, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    HeaderTemplate="{Binding HeaderTemplate, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    IsDropDownOpen="{Binding IsDropDownOpen, ElementName=ArchiveComboBox, Mode=TwoWay}"
+                    IsEditable="{Binding IsEditable, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    IsEnabled="{Binding IsEnabled, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    IsTextSearchEnabled="{Binding IsTextSearchEnabled, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    ItemsSource="{Binding ItemsSource, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    MaxDropDownHeight="{Binding MaxDropDownHeight, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    PlaceholderText="{Binding PlaceholderText, ElementName=ArchiveComboBox, Mode=OneWay}"
+                    SelectedIndex="{Binding SelectedIndex, ElementName=ArchiveComboBox, Mode=TwoWay}"
+                    SelectedValuePath="{Binding SelectedValuePath, ElementName=ArchiveComboBox, Mode=OneWay}"/>
+            </materialcases:Case>
+        </materialcases:SwitchPresenter>
     </Grid>
 </ContentDialog>

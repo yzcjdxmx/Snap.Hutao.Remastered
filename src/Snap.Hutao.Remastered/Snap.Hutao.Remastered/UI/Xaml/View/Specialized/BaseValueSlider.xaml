@@ -4,6 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shuxm="using:Snap.Hutao.Remastered.UI.Xaml.Markup"
     mc:Ignorable="d">
@@ -50,23 +53,77 @@
                 Orientation="Horizontal"
                 Spacing="16">
                 <TextBlock VerticalAlignment="Center" Text="{x:Bind BaseValueInfo.CurrentLevelFormatted, Mode=OneWay}"/>
-                <CheckBox
-                    MinWidth="0"
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_2943"
                     Margin="0,-8,0,-8"
-                    Padding="8,0,0,0"
                     VerticalAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Content="{shuxm:ResourceString Name=ViewControlBaseValueSliderPromoted}"
-                    IsChecked="{x:Bind BaseValueInfo.Promoted, Mode=TwoWay}"
-                    Visibility="{x:Bind IsPromoteVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                <Slider
-                    MinWidth="240"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:CheckBox"
+                    Visibility="{x:Bind IsPromoteVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Value="{Binding CheckBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <CheckBox
+                            MinWidth="0"
+                            Padding="8,0,0,0"
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Content="{shuxm:ResourceString Name=ViewControlBaseValueSliderPromoted}"
+                            IsChecked="{x:Bind BaseValueInfo.Promoted, Mode=TwoWay}"/>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassCheckBox
+                            MinWidth="0"
+                            Padding="8,0,0,0"
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            materialtheme:ControlMaterialState.IsManaged="True"
+                            Content="{shuxm:ResourceString Name=ViewControlBaseValueSliderPromoted}"
+                            IsChecked="{x:Bind BaseValueInfo.Promoted, Mode=TwoWay}"/>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_3465"
                     Margin="0,-16,0,-16"
                     VerticalAlignment="Center"
-                    Maximum="{x:Bind BaseValueInfo.MaxLevel, Mode=OneWay}"
-                    Minimum="1"
-                    StepFrequency="1"
-                    Value="{x:Bind BaseValueInfo.CurrentLevel, Mode=TwoWay}"/>
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:Slider"
+                    Value="{Binding SliderMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <Slider
+                            MinWidth="240"
+                            VerticalAlignment="Center"
+                            Maximum="{x:Bind BaseValueInfo.MaxLevel, Mode=OneWay}"
+                            Minimum="1"
+                            StepFrequency="1"
+                            Value="{x:Bind BaseValueInfo.CurrentLevel, Mode=TwoWay}"/>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassSlider
+                            MinWidth="240"
+                            VerticalAlignment="Center"
+                            materialtheme:ControlMaterialState.IsManaged="True"
+                            Maximum="{x:Bind BaseValueInfo.MaxLevel, Mode=OneWay}"
+                            Minimum="1"
+                            StepFrequency="1"
+                            Value="{x:Bind BaseValueInfo.CurrentLevel, Mode=TwoWay}"/>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
             </StackPanel>
         </cwc:SettingsExpander>
     </ScrollViewer>

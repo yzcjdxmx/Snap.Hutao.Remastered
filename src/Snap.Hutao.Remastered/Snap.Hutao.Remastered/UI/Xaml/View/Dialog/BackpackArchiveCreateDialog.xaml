@@ -3,6 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shuxm="using:Snap.Hutao.Remastered.UI.Xaml.Markup"
     Title="{shuxm:ResourceString Name=ViewDialogBackpackArchiveCreateTitle}"
@@ -13,10 +16,34 @@
     mc:Ignorable="d">
 
     <Grid>
-        <TextBox
+        <materialcases:SwitchPresenter
+            x:Name="GlassPresenter_806"
             Margin="0,0,0,8"
             VerticalAlignment="Top"
-            PlaceholderText="{shuxm:ResourceString Name=ViewDialogBackpackArchiveCreateInputPlaceholder}"
-            Text="{x:Bind Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            IsTabStop="False"
+            Tag="LiquidGlass:TextBox"
+            Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>0</x:Int32>
+                </materialcases:Case.Value>
+                <TextBox
+                    VerticalAlignment="Top"
+                    PlaceholderText="{shuxm:ResourceString Name=ViewDialogBackpackArchiveCreateInputPlaceholder}"
+                    Text="{x:Bind Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </materialcases:Case>
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>1</x:Int32>
+                </materialcases:Case.Value>
+                <materialcontrols:LiquidGlassTextBox
+                    VerticalAlignment="Top"
+                    materialtheme:ControlMaterialState.IsManaged="True"
+                    PlaceholderText="{shuxm:ResourceString Name=ViewDialogBackpackArchiveCreateInputPlaceholder}"
+                    Text="{x:Bind Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </materialcases:Case>
+        </materialcases:SwitchPresenter>
     </Grid>
 </ContentDialog>

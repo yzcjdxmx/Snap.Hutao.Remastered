@@ -4,6 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shuxb="using:Snap.Hutao.Remastered.UI.Xaml.Behavior"
@@ -132,58 +135,150 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <ToggleButton
+                    <materialcases:SwitchPresenter
+                        x:Name="GlassPresenter_6772"
                         Grid.Column="0"
-                        Padding="2"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        BorderThickness="0"
-                        IsChecked="{Binding HotKeyOptions.MouseClickRepeatForeverKeyCombination.IsOn, Mode=OneWay}"
-                        IsEnabled="{Binding HotKeyOptions.MouseClickRepeatForeverKeyCombination.IsEnabled, Mode=OneWay}"
-                        IsHitTestVisible="False">
-                        <Grid RowSpacing="4">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock
-                                Grid.Row="0"
-                                HorizontalAlignment="Center"
-                                Style="{StaticResource CaptionTextBlockStyle}"
-                                Text="{shuxm:ResourceString Name=ViewTitleAutoClicking}"/>
-                            <TextBlock
-                                Grid.Row="1"
-                                HorizontalAlignment="Center"
-                                Style="{StaticResource CaptionTextBlockStyle}"
-                                Text="{Binding HotKeyOptions.MouseClickRepeatForeverKeyCombination.DisplayName, Mode=OneWay}"/>
-                        </Grid>
-                    </ToggleButton>
-                    <ToggleButton
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        IsTabStop="False"
+                        Tag="LiquidGlass:ToggleButton"
+                        Value="{Binding ToggleButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>0</x:Int32>
+                            </materialcases:Case.Value>
+                            <ToggleButton
+                                Padding="2"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                BorderThickness="0"
+                                IsChecked="{Binding HotKeyOptions.MouseClickRepeatForeverKeyCombination.IsOn, Mode=OneWay}"
+                                IsEnabled="{Binding HotKeyOptions.MouseClickRepeatForeverKeyCombination.IsEnabled, Mode=OneWay}"
+                                IsHitTestVisible="False">
+                                <Grid RowSpacing="4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{shuxm:ResourceString Name=ViewTitleAutoClicking}"/>
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{Binding HotKeyOptions.MouseClickRepeatForeverKeyCombination.DisplayName, Mode=OneWay}"/>
+                                </Grid>
+                            </ToggleButton>
+                        </materialcases:Case>
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>1</x:Int32>
+                            </materialcases:Case.Value>
+                            <materialcontrols:LiquidGlassToggleButton
+                                Padding="2"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                materialtheme:ControlMaterialState.IsManaged="True"
+                                BorderThickness="0"
+                                IsChecked="{Binding HotKeyOptions.MouseClickRepeatForeverKeyCombination.IsOn, Mode=OneWay}"
+                                IsEnabled="{Binding HotKeyOptions.MouseClickRepeatForeverKeyCombination.IsEnabled, Mode=OneWay}"
+                                IsHitTestVisible="False">
+                                <Grid RowSpacing="4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{shuxm:ResourceString Name=ViewTitleAutoClicking}"/>
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{Binding HotKeyOptions.MouseClickRepeatForeverKeyCombination.DisplayName, Mode=OneWay}"/>
+                                </Grid>
+                            </materialcontrols:LiquidGlassToggleButton>
+                        </materialcases:Case>
+                    </materialcases:SwitchPresenter>
+                    <materialcases:SwitchPresenter
+                        x:Name="GlassPresenter_8313"
                         Grid.Column="1"
-                        Padding="2"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        BorderThickness="0"
-                        IsChecked="{Binding HotKeyOptions.KeyPressRepeatForeverKeyCombination.IsOn, Mode=OneWay}"
-                        IsEnabled="{Binding HotKeyOptions.KeyPressRepeatForeverKeyCombination.IsEnabled, Mode=OneWay}"
-                        IsHitTestVisible="False">
-                        <Grid RowSpacing="4">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock
-                                Grid.Row="0"
-                                HorizontalAlignment="Center"
-                                Style="{StaticResource CaptionTextBlockStyle}"
-                                Text="{shuxm:ResourceString Name=ViewTitleAutoPressing}"/>
-                            <TextBlock
-                                Grid.Row="1"
-                                HorizontalAlignment="Center"
-                                Style="{StaticResource CaptionTextBlockStyle}"
-                                Text="{Binding HotKeyOptions.KeyPressRepeatForeverKeyCombination.DisplayName, Mode=OneWay}"/>
-                        </Grid>
-                    </ToggleButton>
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        IsTabStop="False"
+                        Tag="LiquidGlass:ToggleButton"
+                        Value="{Binding ToggleButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>0</x:Int32>
+                            </materialcases:Case.Value>
+                            <ToggleButton
+                                Padding="2"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                BorderThickness="0"
+                                IsChecked="{Binding HotKeyOptions.KeyPressRepeatForeverKeyCombination.IsOn, Mode=OneWay}"
+                                IsEnabled="{Binding HotKeyOptions.KeyPressRepeatForeverKeyCombination.IsEnabled, Mode=OneWay}"
+                                IsHitTestVisible="False">
+                                <Grid RowSpacing="4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{shuxm:ResourceString Name=ViewTitleAutoPressing}"/>
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{Binding HotKeyOptions.KeyPressRepeatForeverKeyCombination.DisplayName, Mode=OneWay}"/>
+                                </Grid>
+                            </ToggleButton>
+                        </materialcases:Case>
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>1</x:Int32>
+                            </materialcases:Case.Value>
+                            <materialcontrols:LiquidGlassToggleButton
+                                Padding="2"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                materialtheme:ControlMaterialState.IsManaged="True"
+                                BorderThickness="0"
+                                IsChecked="{Binding HotKeyOptions.KeyPressRepeatForeverKeyCombination.IsOn, Mode=OneWay}"
+                                IsEnabled="{Binding HotKeyOptions.KeyPressRepeatForeverKeyCombination.IsEnabled, Mode=OneWay}"
+                                IsHitTestVisible="False">
+                                <Grid RowSpacing="4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{shuxm:ResourceString Name=ViewTitleAutoPressing}"/>
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{Binding HotKeyOptions.KeyPressRepeatForeverKeyCombination.DisplayName, Mode=OneWay}"/>
+                                </Grid>
+                            </materialcontrols:LiquidGlassToggleButton>
+                        </materialcases:Case>
+                    </materialcases:SwitchPresenter>
                 </Grid>
             </cwc:Case>
             <cwc:Case Value="Island">
@@ -204,15 +299,43 @@
                                 <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding4Style}" ShouldConstrainToRootBounds="False">
                                     <ContentControl IsEnabled="{Binding LaunchOptions.IsSetTargetFrameRateEnabled.Value}">
                                         <StackPanel Orientation="Horizontal" Spacing="4">
-                                            <Slider
-                                                Width="240"
+                                            <materialcases:SwitchPresenter
+                                                x:Name="GlassPresenter_11178"
                                                 Margin="12,0"
                                                 VerticalAlignment="Center"
-                                                LargeChange="10"
-                                                Maximum="160"
-                                                Minimum="1"
-                                                SmallChange="1"
-                                                Value="{Binding LaunchOptions.TargetFps.Value, Mode=TwoWay}"/>
+                                                HorizontalContentAlignment="Stretch"
+                                                VerticalContentAlignment="Stretch"
+                                                IsTabStop="False"
+                                                Tag="LiquidGlass:Slider"
+                                                Value="{Binding SliderMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                                <materialcases:Case>
+                                                    <materialcases:Case.Value>
+                                                        <x:Int32>0</x:Int32>
+                                                    </materialcases:Case.Value>
+                                                    <Slider
+                                                        Width="240"
+                                                        VerticalAlignment="Center"
+                                                        LargeChange="10"
+                                                        Maximum="160"
+                                                        Minimum="1"
+                                                        SmallChange="1"
+                                                        Value="{Binding LaunchOptions.TargetFps.Value, Mode=TwoWay}"/>
+                                                </materialcases:Case>
+                                                <materialcases:Case>
+                                                    <materialcases:Case.Value>
+                                                        <x:Int32>1</x:Int32>
+                                                    </materialcases:Case.Value>
+                                                    <materialcontrols:LiquidGlassSlider
+                                                        Width="240"
+                                                        VerticalAlignment="Center"
+                                                        materialtheme:ControlMaterialState.IsManaged="True"
+                                                        LargeChange="10"
+                                                        Maximum="160"
+                                                        Minimum="1"
+                                                        SmallChange="1"
+                                                        Value="{Binding LaunchOptions.TargetFps.Value, Mode=TwoWay}"/>
+                                                </materialcases:Case>
+                                            </materialcases:SwitchPresenter>
                                         </StackPanel>
                                     </ContentControl>
 
@@ -241,31 +364,115 @@
                                 <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding4Style}" ShouldConstrainToRootBounds="False">
                                     <ContentControl IsEnabled="{Binding LaunchOptions.IsSetFieldOfViewEnabled.Value}">
                                         <StackPanel Orientation="Horizontal" Spacing="4">
-                                            <Slider
-                                                Width="120"
+                                            <materialcases:SwitchPresenter
+                                                x:Name="GlassPresenter_13579"
                                                 Margin="12,0"
                                                 VerticalAlignment="Center"
-                                                LargeChange="10"
-                                                Maximum="100"
-                                                Minimum="0"
-                                                SmallChange="1"
-                                                Value="{Binding LaunchOptions.TargetFov.Value, Mode=TwoWay}"/>
-                                            <ToggleButton
-                                                Padding="8"
+                                                HorizontalContentAlignment="Stretch"
+                                                VerticalContentAlignment="Stretch"
+                                                IsTabStop="False"
+                                                Tag="LiquidGlass:Slider"
+                                                Value="{Binding SliderMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                                <materialcases:Case>
+                                                    <materialcases:Case.Value>
+                                                        <x:Int32>0</x:Int32>
+                                                    </materialcases:Case.Value>
+                                                    <Slider
+                                                        Width="120"
+                                                        VerticalAlignment="Center"
+                                                        LargeChange="10"
+                                                        Maximum="100"
+                                                        Minimum="0"
+                                                        SmallChange="1"
+                                                        Value="{Binding LaunchOptions.TargetFov.Value, Mode=TwoWay}"/>
+                                                </materialcases:Case>
+                                                <materialcases:Case>
+                                                    <materialcases:Case.Value>
+                                                        <x:Int32>1</x:Int32>
+                                                    </materialcases:Case.Value>
+                                                    <materialcontrols:LiquidGlassSlider
+                                                        Width="120"
+                                                        VerticalAlignment="Center"
+                                                        materialtheme:ControlMaterialState.IsManaged="True"
+                                                        LargeChange="10"
+                                                        Maximum="100"
+                                                        Minimum="0"
+                                                        SmallChange="1"
+                                                        Value="{Binding LaunchOptions.TargetFov.Value, Mode=TwoWay}"/>
+                                                </materialcases:Case>
+                                            </materialcases:SwitchPresenter>
+                                            <materialcases:SwitchPresenter
+                                                x:Name="GlassPresenter_14190"
                                                 VerticalAlignment="Stretch"
-                                                IsChecked="{Binding LaunchOptions.DisablePlayerPerspective.Value, Mode=TwoWay}"
-                                                Style="{ThemeResource DefaultToggleButtonStyle}"
-                                                ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameDisablePlayerPerspectiveDescription}">
-                                                <FontIcon FontSize="16" Glyph="&#xF19D;"/>
-                                            </ToggleButton>
-                                            <ToggleButton
-                                                Padding="8"
+                                                HorizontalContentAlignment="Stretch"
+                                                VerticalContentAlignment="Stretch"
+                                                IsTabStop="False"
+                                                Tag="LiquidGlass:ToggleButton"
+                                                Value="{Binding ToggleButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                                <materialcases:Case>
+                                                    <materialcases:Case.Value>
+                                                        <x:Int32>0</x:Int32>
+                                                    </materialcases:Case.Value>
+                                                    <ToggleButton
+                                                        Padding="8"
+                                                        VerticalAlignment="Stretch"
+                                                        IsChecked="{Binding LaunchOptions.DisablePlayerPerspective.Value, Mode=TwoWay}"
+                                                        Style="{ThemeResource DefaultToggleButtonStyle}"
+                                                        ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameDisablePlayerPerspectiveDescription}">
+                                                        <FontIcon FontSize="16" Glyph="&#xF19D;"/>
+                                                    </ToggleButton>
+                                                </materialcases:Case>
+                                                <materialcases:Case>
+                                                    <materialcases:Case.Value>
+                                                        <x:Int32>1</x:Int32>
+                                                    </materialcases:Case.Value>
+                                                    <materialcontrols:LiquidGlassToggleButton
+                                                        Padding="8"
+                                                        VerticalAlignment="Stretch"
+                                                        materialtheme:ControlMaterialState.IsManaged="True"
+                                                        IsChecked="{Binding LaunchOptions.DisablePlayerPerspective.Value, Mode=TwoWay}"
+                                                        Style="{ThemeResource DefaultToggleButtonStyle}"
+                                                        ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameDisablePlayerPerspectiveDescription}">
+                                                        <FontIcon FontSize="16" Glyph="&#xF19D;"/>
+                                                    </materialcontrols:LiquidGlassToggleButton>
+                                                </materialcases:Case>
+                                            </materialcases:SwitchPresenter>
+                                            <materialcases:SwitchPresenter
+                                                x:Name="GlassPresenter_14916"
                                                 VerticalAlignment="Stretch"
-                                                IsChecked="{Binding LaunchOptions.DisableFog.Value, Mode=TwoWay}"
-                                                Style="{ThemeResource DefaultToggleButtonStyle}"
-                                                ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameDisableFogHeader}">
-                                                <FontIcon FontSize="16" Glyph="&#xEC9C;"/>
-                                            </ToggleButton>
+                                                HorizontalContentAlignment="Stretch"
+                                                VerticalContentAlignment="Stretch"
+                                                IsTabStop="False"
+                                                Tag="LiquidGlass:ToggleButton"
+                                                Value="{Binding ToggleButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                                <materialcases:Case>
+                                                    <materialcases:Case.Value>
+                                                        <x:Int32>0</x:Int32>
+                                                    </materialcases:Case.Value>
+                                                    <ToggleButton
+                                                        Padding="8"
+                                                        VerticalAlignment="Stretch"
+                                                        IsChecked="{Binding LaunchOptions.DisableFog.Value, Mode=TwoWay}"
+                                                        Style="{ThemeResource DefaultToggleButtonStyle}"
+                                                        ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameDisableFogHeader}">
+                                                        <FontIcon FontSize="16" Glyph="&#xEC9C;"/>
+                                                    </ToggleButton>
+                                                </materialcases:Case>
+                                                <materialcases:Case>
+                                                    <materialcases:Case.Value>
+                                                        <x:Int32>1</x:Int32>
+                                                    </materialcases:Case.Value>
+                                                    <materialcontrols:LiquidGlassToggleButton
+                                                        Padding="8"
+                                                        VerticalAlignment="Stretch"
+                                                        materialtheme:ControlMaterialState.IsManaged="True"
+                                                        IsChecked="{Binding LaunchOptions.DisableFog.Value, Mode=TwoWay}"
+                                                        Style="{ThemeResource DefaultToggleButtonStyle}"
+                                                        ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameDisableFogHeader}">
+                                                        <FontIcon FontSize="16" Glyph="&#xEC9C;"/>
+                                                    </materialcontrols:LiquidGlassToggleButton>
+                                                </materialcases:Case>
+                                            </materialcases:SwitchPresenter>
                                         </StackPanel>
                                     </ContentControl>
                                 </Flyout>
@@ -282,81 +489,276 @@
                             </StackPanel>
                         </ToggleSplitButton>
 
-                        <ToggleButton
-                            Padding="8"
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_16423"
                             VerticalAlignment="Stretch"
-                            BorderThickness="0"
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                            IsChecked="{Binding LaunchOptions.RemoveOpenTeamProgress.Value, Mode=TwoWay}"
-                            ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameRemoveOpenTeamProgressHeader}">
-                            <Grid>
-                                <FontIcon FontSize="16" Glyph="&#xE805;"/>
-                                <FontIcon FontSize="16" Glyph="&#xE894;"/>
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton
-                            Padding="8"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:ToggleButton"
+                            Value="{Binding ToggleButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <ToggleButton
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    BorderThickness="0"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    IsChecked="{Binding LaunchOptions.RemoveOpenTeamProgress.Value, Mode=TwoWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameRemoveOpenTeamProgressHeader}">
+                                    <Grid>
+                                        <FontIcon FontSize="16" Glyph="&#xE805;"/>
+                                        <FontIcon FontSize="16" Glyph="&#xE894;"/>
+                                    </Grid>
+                                </ToggleButton>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassToggleButton
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    BorderThickness="0"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    IsChecked="{Binding LaunchOptions.RemoveOpenTeamProgress.Value, Mode=TwoWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameRemoveOpenTeamProgressHeader}">
+                                    <Grid>
+                                        <FontIcon FontSize="16" Glyph="&#xE805;"/>
+                                        <FontIcon FontSize="16" Glyph="&#xE894;"/>
+                                    </Grid>
+                                </materialcontrols:LiquidGlassToggleButton>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_17184"
                             VerticalAlignment="Stretch"
-                            BorderThickness="0"
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                            IsChecked="{Binding LaunchOptions.HideQuestBanner.Value, Mode=TwoWay}"
-                            ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewOverlayLaunchGameHideQuestBannerToolTip}">
-                            <Grid>
-                                <FontIcon FontSize="16" Glyph="&#xE81E;"/>
-                                <FontIcon FontSize="16" Glyph="&#xE894;"/>
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton
-                            Padding="8"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:ToggleButton"
+                            Value="{Binding ToggleButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <ToggleButton
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    BorderThickness="0"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    IsChecked="{Binding LaunchOptions.HideQuestBanner.Value, Mode=TwoWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewOverlayLaunchGameHideQuestBannerToolTip}">
+                                    <Grid>
+                                        <FontIcon FontSize="16" Glyph="&#xE81E;"/>
+                                        <FontIcon FontSize="16" Glyph="&#xE894;"/>
+                                    </Grid>
+                                </ToggleButton>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassToggleButton
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    BorderThickness="0"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    IsChecked="{Binding LaunchOptions.HideQuestBanner.Value, Mode=TwoWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewOverlayLaunchGameHideQuestBannerToolTip}">
+                                    <Grid>
+                                        <FontIcon FontSize="16" Glyph="&#xE81E;"/>
+                                        <FontIcon FontSize="16" Glyph="&#xE894;"/>
+                                    </Grid>
+                                </materialcontrols:LiquidGlassToggleButton>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_17935"
                             VerticalAlignment="Stretch"
-                            BorderThickness="0"
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                            IsChecked="{Binding LaunchOptions.DisableEventCameraMove.Value, Mode=TwoWay}"
-                            ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameEventCameraMoveHotSwitchHeader}">
-                            <Grid>
-                                <FontIcon FontSize="16" Glyph="&#xE89E;"/>
-                                <FontIcon FontSize="16" Glyph="&#xE894;"/>
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton
-                            Padding="8"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:ToggleButton"
+                            Value="{Binding ToggleButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <ToggleButton
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    BorderThickness="0"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    IsChecked="{Binding LaunchOptions.DisableEventCameraMove.Value, Mode=TwoWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameEventCameraMoveHotSwitchHeader}">
+                                    <Grid>
+                                        <FontIcon FontSize="16" Glyph="&#xE89E;"/>
+                                        <FontIcon FontSize="16" Glyph="&#xE894;"/>
+                                    </Grid>
+                                </ToggleButton>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassToggleButton
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    BorderThickness="0"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    IsChecked="{Binding LaunchOptions.DisableEventCameraMove.Value, Mode=TwoWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameEventCameraMoveHotSwitchHeader}">
+                                    <Grid>
+                                        <FontIcon FontSize="16" Glyph="&#xE89E;"/>
+                                        <FontIcon FontSize="16" Glyph="&#xE894;"/>
+                                    </Grid>
+                                </materialcontrols:LiquidGlassToggleButton>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_18698"
                             VerticalAlignment="Stretch"
-                            BorderThickness="0"
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                            IsChecked="{Binding LaunchOptions.DisableShowDamageText.Value, Mode=TwoWay}"
-                            ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewOverlayDisableShowDamageTextToolTip}">
-                            <Grid>
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Style="{ThemeResource CaptionTextBlockStyle}"
-                                    Text="99"/>
-                                <FontIcon FontSize="16" Glyph="&#xE894;"/>
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton
-                            Padding="8"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:ToggleButton"
+                            Value="{Binding ToggleButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <ToggleButton
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    BorderThickness="0"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    IsChecked="{Binding LaunchOptions.DisableShowDamageText.Value, Mode=TwoWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewOverlayDisableShowDamageTextToolTip}">
+                                    <Grid>
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            FontWeight="Bold"
+                                            Style="{ThemeResource CaptionTextBlockStyle}"
+                                            Text="99"/>
+                                        <FontIcon FontSize="16" Glyph="&#xE894;"/>
+                                    </Grid>
+                                </ToggleButton>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassToggleButton
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    BorderThickness="0"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    IsChecked="{Binding LaunchOptions.DisableShowDamageText.Value, Mode=TwoWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewOverlayDisableShowDamageTextToolTip}">
+                                    <Grid>
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            FontWeight="Bold"
+                                            Style="{ThemeResource CaptionTextBlockStyle}"
+                                            Text="99"/>
+                                        <FontIcon FontSize="16" Glyph="&#xE894;"/>
+                                    </Grid>
+                                </materialcontrols:LiquidGlassToggleButton>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_19668"
                             VerticalAlignment="Stretch"
-                            BorderThickness="0"
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                            IsChecked="{Binding LaunchOptions.DisplayPaimon.Value, Mode=TwoWay}"
-                            ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewOverlayDisplayPaimonToolTip}">
-                            <Grid>
-                                <ImageIcon Source="ms-appx:///Resource/Icon/UI_Icon_Paimon.png"/>
-                            </Grid>
-                        </ToggleButton>
-                        <ToggleButton
-                            Padding="8"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:ToggleButton"
+                            Value="{Binding ToggleButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <ToggleButton
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    BorderThickness="0"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    IsChecked="{Binding LaunchOptions.DisplayPaimon.Value, Mode=TwoWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewOverlayDisplayPaimonToolTip}">
+                                    <Grid>
+                                        <ImageIcon Source="ms-appx:///Resource/Icon/UI_Icon_Paimon.png"/>
+                                    </Grid>
+                                </ToggleButton>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassToggleButton
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    BorderThickness="0"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    IsChecked="{Binding LaunchOptions.DisplayPaimon.Value, Mode=TwoWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewOverlayDisplayPaimonToolTip}">
+                                    <Grid>
+                                        <ImageIcon Source="ms-appx:///Resource/Icon/UI_Icon_Paimon.png"/>
+                                    </Grid>
+                                </materialcontrols:LiquidGlassToggleButton>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_20353"
                             VerticalAlignment="Stretch"
-                            BorderThickness="0"
-                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                            IsChecked="{Binding LaunchOptions.HideGrass.Value, Mode=TwoWay}"
-                            ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewOverlayHideGrassToolTip}">
-                            <Grid>
-                                <ImageIcon Source="ms-appx:///Resource/Icon/UI_Gcg_Buff_Common_Element_Grass.png"/>
-                                <FontIcon FontSize="26" Glyph="&#xE894;"/>
-                            </Grid>
-                        </ToggleButton>
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:ToggleButton"
+                            Value="{Binding ToggleButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <ToggleButton
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    BorderThickness="0"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    IsChecked="{Binding LaunchOptions.HideGrass.Value, Mode=TwoWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewOverlayHideGrassToolTip}">
+                                    <Grid>
+                                        <ImageIcon Source="ms-appx:///Resource/Icon/UI_Gcg_Buff_Common_Element_Grass.png"/>
+                                        <FontIcon FontSize="26" Glyph="&#xE894;"/>
+                                    </Grid>
+                                </ToggleButton>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassToggleButton
+                                    Padding="8"
+                                    VerticalAlignment="Stretch"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    BorderThickness="0"
+                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                    IsChecked="{Binding LaunchOptions.HideGrass.Value, Mode=TwoWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewOverlayHideGrassToolTip}">
+                                    <Grid>
+                                        <ImageIcon Source="ms-appx:///Resource/Icon/UI_Gcg_Buff_Common_Element_Grass.png"/>
+                                        <FontIcon FontSize="26" Glyph="&#xE894;"/>
+                                    </Grid>
+                                </materialcontrols:LiquidGlassToggleButton>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                     </StackPanel>
                 </ContentControl>
             </cwc:Case>

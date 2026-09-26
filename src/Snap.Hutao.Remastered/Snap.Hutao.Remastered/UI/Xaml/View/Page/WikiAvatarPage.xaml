@@ -5,6 +5,9 @@
     xmlns:cw="using:CommunityToolkit.WinUI"
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shmma="using:Snap.Hutao.Remastered.Model.Metadata.Avatar"
@@ -653,91 +656,232 @@
 
                                                 <!--  攻略  -->
                                                 <shuxcp:EqualPanel Spacing="16">
-                                                    <Button
-                                                        Padding="16,8"
+                                                    <materialcases:SwitchPresenter
+                                                        x:Name="GlassPresenter_41651"
                                                         HorizontalContentAlignment="Stretch"
-                                                        Command="{Binding StrategyComponent.ChineseStrategyCommand}"
-                                                        CommandParameter="{Binding Avatars.CurrentItem}"
-                                                        Style="{ThemeResource SettingButtonStyle}">
-                                                        <Grid ColumnSpacing="16">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="auto"/>
-                                                                <ColumnDefinition/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Border
-                                                                Grid.Column="0"
-                                                                Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
-                                                                CornerRadius="4">
-                                                                <Image
-                                                                    Width="24"
-                                                                    Height="24"
-                                                                    Source="ms-appx:///Resource/ThirdParty/miyoushe128.png"/>
-                                                            </Border>
+                                                        VerticalContentAlignment="Stretch"
+                                                        IsTabStop="False"
+                                                        Tag="LiquidGlass:Button"
+                                                        Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                                        <materialcases:Case>
+                                                            <materialcases:Case.Value>
+                                                                <x:Int32>0</x:Int32>
+                                                            </materialcases:Case.Value>
+                                                            <Button
+                                                                Padding="16,8"
+                                                                HorizontalContentAlignment="Stretch"
+                                                                Command="{Binding StrategyComponent.ChineseStrategyCommand}"
+                                                                CommandParameter="{Binding Avatars.CurrentItem}"
+                                                                Style="{ThemeResource SettingButtonStyle}">
+                                                                <Grid ColumnSpacing="16">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="auto"/>
+                                                                        <ColumnDefinition/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Border
+                                                                        Grid.Column="0"
+                                                                        Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
+                                                                        CornerRadius="4">
+                                                                        <Image
+                                                                            Width="24"
+                                                                            Height="24"
+                                                                            Source="ms-appx:///Resource/ThirdParty/miyoushe128.png"/>
+                                                                    </Border>
 
-                                                            <TextBlock
-                                                                Grid.Column="1"
-                                                                VerticalAlignment="Center"
-                                                                Text="{shuxm:ResourceString Name=ViewPageWiKiAvatarStrategyChineseButtonLabel}"
-                                                                TextWrapping="NoWrap"/>
-                                                        </Grid>
-                                                    </Button>
-                                                    <Button
-                                                        Padding="16,8"
+                                                                    <TextBlock
+                                                                        Grid.Column="1"
+                                                                        VerticalAlignment="Center"
+                                                                        Text="{shuxm:ResourceString Name=ViewPageWiKiAvatarStrategyChineseButtonLabel}"
+                                                                        TextWrapping="NoWrap"/>
+                                                                </Grid>
+                                                            </Button>
+                                                        </materialcases:Case>
+                                                        <materialcases:Case>
+                                                            <materialcases:Case.Value>
+                                                                <x:Int32>1</x:Int32>
+                                                            </materialcases:Case.Value>
+                                                            <materialcontrols:LiquidGlassButton
+                                                                Padding="16,8"
+                                                                HorizontalContentAlignment="Stretch"
+                                                                materialtheme:ControlMaterialState.IsManaged="True"
+                                                                Command="{Binding StrategyComponent.ChineseStrategyCommand}"
+                                                                CommandParameter="{Binding Avatars.CurrentItem}"
+                                                                Style="{ThemeResource SettingButtonStyle}">
+                                                                <Grid ColumnSpacing="16">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="auto"/>
+                                                                        <ColumnDefinition/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Border
+                                                                        Grid.Column="0"
+                                                                        Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
+                                                                        CornerRadius="4">
+                                                                        <Image
+                                                                            Width="24"
+                                                                            Height="24"
+                                                                            Source="ms-appx:///Resource/ThirdParty/miyoushe128.png"/>
+                                                                    </Border>
+
+                                                                    <TextBlock
+                                                                        Grid.Column="1"
+                                                                        VerticalAlignment="Center"
+                                                                        Text="{shuxm:ResourceString Name=ViewPageWiKiAvatarStrategyChineseButtonLabel}"
+                                                                        TextWrapping="NoWrap"/>
+                                                                </Grid>
+                                                            </materialcontrols:LiquidGlassButton>
+                                                        </materialcases:Case>
+                                                    </materialcases:SwitchPresenter>
+                                                    <materialcases:SwitchPresenter
+                                                        x:Name="GlassPresenter_44015"
                                                         HorizontalContentAlignment="Stretch"
-                                                        Command="{Binding StrategyComponent.BilibiliStrategyCommand}"
-                                                        CommandParameter="{Binding Avatars.CurrentItem}"
-                                                        Style="{ThemeResource SettingButtonStyle}"
-                                                        Visibility="{Binding StrategyComponent.IsBilibiliAvailable}">
-                                                        <Grid ColumnSpacing="16">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="auto"/>
-                                                                <ColumnDefinition/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Border
-                                                                Grid.Column="0"
-                                                                Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
-                                                                CornerRadius="4">
-                                                                <Image
-                                                                    Width="24"
-                                                                    Height="24"
-                                                                    Source="ms-appx:///Resource/ThirdParty/bilibili128.png"/>
-                                                            </Border>
+                                                        VerticalContentAlignment="Stretch"
+                                                        IsTabStop="False"
+                                                        Tag="LiquidGlass:Button"
+                                                        Visibility="{Binding StrategyComponent.IsBilibiliAvailable}"
+                                                        Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                                        <materialcases:Case>
+                                                            <materialcases:Case.Value>
+                                                                <x:Int32>0</x:Int32>
+                                                            </materialcases:Case.Value>
+                                                            <Button
+                                                                Padding="16,8"
+                                                                HorizontalContentAlignment="Stretch"
+                                                                Command="{Binding StrategyComponent.BilibiliStrategyCommand}"
+                                                                CommandParameter="{Binding Avatars.CurrentItem}"
+                                                                Style="{ThemeResource SettingButtonStyle}">
+                                                                <Grid ColumnSpacing="16">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="auto"/>
+                                                                        <ColumnDefinition/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Border
+                                                                        Grid.Column="0"
+                                                                        Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
+                                                                        CornerRadius="4">
+                                                                        <Image
+                                                                            Width="24"
+                                                                            Height="24"
+                                                                            Source="ms-appx:///Resource/ThirdParty/bilibili128.png"/>
+                                                                    </Border>
 
-                                                            <TextBlock
-                                                                Grid.Column="1"
-                                                                VerticalAlignment="Center"
-                                                                Text="{shuxm:ResourceString Name=ViewPageWiKiAvatarStrategyBilibiliButtonLabel}"
-                                                                TextWrapping="NoWrap"/>
-                                                        </Grid>
-                                                    </Button>
-                                                    <Button
-                                                        Padding="16,8"
+                                                                    <TextBlock
+                                                                        Grid.Column="1"
+                                                                        VerticalAlignment="Center"
+                                                                        Text="{shuxm:ResourceString Name=ViewPageWiKiAvatarStrategyBilibiliButtonLabel}"
+                                                                        TextWrapping="NoWrap"/>
+                                                                </Grid>
+                                                            </Button>
+                                                        </materialcases:Case>
+                                                        <materialcases:Case>
+                                                            <materialcases:Case.Value>
+                                                                <x:Int32>1</x:Int32>
+                                                            </materialcases:Case.Value>
+                                                            <materialcontrols:LiquidGlassButton
+                                                                Padding="16,8"
+                                                                HorizontalContentAlignment="Stretch"
+                                                                materialtheme:ControlMaterialState.IsManaged="True"
+                                                                Command="{Binding StrategyComponent.BilibiliStrategyCommand}"
+                                                                CommandParameter="{Binding Avatars.CurrentItem}"
+                                                                Style="{ThemeResource SettingButtonStyle}">
+                                                                <Grid ColumnSpacing="16">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="auto"/>
+                                                                        <ColumnDefinition/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Border
+                                                                        Grid.Column="0"
+                                                                        Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
+                                                                        CornerRadius="4">
+                                                                        <Image
+                                                                            Width="24"
+                                                                            Height="24"
+                                                                            Source="ms-appx:///Resource/ThirdParty/bilibili128.png"/>
+                                                                    </Border>
+
+                                                                    <TextBlock
+                                                                        Grid.Column="1"
+                                                                        VerticalAlignment="Center"
+                                                                        Text="{shuxm:ResourceString Name=ViewPageWiKiAvatarStrategyBilibiliButtonLabel}"
+                                                                        TextWrapping="NoWrap"/>
+                                                                </Grid>
+                                                            </materialcontrols:LiquidGlassButton>
+                                                        </materialcases:Case>
+                                                    </materialcases:SwitchPresenter>
+                                                    <materialcases:SwitchPresenter
+                                                        x:Name="GlassPresenter_46498"
                                                         HorizontalContentAlignment="Stretch"
-                                                        Command="{Binding StrategyComponent.OverseaStrategyCommand}"
-                                                        CommandParameter="{Binding Avatars.CurrentItem}"
-                                                        Style="{ThemeResource SettingButtonStyle}">
-                                                        <Grid ColumnSpacing="16">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="auto"/>
-                                                                <ColumnDefinition/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Border
-                                                                Grid.Column="0"
-                                                                Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
-                                                                CornerRadius="4">
-                                                                <Image
-                                                                    Width="24"
-                                                                    Height="24"
-                                                                    Source="ms-appx:///Resource/ThirdParty/hoyolab128.png"/>
-                                                            </Border>
+                                                        VerticalContentAlignment="Stretch"
+                                                        IsTabStop="False"
+                                                        Tag="LiquidGlass:Button"
+                                                        Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                                        <materialcases:Case>
+                                                            <materialcases:Case.Value>
+                                                                <x:Int32>0</x:Int32>
+                                                            </materialcases:Case.Value>
+                                                            <Button
+                                                                Padding="16,8"
+                                                                HorizontalContentAlignment="Stretch"
+                                                                Command="{Binding StrategyComponent.OverseaStrategyCommand}"
+                                                                CommandParameter="{Binding Avatars.CurrentItem}"
+                                                                Style="{ThemeResource SettingButtonStyle}">
+                                                                <Grid ColumnSpacing="16">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="auto"/>
+                                                                        <ColumnDefinition/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Border
+                                                                        Grid.Column="0"
+                                                                        Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
+                                                                        CornerRadius="4">
+                                                                        <Image
+                                                                            Width="24"
+                                                                            Height="24"
+                                                                            Source="ms-appx:///Resource/ThirdParty/hoyolab128.png"/>
+                                                                    </Border>
 
-                                                            <TextBlock
-                                                                Grid.Column="1"
-                                                                VerticalAlignment="Center"
-                                                                Text="{shuxm:ResourceString Name=ViewPageWiKiAvatarStrategyOverseaButtonLabel}"
-                                                                TextWrapping="NoWrap"/>
-                                                        </Grid>
-                                                    </Button>
+                                                                    <TextBlock
+                                                                        Grid.Column="1"
+                                                                        VerticalAlignment="Center"
+                                                                        Text="{shuxm:ResourceString Name=ViewPageWiKiAvatarStrategyOverseaButtonLabel}"
+                                                                        TextWrapping="NoWrap"/>
+                                                                </Grid>
+                                                            </Button>
+                                                        </materialcases:Case>
+                                                        <materialcases:Case>
+                                                            <materialcases:Case.Value>
+                                                                <x:Int32>1</x:Int32>
+                                                            </materialcases:Case.Value>
+                                                            <materialcontrols:LiquidGlassButton
+                                                                Padding="16,8"
+                                                                HorizontalContentAlignment="Stretch"
+                                                                materialtheme:ControlMaterialState.IsManaged="True"
+                                                                Command="{Binding StrategyComponent.OverseaStrategyCommand}"
+                                                                CommandParameter="{Binding Avatars.CurrentItem}"
+                                                                Style="{ThemeResource SettingButtonStyle}">
+                                                                <Grid ColumnSpacing="16">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="auto"/>
+                                                                        <ColumnDefinition/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Border
+                                                                        Grid.Column="0"
+                                                                        Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
+                                                                        CornerRadius="4">
+                                                                        <Image
+                                                                            Width="24"
+                                                                            Height="24"
+                                                                            Source="ms-appx:///Resource/ThirdParty/hoyolab128.png"/>
+                                                                    </Border>
+
+                                                                    <TextBlock
+                                                                        Grid.Column="1"
+                                                                        VerticalAlignment="Center"
+                                                                        Text="{shuxm:ResourceString Name=ViewPageWiKiAvatarStrategyOverseaButtonLabel}"
+                                                                        TextWrapping="NoWrap"/>
+                                                                </Grid>
+                                                            </materialcontrols:LiquidGlassButton>
+                                                        </materialcases:Case>
+                                                    </materialcases:SwitchPresenter>
                                                 </shuxcp:EqualPanel>
 
                                                 <!--  属性  -->

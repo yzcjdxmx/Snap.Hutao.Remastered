@@ -6,6 +6,9 @@
     xmlns:cwcont="using:CommunityToolkit.WinUI.Controls"
     xmlns:cwconv="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxca="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
@@ -148,10 +151,34 @@
                                 HorizontalAlignment="Right"
                                 Orientation="Horizontal"
                                 Visibility="{Binding IsPromotionAvailable}">
-                                <CheckBox
+                                <materialcases:SwitchPresenter
+                                    x:Name="GlassPresenter_8164"
                                     VerticalAlignment="Center"
-                                    Content="{shuxm:ResourceString Name=ViewDialogCultivatePromotionDeltaPromoted}"
-                                    IsChecked="{Binding IsPromoted, Mode=TwoWay}"/>
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    IsTabStop="False"
+                                    Tag="LiquidGlass:CheckBox"
+                                    Value="{Binding CheckBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                    <materialcases:Case>
+                                        <materialcases:Case.Value>
+                                            <x:Int32>0</x:Int32>
+                                        </materialcases:Case.Value>
+                                        <CheckBox
+                                            VerticalAlignment="Center"
+                                            Content="{shuxm:ResourceString Name=ViewDialogCultivatePromotionDeltaPromoted}"
+                                            IsChecked="{Binding IsPromoted, Mode=TwoWay}"/>
+                                    </materialcases:Case>
+                                    <materialcases:Case>
+                                        <materialcases:Case.Value>
+                                            <x:Int32>1</x:Int32>
+                                        </materialcases:Case.Value>
+                                        <materialcontrols:LiquidGlassCheckBox
+                                            VerticalAlignment="Center"
+                                            materialtheme:ControlMaterialState.IsManaged="True"
+                                            Content="{shuxm:ResourceString Name=ViewDialogCultivatePromotionDeltaPromoted}"
+                                            IsChecked="{Binding IsPromoted, Mode=TwoWay}"/>
+                                    </materialcases:Case>
+                                </materialcases:SwitchPresenter>
                             </StackPanel>
                             <NumberBox
                                 Grid.Column="3"
@@ -211,10 +238,34 @@
                                 HorizontalAlignment="Right"
                                 Orientation="Horizontal"
                                 Visibility="{Binding IsPromotionAvailable}">
-                                <CheckBox
+                                <materialcases:SwitchPresenter
+                                    x:Name="GlassPresenter_11656"
                                     VerticalAlignment="Center"
-                                    Content="{shuxm:ResourceString Name=ViewDialogCultivatePromotionDeltaPromoted}"
-                                    IsChecked="{Binding IsPromoted, Mode=TwoWay}"/>
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    IsTabStop="False"
+                                    Tag="LiquidGlass:CheckBox"
+                                    Value="{Binding CheckBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                    <materialcases:Case>
+                                        <materialcases:Case.Value>
+                                            <x:Int32>0</x:Int32>
+                                        </materialcases:Case.Value>
+                                        <CheckBox
+                                            VerticalAlignment="Center"
+                                            Content="{shuxm:ResourceString Name=ViewDialogCultivatePromotionDeltaPromoted}"
+                                            IsChecked="{Binding IsPromoted, Mode=TwoWay}"/>
+                                    </materialcases:Case>
+                                    <materialcases:Case>
+                                        <materialcases:Case.Value>
+                                            <x:Int32>1</x:Int32>
+                                        </materialcases:Case.Value>
+                                        <materialcontrols:LiquidGlassCheckBox
+                                            VerticalAlignment="Center"
+                                            materialtheme:ControlMaterialState.IsManaged="True"
+                                            Content="{shuxm:ResourceString Name=ViewDialogCultivatePromotionDeltaPromoted}"
+                                            IsChecked="{Binding IsPromoted, Mode=TwoWay}"/>
+                                    </materialcases:Case>
+                                </materialcases:SwitchPresenter>
                             </StackPanel>
                             <NumberBox
                                 Grid.Column="3"
@@ -249,36 +300,102 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_13608"
                             Grid.Column="0"
                             HorizontalAlignment="Stretch"
-                            Command="{Binding Path=DataContext.ModifyEntryCommand, Source={StaticResource BindingProxy}}"
-                            CommandParameter="{Binding}"
-                            Style="{StaticResource AccentButtonStyle}">
-                            <mxi:Interaction.Behaviors>
-                                <mxi:EventTriggerBehavior EventName="Click">
-                                    <shuxba:HideAttachedFlyoutAction/>
-                                </mxi:EventTriggerBehavior>
-                            </mxi:Interaction.Behaviors>
-                            <StackPanel Orientation="Horizontal" Spacing="4">
-                                <FontIcon FontSize="14" Glyph="&#xE73E;"/>
-                                <TextBlock Text="{shuxm:ResourceString Name=ContentDialogConfirmPrimaryButtonText}"/>
-                            </StackPanel>
-                        </Button>
-                        <Button
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:Button"
+                            Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <Button
+                                    HorizontalAlignment="Stretch"
+                                    Command="{Binding Path=DataContext.ModifyEntryCommand, Source={StaticResource BindingProxy}}"
+                                    CommandParameter="{Binding}"
+                                    Style="{StaticResource AccentButtonStyle}">
+                                    <mxi:Interaction.Behaviors>
+                                        <mxi:EventTriggerBehavior EventName="Click">
+                                            <shuxba:HideAttachedFlyoutAction/>
+                                        </mxi:EventTriggerBehavior>
+                                    </mxi:Interaction.Behaviors>
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <FontIcon FontSize="14" Glyph="&#xE73E;"/>
+                                        <TextBlock Text="{shuxm:ResourceString Name=ContentDialogConfirmPrimaryButtonText}"/>
+                                    </StackPanel>
+                                </Button>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassButton
+                                    HorizontalAlignment="Stretch"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Command="{Binding Path=DataContext.ModifyEntryCommand, Source={StaticResource BindingProxy}}"
+                                    CommandParameter="{Binding}"
+                                    Style="{StaticResource AccentButtonStyle}">
+                                    <mxi:Interaction.Behaviors>
+                                        <mxi:EventTriggerBehavior EventName="Click">
+                                            <shuxba:HideAttachedFlyoutAction/>
+                                        </mxi:EventTriggerBehavior>
+                                    </mxi:Interaction.Behaviors>
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <FontIcon FontSize="14" Glyph="&#xE73E;"/>
+                                        <TextBlock Text="{shuxm:ResourceString Name=ContentDialogConfirmPrimaryButtonText}"/>
+                                    </StackPanel>
+                                </materialcontrols:LiquidGlassButton>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_14661"
                             Grid.Column="1"
                             HorizontalAlignment="Stretch"
-                            Style="{StaticResource DefaultButtonStyle}">
-                            <mxi:Interaction.Behaviors>
-                                <mxi:EventTriggerBehavior EventName="Click">
-                                    <shuxba:HideAttachedFlyoutAction/>
-                                </mxi:EventTriggerBehavior>
-                            </mxi:Interaction.Behaviors>
-                            <StackPanel Orientation="Horizontal" Spacing="4">
-                                <FontIcon FontSize="14" Glyph="&#xE711;"/>
-                                <TextBlock Text="{shuxm:ResourceString Name=ContentDialogCancelCloseButtonText}"/>
-                            </StackPanel>
-                        </Button>
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:Button"
+                            Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <Button HorizontalAlignment="Stretch" Style="{StaticResource DefaultButtonStyle}">
+                                    <mxi:Interaction.Behaviors>
+                                        <mxi:EventTriggerBehavior EventName="Click">
+                                            <shuxba:HideAttachedFlyoutAction/>
+                                        </mxi:EventTriggerBehavior>
+                                    </mxi:Interaction.Behaviors>
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <FontIcon FontSize="14" Glyph="&#xE711;"/>
+                                        <TextBlock Text="{shuxm:ResourceString Name=ContentDialogCancelCloseButtonText}"/>
+                                    </StackPanel>
+                                </Button>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassButton
+                                    HorizontalAlignment="Stretch"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Style="{StaticResource DefaultButtonStyle}">
+                                    <mxi:Interaction.Behaviors>
+                                        <mxi:EventTriggerBehavior EventName="Click">
+                                            <shuxba:HideAttachedFlyoutAction/>
+                                        </mxi:EventTriggerBehavior>
+                                    </mxi:Interaction.Behaviors>
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <FontIcon FontSize="14" Glyph="&#xE711;"/>
+                                        <TextBlock Text="{shuxm:ResourceString Name=ContentDialogCancelCloseButtonText}"/>
+                                    </StackPanel>
+                                </materialcontrols:LiquidGlassButton>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                     </Grid>
                 </Grid>
             </Flyout>
@@ -377,36 +494,83 @@
                         </AnimatedIcon>
                     </Grid>
                     <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                    <Button
+                    <materialcases:SwitchPresenter
+                        x:Name="GlassPresenter_20565"
                         Grid.Column="1"
-                        Height="32"
                         Margin="6,0,0,0"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Stretch"
-                        Background="{Binding IsToday, Converter={ThemeResource BoolToBrushSelector}}"
-                        Command="{Binding Path=DataContext.FinishStateCommand, Source={StaticResource BindingProxy}}"
-                        CommandParameter="{Binding}"
-                        Style="{StaticResource ButtonRevealStyle}">
-                        <Grid Opacity="{Binding IsFinished, Converter={StaticResource BoolToOpacityConverter}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock
-                                Grid.Column="0"
-                                Margin="0,0,0,0"
-                                VerticalAlignment="Center"
-                                Style="{Binding IsToday, Converter={StaticResource BoolToStyleSelector}}"
-                                Text="{Binding Inner.Name}"
-                                TextTrimming="CharacterEllipsis"/>
-                            <TextBlock
-                                Grid.Column="1"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Style="{Binding IsToday, Converter={StaticResource BoolToStyleSelector}}"
-                                Text="{Binding Entity.Count}"/>
-                        </Grid>
-                    </Button>
+                        VerticalContentAlignment="Stretch"
+                        IsTabStop="False"
+                        Tag="LiquidGlass:Button"
+                        Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>0</x:Int32>
+                            </materialcases:Case.Value>
+                            <Button
+                                Height="32"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                Background="{Binding IsToday, Converter={ThemeResource BoolToBrushSelector}}"
+                                Command="{Binding Path=DataContext.FinishStateCommand, Source={StaticResource BindingProxy}}"
+                                CommandParameter="{Binding}"
+                                Style="{StaticResource ButtonRevealStyle}">
+                                <Grid Opacity="{Binding IsFinished, Converter={StaticResource BoolToOpacityConverter}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        Margin="0,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Style="{Binding IsToday, Converter={StaticResource BoolToStyleSelector}}"
+                                        Text="{Binding Inner.Name}"
+                                        TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Style="{Binding IsToday, Converter={StaticResource BoolToStyleSelector}}"
+                                        Text="{Binding Entity.Count}"/>
+                                </Grid>
+                            </Button>
+                        </materialcases:Case>
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>1</x:Int32>
+                            </materialcases:Case.Value>
+                            <materialcontrols:LiquidGlassButton
+                                Height="32"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                materialtheme:ControlMaterialState.IsManaged="True"
+                                Command="{Binding Path=DataContext.FinishStateCommand, Source={StaticResource BindingProxy}}"
+                                CommandParameter="{Binding}"
+                                Style="{StaticResource ButtonRevealStyle}">
+                                <Grid Opacity="{Binding IsFinished, Converter={StaticResource BoolToOpacityConverter}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        Margin="0,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Style="{Binding IsToday, Converter={StaticResource BoolToStyleSelector}}"
+                                        Text="{Binding Inner.Name}"
+                                        TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Style="{Binding IsToday, Converter={StaticResource BoolToStyleSelector}}"
+                                        Text="{Binding Entity.Count}"/>
+                                </Grid>
+                            </materialcontrols:LiquidGlassButton>
+                        </materialcases:Case>
+                    </materialcases:SwitchPresenter>
                 </Grid>
             </DataTemplate>
 
@@ -450,17 +614,45 @@
 
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
                                 <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                                <Button
-                                    Width="48"
-                                    Height="48"
+                                <materialcases:SwitchPresenter
+                                    x:Name="GlassPresenter_24738"
                                     Margin="8,0,0,0"
-                                    Background="Transparent"
-                                    Command="{Binding Path=DataContext.RemoveEntryCommand, Source={StaticResource BindingProxy}}"
-                                    CommandParameter="{Binding}"
-                                    Content="&#xE74D;"
-                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                    Style="{StaticResource ButtonRevealStyle}"
-                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageCultivationRemoveEntry}"/>
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    IsTabStop="False"
+                                    Tag="LiquidGlass:Button"
+                                    Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                    <materialcases:Case>
+                                        <materialcases:Case.Value>
+                                            <x:Int32>0</x:Int32>
+                                        </materialcases:Case.Value>
+                                        <Button
+                                            Width="48"
+                                            Height="48"
+                                            Background="Transparent"
+                                            Command="{Binding Path=DataContext.RemoveEntryCommand, Source={StaticResource BindingProxy}}"
+                                            CommandParameter="{Binding}"
+                                            Content="&#xE74D;"
+                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                            Style="{StaticResource ButtonRevealStyle}"
+                                            ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageCultivationRemoveEntry}"/>
+                                    </materialcases:Case>
+                                    <materialcases:Case>
+                                        <materialcases:Case.Value>
+                                            <x:Int32>1</x:Int32>
+                                        </materialcases:Case.Value>
+                                        <materialcontrols:LiquidGlassButton
+                                            Width="48"
+                                            Height="48"
+                                            materialtheme:ControlMaterialState.IsManaged="True"
+                                            Command="{Binding Path=DataContext.RemoveEntryCommand, Source={StaticResource BindingProxy}}"
+                                            CommandParameter="{Binding}"
+                                            Content="&#xE74D;"
+                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                            Style="{StaticResource ButtonRevealStyle}"
+                                            ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageCultivationRemoveEntry}"/>
+                                    </materialcases:Case>
+                                </materialcases:SwitchPresenter>
                             </StackPanel>
                         </Grid>
                         <MenuFlyoutSeparator Grid.Row="1"/>
@@ -515,55 +707,122 @@
             </DataTemplate>
 
             <DataTemplate x:Key="InventoryItemTemplate" x:DataType="shvcu:InventoryItemView">
-                <Button
-                    Padding="0"
-                    Background="Transparent"
-                    BorderBrush="{x:Null}"
-                    BorderThickness="0">
-                    <shuxcc:HorizontalCard Width="300">
-                        <shuxcc:HorizontalCard.Left>
-                            <shuxc:ItemIcon
-                                Width="40"
-                                Height="40"
-                                Icon="{Binding Inner.Icon, Converter={StaticResource ItemIconConverter}}"
-                                Quality="{Binding Inner.RankLevel}"/>
-                        </shuxcc:HorizontalCard.Left>
-                        <shuxcc:HorizontalCard.Right>
-                            <Grid Margin="16,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock
-                                    Grid.Column="0"
-                                    Margin="0,0,0,0"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding Inner.Name}"
-                                    TextTrimming="CharacterEllipsis"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Count, Mode=OneWay}"/>
-                            </Grid>
-                        </shuxcc:HorizontalCard.Right>
-                    </shuxcc:HorizontalCard>
-                    <Button.Flyout>
-                        <Flyout>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Style="{StaticResource BaseTextBlockStyle}" Text="{Binding Inner.Name}"/>
-                                <NumberBox
-                                    Grid.Row="1"
-                                    MinWidth="160"
-                                    Margin="0,16,0,0"
-                                    Maximum="4294967295"
-                                    Minimum="0"
-                                    Value="{Binding Count, Mode=TwoWay}"/>
-                            </Grid>
-                        </Flyout>
-                    </Button.Flyout>
-                </Button>
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_28433"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:Button"
+                    Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <Button
+                            Padding="0"
+                            Background="Transparent"
+                            BorderBrush="{x:Null}"
+                            BorderThickness="0">
+                            <shuxcc:HorizontalCard Width="300">
+                                <shuxcc:HorizontalCard.Left>
+                                    <shuxc:ItemIcon
+                                        Width="40"
+                                        Height="40"
+                                        Icon="{Binding Inner.Icon, Converter={StaticResource ItemIconConverter}}"
+                                        Quality="{Binding Inner.RankLevel}"/>
+                                </shuxcc:HorizontalCard.Left>
+                                <shuxcc:HorizontalCard.Right>
+                                    <Grid Margin="16,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Margin="0,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Text="{Binding Inner.Name}"
+                                            TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Count, Mode=OneWay}"/>
+                                    </Grid>
+                                </shuxcc:HorizontalCard.Right>
+                            </shuxcc:HorizontalCard>
+                            <Button.Flyout>
+                                <Flyout>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Style="{StaticResource BaseTextBlockStyle}" Text="{Binding Inner.Name}"/>
+                                        <NumberBox
+                                            Grid.Row="1"
+                                            MinWidth="160"
+                                            Margin="0,16,0,0"
+                                            Maximum="4294967295"
+                                            Minimum="0"
+                                            Value="{Binding Count, Mode=TwoWay}"/>
+                                    </Grid>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassButton
+                            Padding="0"
+                            materialtheme:ControlMaterialState.IsManaged="True"
+                            BorderBrush="{x:Null}"
+                            BorderThickness="0">
+                            <shuxcc:HorizontalCard Width="300">
+                                <shuxcc:HorizontalCard.Left>
+                                    <shuxc:ItemIcon
+                                        Width="40"
+                                        Height="40"
+                                        Icon="{Binding Inner.Icon, Converter={StaticResource ItemIconConverter}}"
+                                        Quality="{Binding Inner.RankLevel}"/>
+                                </shuxcc:HorizontalCard.Left>
+                                <shuxcc:HorizontalCard.Right>
+                                    <Grid Margin="16,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Margin="0,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Text="{Binding Inner.Name}"
+                                            TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Count, Mode=OneWay}"/>
+                                    </Grid>
+                                </shuxcc:HorizontalCard.Right>
+                            </shuxcc:HorizontalCard>
+                            <materialcontrols:LiquidGlassButton.Flyout>
+                                <Flyout>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Style="{StaticResource BaseTextBlockStyle}" Text="{Binding Inner.Name}"/>
+                                        <NumberBox
+                                            Grid.Row="1"
+                                            MinWidth="160"
+                                            Margin="0,16,0,0"
+                                            Maximum="4294967295"
+                                            Minimum="0"
+                                            Value="{Binding Count, Mode=TwoWay}"/>
+                                    </Grid>
+                                </Flyout>
+                            </materialcontrols:LiquidGlassButton.Flyout>
+                        </materialcontrols:LiquidGlassButton>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
             </DataTemplate>
         </ResourceDictionary>
     </Page.Resources>
@@ -610,11 +869,64 @@
                 <CommandBar DefaultLabelPosition="Right">
                     <AppBarElementContainer>
                         <shuxc:SizeRestrictedContentControl Margin="6,6,6,6">
-                            <ComboBox
-                                DisplayMemberPath="Name"
-                                ItemsSource="{Binding Projects}"
-                                SelectedItem="{Binding Projects.CurrentItem, Mode=TwoWay}"
-                                Style="{ThemeResource CommandBarComboBoxStyle}"/>
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_33449"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:ComboBox"
+                                Visibility="{Binding Visibility, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                Value="{Binding ComboBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <ComboBox
+                                        x:Name="GlassPresenter_33449_State"
+                                        DataContext="{Binding DataContext, ElementName=GlassPresenter_33449, Mode=OneWay}"
+                                        DisplayMemberPath="Name"
+                                        ItemsSource="{Binding Projects}"
+                                        RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_33449, Mode=OneWay}"
+                                        SelectedItem="{Binding Projects.CurrentItem, Mode=TwoWay}"
+                                        Style="{ThemeResource CommandBarComboBoxStyle}"/>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassComboBox
+                                        x:Name="GlassPresenter_33449_StateGlass"
+                                        Width="{Binding Width, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        Height="{Binding Height, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        MinWidth="{Binding MinWidth, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        MinHeight="{Binding MinHeight, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        MaxWidth="{Binding MaxWidth, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        MaxHeight="{Binding MaxHeight, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        Padding="{Binding Padding, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        materialtheme:ControlMaterialState.IsManaged="True"
+                                        materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=GlassPresenter_33449_State}"
+                                        BorderThickness="{Binding BorderThickness, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        DisplayMemberPath="{Binding DisplayMemberPath, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        FlowDirection="{Binding FlowDirection, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        FontFamily="{Binding FontFamily, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        FontSize="{Binding FontSize, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        FontStyle="{Binding FontStyle, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        FontWeight="{Binding FontWeight, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        Foreground="{Binding Foreground, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        Header="{Binding Header, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        HeaderTemplate="{Binding HeaderTemplate, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        IsDropDownOpen="{Binding IsDropDownOpen, ElementName=GlassPresenter_33449_State, Mode=TwoWay}"
+                                        IsEditable="{Binding IsEditable, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        IsEnabled="{Binding IsEnabled, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        IsTextSearchEnabled="{Binding IsTextSearchEnabled, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        ItemsSource="{Binding ItemsSource, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        MaxDropDownHeight="{Binding MaxDropDownHeight, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        PlaceholderText="{Binding PlaceholderText, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        SelectedIndex="{Binding SelectedIndex, ElementName=GlassPresenter_33449_State, Mode=TwoWay}"
+                                        SelectedValuePath="{Binding SelectedValuePath, ElementName=GlassPresenter_33449_State, Mode=OneWay}"
+                                        Style="{ThemeResource CommandBarComboBoxStyle}"/>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
                         </shuxc:SizeRestrictedContentControl>
                     </AppBarElementContainer>
                     <AppBarButton
@@ -762,10 +1074,62 @@
                                                             HorizontalAlignment="Right"
                                                             VerticalAlignment="Center"
                                                             AllowFocusOnInteraction="True">
-                                                            <ComboBox
-                                                                DisplayMemberPath="WorldLevel"
-                                                                ItemsSource="{Binding DropDistributions}"
-                                                                SelectedItem="{Binding SelectedDropDistribution, Mode=TwoWay}"/>
+                                                            <materialcases:SwitchPresenter
+                                                                x:Name="GlassPresenter_45763"
+                                                                HorizontalContentAlignment="Stretch"
+                                                                VerticalContentAlignment="Stretch"
+                                                                IsTabStop="False"
+                                                                Tag="LiquidGlass:ComboBox"
+                                                                Visibility="{Binding Visibility, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                Value="{Binding ComboBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                                                <materialcases:Case>
+                                                                    <materialcases:Case.Value>
+                                                                        <x:Int32>0</x:Int32>
+                                                                    </materialcases:Case.Value>
+                                                                    <ComboBox
+                                                                        x:Name="GlassPresenter_45763_State"
+                                                                        DataContext="{Binding DataContext, ElementName=GlassPresenter_45763, Mode=OneWay}"
+                                                                        DisplayMemberPath="WorldLevel"
+                                                                        ItemsSource="{Binding DropDistributions}"
+                                                                        RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_45763, Mode=OneWay}"
+                                                                        SelectedItem="{Binding SelectedDropDistribution, Mode=TwoWay}"/>
+                                                                </materialcases:Case>
+                                                                <materialcases:Case>
+                                                                    <materialcases:Case.Value>
+                                                                        <x:Int32>1</x:Int32>
+                                                                    </materialcases:Case.Value>
+                                                                    <materialcontrols:LiquidGlassComboBox
+                                                                        x:Name="GlassPresenter_45763_StateGlass"
+                                                                        Width="{Binding Width, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        Height="{Binding Height, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        MinWidth="{Binding MinWidth, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        MinHeight="{Binding MinHeight, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        MaxWidth="{Binding MaxWidth, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        MaxHeight="{Binding MaxHeight, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        Padding="{Binding Padding, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        materialtheme:ControlMaterialState.IsManaged="True"
+                                                                        materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=GlassPresenter_45763_State}"
+                                                                        BorderThickness="{Binding BorderThickness, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        DisplayMemberPath="{Binding DisplayMemberPath, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        FlowDirection="{Binding FlowDirection, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        FontFamily="{Binding FontFamily, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        FontSize="{Binding FontSize, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        FontStyle="{Binding FontStyle, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        FontWeight="{Binding FontWeight, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        Foreground="{Binding Foreground, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        Header="{Binding Header, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        HeaderTemplate="{Binding HeaderTemplate, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        IsDropDownOpen="{Binding IsDropDownOpen, ElementName=GlassPresenter_45763_State, Mode=TwoWay}"
+                                                                        IsEditable="{Binding IsEditable, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        IsEnabled="{Binding IsEnabled, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        IsTextSearchEnabled="{Binding IsTextSearchEnabled, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        ItemsSource="{Binding ItemsSource, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        MaxDropDownHeight="{Binding MaxDropDownHeight, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        PlaceholderText="{Binding PlaceholderText, ElementName=GlassPresenter_45763_State, Mode=OneWay}"
+                                                                        SelectedIndex="{Binding SelectedIndex, ElementName=GlassPresenter_45763_State, Mode=TwoWay}"
+                                                                        SelectedValuePath="{Binding SelectedValuePath, ElementName=GlassPresenter_45763_State, Mode=OneWay}"/>
+                                                                </materialcases:Case>
+                                                            </materialcases:SwitchPresenter>
                                                         </shuxc:SizeRestrictedContentControl>
                                                     </Grid>
                                                 </Border>

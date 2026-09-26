@@ -5,6 +5,9 @@
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:cwconv="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shmm="using:Snap.Hutao.Remastered.Model.Metadata"
     xmlns:shuxc="using:Snap.Hutao.Remastered.UI.Xaml.Control"
@@ -28,8 +31,7 @@
         <SolidColorBrush x:Key="SettingsCardBorderBrush" Color="{ThemeResource ControlStrokeColorDefault}"/>
         <SolidColorBrush x:Key="ToggleButtonBackground" Color="{ThemeResource ControlAltFillColorSecondary}"/>
 
-        <cwconv:BoolToObjectConverter x:Key="BoolToSpecialBackgroundConverter"
-            TrueValue="{StaticResource SpecialDescriptionSpecialBackgroundBrush}">
+        <cwconv:BoolToObjectConverter x:Key="BoolToSpecialBackgroundConverter" TrueValue="{StaticResource SpecialDescriptionSpecialBackgroundBrush}">
             <cwconv:BoolToObjectConverter.FalseValue>
                 <SolidColorBrush Color="Transparent"/>
             </cwconv:BoolToObjectConverter.FalseValue>
@@ -38,11 +40,11 @@
 
         <DataTemplate x:Key="ParameterDescriptionTemplate" x:DataType="shmm:ParameterDescription">
             <cwc:SettingsCard
-                    MinHeight="40"
-                    Padding="16,0,42,0"
-                    BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
-                    Background="{Binding IsSpecial, Converter={StaticResource BoolToSpecialBackgroundConverter}}"
-                    Header="{Binding Description}">
+                MinHeight="40"
+                Padding="16,0,42,0"
+                Background="{Binding IsSpecial, Converter={StaticResource BoolToSpecialBackgroundConverter}}"
+                BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                Header="{Binding Description}">
                 <TextBlock Text="{Binding Parameter}"/>
             </cwc:SettingsCard>
         </DataTemplate>
@@ -55,12 +57,64 @@
             ItemTemplate="{StaticResource ParameterDescriptionTemplate}"
             ItemsSource="{x:Bind SelectedItem.Parameters, Mode=OneWay}">
             <shuxc:SizeRestrictedContentControl Margin="0,-8" IsHeightRestricted="False">
-                <ComboBox
-                    x:Name="LevelComboBox"
-                    DisplayMemberPath="Level"
-                    ItemsSource="{x:Bind Source, Mode=OneWay}"
-                    SelectedItem="{x:Bind SelectedItem, Mode=TwoWay}"
-                    Style="{StaticResource SettingsContentComboBoxStyle}"/>
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_3562"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:ComboBox"
+                    Visibility="{Binding Visibility, ElementName=LevelComboBox, Mode=OneWay}"
+                    Value="{Binding ComboBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <ComboBox
+                            x:Name="LevelComboBox"
+                            DataContext="{Binding DataContext, ElementName=GlassPresenter_3562, Mode=OneWay}"
+                            DisplayMemberPath="Level"
+                            ItemsSource="{x:Bind Source, Mode=OneWay}"
+                            RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_3562, Mode=OneWay}"
+                            SelectedItem="{x:Bind SelectedItem, Mode=TwoWay}"
+                            Style="{StaticResource SettingsContentComboBoxStyle}"/>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassComboBox
+                            x:Name="LevelComboBoxGlass"
+                            Width="{Binding Width, ElementName=LevelComboBox, Mode=OneWay}"
+                            Height="{Binding Height, ElementName=LevelComboBox, Mode=OneWay}"
+                            MinWidth="{Binding MinWidth, ElementName=LevelComboBox, Mode=OneWay}"
+                            MinHeight="{Binding MinHeight, ElementName=LevelComboBox, Mode=OneWay}"
+                            MaxWidth="{Binding MaxWidth, ElementName=LevelComboBox, Mode=OneWay}"
+                            MaxHeight="{Binding MaxHeight, ElementName=LevelComboBox, Mode=OneWay}"
+                            Padding="{Binding Padding, ElementName=LevelComboBox, Mode=OneWay}"
+                            materialtheme:ControlMaterialState.IsManaged="True"
+                            materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=LevelComboBox}"
+                            BorderThickness="{Binding BorderThickness, ElementName=LevelComboBox, Mode=OneWay}"
+                            DisplayMemberPath="{Binding DisplayMemberPath, ElementName=LevelComboBox, Mode=OneWay}"
+                            FlowDirection="{Binding FlowDirection, ElementName=LevelComboBox, Mode=OneWay}"
+                            FontFamily="{Binding FontFamily, ElementName=LevelComboBox, Mode=OneWay}"
+                            FontSize="{Binding FontSize, ElementName=LevelComboBox, Mode=OneWay}"
+                            FontStyle="{Binding FontStyle, ElementName=LevelComboBox, Mode=OneWay}"
+                            FontWeight="{Binding FontWeight, ElementName=LevelComboBox, Mode=OneWay}"
+                            Foreground="{Binding Foreground, ElementName=LevelComboBox, Mode=OneWay}"
+                            Header="{Binding Header, ElementName=LevelComboBox, Mode=OneWay}"
+                            HeaderTemplate="{Binding HeaderTemplate, ElementName=LevelComboBox, Mode=OneWay}"
+                            IsDropDownOpen="{Binding IsDropDownOpen, ElementName=LevelComboBox, Mode=TwoWay}"
+                            IsEditable="{Binding IsEditable, ElementName=LevelComboBox, Mode=OneWay}"
+                            IsEnabled="{Binding IsEnabled, ElementName=LevelComboBox, Mode=OneWay}"
+                            IsTextSearchEnabled="{Binding IsTextSearchEnabled, ElementName=LevelComboBox, Mode=OneWay}"
+                            ItemsSource="{Binding ItemsSource, ElementName=LevelComboBox, Mode=OneWay}"
+                            MaxDropDownHeight="{Binding MaxDropDownHeight, ElementName=LevelComboBox, Mode=OneWay}"
+                            PlaceholderText="{Binding PlaceholderText, ElementName=LevelComboBox, Mode=OneWay}"
+                            SelectedIndex="{Binding SelectedIndex, ElementName=LevelComboBox, Mode=TwoWay}"
+                            SelectedValuePath="{Binding SelectedValuePath, ElementName=LevelComboBox, Mode=OneWay}"
+                            Style="{StaticResource SettingsContentComboBoxStyle}"/>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
             </shuxc:SizeRestrictedContentControl>
         </cwc:SettingsExpander>
     </ScrollViewer>

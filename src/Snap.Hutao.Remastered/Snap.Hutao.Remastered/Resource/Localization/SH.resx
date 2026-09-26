@@ -5185,4 +5185,64 @@
   <data name="ViewControlStatisticsCardGreenText" xml:space="preserve">
     <value>二星</value>
   </data>
+  <data name="ViewPageSettingLiquidGlassButton" xml:space="preserve">
+    <value>按钮</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassToggleButton" xml:space="preserve">
+    <value>切换按钮</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassHyperlinkButton" xml:space="preserve">
+    <value>超链接按钮</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassCheckBox" xml:space="preserve">
+    <value>复选框</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRadioButton" xml:space="preserve">
+    <value>单选按钮</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassSlider" xml:space="preserve">
+    <value>滑块</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassTextBox" xml:space="preserve">
+    <value>文本输入框</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassPasswordBox" xml:space="preserve">
+    <value>密码输入框</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassComboBox" xml:space="preserve">
+    <value>下拉选择框</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassToggleSwitch" xml:space="preserve">
+    <value>开关</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassCard" xml:space="preserve">
+    <value>卡片与表面</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassStrength" xml:space="preserve">
+    <value>总体强度（0–2 倍）</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassBlurScale" xml:space="preserve">
+    <value>模糊强度（0–2 倍）</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRefractionScale" xml:space="preserve">
+    <value>折射强度（0–2 倍）</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassDispersionScale" xml:space="preserve">
+    <value>色散强度（0–2 倍）</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassHighlightScale" xml:space="preserve">
+    <value>高光强度（0–2 倍）</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassMagnificationScale" xml:space="preserve">
+    <value>放大强度（0–2 倍）</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassHeader" xml:space="preserve">
+    <value>液态玻璃控件与效果</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassDescription" xml:space="preserve">
+    <value>按控件类型启用玻璃效果。修改立即生效；光学倍数基于各控件原有预设。</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassSearchBox" xml:space="preserve">
+    <value>搜索输入框</value>
+  </data>
 </root>

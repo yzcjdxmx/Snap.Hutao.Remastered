@@ -4,6 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cw="using:CommunityToolkit.WinUI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shuxb="using:Snap.Hutao.Remastered.UI.Xaml.Behavior"
@@ -384,12 +387,37 @@
                             HorizontalAlignment="Center"
                             Style="{StaticResource SubtitleTextBlockStyle}"
                             Text="{shuxm:ResourceString Name=ViewPageBackpackAddArchiveHint}"/>
-                        <Button
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_20193"
                             Margin="0,16,0,0"
-                            Padding="16,8"
                             HorizontalAlignment="Stretch"
-                            Command="{Binding AddArchiveCommand}"
-                            Content="{shuxm:ResourceString Name=ViewPageBackpackAddArchive}"/>
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:Button"
+                            Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <Button
+                                    Padding="16,8"
+                                    HorizontalAlignment="Stretch"
+                                    Command="{Binding AddArchiveCommand}"
+                                    Content="{shuxm:ResourceString Name=ViewPageBackpackAddArchive}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassButton
+                                    Padding="16,8"
+                                    HorizontalAlignment="Stretch"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Command="{Binding AddArchiveCommand}"
+                                    Content="{shuxm:ResourceString Name=ViewPageBackpackAddArchive}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                     </StackPanel>
                 </Border>
             </Border>
@@ -433,20 +461,53 @@
                             VerticalAlignment="Center"
                             Orientation="Horizontal"
                             Spacing="6">
-                            <Button VerticalAlignment="Center">
-                                <Button.Flyout>
-                                    <Flyout>
-                                        <shuxcas:AutoSortList
-                                            Width="260"
-                                            AvailableTokens="{Binding AvailableSortTokens}"
-                                            SortCommand="{Binding ApplySortCommand}"/>
-                                    </Flyout>
-                                </Button.Flyout>
-                                <StackPanel Orientation="Horizontal" Spacing="4">
-                                    <FontIcon FontSize="12" Glyph="&#xE8CB;"/>
-                                    <TextBlock Text="{shuxm:ResourceString Name=ViewPageBackpackSortHeader}"/>
-                                </StackPanel>
-                            </Button>
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_22704"
+                                VerticalAlignment="Center"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:Button"
+                                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <Button VerticalAlignment="Center">
+                                        <Button.Flyout>
+                                            <Flyout>
+                                                <shuxcas:AutoSortList
+                                                    Width="260"
+                                                    AvailableTokens="{Binding AvailableSortTokens}"
+                                                    SortCommand="{Binding ApplySortCommand}"/>
+                                            </Flyout>
+                                        </Button.Flyout>
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <FontIcon FontSize="12" Glyph="&#xE8CB;"/>
+                                            <TextBlock Text="{shuxm:ResourceString Name=ViewPageBackpackSortHeader}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassButton VerticalAlignment="Center" materialtheme:ControlMaterialState.IsManaged="True">
+                                        <materialcontrols:LiquidGlassButton.Flyout>
+                                            <Flyout>
+                                                <shuxcas:AutoSortList
+                                                    Width="260"
+                                                    AvailableTokens="{Binding AvailableSortTokens}"
+                                                    SortCommand="{Binding ApplySortCommand}"/>
+                                            </Flyout>
+                                        </materialcontrols:LiquidGlassButton.Flyout>
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <FontIcon FontSize="12" Glyph="&#xE8CB;"/>
+                                            <TextBlock Text="{shuxm:ResourceString Name=ViewPageBackpackSortHeader}"/>
+                                        </StackPanel>
+                                    </materialcontrols:LiquidGlassButton>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -460,11 +521,64 @@
                     <CommandBar Background="Transparent" DefaultLabelPosition="Right">
                         <AppBarElementContainer AllowFocusOnInteraction="True">
                             <shuxc:SizeRestrictedContentControl Margin="2,6,3,6">
-                                <ComboBox
-                                    DisplayMemberPath="Name"
-                                    ItemsSource="{Binding Archives}"
-                                    SelectedItem="{Binding Archives.CurrentItem, Mode=TwoWay}"
-                                    Style="{ThemeResource CommandBarComboBoxStyle}"/>
+                                <materialcases:SwitchPresenter
+                                    x:Name="GlassPresenter_24224"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    IsTabStop="False"
+                                    Tag="LiquidGlass:ComboBox"
+                                    Visibility="{Binding Visibility, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                    Value="{Binding ComboBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                    <materialcases:Case>
+                                        <materialcases:Case.Value>
+                                            <x:Int32>0</x:Int32>
+                                        </materialcases:Case.Value>
+                                        <ComboBox
+                                            x:Name="GlassPresenter_24224_State"
+                                            DataContext="{Binding DataContext, ElementName=GlassPresenter_24224, Mode=OneWay}"
+                                            DisplayMemberPath="Name"
+                                            ItemsSource="{Binding Archives}"
+                                            RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_24224, Mode=OneWay}"
+                                            SelectedItem="{Binding Archives.CurrentItem, Mode=TwoWay}"
+                                            Style="{ThemeResource CommandBarComboBoxStyle}"/>
+                                    </materialcases:Case>
+                                    <materialcases:Case>
+                                        <materialcases:Case.Value>
+                                            <x:Int32>1</x:Int32>
+                                        </materialcases:Case.Value>
+                                        <materialcontrols:LiquidGlassComboBox
+                                            x:Name="GlassPresenter_24224_StateGlass"
+                                            Width="{Binding Width, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            Height="{Binding Height, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            MinWidth="{Binding MinWidth, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            MinHeight="{Binding MinHeight, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            MaxWidth="{Binding MaxWidth, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            MaxHeight="{Binding MaxHeight, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            Padding="{Binding Padding, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            materialtheme:ControlMaterialState.IsManaged="True"
+                                            materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=GlassPresenter_24224_State}"
+                                            BorderThickness="{Binding BorderThickness, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            DisplayMemberPath="{Binding DisplayMemberPath, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            FlowDirection="{Binding FlowDirection, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            FontFamily="{Binding FontFamily, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            FontSize="{Binding FontSize, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            FontStyle="{Binding FontStyle, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            FontWeight="{Binding FontWeight, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            Foreground="{Binding Foreground, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            Header="{Binding Header, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            HeaderTemplate="{Binding HeaderTemplate, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            IsDropDownOpen="{Binding IsDropDownOpen, ElementName=GlassPresenter_24224_State, Mode=TwoWay}"
+                                            IsEditable="{Binding IsEditable, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            IsEnabled="{Binding IsEnabled, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            IsTextSearchEnabled="{Binding IsTextSearchEnabled, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            ItemsSource="{Binding ItemsSource, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            MaxDropDownHeight="{Binding MaxDropDownHeight, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            PlaceholderText="{Binding PlaceholderText, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            SelectedIndex="{Binding SelectedIndex, ElementName=GlassPresenter_24224_State, Mode=TwoWay}"
+                                            SelectedValuePath="{Binding SelectedValuePath, ElementName=GlassPresenter_24224_State, Mode=OneWay}"
+                                            Style="{ThemeResource CommandBarComboBoxStyle}"/>
+                                    </materialcases:Case>
+                                </materialcases:SwitchPresenter>
                             </shuxc:SizeRestrictedContentControl>
                         </AppBarElementContainer>
                         <AppBarButton

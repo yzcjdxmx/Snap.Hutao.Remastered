@@ -3,6 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shuxm="using:Snap.Hutao.Remastered.UI.Xaml.Markup"
     xmlns:shuxmb="using:Snap.Hutao.Remastered.UI.Xaml.Media.Backdrop"
@@ -199,14 +202,40 @@
                 Margin="8"
                 Style="{StaticResource BodyTextBlockStyle}"
                 Text="{Binding Title}"/>
-            <Button
+            <materialcases:SwitchPresenter
+                x:Name="GlassPresenter_13113"
                 Grid.Column="1"
                 Margin="8"
                 HorizontalAlignment="Right"
-                Command="{Binding CloseNotifyIconContextMenuWindowCommand}"
-                Style="{StaticResource SubtleButtonStyle}">
-                <FontIcon Glyph="&#xE711;"/>
-            </Button>
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                IsTabStop="False"
+                Tag="LiquidGlass:Button"
+                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                <materialcases:Case>
+                    <materialcases:Case.Value>
+                        <x:Int32>0</x:Int32>
+                    </materialcases:Case.Value>
+                    <Button
+                        HorizontalAlignment="Right"
+                        Command="{Binding CloseNotifyIconContextMenuWindowCommand}"
+                        Style="{StaticResource SubtleButtonStyle}">
+                        <FontIcon Glyph="&#xE711;"/>
+                    </Button>
+                </materialcases:Case>
+                <materialcases:Case>
+                    <materialcases:Case.Value>
+                        <x:Int32>1</x:Int32>
+                    </materialcases:Case.Value>
+                    <materialcontrols:LiquidGlassButton
+                        HorizontalAlignment="Right"
+                        materialtheme:ControlMaterialState.IsManaged="True"
+                        Command="{Binding CloseNotifyIconContextMenuWindowCommand}"
+                        Style="{StaticResource SubtleButtonStyle}">
+                        <FontIcon Glyph="&#xE711;"/>
+                    </materialcontrols:LiquidGlassButton>
+                </materialcases:Case>
+            </materialcases:SwitchPresenter>
         </Grid>
 
         <StackPanel Grid.Row="1" Padding="0,2">

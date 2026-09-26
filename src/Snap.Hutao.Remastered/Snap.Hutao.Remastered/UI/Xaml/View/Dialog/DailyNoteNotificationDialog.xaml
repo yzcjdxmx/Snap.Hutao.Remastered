@@ -4,6 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:clw="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shme="using:Snap.Hutao.Remastered.Model.Entity"
     xmlns:shuxm="using:Snap.Hutao.Remastered.UI.Xaml.Markup"
@@ -28,28 +31,133 @@
                 Width="480"
                 Padding="16,8"
                 Header="{shuxm:ResourceString Name=ViewDialogDailyNoteNotificationResinNotifyThreshold}">
-                <Slider
-                    MinWidth="160"
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_1640"
                     Margin="32,0,0,0"
-                    Maximum="{Binding DailyNote.MaxResin}"
-                    Minimum="0"
-                    Value="{Binding ResinNotifyThreshold, Mode=TwoWay}"/>
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:Slider"
+                    Value="{Binding SliderMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <Slider
+                            MinWidth="160"
+                            Maximum="{Binding DailyNote.MaxResin}"
+                            Minimum="0"
+                            Value="{Binding ResinNotifyThreshold, Mode=TwoWay}"/>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassSlider
+                            MinWidth="160"
+                            materialtheme:ControlMaterialState.IsManaged="True"
+                            Maximum="{Binding DailyNote.MaxResin}"
+                            Minimum="0"
+                            Value="{Binding ResinNotifyThreshold, Mode=TwoWay}"/>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
             </clw:SettingsCard>
             <clw:SettingsCard Padding="16,8" Header="{shuxm:ResourceString Name=ViewDialogDailyNoteNotificationHomeCoinNotifyThreshold}">
-                <Slider
-                    MinWidth="160"
-                    Maximum="{Binding DailyNote.MaxHomeCoin}"
-                    Minimum="0"
-                    Value="{Binding HomeCoinNotifyThreshold, Mode=TwoWay}"/>
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_2072"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:Slider"
+                    Value="{Binding SliderMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <Slider
+                            MinWidth="160"
+                            Maximum="{Binding DailyNote.MaxHomeCoin}"
+                            Minimum="0"
+                            Value="{Binding HomeCoinNotifyThreshold, Mode=TwoWay}"/>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassSlider
+                            MinWidth="160"
+                            materialtheme:ControlMaterialState.IsManaged="True"
+                            Maximum="{Binding DailyNote.MaxHomeCoin}"
+                            Minimum="0"
+                            Value="{Binding HomeCoinNotifyThreshold, Mode=TwoWay}"/>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
             </clw:SettingsCard>
             <clw:SettingsCard Padding="16,8" Header="{shuxm:ResourceString Name=ViewDialogDailyNoteNotificationTransformerNotify}">
-                <ToggleSwitch IsOn="{Binding TransformerNotify, Mode=TwoWay}"/>
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_2466"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:ToggleSwitch"
+                    Value="{Binding ToggleSwitchMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <ToggleSwitch IsOn="{Binding TransformerNotify, Mode=TwoWay}"/>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassToggleSwitch materialtheme:ControlMaterialState.IsManaged="True" IsOn="{Binding TransformerNotify, Mode=TwoWay}"/>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
             </clw:SettingsCard>
             <clw:SettingsCard Padding="16,8" Header="{shuxm:ResourceString Name=ViewDialogDailyNoteNotificationDailyTaskNotify}">
-                <ToggleSwitch IsOn="{Binding DailyTaskNotify, Mode=TwoWay}"/>
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_2708"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:ToggleSwitch"
+                    Value="{Binding ToggleSwitchMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <ToggleSwitch IsOn="{Binding DailyTaskNotify, Mode=TwoWay}"/>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassToggleSwitch materialtheme:ControlMaterialState.IsManaged="True" IsOn="{Binding DailyTaskNotify, Mode=TwoWay}"/>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
             </clw:SettingsCard>
             <clw:SettingsCard Padding="16,8" Header="{shuxm:ResourceString Name=ViewDialogDailyNoteNotificationExpeditionNotify}">
-                <ToggleSwitch IsOn="{Binding ExpeditionNotify, Mode=TwoWay}"/>
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_2949"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:ToggleSwitch"
+                    Value="{Binding ToggleSwitchMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <ToggleSwitch IsOn="{Binding ExpeditionNotify, Mode=TwoWay}"/>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassToggleSwitch materialtheme:ControlMaterialState.IsManaged="True" IsOn="{Binding ExpeditionNotify, Mode=TwoWay}"/>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
             </clw:SettingsCard>
         </StackPanel>
     </ScrollViewer>

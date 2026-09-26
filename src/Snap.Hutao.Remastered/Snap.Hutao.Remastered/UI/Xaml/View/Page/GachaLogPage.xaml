@@ -6,6 +6,9 @@
     xmlns:cwcont="using:CommunityToolkit.WinUI.Controls"
     xmlns:cwconv="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shuxb="using:Snap.Hutao.Remastered.UI.Xaml.Behavior"
@@ -146,31 +149,93 @@
                                             Grid.Column="1"
                                             Margin="6,0,0,0"
                                             Orientation="Horizontal">
-                                            <Button
+                                            <materialcases:SwitchPresenter
+                                                x:Name="GlassPresenter_9277"
                                                 Margin="6,0,0,0"
                                                 VerticalAlignment="Stretch"
-                                                Background="Transparent"
-                                                Command="{Binding RetrieveCommand}"
-                                                CommandParameter="{Binding Uid}"
-                                                Content="&#xE896;"
-                                                FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                Style="{StaticResource ButtonRevealStyle}"
-                                                ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageGachaLogHutaoCloudRetrieve}"/>
-                                            <Button
+                                                HorizontalContentAlignment="Stretch"
+                                                VerticalContentAlignment="Stretch"
+                                                IsTabStop="False"
+                                                Tag="LiquidGlass:Button"
+                                                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                                <materialcases:Case>
+                                                    <materialcases:Case.Value>
+                                                        <x:Int32>0</x:Int32>
+                                                    </materialcases:Case.Value>
+                                                    <Button
+                                                        VerticalAlignment="Stretch"
+                                                        Background="Transparent"
+                                                        Command="{Binding RetrieveCommand}"
+                                                        CommandParameter="{Binding Uid}"
+                                                        Content="&#xE896;"
+                                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                        Style="{StaticResource ButtonRevealStyle}"
+                                                        ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageGachaLogHutaoCloudRetrieve}"/>
+                                                </materialcases:Case>
+                                                <materialcases:Case>
+                                                    <materialcases:Case.Value>
+                                                        <x:Int32>1</x:Int32>
+                                                    </materialcases:Case.Value>
+                                                    <materialcontrols:LiquidGlassButton
+                                                        VerticalAlignment="Stretch"
+                                                        materialtheme:ControlMaterialState.IsManaged="True"
+                                                        Command="{Binding RetrieveCommand}"
+                                                        CommandParameter="{Binding Uid}"
+                                                        Content="&#xE896;"
+                                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                        Style="{StaticResource ButtonRevealStyle}"
+                                                        ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageGachaLogHutaoCloudRetrieve}"/>
+                                                </materialcases:Case>
+                                            </materialcases:SwitchPresenter>
+                                            <materialcases:SwitchPresenter
+                                                x:Name="GlassPresenter_10104"
                                                 Margin="6,0,0,0"
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Stretch"
-                                                Background="Transparent"
-                                                Command="{Binding DeleteCommand}"
-                                                CommandParameter="{Binding Uid}"
-                                                Style="{StaticResource ButtonRevealStyle}"
-                                                ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageGachaLogHutaoCloudDelete}">
-                                                <TextBlock
-                                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                    FontWeight="Bold"
-                                                    Foreground="Red"
-                                                    Text="&#xE74D;"/>
-                                            </Button>
+                                                HorizontalContentAlignment="Stretch"
+                                                VerticalContentAlignment="Stretch"
+                                                IsTabStop="False"
+                                                Tag="LiquidGlass:Button"
+                                                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                                <materialcases:Case>
+                                                    <materialcases:Case.Value>
+                                                        <x:Int32>0</x:Int32>
+                                                    </materialcases:Case.Value>
+                                                    <Button
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Stretch"
+                                                        Background="Transparent"
+                                                        Command="{Binding DeleteCommand}"
+                                                        CommandParameter="{Binding Uid}"
+                                                        Style="{StaticResource ButtonRevealStyle}"
+                                                        ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageGachaLogHutaoCloudDelete}">
+                                                        <TextBlock
+                                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                            FontWeight="Bold"
+                                                            Foreground="Red"
+                                                            Text="&#xE74D;"/>
+                                                    </Button>
+                                                </materialcases:Case>
+                                                <materialcases:Case>
+                                                    <materialcases:Case.Value>
+                                                        <x:Int32>1</x:Int32>
+                                                    </materialcases:Case.Value>
+                                                    <materialcontrols:LiquidGlassButton
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Stretch"
+                                                        materialtheme:ControlMaterialState.IsManaged="True"
+                                                        Command="{Binding DeleteCommand}"
+                                                        CommandParameter="{Binding Uid}"
+                                                        Style="{StaticResource ButtonRevealStyle}"
+                                                        ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageGachaLogHutaoCloudDelete}">
+                                                        <TextBlock
+                                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                            FontWeight="Bold"
+                                                            Foreground="Red"
+                                                            Text="&#xE74D;"/>
+                                                    </materialcontrols:LiquidGlassButton>
+                                                </materialcases:Case>
+                                            </materialcases:SwitchPresenter>
                                         </StackPanel>
                                     </Grid>
                                 </DataTemplate>
@@ -188,18 +253,50 @@
                             Background="{ThemeResource HutaoCardBrush}"
                             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                             BorderThickness="0,1,0,0">
-                            <Button
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_12223"
                                 HorizontalAlignment="Stretch"
-                                Command="{Binding HutaoCloudViewModel.UploadCommand}"
-                                CommandParameter="{Binding Archives.CurrentItem}">
-                                <StackPanel Orientation="Horizontal" Spacing="4">
-                                    <FontIcon
-                                        VerticalAlignment="Center"
-                                        FontSize="15"
-                                        Glyph="&#xE898;"/>
-                                    <TextBlock VerticalAlignment="Center" Text="{shuxm:ResourceString Name=ViewPageGachaLogHutaoCloudUpload}"/>
-                                </StackPanel>
-                            </Button>
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:Button"
+                                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <Button
+                                        HorizontalAlignment="Stretch"
+                                        Command="{Binding HutaoCloudViewModel.UploadCommand}"
+                                        CommandParameter="{Binding Archives.CurrentItem}">
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <FontIcon
+                                                VerticalAlignment="Center"
+                                                FontSize="15"
+                                                Glyph="&#xE898;"/>
+                                            <TextBlock VerticalAlignment="Center" Text="{shuxm:ResourceString Name=ViewPageGachaLogHutaoCloudUpload}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassButton
+                                        HorizontalAlignment="Stretch"
+                                        materialtheme:ControlMaterialState.IsManaged="True"
+                                        Command="{Binding HutaoCloudViewModel.UploadCommand}"
+                                        CommandParameter="{Binding Archives.CurrentItem}">
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <FontIcon
+                                                VerticalAlignment="Center"
+                                                FontSize="15"
+                                                Glyph="&#xE898;"/>
+                                            <TextBlock VerticalAlignment="Center" Text="{shuxm:ResourceString Name=ViewPageGachaLogHutaoCloudUpload}"/>
+                                        </StackPanel>
+                                    </materialcontrols:LiquidGlassButton>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
                         </Border>
                     </Grid>
                 </shuxc:StandardView>
@@ -366,11 +463,64 @@
             </mxi:Interaction.Behaviors>
             <Pivot.LeftHeader>
                 <shuxc:SizeRestrictedContentControl Margin="6,6,0,6">
-                    <ComboBox
-                        DisplayMemberPath="Uid"
-                        ItemsSource="{Binding Archives}"
-                        SelectedItem="{Binding Archives.CurrentItem, Mode=TwoWay}"
-                        Style="{ThemeResource CommandBarComboBoxStyle}"/>
+                    <materialcases:SwitchPresenter
+                        x:Name="GlassPresenter_22004"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        IsTabStop="False"
+                        Tag="LiquidGlass:ComboBox"
+                        Visibility="{Binding Visibility, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                        Value="{Binding ComboBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>0</x:Int32>
+                            </materialcases:Case.Value>
+                            <ComboBox
+                                x:Name="GlassPresenter_22004_State"
+                                DataContext="{Binding DataContext, ElementName=GlassPresenter_22004, Mode=OneWay}"
+                                DisplayMemberPath="Uid"
+                                ItemsSource="{Binding Archives}"
+                                RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_22004, Mode=OneWay}"
+                                SelectedItem="{Binding Archives.CurrentItem, Mode=TwoWay}"
+                                Style="{ThemeResource CommandBarComboBoxStyle}"/>
+                        </materialcases:Case>
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>1</x:Int32>
+                            </materialcases:Case.Value>
+                            <materialcontrols:LiquidGlassComboBox
+                                x:Name="GlassPresenter_22004_StateGlass"
+                                Width="{Binding Width, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                Height="{Binding Height, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                MinWidth="{Binding MinWidth, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                MinHeight="{Binding MinHeight, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                MaxWidth="{Binding MaxWidth, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                MaxHeight="{Binding MaxHeight, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                Padding="{Binding Padding, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                materialtheme:ControlMaterialState.IsManaged="True"
+                                materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=GlassPresenter_22004_State}"
+                                BorderThickness="{Binding BorderThickness, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                DisplayMemberPath="{Binding DisplayMemberPath, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                FlowDirection="{Binding FlowDirection, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                FontFamily="{Binding FontFamily, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                FontSize="{Binding FontSize, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                FontStyle="{Binding FontStyle, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                FontWeight="{Binding FontWeight, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                Foreground="{Binding Foreground, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                Header="{Binding Header, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                HeaderTemplate="{Binding HeaderTemplate, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                IsDropDownOpen="{Binding IsDropDownOpen, ElementName=GlassPresenter_22004_State, Mode=TwoWay}"
+                                IsEditable="{Binding IsEditable, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                IsEnabled="{Binding IsEnabled, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                IsTextSearchEnabled="{Binding IsTextSearchEnabled, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                ItemsSource="{Binding ItemsSource, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                MaxDropDownHeight="{Binding MaxDropDownHeight, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                PlaceholderText="{Binding PlaceholderText, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                SelectedIndex="{Binding SelectedIndex, ElementName=GlassPresenter_22004_State, Mode=TwoWay}"
+                                SelectedValuePath="{Binding SelectedValuePath, ElementName=GlassPresenter_22004_State, Mode=OneWay}"
+                                Style="{ThemeResource CommandBarComboBoxStyle}"/>
+                        </materialcases:Case>
+                    </materialcases:SwitchPresenter>
                 </shuxc:SizeRestrictedContentControl>
             </Pivot.LeftHeader>
             <Pivot.RightHeader>

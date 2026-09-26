@@ -6,6 +6,9 @@
     xmlns:cwcont="using:CommunityToolkit.WinUI.Controls"
     xmlns:cwconv="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shuxb="using:Snap.Hutao.Remastered.UI.Xaml.Behavior"
@@ -280,151 +283,327 @@
             </DataTemplate>
 
             <DataTemplate x:Key="AvatarConstellationTemplate" x:DataType="shva:ConstellationView">
-                <Button
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_15494"
                     Margin="0,0,2,0"
-                    Padding="2"
-                    Background="Transparent"
-                    BorderBrush="{x:Null}">
-                    <Button.Content>
-                        <Grid>
-                            <shuxci:CachedImage
-                                Width="36"
-                                Height="36"
-                                Opacity="{Binding IsActivated, Converter={StaticResource BoolToOpacityConverter}}"
-                                Source="{Binding Icon}"/>
-                            <Image
-                                Width="16"
-                                Height="16"
-                                Source="ms-appx:///Resource/Icon/UI_Icon_Locked.png"
-                                Visibility="{Binding IsActivated, Converter={StaticResource BoolToVisibilityRevertConverter}}"/>
-                        </Grid>
-                    </Button.Content>
-                    <Button.Flyout>
-                        <Flyout Placement="Bottom">
-                            <StackPanel MaxWidth="320">
-                                <Border
-                                    Padding="8,4"
-                                    BorderThickness="1"
-                                    CornerRadius="4"
-                                    Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="{StaticResource SpecialDescriptionBaseBackgroundColor}"/>
-                                    </Border.Background>
-                                    <Border.BorderBrush>
-                                        <SolidColorBrush Color="{StaticResource SpecialDescriptionBaseBorderColor}"/>
-                                    </Border.BorderBrush>
-                                    <shuxct:DescriptionTextBlock Description="{Binding Description}" TextStyle="{StaticResource BodyTextBlockStyle}"/>
-                                </Border>
-                                <shuxct:DescriptionTextBlock
-                                    Description="{Binding Description}"
-                                    TextStyle="{StaticResource BodyTextBlockStyle}"
-                                    Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityRevertConverter}}"/>
-                                <Border
-                                    Margin="0,8,0,0"
-                                    Padding="8,4"
-                                    BorderThickness="1"
-                                    CornerRadius="4"
-                                    Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="{StaticResource SpecialDescriptionSpecialBackgroundColor}"/>
-                                    </Border.Background>
-                                    <Border.BorderBrush>
-                                        <SolidColorBrush Color="{StaticResource SpecialDescriptionSpecialBorderColor}"/>
-                                    </Border.BorderBrush>
-                                    <shuxct:DescriptionTextBlock Description="{Binding SpecialDescription}" TextStyle="{StaticResource BodyTextBlockStyle}"/>
-                                </Border>
-                            </StackPanel>
-                        </Flyout>
-                    </Button.Flyout>
-                </Button>
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:Button"
+                    Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <Button
+                            Padding="2"
+                            Background="Transparent"
+                            BorderBrush="{x:Null}">
+                            <Button.Content>
+                                <Grid>
+                                    <shuxci:CachedImage
+                                        Width="36"
+                                        Height="36"
+                                        Opacity="{Binding IsActivated, Converter={StaticResource BoolToOpacityConverter}}"
+                                        Source="{Binding Icon}"/>
+                                    <Image
+                                        Width="16"
+                                        Height="16"
+                                        Source="ms-appx:///Resource/Icon/UI_Icon_Locked.png"
+                                        Visibility="{Binding IsActivated, Converter={StaticResource BoolToVisibilityRevertConverter}}"/>
+                                </Grid>
+                            </Button.Content>
+                            <Button.Flyout>
+                                <Flyout Placement="Bottom">
+                                    <StackPanel MaxWidth="320">
+                                        <Border
+                                            Padding="8,4"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionBaseBackgroundColor}"/>
+                                            </Border.Background>
+                                            <Border.BorderBrush>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionBaseBorderColor}"/>
+                                            </Border.BorderBrush>
+                                            <shuxct:DescriptionTextBlock Description="{Binding Description}" TextStyle="{StaticResource BodyTextBlockStyle}"/>
+                                        </Border>
+                                        <shuxct:DescriptionTextBlock
+                                            Description="{Binding Description}"
+                                            TextStyle="{StaticResource BodyTextBlockStyle}"
+                                            Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityRevertConverter}}"/>
+                                        <Border
+                                            Margin="0,8,0,0"
+                                            Padding="8,4"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionSpecialBackgroundColor}"/>
+                                            </Border.Background>
+                                            <Border.BorderBrush>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionSpecialBorderColor}"/>
+                                            </Border.BorderBrush>
+                                            <shuxct:DescriptionTextBlock Description="{Binding SpecialDescription}" TextStyle="{StaticResource BodyTextBlockStyle}"/>
+                                        </Border>
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassButton
+                            Padding="2"
+                            materialtheme:ControlMaterialState.IsManaged="True"
+                            BorderBrush="{x:Null}">
+                            <materialcontrols:LiquidGlassButton.Content>
+                                <Grid>
+                                    <shuxci:CachedImage
+                                        Width="36"
+                                        Height="36"
+                                        Opacity="{Binding IsActivated, Converter={StaticResource BoolToOpacityConverter}}"
+                                        Source="{Binding Icon}"/>
+                                    <Image
+                                        Width="16"
+                                        Height="16"
+                                        Source="ms-appx:///Resource/Icon/UI_Icon_Locked.png"
+                                        Visibility="{Binding IsActivated, Converter={StaticResource BoolToVisibilityRevertConverter}}"/>
+                                </Grid>
+                            </materialcontrols:LiquidGlassButton.Content>
+                            <materialcontrols:LiquidGlassButton.Flyout>
+                                <Flyout Placement="Bottom">
+                                    <StackPanel MaxWidth="320">
+                                        <Border
+                                            Padding="8,4"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionBaseBackgroundColor}"/>
+                                            </Border.Background>
+                                            <Border.BorderBrush>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionBaseBorderColor}"/>
+                                            </Border.BorderBrush>
+                                            <shuxct:DescriptionTextBlock Description="{Binding Description}" TextStyle="{StaticResource BodyTextBlockStyle}"/>
+                                        </Border>
+                                        <shuxct:DescriptionTextBlock
+                                            Description="{Binding Description}"
+                                            TextStyle="{StaticResource BodyTextBlockStyle}"
+                                            Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityRevertConverter}}"/>
+                                        <Border
+                                            Margin="0,8,0,0"
+                                            Padding="8,4"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionSpecialBackgroundColor}"/>
+                                            </Border.Background>
+                                            <Border.BorderBrush>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionSpecialBorderColor}"/>
+                                            </Border.BorderBrush>
+                                            <shuxct:DescriptionTextBlock Description="{Binding SpecialDescription}" TextStyle="{StaticResource BodyTextBlockStyle}"/>
+                                        </Border>
+                                    </StackPanel>
+                                </Flyout>
+                            </materialcontrols:LiquidGlassButton.Flyout>
+                        </materialcontrols:LiquidGlassButton>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
             </DataTemplate>
 
             <DataTemplate x:Key="AvatarSkillTemplate" x:DataType="shva:SkillView">
-                <Button
+                <materialcases:SwitchPresenter
+                    x:Name="GlassPresenter_19283"
                     Margin="0,2,0,0"
-                    Padding="4"
-                    Background="Transparent"
-                    BorderBrush="{x:Null}">
-                    <Button.Content>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="100"/>
-                            </Grid.ColumnDefinitions>
-                            <shuxci:CachedImage
-                                Grid.Column="0"
-                                Width="36"
-                                Height="36"
-                                Source="{Binding Icon}"/>
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="6,0,0,2"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Foreground="#FFFFFFFF"
-                                Style="{StaticResource BaseTextBlockStyle}"
-                                Text="{Binding Level}"/>
-                        </Grid>
-                    </Button.Content>
-                    <Button.Flyout>
-                        <Flyout Placement="Left">
-                            <StackPanel MaxWidth="320">
-                                <StackPanel.Resources>
-                                    <!--  ReSharper disable Xaml.RedundantResource  -->
-                                    <Thickness x:Key="SettingsCardPadding">16</Thickness>
-                                    <x:Double x:Key="SettingsCardWrapThreshold">0</x:Double>
-                                    <x:Double x:Key="SettingsCardWrapNoIconThreshold">0</x:Double>
-                                    <x:Double x:Key="SettingsCardMinHeight">0</x:Double>
-                                    <!--  ReSharper restore Xaml.RedundantResource  -->
-                                </StackPanel.Resources>
-                                <Border
-                                    Padding="8,4"
-                                    BorderThickness="1"
-                                    CornerRadius="4"
-                                    Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="{StaticResource SpecialDescriptionBaseBackgroundColor}"/>
-                                    </Border.Background>
-                                    <Border.BorderBrush>
-                                        <SolidColorBrush Color="{StaticResource SpecialDescriptionBaseBorderColor}"/>
-                                    </Border.BorderBrush>
-                                    <shuxct:DescriptionTextBlock Description="{Binding Description}" TextStyle="{StaticResource BodyTextBlockStyle}"/>
-                                </Border>
-                                <shuxct:DescriptionTextBlock
-                                    Description="{Binding Description}"
-                                    TextStyle="{StaticResource BodyTextBlockStyle}"
-                                    Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityRevertConverter}}"/>
-                                <Border
-                                    Margin="0,8,0,0"
-                                    Padding="8,4"
-                                    BorderThickness="1"
-                                    CornerRadius="4"
-                                    Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="{StaticResource SpecialDescriptionSpecialBackgroundColor}"/>
-                                    </Border.Background>
-                                    <Border.BorderBrush>
-                                        <SolidColorBrush Color="{StaticResource SpecialDescriptionSpecialBorderColor}"/>
-                                    </Border.BorderBrush>
-                                    <shuxct:DescriptionTextBlock Description="{Binding SpecialDescription}" TextStyle="{StaticResource BodyTextBlockStyle}"/>
-                                </Border>
-                                <ItemsControl Margin="0,12,0,0" ItemsSource="{Binding Info.Parameters}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <cwcont:SettingsCard
-                                                Margin="0,2,0,0"
-                                                Padding="12,0"
-                                                Background="{Binding IsSpecial, Converter={StaticResource BoolToSpecialBackgroundConverter}}"
-                                                Header="{Binding Description}">
-                                                <TextBlock Margin="0,8" Text="{Binding Parameter}"/>
-                                            </cwcont:SettingsCard>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </StackPanel>
-                        </Flyout>
-                    </Button.Flyout>
-                </Button>
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"
+                    IsTabStop="False"
+                    Tag="LiquidGlass:Button"
+                    Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>0</x:Int32>
+                        </materialcases:Case.Value>
+                        <Button
+                            Padding="4"
+                            Background="Transparent"
+                            BorderBrush="{x:Null}">
+                            <Button.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="100"/>
+                                    </Grid.ColumnDefinitions>
+                                    <shuxci:CachedImage
+                                        Grid.Column="0"
+                                        Width="36"
+                                        Height="36"
+                                        Source="{Binding Icon}"/>
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="6,0,0,2"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Foreground="#FFFFFFFF"
+                                        Style="{StaticResource BaseTextBlockStyle}"
+                                        Text="{Binding Level}"/>
+                                </Grid>
+                            </Button.Content>
+                            <Button.Flyout>
+                                <Flyout Placement="Left">
+                                    <StackPanel MaxWidth="320">
+                                        <StackPanel.Resources>
+                                            <!--  ReSharper disable Xaml.RedundantResource  -->
+                                            <Thickness x:Key="SettingsCardPadding">16</Thickness>
+                                            <x:Double x:Key="SettingsCardWrapThreshold">0</x:Double>
+                                            <x:Double x:Key="SettingsCardWrapNoIconThreshold">0</x:Double>
+                                            <x:Double x:Key="SettingsCardMinHeight">0</x:Double>
+                                            <!--  ReSharper restore Xaml.RedundantResource  -->
+                                        </StackPanel.Resources>
+                                        <Border
+                                            Padding="8,4"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionBaseBackgroundColor}"/>
+                                            </Border.Background>
+                                            <Border.BorderBrush>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionBaseBorderColor}"/>
+                                            </Border.BorderBrush>
+                                            <shuxct:DescriptionTextBlock Description="{Binding Description}" TextStyle="{StaticResource BodyTextBlockStyle}"/>
+                                        </Border>
+                                        <shuxct:DescriptionTextBlock
+                                            Description="{Binding Description}"
+                                            TextStyle="{StaticResource BodyTextBlockStyle}"
+                                            Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityRevertConverter}}"/>
+                                        <Border
+                                            Margin="0,8,0,0"
+                                            Padding="8,4"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionSpecialBackgroundColor}"/>
+                                            </Border.Background>
+                                            <Border.BorderBrush>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionSpecialBorderColor}"/>
+                                            </Border.BorderBrush>
+                                            <shuxct:DescriptionTextBlock Description="{Binding SpecialDescription}" TextStyle="{StaticResource BodyTextBlockStyle}"/>
+                                        </Border>
+                                        <ItemsControl Margin="0,12,0,0" ItemsSource="{Binding Info.Parameters}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <cwcont:SettingsCard
+                                                        Margin="0,2,0,0"
+                                                        Padding="12,0"
+                                                        Background="{Binding IsSpecial, Converter={StaticResource BoolToSpecialBackgroundConverter}}"
+                                                        Header="{Binding Description}">
+                                                        <TextBlock Margin="0,8" Text="{Binding Parameter}"/>
+                                                    </cwcont:SettingsCard>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                    </materialcases:Case>
+                    <materialcases:Case>
+                        <materialcases:Case.Value>
+                            <x:Int32>1</x:Int32>
+                        </materialcases:Case.Value>
+                        <materialcontrols:LiquidGlassButton
+                            Padding="4"
+                            materialtheme:ControlMaterialState.IsManaged="True"
+                            BorderBrush="{x:Null}">
+                            <materialcontrols:LiquidGlassButton.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="100"/>
+                                    </Grid.ColumnDefinitions>
+                                    <shuxci:CachedImage
+                                        Grid.Column="0"
+                                        Width="36"
+                                        Height="36"
+                                        Source="{Binding Icon}"/>
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="6,0,0,2"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Foreground="#FFFFFFFF"
+                                        Style="{StaticResource BaseTextBlockStyle}"
+                                        Text="{Binding Level}"/>
+                                </Grid>
+                            </materialcontrols:LiquidGlassButton.Content>
+                            <materialcontrols:LiquidGlassButton.Flyout>
+                                <Flyout Placement="Left">
+                                    <StackPanel MaxWidth="320">
+                                        <StackPanel.Resources>
+                                            <!--  ReSharper disable Xaml.RedundantResource  -->
+                                            <Thickness x:Key="SettingsCardPadding">16</Thickness>
+                                            <x:Double x:Key="SettingsCardWrapThreshold">0</x:Double>
+                                            <x:Double x:Key="SettingsCardWrapNoIconThreshold">0</x:Double>
+                                            <x:Double x:Key="SettingsCardMinHeight">0</x:Double>
+                                            <!--  ReSharper restore Xaml.RedundantResource  -->
+                                        </StackPanel.Resources>
+                                        <Border
+                                            Padding="8,4"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionBaseBackgroundColor}"/>
+                                            </Border.Background>
+                                            <Border.BorderBrush>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionBaseBorderColor}"/>
+                                            </Border.BorderBrush>
+                                            <shuxct:DescriptionTextBlock Description="{Binding Description}" TextStyle="{StaticResource BodyTextBlockStyle}"/>
+                                        </Border>
+                                        <shuxct:DescriptionTextBlock
+                                            Description="{Binding Description}"
+                                            TextStyle="{StaticResource BodyTextBlockStyle}"
+                                            Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityRevertConverter}}"/>
+                                        <Border
+                                            Margin="0,8,0,0"
+                                            Padding="8,4"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Visibility="{Binding SpecialDescription, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionSpecialBackgroundColor}"/>
+                                            </Border.Background>
+                                            <Border.BorderBrush>
+                                                <SolidColorBrush Color="{StaticResource SpecialDescriptionSpecialBorderColor}"/>
+                                            </Border.BorderBrush>
+                                            <shuxct:DescriptionTextBlock Description="{Binding SpecialDescription}" TextStyle="{StaticResource BodyTextBlockStyle}"/>
+                                        </Border>
+                                        <ItemsControl Margin="0,12,0,0" ItemsSource="{Binding Info.Parameters}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <cwcont:SettingsCard
+                                                        Margin="0,2,0,0"
+                                                        Padding="12,0"
+                                                        Background="{Binding IsSpecial, Converter={StaticResource BoolToSpecialBackgroundConverter}}"
+                                                        Header="{Binding Description}">
+                                                        <TextBlock Margin="0,8" Text="{Binding Parameter}"/>
+                                                    </cwcont:SettingsCard>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Flyout>
+                            </materialcontrols:LiquidGlassButton.Flyout>
+                        </materialcontrols:LiquidGlassButton>
+                    </materialcases:Case>
+                </materialcases:SwitchPresenter>
             </DataTemplate>
 
             <DataTemplate x:Key="AvatarPropertyTemplate" x:DataType="shva:AvatarProperty">
@@ -687,13 +866,66 @@
                                     Margin="4,8,0,0"
                                     LocalSettingKeySuffixForCurrent="AvatarPropertyPage.Summary.Avatars"/>
                                 <shuxc:SizeRestrictedContentControl Margin="8,8,0,0">
-                                    <ComboBox
-                                        Height="32"
-                                        Padding="12,6,0,7"
-                                        DisplayMemberPath="Name"
-                                        ItemsSource="{Binding SortDescriptionKinds}"
-                                        SelectedItem="{Binding SortDescriptionKind, Mode=TwoWay}"
-                                        Style="{ThemeResource DefaultComboBoxStyle}"/>
+                                    <materialcases:SwitchPresenter
+                                        x:Name="GlassPresenter_38063"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Stretch"
+                                        IsTabStop="False"
+                                        Tag="LiquidGlass:ComboBox"
+                                        Visibility="{Binding Visibility, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                        Value="{Binding ComboBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                        <materialcases:Case>
+                                            <materialcases:Case.Value>
+                                                <x:Int32>0</x:Int32>
+                                            </materialcases:Case.Value>
+                                            <ComboBox
+                                                x:Name="GlassPresenter_38063_State"
+                                                Height="32"
+                                                Padding="12,6,0,7"
+                                                DataContext="{Binding DataContext, ElementName=GlassPresenter_38063, Mode=OneWay}"
+                                                DisplayMemberPath="Name"
+                                                ItemsSource="{Binding SortDescriptionKinds}"
+                                                RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_38063, Mode=OneWay}"
+                                                SelectedItem="{Binding SortDescriptionKind, Mode=TwoWay}"
+                                                Style="{ThemeResource DefaultComboBoxStyle}"/>
+                                        </materialcases:Case>
+                                        <materialcases:Case>
+                                            <materialcases:Case.Value>
+                                                <x:Int32>1</x:Int32>
+                                            </materialcases:Case.Value>
+                                            <materialcontrols:LiquidGlassComboBox
+                                                x:Name="GlassPresenter_38063_StateGlass"
+                                                Width="{Binding Width, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                Height="{Binding Height, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                MinWidth="{Binding MinWidth, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                MinHeight="{Binding MinHeight, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                MaxWidth="{Binding MaxWidth, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                MaxHeight="{Binding MaxHeight, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                Padding="{Binding Padding, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                materialtheme:ControlMaterialState.IsManaged="True"
+                                                materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=GlassPresenter_38063_State}"
+                                                BorderThickness="{Binding BorderThickness, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                DisplayMemberPath="{Binding DisplayMemberPath, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                FlowDirection="{Binding FlowDirection, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                FontFamily="{Binding FontFamily, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                FontSize="{Binding FontSize, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                FontStyle="{Binding FontStyle, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                FontWeight="{Binding FontWeight, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                Foreground="{Binding Foreground, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                Header="{Binding Header, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                HeaderTemplate="{Binding HeaderTemplate, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                IsDropDownOpen="{Binding IsDropDownOpen, ElementName=GlassPresenter_38063_State, Mode=TwoWay}"
+                                                IsEditable="{Binding IsEditable, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                IsEnabled="{Binding IsEnabled, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                IsTextSearchEnabled="{Binding IsTextSearchEnabled, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                ItemsSource="{Binding ItemsSource, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                MaxDropDownHeight="{Binding MaxDropDownHeight, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                PlaceholderText="{Binding PlaceholderText, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                SelectedIndex="{Binding SelectedIndex, ElementName=GlassPresenter_38063_State, Mode=TwoWay}"
+                                                SelectedValuePath="{Binding SelectedValuePath, ElementName=GlassPresenter_38063_State, Mode=OneWay}"
+                                                Style="{ThemeResource DefaultComboBoxStyle}"/>
+                                        </materialcases:Case>
+                                    </materialcases:SwitchPresenter>
                                 </shuxc:SizeRestrictedContentControl>
                             </StackPanel>
                         </CommandBar.Content>
@@ -933,45 +1165,103 @@
                                                                     <ColumnDefinition/>
                                                                     <ColumnDefinition Width="auto"/>
                                                                 </Grid.ColumnDefinitions>
-                                                                <Button
-                                                                    Padding="0"
-                                                                    cw:Effects.Shadow="{ThemeResource CompatCardShadow}"
-                                                                    BorderBrush="{x:Null}"
-                                                                    BorderThickness="0">
-                                                                    <Button.Content>
-                                                                        <shuxc:ItemIcon Icon="{Binding Icon}" Quality="{Binding Quality}"/>
-                                                                    </Button.Content>
-                                                                    <Button.Flyout>
-                                                                        <Flyout Placement="BottomEdgeAlignedLeft">
-                                                                            <StackPanel>
-                                                                                <StackPanel.Resources>
-                                                                                    <!--  ReSharper disable Xaml.RedundantResource  -->
-                                                                                    <x:Double x:Key="SettingsCardSpacing">3</x:Double>
-                                                                                    <x:Double x:Key="SettingsCardMinHeight">0</x:Double>
-                                                                                    <x:Double x:Key="SettingsCardWrapThreshold">0</x:Double>
-                                                                                    <x:Double x:Key="SettingsCardWrapNoIconThreshold">0</x:Double>
-                                                                                    <!--  ReSharper restore Xaml.RedundantResource  -->
-                                                                                </StackPanel.Resources>
-                                                                                <cwcont:SettingsCard
-                                                                                    Margin="0,2,0,0"
-                                                                                    Padding="12"
-                                                                                    Header="{Binding MainProperty.Name}">
-                                                                                    <TextBlock Text="{Binding MainProperty.Value}"/>
-                                                                                </cwcont:SettingsCard>
-                                                                                <cwcont:SettingsCard
-                                                                                    Margin="0,2,0,0"
-                                                                                    Padding="12"
-                                                                                    Header="{Binding SubProperty.Name}">
-                                                                                    <TextBlock Text="{Binding SubProperty.Value}"/>
-                                                                                </cwcont:SettingsCard>
-                                                                                <shuxct:DescriptionTextBlock
-                                                                                    MaxWidth="320"
-                                                                                    Margin="0,12,0,0"
-                                                                                    Description="{Binding AffixDescription}"/>
-                                                                            </StackPanel>
-                                                                        </Flyout>
-                                                                    </Button.Flyout>
-                                                                </Button>
+                                                                <materialcases:SwitchPresenter
+                                                                    x:Name="GlassPresenter_58295"
+                                                                    HorizontalContentAlignment="Stretch"
+                                                                    VerticalContentAlignment="Stretch"
+                                                                    IsTabStop="False"
+                                                                    Tag="LiquidGlass:Button"
+                                                                    Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                                                    <materialcases:Case>
+                                                                        <materialcases:Case.Value>
+                                                                            <x:Int32>0</x:Int32>
+                                                                        </materialcases:Case.Value>
+                                                                        <Button
+                                                                            Padding="0"
+                                                                            cw:Effects.Shadow="{ThemeResource CompatCardShadow}"
+                                                                            BorderBrush="{x:Null}"
+                                                                            BorderThickness="0">
+                                                                            <Button.Content>
+                                                                                <shuxc:ItemIcon Icon="{Binding Icon}" Quality="{Binding Quality}"/>
+                                                                            </Button.Content>
+                                                                            <Button.Flyout>
+                                                                                <Flyout Placement="BottomEdgeAlignedLeft">
+                                                                                    <StackPanel>
+                                                                                        <StackPanel.Resources>
+                                                                                            <!--  ReSharper disable Xaml.RedundantResource  -->
+                                                                                            <x:Double x:Key="SettingsCardSpacing">3</x:Double>
+                                                                                            <x:Double x:Key="SettingsCardMinHeight">0</x:Double>
+                                                                                            <x:Double x:Key="SettingsCardWrapThreshold">0</x:Double>
+                                                                                            <x:Double x:Key="SettingsCardWrapNoIconThreshold">0</x:Double>
+                                                                                            <!--  ReSharper restore Xaml.RedundantResource  -->
+                                                                                        </StackPanel.Resources>
+                                                                                        <cwcont:SettingsCard
+                                                                                            Margin="0,2,0,0"
+                                                                                            Padding="12"
+                                                                                            Header="{Binding MainProperty.Name}">
+                                                                                            <TextBlock Text="{Binding MainProperty.Value}"/>
+                                                                                        </cwcont:SettingsCard>
+                                                                                        <cwcont:SettingsCard
+                                                                                            Margin="0,2,0,0"
+                                                                                            Padding="12"
+                                                                                            Header="{Binding SubProperty.Name}">
+                                                                                            <TextBlock Text="{Binding SubProperty.Value}"/>
+                                                                                        </cwcont:SettingsCard>
+                                                                                        <shuxct:DescriptionTextBlock
+                                                                                            MaxWidth="320"
+                                                                                            Margin="0,12,0,0"
+                                                                                            Description="{Binding AffixDescription}"/>
+                                                                                    </StackPanel>
+                                                                                </Flyout>
+                                                                            </Button.Flyout>
+                                                                        </Button>
+                                                                    </materialcases:Case>
+                                                                    <materialcases:Case>
+                                                                        <materialcases:Case.Value>
+                                                                            <x:Int32>1</x:Int32>
+                                                                        </materialcases:Case.Value>
+                                                                        <materialcontrols:LiquidGlassButton
+                                                                            Padding="0"
+                                                                            cw:Effects.Shadow="{ThemeResource CompatCardShadow}"
+                                                                            materialtheme:ControlMaterialState.IsManaged="True"
+                                                                            BorderBrush="{x:Null}"
+                                                                            BorderThickness="0">
+                                                                            <materialcontrols:LiquidGlassButton.Content>
+                                                                                <shuxc:ItemIcon Icon="{Binding Icon}" Quality="{Binding Quality}"/>
+                                                                            </materialcontrols:LiquidGlassButton.Content>
+                                                                            <materialcontrols:LiquidGlassButton.Flyout>
+                                                                                <Flyout Placement="BottomEdgeAlignedLeft">
+                                                                                    <StackPanel>
+                                                                                        <StackPanel.Resources>
+                                                                                            <!--  ReSharper disable Xaml.RedundantResource  -->
+                                                                                            <x:Double x:Key="SettingsCardSpacing">3</x:Double>
+                                                                                            <x:Double x:Key="SettingsCardMinHeight">0</x:Double>
+                                                                                            <x:Double x:Key="SettingsCardWrapThreshold">0</x:Double>
+                                                                                            <x:Double x:Key="SettingsCardWrapNoIconThreshold">0</x:Double>
+                                                                                            <!--  ReSharper restore Xaml.RedundantResource  -->
+                                                                                        </StackPanel.Resources>
+                                                                                        <cwcont:SettingsCard
+                                                                                            Margin="0,2,0,0"
+                                                                                            Padding="12"
+                                                                                            Header="{Binding MainProperty.Name}">
+                                                                                            <TextBlock Text="{Binding MainProperty.Value}"/>
+                                                                                        </cwcont:SettingsCard>
+                                                                                        <cwcont:SettingsCard
+                                                                                            Margin="0,2,0,0"
+                                                                                            Padding="12"
+                                                                                            Header="{Binding SubProperty.Name}">
+                                                                                            <TextBlock Text="{Binding SubProperty.Value}"/>
+                                                                                        </cwcont:SettingsCard>
+                                                                                        <shuxct:DescriptionTextBlock
+                                                                                            MaxWidth="320"
+                                                                                            Margin="0,12,0,0"
+                                                                                            Description="{Binding AffixDescription}"/>
+                                                                                    </StackPanel>
+                                                                                </Flyout>
+                                                                            </materialcontrols:LiquidGlassButton.Flyout>
+                                                                        </materialcontrols:LiquidGlassButton>
+                                                                    </materialcases:Case>
+                                                                </materialcases:SwitchPresenter>
                                                                 <StackPanel Grid.Column="1" Margin="16,0,0,0">
                                                                     <TextBlock
                                                                         Foreground="#FFFFFFFF"

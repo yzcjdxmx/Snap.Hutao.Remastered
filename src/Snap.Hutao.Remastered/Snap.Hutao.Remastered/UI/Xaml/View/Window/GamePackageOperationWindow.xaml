@@ -4,6 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dev="using:DevWinUI"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shuxb="using:Snap.Hutao.Remastered.UI.Xaml.Behavior"
@@ -87,32 +90,113 @@
             </Grid>
         </ScrollViewer>
 
-        <Button
+        <materialcases:SwitchPresenter
+            x:Name="GlassPresenter_4275"
             Grid.Row="2"
-            MinWidth="120"
             Margin="16"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Command="{Binding CancelCommand}"
-            Content="{shuxm:ResourceString Name=ContentDialogPauseButtonText}"
-            Visibility="{Binding CanCancel, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        <Button
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            IsTabStop="False"
+            Tag="LiquidGlass:Button"
+            Visibility="{Binding CanCancel, Converter={StaticResource BoolToVisibilityConverter}}"
+            Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>0</x:Int32>
+                </materialcases:Case.Value>
+                <Button
+                    MinWidth="120"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding CancelCommand}"
+                    Content="{shuxm:ResourceString Name=ContentDialogPauseButtonText}"/>
+            </materialcases:Case>
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>1</x:Int32>
+                </materialcases:Case.Value>
+                <materialcontrols:LiquidGlassButton
+                    MinWidth="120"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    materialtheme:ControlMaterialState.IsManaged="True"
+                    Command="{Binding CancelCommand}"
+                    Content="{shuxm:ResourceString Name=ContentDialogPauseButtonText}"/>
+            </materialcases:Case>
+        </materialcases:SwitchPresenter>
+        <materialcases:SwitchPresenter
+            x:Name="GlassPresenter_4672"
             Grid.Row="2"
-            MinWidth="120"
             Margin="16"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Command="{Binding ContinueCommand}"
-            Content="{shuxm:ResourceString Name=ViewModelGamePackageOperationContinueDownloadButtonText}"
-            Visibility="{Binding CanContinue, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        <Button
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            IsTabStop="False"
+            Tag="LiquidGlass:Button"
+            Visibility="{Binding CanContinue, Converter={StaticResource BoolToVisibilityConverter}}"
+            Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>0</x:Int32>
+                </materialcases:Case.Value>
+                <Button
+                    MinWidth="120"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding ContinueCommand}"
+                    Content="{shuxm:ResourceString Name=ViewModelGamePackageOperationContinueDownloadButtonText}"/>
+            </materialcases:Case>
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>1</x:Int32>
+                </materialcases:Case.Value>
+                <materialcontrols:LiquidGlassButton
+                    MinWidth="120"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    materialtheme:ControlMaterialState.IsManaged="True"
+                    Command="{Binding ContinueCommand}"
+                    Content="{shuxm:ResourceString Name=ViewModelGamePackageOperationContinueDownloadButtonText}"/>
+            </materialcases:Case>
+        </materialcases:SwitchPresenter>
+        <materialcases:SwitchPresenter
+            x:Name="GlassPresenter_5100"
             Grid.Row="2"
-            MinWidth="120"
             Margin="16"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Command="{x:Bind CloseCommand}"
-            Content="{shuxm:ResourceString Name=ContentDialogCompletePrimaryButtonText}"
-            Visibility="{Binding IsFinished, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            IsTabStop="False"
+            Tag="LiquidGlass:Button"
+            Visibility="{Binding IsFinished, Converter={StaticResource BoolToVisibilityConverter}}"
+            Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>0</x:Int32>
+                </materialcases:Case.Value>
+                <Button
+                    MinWidth="120"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Command="{x:Bind CloseCommand}"
+                    Content="{shuxm:ResourceString Name=ContentDialogCompletePrimaryButtonText}"/>
+            </materialcases:Case>
+            <materialcases:Case>
+                <materialcases:Case.Value>
+                    <x:Int32>1</x:Int32>
+                </materialcases:Case.Value>
+                <materialcontrols:LiquidGlassButton
+                    MinWidth="120"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    materialtheme:ControlMaterialState.IsManaged="True"
+                    Command="{x:Bind CloseCommand}"
+                    Content="{shuxm:ResourceString Name=ContentDialogCompletePrimaryButtonText}"/>
+            </materialcases:Case>
+        </materialcases:SwitchPresenter>
     </Grid>
 </Window>

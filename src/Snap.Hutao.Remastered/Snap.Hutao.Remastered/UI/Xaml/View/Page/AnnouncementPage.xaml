@@ -8,6 +8,9 @@
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:cwconv="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shux="using:Snap.Hutao.Remastered.UI.Xaml"
@@ -47,10 +50,30 @@
                 Message="{Binding Content}"
                 Severity="{Binding Severity}">
                 <StackPanel Margin="0,0,0,8" Orientation="Horizontal">
-                    <HyperlinkButton
-                        Content="{shuxm:ResourceString Name=ViewPageAnnouncementViewDetails}"
-                        NavigateUri="{Binding Link}"
-                        Visibility="{Binding Link, Converter={StaticResource EmptyStringToBoolConverter}}"/>
+                    <materialcases:SwitchPresenter
+                        x:Name="GlassPresenter_2692"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        IsTabStop="False"
+                        Tag="LiquidGlass:HyperlinkButton"
+                        Visibility="{Binding Link, Converter={StaticResource EmptyStringToBoolConverter}}"
+                        Value="{Binding HyperlinkButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>0</x:Int32>
+                            </materialcases:Case.Value>
+                            <HyperlinkButton Content="{shuxm:ResourceString Name=ViewPageAnnouncementViewDetails}" NavigateUri="{Binding Link}"/>
+                        </materialcases:Case>
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>1</x:Int32>
+                            </materialcases:Case.Value>
+                            <materialcontrols:LiquidGlassHyperlinkButton
+                                materialtheme:ControlMaterialState.IsManaged="True"
+                                Content="{shuxm:ResourceString Name=ViewPageAnnouncementViewDetails}"
+                                NavigateUri="{Binding Link}"/>
+                        </materialcases:Case>
+                    </materialcases:SwitchPresenter>
                     <TextBlock
                         Margin="8,0,0,2"
                         VerticalAlignment="Center"
@@ -199,55 +222,122 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Margin="0,6">
-                            <Button Padding="0">
-                                <Button.Flyout>
-                                    <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
-                                        <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid>
-                                                        <shuxc:ItemIcon
-                                                            Width="48"
-                                                            Height="48"
-                                                            Icon="{Binding Icon}"
-                                                            Quality="{Binding Rarity}"/>
-                                                        <Border
-                                                            HorizontalAlignment="Stretch"
-                                                            VerticalAlignment="Bottom"
-                                                            Background="#80000000"
-                                                            CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                                            <TextBlock
-                                                                MaxWidth="48"
-                                                                HorizontalAlignment="Center"
-                                                                Foreground="#FFFFFFFF"
-                                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                Text="{Binding Number}"/>
-                                                        </Border>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </Flyout>
-                                </Button.Flyout>
-                                <Grid DataContext="{Binding RewardList[0]}">
-                                    <shuxc:ItemIcon
-                                        Width="36"
-                                        Height="36"
-                                        Icon="{Binding Icon}"
-                                        Quality="{Binding Rarity}"/>
-                                    <Border
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Bottom"
-                                        Background="#80000000"
-                                        CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                        <TextBlock
-                                            HorizontalAlignment="Center"
-                                            Foreground="#FFFFFFFF"
-                                            Style="{ThemeResource CaptionTextBlockStyle}"
-                                            Text="{Binding Number}"/>
-                                    </Border>
-                                </Grid>
-                            </Button>
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_11528"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:Button"
+                                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <Button Padding="0">
+                                        <Button.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </Button.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </Button>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassButton Padding="0" materialtheme:ControlMaterialState.IsManaged="True">
+                                        <materialcontrols:LiquidGlassButton.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </materialcontrols:LiquidGlassButton.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </materialcontrols:LiquidGlassButton>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
                         </Grid>
                         <Border
                             Grid.Row="0"
@@ -295,55 +385,122 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Margin="0,6">
-                            <Button Padding="0">
-                                <Button.Flyout>
-                                    <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
-                                        <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid>
-                                                        <shuxc:ItemIcon
-                                                            Width="48"
-                                                            Height="48"
-                                                            Icon="{Binding Icon}"
-                                                            Quality="{Binding Rarity}"/>
-                                                        <Border
-                                                            HorizontalAlignment="Stretch"
-                                                            VerticalAlignment="Bottom"
-                                                            Background="#80000000"
-                                                            CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                                            <TextBlock
-                                                                MaxWidth="48"
-                                                                HorizontalAlignment="Center"
-                                                                Foreground="#FFFFFFFF"
-                                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                Text="{Binding Number}"/>
-                                                        </Border>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </Flyout>
-                                </Button.Flyout>
-                                <Grid DataContext="{Binding RewardList[0]}">
-                                    <shuxc:ItemIcon
-                                        Width="36"
-                                        Height="36"
-                                        Icon="{Binding Icon}"
-                                        Quality="{Binding Rarity}"/>
-                                    <Border
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Bottom"
-                                        Background="#80000000"
-                                        CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                        <TextBlock
-                                            HorizontalAlignment="Center"
-                                            Foreground="#FFFFFFFF"
-                                            Style="{ThemeResource CaptionTextBlockStyle}"
-                                            Text="{Binding Number}"/>
-                                    </Border>
-                                </Grid>
-                            </Button>
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_17493"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:Button"
+                                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <Button Padding="0">
+                                        <Button.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </Button.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </Button>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassButton Padding="0" materialtheme:ControlMaterialState.IsManaged="True">
+                                        <materialcontrols:LiquidGlassButton.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </materialcontrols:LiquidGlassButton.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </materialcontrols:LiquidGlassButton>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
                         </Grid>
                         <Border
                             Grid.Row="0"
@@ -391,55 +548,122 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Margin="0,6">
-                            <Button Padding="0">
-                                <Button.Flyout>
-                                    <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
-                                        <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid>
-                                                        <shuxc:ItemIcon
-                                                            Width="48"
-                                                            Height="48"
-                                                            Icon="{Binding Icon}"
-                                                            Quality="{Binding Rarity}"/>
-                                                        <Border
-                                                            HorizontalAlignment="Stretch"
-                                                            VerticalAlignment="Bottom"
-                                                            Background="#80000000"
-                                                            CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                                            <TextBlock
-                                                                MaxWidth="48"
-                                                                HorizontalAlignment="Center"
-                                                                Foreground="#FFFFFFFF"
-                                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                Text="{Binding Number}"/>
-                                                        </Border>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </Flyout>
-                                </Button.Flyout>
-                                <Grid DataContext="{Binding RewardList[0]}">
-                                    <shuxc:ItemIcon
-                                        Width="36"
-                                        Height="36"
-                                        Icon="{Binding Icon}"
-                                        Quality="{Binding Rarity}"/>
-                                    <Border
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Bottom"
-                                        Background="#80000000"
-                                        CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                        <TextBlock
-                                            HorizontalAlignment="Center"
-                                            Foreground="#FFFFFFFF"
-                                            Style="{ThemeResource CaptionTextBlockStyle}"
-                                            Text="{Binding Number}"/>
-                                    </Border>
-                                </Grid>
-                            </Button>
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_23460"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:Button"
+                                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <Button Padding="0">
+                                        <Button.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </Button.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </Button>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassButton Padding="0" materialtheme:ControlMaterialState.IsManaged="True">
+                                        <materialcontrols:LiquidGlassButton.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </materialcontrols:LiquidGlassButton.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </materialcontrols:LiquidGlassButton>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
                         </Grid>
                         <Border
                             Grid.Row="0"
@@ -487,55 +711,122 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Margin="0,6">
-                            <Button Padding="0">
-                                <Button.Flyout>
-                                    <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
-                                        <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid>
-                                                        <shuxc:ItemIcon
-                                                            Width="48"
-                                                            Height="48"
-                                                            Icon="{Binding Icon}"
-                                                            Quality="{Binding Rarity}"/>
-                                                        <Border
-                                                            HorizontalAlignment="Stretch"
-                                                            VerticalAlignment="Bottom"
-                                                            Background="#80000000"
-                                                            CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                                            <TextBlock
-                                                                MaxWidth="48"
-                                                                HorizontalAlignment="Center"
-                                                                Foreground="#FFFFFFFF"
-                                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                Text="{Binding Number}"/>
-                                                        </Border>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </Flyout>
-                                </Button.Flyout>
-                                <Grid DataContext="{Binding RewardList[0]}">
-                                    <shuxc:ItemIcon
-                                        Width="36"
-                                        Height="36"
-                                        Icon="{Binding Icon}"
-                                        Quality="{Binding Rarity}"/>
-                                    <Border
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Bottom"
-                                        Background="#80000000"
-                                        CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                        <TextBlock
-                                            HorizontalAlignment="Center"
-                                            Foreground="#FFFFFFFF"
-                                            Style="{ThemeResource CaptionTextBlockStyle}"
-                                            Text="{Binding Number}"/>
-                                    </Border>
-                                </Grid>
-                            </Button>
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_29446"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:Button"
+                                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <Button Padding="0">
+                                        <Button.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </Button.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </Button>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassButton Padding="0" materialtheme:ControlMaterialState.IsManaged="True">
+                                        <materialcontrols:LiquidGlassButton.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </materialcontrols:LiquidGlassButton.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </materialcontrols:LiquidGlassButton>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
                         </Grid>
                         <Border
                             Grid.Row="0"
@@ -583,55 +874,122 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Margin="0,6">
-                            <Button Padding="0">
-                                <Button.Flyout>
-                                    <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
-                                        <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid>
-                                                        <shuxc:ItemIcon
-                                                            Width="48"
-                                                            Height="48"
-                                                            Icon="{Binding Icon}"
-                                                            Quality="{Binding Rarity}"/>
-                                                        <Border
-                                                            HorizontalAlignment="Stretch"
-                                                            VerticalAlignment="Bottom"
-                                                            Background="#80000000"
-                                                            CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                                            <TextBlock
-                                                                MaxWidth="48"
-                                                                HorizontalAlignment="Center"
-                                                                Foreground="#FFFFFFFF"
-                                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                Text="{Binding Number}"/>
-                                                        </Border>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </Flyout>
-                                </Button.Flyout>
-                                <Grid DataContext="{Binding RewardList[0]}">
-                                    <shuxc:ItemIcon
-                                        Width="36"
-                                        Height="36"
-                                        Icon="{Binding Icon}"
-                                        Quality="{Binding Rarity}"/>
-                                    <Border
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Bottom"
-                                        Background="#80000000"
-                                        CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                        <TextBlock
-                                            HorizontalAlignment="Center"
-                                            Foreground="#FFFFFFFF"
-                                            Style="{ThemeResource CaptionTextBlockStyle}"
-                                            Text="{Binding Number}"/>
-                                    </Border>
-                                </Grid>
-                            </Button>
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_35408"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:Button"
+                                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <Button Padding="0">
+                                        <Button.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </Button.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </Button>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassButton Padding="0" materialtheme:ControlMaterialState.IsManaged="True">
+                                        <materialcontrols:LiquidGlassButton.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </materialcontrols:LiquidGlassButton.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </materialcontrols:LiquidGlassButton>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
 
                         </Grid>
                         <Border
@@ -680,55 +1038,122 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Margin="0,6">
-                            <Button Padding="0">
-                                <Button.Flyout>
-                                    <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
-                                        <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid>
-                                                        <shuxc:ItemIcon
-                                                            Width="48"
-                                                            Height="48"
-                                                            Icon="{Binding Icon}"
-                                                            Quality="{Binding Rarity}"/>
-                                                        <Border
-                                                            HorizontalAlignment="Stretch"
-                                                            VerticalAlignment="Bottom"
-                                                            Background="#80000000"
-                                                            CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                                            <TextBlock
-                                                                MaxWidth="48"
-                                                                HorizontalAlignment="Center"
-                                                                Foreground="#FFFFFFFF"
-                                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                Text="{Binding Number}"/>
-                                                        </Border>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </Flyout>
-                                </Button.Flyout>
-                                <Grid DataContext="{Binding RewardList[0]}">
-                                    <shuxc:ItemIcon
-                                        Width="36"
-                                        Height="36"
-                                        Icon="{Binding Icon}"
-                                        Quality="{Binding Rarity}"/>
-                                    <Border
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Bottom"
-                                        Background="#80000000"
-                                        CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                        <TextBlock
-                                            HorizontalAlignment="Center"
-                                            Foreground="#FFFFFFFF"
-                                            Style="{ThemeResource CaptionTextBlockStyle}"
-                                            Text="{Binding Number}"/>
-                                    </Border>
-                                </Grid>
-                            </Button>
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_41391"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:Button"
+                                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <Button Padding="0">
+                                        <Button.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </Button.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </Button>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassButton Padding="0" materialtheme:ControlMaterialState.IsManaged="True">
+                                        <materialcontrols:LiquidGlassButton.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </materialcontrols:LiquidGlassButton.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </materialcontrols:LiquidGlassButton>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
 
                         </Grid>
                         <Border
@@ -777,55 +1202,122 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Margin="0,6">
-                            <Button Padding="0">
-                                <Button.Flyout>
-                                    <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
-                                        <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid>
-                                                        <shuxc:ItemIcon
-                                                            Width="48"
-                                                            Height="48"
-                                                            Icon="{Binding Icon}"
-                                                            Quality="{Binding Rarity}"/>
-                                                        <Border
-                                                            HorizontalAlignment="Stretch"
-                                                            VerticalAlignment="Bottom"
-                                                            Background="#80000000"
-                                                            CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                                            <TextBlock
-                                                                MaxWidth="48"
-                                                                HorizontalAlignment="Center"
-                                                                Foreground="#FFFFFFFF"
-                                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                Text="{Binding Number}"/>
-                                                        </Border>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </Flyout>
-                                </Button.Flyout>
-                                <Grid DataContext="{Binding RewardList[0]}">
-                                    <shuxc:ItemIcon
-                                        Width="36"
-                                        Height="36"
-                                        Icon="{Binding Icon}"
-                                        Quality="{Binding Rarity}"/>
-                                    <Border
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Bottom"
-                                        Background="#80000000"
-                                        CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                        <TextBlock
-                                            HorizontalAlignment="Center"
-                                            Foreground="#FFFFFFFF"
-                                            Style="{ThemeResource CaptionTextBlockStyle}"
-                                            Text="{Binding Number}"/>
-                                    </Border>
-                                </Grid>
-                            </Button>
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_47394"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:Button"
+                                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <Button Padding="0">
+                                        <Button.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </Button.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </Button>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassButton Padding="0" materialtheme:ControlMaterialState.IsManaged="True">
+                                        <materialcontrols:LiquidGlassButton.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </materialcontrols:LiquidGlassButton.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </materialcontrols:LiquidGlassButton>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
 
                         </Grid>
                         <Border
@@ -874,55 +1366,122 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Margin="0,6">
-                            <Button Padding="0">
-                                <Button.Flyout>
-                                    <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
-                                        <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid>
-                                                        <shuxc:ItemIcon
-                                                            Width="48"
-                                                            Height="48"
-                                                            Icon="{Binding Icon}"
-                                                            Quality="{Binding Rarity}"/>
-                                                        <Border
-                                                            HorizontalAlignment="Stretch"
-                                                            VerticalAlignment="Bottom"
-                                                            Background="#80000000"
-                                                            CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                                            <TextBlock
-                                                                MaxWidth="48"
-                                                                HorizontalAlignment="Center"
-                                                                Foreground="#FFFFFFFF"
-                                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                Text="{Binding Number}"/>
-                                                        </Border>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </Flyout>
-                                </Button.Flyout>
-                                <Grid DataContext="{Binding RewardList[0]}">
-                                    <shuxc:ItemIcon
-                                        Width="36"
-                                        Height="36"
-                                        Icon="{Binding Icon}"
-                                        Quality="{Binding Rarity}"/>
-                                    <Border
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Bottom"
-                                        Background="#80000000"
-                                        CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
-                                        <TextBlock
-                                            HorizontalAlignment="Center"
-                                            Foreground="#FFFFFFFF"
-                                            Style="{ThemeResource CaptionTextBlockStyle}"
-                                            Text="{Binding Number}"/>
-                                    </Border>
-                                </Grid>
-                            </Button>
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_53387"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:Button"
+                                Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <Button Padding="0">
+                                        <Button.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </Button.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </Button>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassButton Padding="0" materialtheme:ControlMaterialState.IsManaged="True">
+                                        <materialcontrols:LiquidGlassButton.Flyout>
+                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                                <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{Binding RewardList}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <shuxc:ItemIcon
+                                                                    Width="48"
+                                                                    Height="48"
+                                                                    Icon="{Binding Icon}"
+                                                                    Quality="{Binding Rarity}"/>
+                                                                <Border
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Bottom"
+                                                                    Background="#80000000"
+                                                                    CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                                    <TextBlock
+                                                                        MaxWidth="48"
+                                                                        HorizontalAlignment="Center"
+                                                                        Foreground="#FFFFFFFF"
+                                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                        Text="{Binding Number}"/>
+                                                                </Border>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Flyout>
+                                        </materialcontrols:LiquidGlassButton.Flyout>
+                                        <Grid DataContext="{Binding RewardList[0]}">
+                                            <shuxc:ItemIcon
+                                                Width="36"
+                                                Height="36"
+                                                Icon="{Binding Icon}"
+                                                Quality="{Binding Rarity}"/>
+                                            <Border
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Bottom"
+                                                Background="#80000000"
+                                                CornerRadius="{ThemeResource ControlCornerRadiusBottom}">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Foreground="#FFFFFFFF"
+                                                    Style="{ThemeResource CaptionTextBlockStyle}"
+                                                    Text="{Binding Number}"/>
+                                            </Border>
+                                        </Grid>
+                                    </materialcontrols:LiquidGlassButton>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
                         </Grid>
                         <Border
                             Grid.Row="0"
@@ -997,15 +1556,42 @@
                                                                 TextTrimming="CharacterEllipsis"
                                                                 TextWrapping="NoWrap"/>
                                                         </StackPanel>
-                                                        <Button
+                                                        <materialcases:SwitchPresenter
+                                                            x:Name="GlassPresenter_61882"
                                                             Grid.Column="1"
                                                             VerticalAlignment="Stretch"
-                                                            Background="Transparent"
-                                                            Command="{Binding DataContext.CopyCodeCommand, Source={StaticResource ViewModelBindingProxy}}"
-                                                            CommandParameter="{Binding Code}"
-                                                            Content="{StaticResource FontIconContentCopy}"
-                                                            FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                                            Style="{StaticResource ButtonRevealStyle}"/>
+                                                            HorizontalContentAlignment="Stretch"
+                                                            VerticalContentAlignment="Stretch"
+                                                            IsTabStop="False"
+                                                            Tag="LiquidGlass:Button"
+                                                            Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                                            <materialcases:Case>
+                                                                <materialcases:Case.Value>
+                                                                    <x:Int32>0</x:Int32>
+                                                                </materialcases:Case.Value>
+                                                                <Button
+                                                                    VerticalAlignment="Stretch"
+                                                                    Background="Transparent"
+                                                                    Command="{Binding DataContext.CopyCodeCommand, Source={StaticResource ViewModelBindingProxy}}"
+                                                                    CommandParameter="{Binding Code}"
+                                                                    Content="{StaticResource FontIconContentCopy}"
+                                                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                                    Style="{StaticResource ButtonRevealStyle}"/>
+                                                            </materialcases:Case>
+                                                            <materialcases:Case>
+                                                                <materialcases:Case.Value>
+                                                                    <x:Int32>1</x:Int32>
+                                                                </materialcases:Case.Value>
+                                                                <materialcontrols:LiquidGlassButton
+                                                                    VerticalAlignment="Stretch"
+                                                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                                                    Command="{Binding DataContext.CopyCodeCommand, Source={StaticResource ViewModelBindingProxy}}"
+                                                                    CommandParameter="{Binding Code}"
+                                                                    Content="{StaticResource FontIconContentCopy}"
+                                                                    FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                                                    Style="{StaticResource ButtonRevealStyle}"/>
+                                                            </materialcases:Case>
+                                                        </materialcases:SwitchPresenter>
                                                     </Grid>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>

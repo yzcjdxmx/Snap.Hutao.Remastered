@@ -5,6 +5,9 @@
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:cwh="using:CommunityToolkit.WinUI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialcases="using:CommunityToolkit.WinUI.Controls"
+    xmlns:materialcontrols="using:WinUI.LiquidGlass"
+    xmlns:materialtheme="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shuxb="using:Snap.Hutao.Remastered.UI.Xaml.Behavior"
@@ -79,27 +82,111 @@
 
                 <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="State"/>
                 <cwc:SettingsCard Header="Reset Guide State">
-                    <Button
-                        Command="{Binding ResetGuideStateCommand}"
-                        Content="Reset (No restart)"
-                        Style="{ThemeResource SettingButtonStyle}"/>
+                    <materialcases:SwitchPresenter
+                        x:Name="GlassPresenter_5460"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        IsTabStop="False"
+                        Tag="LiquidGlass:Button"
+                        Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>0</x:Int32>
+                            </materialcases:Case.Value>
+                            <Button
+                                Command="{Binding ResetGuideStateCommand}"
+                                Content="Reset (No restart)"
+                                Style="{ThemeResource SettingButtonStyle}"/>
+                        </materialcases:Case>
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>1</x:Int32>
+                            </materialcases:Case.Value>
+                            <materialcontrols:LiquidGlassButton
+                                materialtheme:ControlMaterialState.IsManaged="True"
+                                Command="{Binding ResetGuideStateCommand}"
+                                Content="Reset (No restart)"
+                                Style="{ThemeResource SettingButtonStyle}"/>
+                        </materialcases:Case>
+                    </materialcases:SwitchPresenter>
                 </cwc:SettingsCard>
 
                 <cwc:SettingsCard Header="Resize MainWindow">
-                    <Button
-                        Command="{Binding ResetMainWindowSizeCommand}"
-                        Content="Reset"
-                        Style="{ThemeResource SettingButtonStyle}"/>
+                    <materialcases:SwitchPresenter
+                        x:Name="GlassPresenter_5776"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        IsTabStop="False"
+                        Tag="LiquidGlass:Button"
+                        Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>0</x:Int32>
+                            </materialcases:Case.Value>
+                            <Button
+                                Command="{Binding ResetMainWindowSizeCommand}"
+                                Content="Reset"
+                                Style="{ThemeResource SettingButtonStyle}"/>
+                        </materialcases:Case>
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>1</x:Int32>
+                            </materialcases:Case.Value>
+                            <materialcontrols:LiquidGlassButton
+                                materialtheme:ControlMaterialState.IsManaged="True"
+                                Command="{Binding ResetMainWindowSizeCommand}"
+                                Content="Reset"
+                                Style="{ThemeResource SettingButtonStyle}"/>
+                        </materialcases:Case>
+                    </materialcases:SwitchPresenter>
                 </cwc:SettingsCard>
 
                 <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Condition Override"/>
 
                 <cwc:SettingsCard Header="Override Elevation Requirement">
-                    <ToggleSwitch IsOn="{Binding OverrideElevationRequirement, Mode=TwoWay}"/>
+                    <materialcases:SwitchPresenter
+                        x:Name="GlassPresenter_6212"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        IsTabStop="False"
+                        Tag="LiquidGlass:ToggleSwitch"
+                        Value="{Binding ToggleSwitchMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>0</x:Int32>
+                            </materialcases:Case.Value>
+                            <ToggleSwitch IsOn="{Binding OverrideElevationRequirement, Mode=TwoWay}"/>
+                        </materialcases:Case>
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>1</x:Int32>
+                            </materialcases:Case.Value>
+                            <materialcontrols:LiquidGlassToggleSwitch materialtheme:ControlMaterialState.IsManaged="True" IsOn="{Binding OverrideElevationRequirement, Mode=TwoWay}"/>
+                        </materialcases:Case>
+                    </materialcases:SwitchPresenter>
                 </cwc:SettingsCard>
 
                 <cwc:SettingsCard Header="Override Update Version Comparison">
-                    <ToggleSwitch IsOn="{Binding OverrideUpdateVersionComparison, Mode=TwoWay}"/>
+                    <materialcases:SwitchPresenter
+                        x:Name="GlassPresenter_6423"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        IsTabStop="False"
+                        Tag="LiquidGlass:ToggleSwitch"
+                        Value="{Binding ToggleSwitchMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>0</x:Int32>
+                            </materialcases:Case.Value>
+                            <ToggleSwitch IsOn="{Binding OverrideUpdateVersionComparison, Mode=TwoWay}"/>
+                        </materialcases:Case>
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>1</x:Int32>
+                            </materialcases:Case.Value>
+                            <materialcontrols:LiquidGlassToggleSwitch materialtheme:ControlMaterialState.IsManaged="True" IsOn="{Binding OverrideUpdateVersionComparison, Mode=TwoWay}"/>
+                        </materialcases:Case>
+                    </materialcases:SwitchPresenter>
                 </cwc:SettingsCard>
 
                 <cwc:SettingsCard
@@ -109,36 +196,216 @@
                     IsClickEnabled="True"/>
 
                 <cwc:SettingsCard Header="Override Package Convert Directory Permission Requirement">
-                    <ToggleSwitch IsOn="{Binding OverridePackageConvertDirectoryPermissionsRequirement, Mode=TwoWay}"/>
+                    <materialcases:SwitchPresenter
+                        x:Name="GlassPresenter_6955"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        IsTabStop="False"
+                        Tag="LiquidGlass:ToggleSwitch"
+                        Value="{Binding ToggleSwitchMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>0</x:Int32>
+                            </materialcases:Case.Value>
+                            <ToggleSwitch IsOn="{Binding OverridePackageConvertDirectoryPermissionsRequirement, Mode=TwoWay}"/>
+                        </materialcases:Case>
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>1</x:Int32>
+                            </materialcases:Case.Value>
+                            <materialcontrols:LiquidGlassToggleSwitch materialtheme:ControlMaterialState.IsManaged="True" IsOn="{Binding OverridePackageConvertDirectoryPermissionsRequirement, Mode=TwoWay}"/>
+                        </materialcases:Case>
+                    </materialcases:SwitchPresenter>
                 </cwc:SettingsCard>
 
                 <cwc:SettingsCard Header="Override Hard Drive Type">
                     <StackPanel Orientation="Horizontal" Spacing="{ThemeResource SettingsCardContentControlSpacing}">
-                        <ToggleSwitch
-                            IsEnabled="{x:Bind HardDriveTypeToggle.IsOn, Mode=OneWay}"
-                            IsOn="{Binding OverrideHardDriveTypeIsSolidState, Mode=TwoWay}"
-                            OffContent="HDD"
-                            OnContent="SSD"/>
-                        <ToggleSwitch x:Name="HardDriveTypeToggle" IsOn="{Binding OverrideHardDriveType, Mode=TwoWay}"/>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_7303"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:ToggleSwitch"
+                            Value="{Binding ToggleSwitchMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <ToggleSwitch
+                                    IsEnabled="{x:Bind HardDriveTypeToggle.IsOn, Mode=OneWay}"
+                                    IsOn="{Binding OverrideHardDriveTypeIsSolidState, Mode=TwoWay}"
+                                    OffContent="HDD"
+                                    OnContent="SSD"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassToggleSwitch
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    IsEnabled="{x:Bind HardDriveTypeToggle.IsOn, Mode=OneWay}"
+                                    IsOn="{Binding OverrideHardDriveTypeIsSolidState, Mode=TwoWay}"
+                                    OffContent="HDD"
+                                    OnContent="SSD"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_7611"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:ToggleSwitch"
+                            Visibility="{Binding Visibility, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                            Value="{Binding ToggleSwitchMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <ToggleSwitch
+                                    x:Name="HardDriveTypeToggle"
+                                    DataContext="{Binding DataContext, ElementName=GlassPresenter_7611, Mode=OneWay}"
+                                    IsOn="{Binding OverrideHardDriveType, Mode=TwoWay}"
+                                    RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_7611, Mode=OneWay}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassToggleSwitch
+                                    x:Name="HardDriveTypeToggleGlass"
+                                    Width="{Binding Width, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    MinWidth="{Binding MinWidth, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    MinHeight="{Binding MinHeight, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    MaxWidth="{Binding MaxWidth, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    MaxHeight="{Binding MaxHeight, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    Padding="{Binding Padding, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=HardDriveTypeToggle}"
+                                    BorderThickness="{Binding BorderThickness, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    FlowDirection="{Binding FlowDirection, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    FontFamily="{Binding FontFamily, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    FontSize="{Binding FontSize, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    FontStyle="{Binding FontStyle, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    FontWeight="{Binding FontWeight, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    Foreground="{Binding Foreground, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    Header="{Binding Header, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    HeaderTemplate="{Binding HeaderTemplate, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    IsEnabled="{Binding IsEnabled, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    IsOn="{Binding IsOn, ElementName=HardDriveTypeToggle, Mode=TwoWay}"
+                                    OffContent="{Binding OffContent, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    OffContentTemplate="{Binding OffContentTemplate, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    OnContent="{Binding OnContent, ElementName=HardDriveTypeToggle, Mode=OneWay}"
+                                    OnContentTemplate="{Binding OnContentTemplate, ElementName=HardDriveTypeToggle, Mode=OneWay}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                     </StackPanel>
                 </cwc:SettingsCard>
 
                 <cwc:SettingsCard Header="Always Treat As First Run After Update">
-                    <ToggleSwitch IsOn="{Binding AlwaysIsFirstRunAfterUpdate, Mode=TwoWay}"/>
+                    <materialcases:SwitchPresenter
+                        x:Name="GlassPresenter_7882"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        IsTabStop="False"
+                        Tag="LiquidGlass:ToggleSwitch"
+                        Value="{Binding ToggleSwitchMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>0</x:Int32>
+                            </materialcases:Case.Value>
+                            <ToggleSwitch IsOn="{Binding AlwaysIsFirstRunAfterUpdate, Mode=TwoWay}"/>
+                        </materialcases:Case>
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>1</x:Int32>
+                            </materialcases:Case.Value>
+                            <materialcontrols:LiquidGlassToggleSwitch materialtheme:ControlMaterialState.IsManaged="True" IsOn="{Binding AlwaysIsFirstRunAfterUpdate, Mode=TwoWay}"/>
+                        </materialcases:Case>
+                    </materialcases:SwitchPresenter>
                 </cwc:SettingsCard>
 
                 <cwc:SettingsCard Header="Alpha Build Generic API Endpoint">
                     <StackPanel Orientation="Horizontal" Spacing="{ThemeResource SettingsCardContentControlSpacing}">
-                        <ToggleSwitch
-                            x:Name="GenericApiEndPointToggle"
-                            IsOn="{Binding AlphaBuildUseCNPatchEndpoint, Mode=TwoWay}"
-                            OffContent="Oversea Endpoints"
-                            OnContent="Chinese Endpoints"/>
-                        <ToggleSwitch
-                            IsEnabled="{x:Bind GenericApiEndPointToggle.IsOn, Mode=OneWay}"
-                            IsOn="{Binding AlphaBuildUseFJPatchEndpoint, Mode=TwoWay}"
-                            OffContent="No Secondary Endpoints"
-                            OnContent="Fujian Endpoints"/>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_8212"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:ToggleSwitch"
+                            Visibility="{Binding Visibility, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                            Value="{Binding ToggleSwitchMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <ToggleSwitch
+                                    x:Name="GenericApiEndPointToggle"
+                                    DataContext="{Binding DataContext, ElementName=GlassPresenter_8212, Mode=OneWay}"
+                                    IsOn="{Binding AlphaBuildUseCNPatchEndpoint, Mode=TwoWay}"
+                                    OffContent="Oversea Endpoints"
+                                    OnContent="Chinese Endpoints"
+                                    RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_8212, Mode=OneWay}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassToggleSwitch
+                                    x:Name="GenericApiEndPointToggleGlass"
+                                    Width="{Binding Width, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    MinWidth="{Binding MinWidth, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    MinHeight="{Binding MinHeight, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    MaxWidth="{Binding MaxWidth, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    MaxHeight="{Binding MaxHeight, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    Padding="{Binding Padding, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=GenericApiEndPointToggle}"
+                                    BorderThickness="{Binding BorderThickness, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    FlowDirection="{Binding FlowDirection, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    FontFamily="{Binding FontFamily, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    FontSize="{Binding FontSize, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    FontStyle="{Binding FontStyle, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    FontWeight="{Binding FontWeight, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    Foreground="{Binding Foreground, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    Header="{Binding Header, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    HeaderTemplate="{Binding HeaderTemplate, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    IsEnabled="{Binding IsEnabled, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    IsOn="{Binding IsOn, ElementName=GenericApiEndPointToggle, Mode=TwoWay}"
+                                    OffContent="{Binding OffContent, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    OffContentTemplate="{Binding OffContentTemplate, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    OnContent="{Binding OnContent, ElementName=GenericApiEndPointToggle, Mode=OneWay}"
+                                    OnContentTemplate="{Binding OnContentTemplate, ElementName=GenericApiEndPointToggle, Mode=OneWay}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_8518"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:ToggleSwitch"
+                            Value="{Binding ToggleSwitchMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <ToggleSwitch
+                                    IsEnabled="{x:Bind GenericApiEndPointToggle.IsOn, Mode=OneWay}"
+                                    IsOn="{Binding AlphaBuildUseFJPatchEndpoint, Mode=TwoWay}"
+                                    OffContent="No Secondary Endpoints"
+                                    OnContent="Fujian Endpoints"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassToggleSwitch
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    IsEnabled="{x:Bind GenericApiEndPointToggle.IsOn, Mode=OneWay}"
+                                    IsOn="{Binding AlphaBuildUseFJPatchEndpoint, Mode=TwoWay}"
+                                    OffContent="No Secondary Endpoints"
+                                    OnContent="Fujian Endpoints"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                     </StackPanel>
                 </cwc:SettingsCard>
 
@@ -169,10 +436,34 @@
                         Orientation="Horizontal"
                         Spacing="8">
                         <TextBlock VerticalAlignment="Center" Text="UserName"/>
-                        <TextBox
-                            MinWidth="{ThemeResource SettingsCardContentControlMinWidth}"
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_10360"
                             VerticalAlignment="Center"
-                            Text="{Binding GachaLogDesignationOptions.UserName, Mode=TwoWay}"/>
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:TextBox"
+                            Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <TextBox
+                                    MinWidth="{ThemeResource SettingsCardContentControlMinWidth}"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding GachaLogDesignationOptions.UserName, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassTextBox
+                                    MinWidth="{ThemeResource SettingsCardContentControlMinWidth}"
+                                    VerticalAlignment="Center"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Text="{Binding GachaLogDesignationOptions.UserName, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                         <NumberBox
                             MinWidth="{ThemeResource SettingsCardContentControlMinWidth}"
                             VerticalAlignment="Center"
@@ -208,10 +499,34 @@
                         Orientation="Horizontal"
                         Spacing="8">
                         <TextBlock VerticalAlignment="Center" Text="UserName"/>
-                        <TextBox
-                            MinWidth="{ThemeResource SettingsCardContentControlMinWidth}"
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_12406"
                             VerticalAlignment="Center"
-                            Text="{Binding CdnDesignationOptions.UserName, Mode=TwoWay}"/>
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:TextBox"
+                            Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <TextBox
+                                    MinWidth="{ThemeResource SettingsCardContentControlMinWidth}"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding CdnDesignationOptions.UserName, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassTextBox
+                                    MinWidth="{ThemeResource SettingsCardContentControlMinWidth}"
+                                    VerticalAlignment="Center"
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Text="{Binding CdnDesignationOptions.UserName, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                         <NumberBox
                             MinWidth="{ThemeResource SettingsCardContentControlMinWidth}"
                             VerticalAlignment="Center"
@@ -232,23 +547,142 @@
                             PlaceholderText="Code count"
                             Text="{Binding RedeemCodeGenerateOption.Count, Mode=TwoWay}"/>
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <CheckBox Content="IsTimeLimited" IsChecked="{Binding RedeemCodeGenerateOption.IsTimeLimited, Mode=TwoWay}"/>
-                            <CheckBox Content="IsTimesLimited" IsChecked="{Binding RedeemCodeGenerateOption.IsTimesLimited, Mode=TwoWay}"/>
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_13715"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:CheckBox"
+                                Value="{Binding CheckBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <CheckBox Content="IsTimeLimited" IsChecked="{Binding RedeemCodeGenerateOption.IsTimeLimited, Mode=TwoWay}"/>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassCheckBox
+                                        materialtheme:ControlMaterialState.IsManaged="True"
+                                        Content="IsTimeLimited"
+                                        IsChecked="{Binding RedeemCodeGenerateOption.IsTimeLimited, Mode=TwoWay}"/>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_13853"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:CheckBox"
+                                Value="{Binding CheckBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <CheckBox Content="IsTimesLimited" IsChecked="{Binding RedeemCodeGenerateOption.IsTimesLimited, Mode=TwoWay}"/>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassCheckBox
+                                        materialtheme:ControlMaterialState.IsManaged="True"
+                                        Content="IsTimesLimited"
+                                        IsChecked="{Binding RedeemCodeGenerateOption.IsTimesLimited, Mode=TwoWay}"/>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
                         </StackPanel>
                         <shuxc:SizeRestrictedContentControl>
-                            <ComboBox
-                                Header="ServiceType"
-                                ItemsSource="{cwh:EnumValues Type=shwhr:RedeemCodeTargetServiceType}"
-                                SelectedItem="{Binding RedeemCodeGenerateOption.ServiceType, Mode=TwoWay}"/>
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_14092"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:ComboBox"
+                                Visibility="{Binding Visibility, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                Value="{Binding ComboBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <ComboBox
+                                        x:Name="GlassPresenter_14092_State"
+                                        DataContext="{Binding DataContext, ElementName=GlassPresenter_14092, Mode=OneWay}"
+                                        Header="ServiceType"
+                                        ItemsSource="{cwh:EnumValues Type=shwhr:RedeemCodeTargetServiceType}"
+                                        RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_14092, Mode=OneWay}"
+                                        SelectedItem="{Binding RedeemCodeGenerateOption.ServiceType, Mode=TwoWay}"/>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassComboBox
+                                        x:Name="GlassPresenter_14092_StateGlass"
+                                        Width="{Binding Width, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        Height="{Binding Height, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        MinWidth="{Binding MinWidth, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        MinHeight="{Binding MinHeight, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        MaxWidth="{Binding MaxWidth, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        MaxHeight="{Binding MaxHeight, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        Padding="{Binding Padding, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        materialtheme:ControlMaterialState.IsManaged="True"
+                                        materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=GlassPresenter_14092_State}"
+                                        BorderThickness="{Binding BorderThickness, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        DisplayMemberPath="{Binding DisplayMemberPath, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        FlowDirection="{Binding FlowDirection, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        FontFamily="{Binding FontFamily, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        FontSize="{Binding FontSize, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        FontStyle="{Binding FontStyle, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        FontWeight="{Binding FontWeight, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        Foreground="{Binding Foreground, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        Header="{Binding Header, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        HeaderTemplate="{Binding HeaderTemplate, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        IsDropDownOpen="{Binding IsDropDownOpen, ElementName=GlassPresenter_14092_State, Mode=TwoWay}"
+                                        IsEditable="{Binding IsEditable, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        IsEnabled="{Binding IsEnabled, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        IsTextSearchEnabled="{Binding IsTextSearchEnabled, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        ItemsSource="{Binding ItemsSource, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        MaxDropDownHeight="{Binding MaxDropDownHeight, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        PlaceholderText="{Binding PlaceholderText, ElementName=GlassPresenter_14092_State, Mode=OneWay}"
+                                        SelectedIndex="{Binding SelectedIndex, ElementName=GlassPresenter_14092_State, Mode=TwoWay}"
+                                        SelectedValuePath="{Binding SelectedValuePath, ElementName=GlassPresenter_14092_State, Mode=OneWay}"/>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
                         </shuxc:SizeRestrictedContentControl>
                         <NumberBox
                             Header="Value"
                             PlaceholderText="Days"
                             Text="{Binding RedeemCodeGenerateOption.Value, Mode=TwoWay}"/>
-                        <TextBox
-                            Header="Description"
-                            PlaceholderText="Code description"
-                            Text="{Binding RedeemCodeGenerateOption.Description, Mode=TwoWay}"/>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_14672"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:TextBox"
+                            Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <TextBox
+                                    Header="Description"
+                                    PlaceholderText="Code description"
+                                    Text="{Binding RedeemCodeGenerateOption.Description, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassTextBox
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Header="Description"
+                                    PlaceholderText="Code description"
+                                    Text="{Binding RedeemCodeGenerateOption.Description, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                         <NumberBox
                             Header="Expire Hours"
                             IsEnabled="{Binding RedeemCodeGenerateOption.IsTimeLimited}"
@@ -259,7 +693,29 @@
                             IsEnabled="{Binding RedeemCodeGenerateOption.IsTimesLimited}"
                             PlaceholderText="Limited times"
                             Text="{Binding RedeemCodeGenerateOption.Times, Mode=TwoWay}"/>
-                        <Button Command="{Binding GenerateRedeemCodeCommand}" Content="Generate"/>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_15553"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:Button"
+                            Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <Button Command="{Binding GenerateRedeemCodeCommand}" Content="Generate"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassButton
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Command="{Binding GenerateRedeemCodeCommand}"
+                                    Content="Generate"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                     </StackPanel>
                 </Expander>
 
@@ -292,24 +748,108 @@
 
                 <cwc:SettingsCard Header="SpeedGraphTest" IsClickEnabled="False">
                     <StackPanel Orientation="Horizontal">
-                        <Button
-                            Command="{Binding OpenSpeedGraphTestWindowCommand}"
-                            Content="{shuxm:ResourceString Name=ViewPageTestSpeedGraphWindowHeader}"
-                            Style="{ThemeResource SettingButtonStyle}"/>
-                        <Button
-                            Command="{Binding OpenGamePackageWindowCommand}"
-                            Content="Open The Game Package Window"
-                            Style="{ThemeResource SettingButtonStyle}"/>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_16916"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:Button"
+                            Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <Button
+                                    Command="{Binding OpenSpeedGraphTestWindowCommand}"
+                                    Content="{shuxm:ResourceString Name=ViewPageTestSpeedGraphWindowHeader}"
+                                    Style="{ThemeResource SettingButtonStyle}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassButton
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Command="{Binding OpenSpeedGraphTestWindowCommand}"
+                                    Content="{shuxm:ResourceString Name=ViewPageTestSpeedGraphWindowHeader}"
+                                    Style="{ThemeResource SettingButtonStyle}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_17202"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:Button"
+                            Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <Button
+                                    Command="{Binding OpenGamePackageWindowCommand}"
+                                    Content="Open The Game Package Window"
+                                    Style="{ThemeResource SettingButtonStyle}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassButton
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Command="{Binding OpenGamePackageWindowCommand}"
+                                    Content="Open The Game Package Window"
+                                    Style="{ThemeResource SettingButtonStyle}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                     </StackPanel>
                 </cwc:SettingsCard>
 
                 <TextBlock Style="{ThemeResource SettingsSectionHeaderTextBlockStyle}" Text="Game Package"/>
                 <cwc:SettingsCard Header="Treat Predownload As Main">
-                    <ToggleSwitch IsOn="{Binding TreatPredownloadAsMain, Mode=TwoWay}"/>
+                    <materialcases:SwitchPresenter
+                        x:Name="GlassPresenter_17697"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        IsTabStop="False"
+                        Tag="LiquidGlass:ToggleSwitch"
+                        Value="{Binding ToggleSwitchMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>0</x:Int32>
+                            </materialcases:Case.Value>
+                            <ToggleSwitch IsOn="{Binding TreatPredownloadAsMain, Mode=TwoWay}"/>
+                        </materialcases:Case>
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>1</x:Int32>
+                            </materialcases:Case.Value>
+                            <materialcontrols:LiquidGlassToggleSwitch materialtheme:ControlMaterialState.IsManaged="True" IsOn="{Binding TreatPredownloadAsMain, Mode=TwoWay}"/>
+                        </materialcases:Case>
+                    </materialcases:SwitchPresenter>
                 </cwc:SettingsCard>
 
                 <cwc:SettingsCard Header="Enable Beta Game Install">
-                    <ToggleSwitch IsOn="{Binding EnableBetaGameInstall, Mode=TwoWay}"/>
+                    <materialcases:SwitchPresenter
+                        x:Name="GlassPresenter_17892"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        IsTabStop="False"
+                        Tag="LiquidGlass:ToggleSwitch"
+                        Value="{Binding ToggleSwitchMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>0</x:Int32>
+                            </materialcases:Case.Value>
+                            <ToggleSwitch IsOn="{Binding EnableBetaGameInstall, Mode=TwoWay}"/>
+                        </materialcases:Case>
+                        <materialcases:Case>
+                            <materialcases:Case.Value>
+                                <x:Int32>1</x:Int32>
+                            </materialcases:Case.Value>
+                            <materialcontrols:LiquidGlassToggleSwitch materialtheme:ControlMaterialState.IsManaged="True" IsOn="{Binding EnableBetaGameInstall, Mode=TwoWay}"/>
+                        </materialcases:Case>
+                    </materialcases:SwitchPresenter>
                 </cwc:SettingsCard>
 
                 <cwc:SettingsCard
@@ -322,8 +862,52 @@
                     Header="Extract Game Executable"
                     IsClickEnabled="True">
                     <StackPanel Orientation="Horizontal" Spacing="{ThemeResource SettingsCardContentControlSpacing}">
-                        <CheckBox Content="IsOversea" IsChecked="{Binding ExtractExeOptions.IsOversea, Mode=TwoWay}"/>
-                        <CheckBox Content="IsPredownload" IsChecked="{Binding ExtractExeOptions.IsPreDownload, Mode=TwoWay}"/>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_18524"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:CheckBox"
+                            Value="{Binding CheckBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <CheckBox Content="IsOversea" IsChecked="{Binding ExtractExeOptions.IsOversea, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassCheckBox
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Content="IsOversea"
+                                    IsChecked="{Binding ExtractExeOptions.IsOversea, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_18643"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:CheckBox"
+                            Value="{Binding CheckBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <CheckBox Content="IsPredownload" IsChecked="{Binding ExtractExeOptions.IsPreDownload, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassCheckBox
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Content="IsPredownload"
+                                    IsChecked="{Binding ExtractExeOptions.IsPreDownload, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                     </StackPanel>
                 </cwc:SettingsCard>
 
@@ -334,30 +918,197 @@
                     Header="Upload Announcement"
                     IsExpanded="True">
                     <StackPanel Spacing="8">
-                        <TextBox
-                            Header="Title"
-                            PlaceholderText="Please input title"
-                            Text="{Binding Announcement.Title, Mode=TwoWay}"/>
-                        <TextBox
-                            Header="Link"
-                            PlaceholderText="Please input link"
-                            Text="{Binding Announcement.Link, Mode=TwoWay}"/>
-                        <TextBox
-                            Header="Version Threshold"
-                            PlaceholderText="Max present version(leave empty to present in all version)"
-                            Text="{Binding Announcement.MaxPresentVersion, Mode=TwoWay}"/>
-                        <TextBox
-                            AcceptsReturn="True"
-                            Header="Content"
-                            PlaceholderText="Please input content"
-                            Text="{Binding Announcement.Content, Mode=TwoWay}"/>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_19216"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:TextBox"
+                            Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <TextBox
+                                    Header="Title"
+                                    PlaceholderText="Please input title"
+                                    Text="{Binding Announcement.Title, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassTextBox
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Header="Title"
+                                    PlaceholderText="Please input title"
+                                    Text="{Binding Announcement.Title, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_19436"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:TextBox"
+                            Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <TextBox
+                                    Header="Link"
+                                    PlaceholderText="Please input link"
+                                    Text="{Binding Announcement.Link, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassTextBox
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Header="Link"
+                                    PlaceholderText="Please input link"
+                                    Text="{Binding Announcement.Link, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_19653"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:TextBox"
+                            Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <TextBox
+                                    Header="Version Threshold"
+                                    PlaceholderText="Max present version(leave empty to present in all version)"
+                                    Text="{Binding Announcement.MaxPresentVersion, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassTextBox
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Header="Version Threshold"
+                                    PlaceholderText="Max present version(leave empty to present in all version)"
+                                    Text="{Binding Announcement.MaxPresentVersion, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_19937"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:TextBox"
+                            Value="{Binding TextBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <TextBox
+                                    AcceptsReturn="True"
+                                    Header="Content"
+                                    PlaceholderText="Please input content"
+                                    Text="{Binding Announcement.Content, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassTextBox
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    AcceptsReturn="True"
+                                    Header="Content"
+                                    PlaceholderText="Please input content"
+                                    Text="{Binding Announcement.Content, Mode=TwoWay}"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                         <shuxc:SizeRestrictedContentControl>
-                            <ComboBox
-                                Header="Severity"
-                                ItemsSource="{cwh:EnumValues Type=InfoBarSeverity}"
-                                SelectedItem="{Binding Announcement.Severity, Mode=TwoWay}"/>
+                            <materialcases:SwitchPresenter
+                                x:Name="GlassPresenter_20277"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                IsTabStop="False"
+                                Tag="LiquidGlass:ComboBox"
+                                Visibility="{Binding Visibility, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                Value="{Binding ComboBoxMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>0</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <ComboBox
+                                        x:Name="GlassPresenter_20277_State"
+                                        DataContext="{Binding DataContext, ElementName=GlassPresenter_20277, Mode=OneWay}"
+                                        Header="Severity"
+                                        ItemsSource="{cwh:EnumValues Type=InfoBarSeverity}"
+                                        RequestedTheme="{Binding ActualTheme, ElementName=GlassPresenter_20277, Mode=OneWay}"
+                                        SelectedItem="{Binding Announcement.Severity, Mode=TwoWay}"/>
+                                </materialcases:Case>
+                                <materialcases:Case>
+                                    <materialcases:Case.Value>
+                                        <x:Int32>1</x:Int32>
+                                    </materialcases:Case.Value>
+                                    <materialcontrols:LiquidGlassComboBox
+                                        x:Name="GlassPresenter_20277_StateGlass"
+                                        Width="{Binding Width, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        Height="{Binding Height, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        MinWidth="{Binding MinWidth, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        MinHeight="{Binding MinHeight, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        MaxWidth="{Binding MaxWidth, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        MaxHeight="{Binding MaxHeight, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        Padding="{Binding Padding, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        materialtheme:ControlMaterialState.IsManaged="True"
+                                        materialtheme:ControlMaterialState.NativeControl="{Binding ElementName=GlassPresenter_20277_State}"
+                                        BorderThickness="{Binding BorderThickness, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        DisplayMemberPath="{Binding DisplayMemberPath, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        FlowDirection="{Binding FlowDirection, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        FontFamily="{Binding FontFamily, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        FontSize="{Binding FontSize, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        FontStyle="{Binding FontStyle, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        FontWeight="{Binding FontWeight, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        Foreground="{Binding Foreground, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        Header="{Binding Header, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        HeaderTemplate="{Binding HeaderTemplate, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        IsDropDownOpen="{Binding IsDropDownOpen, ElementName=GlassPresenter_20277_State, Mode=TwoWay}"
+                                        IsEditable="{Binding IsEditable, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        IsEnabled="{Binding IsEnabled, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        IsTextSearchEnabled="{Binding IsTextSearchEnabled, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        ItemsSource="{Binding ItemsSource, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        MaxDropDownHeight="{Binding MaxDropDownHeight, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        PlaceholderText="{Binding PlaceholderText, ElementName=GlassPresenter_20277_State, Mode=OneWay}"
+                                        SelectedIndex="{Binding SelectedIndex, ElementName=GlassPresenter_20277_State, Mode=TwoWay}"
+                                        SelectedValuePath="{Binding SelectedValuePath, ElementName=GlassPresenter_20277_State, Mode=OneWay}"/>
+                                </materialcases:Case>
+                            </materialcases:SwitchPresenter>
                         </shuxc:SizeRestrictedContentControl>
-                        <Button Command="{Binding UploadAnnouncementCommand}" Content="Upload"/>
+                        <materialcases:SwitchPresenter
+                            x:Name="GlassPresenter_20601"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            IsTabStop="False"
+                            Tag="LiquidGlass:Button"
+                            Value="{Binding ButtonMaterial, Source={StaticResource ControlMaterialState}, Mode=OneWay}">
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>0</x:Int32>
+                                </materialcases:Case.Value>
+                                <Button Command="{Binding UploadAnnouncementCommand}" Content="Upload"/>
+                            </materialcases:Case>
+                            <materialcases:Case>
+                                <materialcases:Case.Value>
+                                    <x:Int32>1</x:Int32>
+                                </materialcases:Case.Value>
+                                <materialcontrols:LiquidGlassButton
+                                    materialtheme:ControlMaterialState.IsManaged="True"
+                                    Command="{Binding UploadAnnouncementCommand}"
+                                    Content="Upload"/>
+                            </materialcases:Case>
+                        </materialcases:SwitchPresenter>
                     </StackPanel>
                 </Expander>
             </StackPanel>
