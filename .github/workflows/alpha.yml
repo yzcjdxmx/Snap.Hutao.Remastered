@@ -1,102 +1,76 @@
 name: Snap Hutao Remastered Alpha
+
 on:
   workflow_dispatch:
-  push:
-    branches: [ dev ]
-    paths-ignore:
-      - '.gitattributes'
-      - '.github/**'
-      - '.gitignore'
-      - '.gitmodules'
-      - '**.md'
-      - 'LICENSE'
-      - '**.yml'
-  pull_request:
-    branches: [ dev ]
-    paths-ignore:
-      - '.gitattributes'
-      - '.github/**'
-      - '.gitignore'
-      - '.gitmodules'
-      - '**.md'
-      - 'LICENSE'
-      - '**.yml'
-      - '**.resx'
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: windows-latest
+    timeout-minutes: 60
     steps:
-      - name: Checkout
+      - name: Checkout your fork
         uses: actions/checkout@v7
 
-      - name: Setup .NET
+      - name: Setup .NET 10
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.0
+          dotnet-version: 10.0.x
 
-      - name: Cache NuGet packages
-        uses: actions/cache@v6
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Snap.Hutao.Remastered.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Cake (MSIX)
-        id: cake
-        shell: pwsh
-        run: dotnet tool restore && dotnet cake
-        env:
-          VERSION_API_TOKEN: ${{ secrets.VERSION_API_TOKEN }}
-          CERTIFICATE: ${{ secrets.CERTIFICATE }}
-          PW: ${{ secrets.PW }}
-
-      - name: Build installer
-        id: build
-        shell: pwsh
-        run: dotnet cake build-installer.cake
-        env:
-          CERTIFICATE: ${{ secrets.CERTIFICATE }}
-          PW: ${{ secrets.PW }}
-
-      - name: Upload signed msix
-        if: success() && github.event_name != 'pull_request'
-        uses: actions/upload-artifact@v7
-        with:
-          name: Snap.Hutao.Remastered.Alpha-${{ steps.cake.outputs.version }}
-          path: ${{ github.workspace }}/src/output/Snap.Hutao.Remastered.Alpha-${{ steps.cake.outputs.version }}.msix
-
-      - name: Upload installer
-        if: success() && github.event_name != 'pull_request'
-        uses: actions/upload-artifact@v7
-        with:
-          name: Snap.Hutao.Remastered.Alpha-Setup-${{ steps.build.outputs.version }}
-          path: ${{ github.workspace }}/publish/Snap.Hutao.Remastered-*.exe
-
-      - name: Upload code-signing certificate
-        if: success() && github.event_name != 'pull_request'
-        uses: actions/upload-artifact@v7
-        with:
-          name: Snap.Hutao.Remastered.Alpha-SnapHutaoRemasteringProject-${{ steps.build.outputs.version }}
-          path: ${{ github.workspace }}/temp-code-signing.cer
-
-      - name: Add summary
-        if: success() && github.event_name != 'pull_request'
+      - name: Build personal test MSIX
         shell: pwsh
         run: |
-          $summary = "
-          > [!WARNING]
-          > 该版本是由 CI 程序自动打包生成的 \`Alpha\` 测试版本，包含已经基本完工的新功能及问题修复
+          $ErrorActionPreference = 'Stop'
+          $certificate = New-SelfSignedCertificate `
+            -Type Custom `
+            -Subject 'CN=SnapHutaoRemasteringProject CI' `
+            -FriendlyName 'Snap Hutao Personal Test' `
+            -CertStoreLocation 'Cert:\CurrentUser\My' `
+            -KeyAlgorithm RSA -KeyLength 2048 -HashAlgorithm SHA256 `
+            -KeyExportPolicy Exportable -KeyUsage DigitalSignature `
+            -TextExtension @('2.5.29.37={text}1.3.6.1.5.5.7.3.3', '2.5.29.19={text}') `
+            -NotAfter (Get-Date).AddMonths(3)
+          $password = [Guid]::NewGuid().ToString('N')
+          Write-Output "::add-mask::$password"
+          $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
+          $pfxFile = Join-Path $env:RUNNER_TEMP 'personal-test.pfx'
+          Export-PfxCertificate -Cert $certificate -FilePath $pfxFile -Password $securePassword | Out-Null
+          Export-Certificate -Cert $certificate -FilePath 'personal-test.cer' | Out-Null
+          $env:CERTIFICATE = [Convert]::ToBase64String([IO.File]::ReadAllBytes($pfxFile))
+          Write-Output "::add-mask::$env:CERTIFICATE"
+          $env:PW = $password
+          try {
+            dotnet tool restore
+            if ($LASTEXITCODE -ne 0) { throw 'Tool restore failed' }
+            dotnet cake build.cake
+            if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
+          }
+          finally {
+            Remove-Item -LiteralPath $pfxFile -Force -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath 'temp.pfx' -Force -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath $certificate.PSPath -Force -ErrorAction SilentlyContinue
+            $env:CERTIFICATE = $null
+            $env:PW = $null
+          }
 
-          > [!IMPORTANT]
-          > 直接旁加载 MSIX 时，请将 SnapHutaoRemasteringProject 工件中的证书安装到 **受信任的人员（TrustedPeople）** 存储
-          "
-          echo $summary >> $Env:GITHUB_STEP_SUMMARY
+      - name: Upload personal test package and public certificate
+        uses: actions/upload-artifact@v7
+        with:
+          name: Hutao-UID-Test-${{ github.run_number }}
+          path: |
+            src/output/*.msix
+            personal-test.cer
+          if-no-files-found: error
+          retention-days: 14
 
-      - name: Clean up
+      - name: Explain the test package
         shell: pwsh
         run: |
-          Write-Host "Cleaning up NuGet cache..."
-          Remove-Item -Recurse -Force "$env:USERPROFILE\.nuget\packages"
-          Write-Host "NuGet cache cleaned."
+          @'
+          ## Personal UID test build
+          Download the Hutao-UID-Test artifact below. It contains the Alpha MSIX and its public test certificate.
+          This is a personal test build, not an official release. No upstream signing keys are used.
+          The existing HidePlayerInfo option also hides the profile name and birthday.
+          '@ >> $env:GITHUB_STEP_SUMMARY
