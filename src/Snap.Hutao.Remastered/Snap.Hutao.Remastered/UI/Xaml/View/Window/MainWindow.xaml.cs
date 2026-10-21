@@ -1,4 +1,4 @@
-// Copyright (c) DGP Studio. All rights reserved.
+﻿// Copyright (c) DGP Studio. All rights reserved.
 // Licensed under the MIT license.
 
 using Microsoft.UI.Input;
@@ -22,18 +22,29 @@ namespace Snap.Hutao.Remastered.UI.Xaml.View.Window;
 public sealed partial class MainWindow : Microsoft.UI.Xaml.Window,
     IXamlWindowClosedHandler,
     IXamlWindowExtendContentIntoTitleBar,
-    IXamlWindowHasInitSize
+    IXamlWindowHasInitSize,
+    IXamlWindowSessionLockHandler
 {
-    private readonly LastWindowCloseBehaviorTraits closeBehaviorTraits;
+    // This dependency uses the window's associated scope, established below.
+    private LastWindowCloseBehaviorTraits closeBehaviorTraits = default!;
     private readonly App app;
+    private readonly AppOptions appOptions;
     private readonly IBackgroundMediaPlayerService backgroundMediaPlayerService;
+    private bool materialApplied;
 
     public static MainWindow Instance { get; private set; } = null!;
 
-    public MainWindow(IServiceProvider serviceProvider)
+    [GeneratedConstructor(InitializeComponent = true)]
+    public partial MainWindow(IServiceProvider serviceProvider);
+
+    partial void PreConstruct(IServiceProvider serviceProvider)
     {
         Instance = this;
-        InitializeComponent();
+    }
+
+    partial void PostConstruct(IServiceProvider serviceProvider)
+    {
+        MainView.Loaded += MainWindow_Loaded;
 
         if (AppWindow.Presenter is OverlappedPresenter presenter)
         {
@@ -48,8 +59,17 @@ public sealed partial class MainWindow : Microsoft.UI.Xaml.Window,
         MainView.InitializeDataContext<MainViewModel>(scope.ServiceProvider);
 
         closeBehaviorTraits = scope.ServiceProvider.GetRequiredService<LastWindowCloseBehaviorTraits>();
-        app = scope.ServiceProvider.GetRequiredService<App>();
-        backgroundMediaPlayerService = serviceProvider.GetRequiredService<IBackgroundMediaPlayerService>();
+    }
+
+    private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (materialApplied)
+        {
+            return;
+        }
+
+        materialApplied = true;
+        Control.Theme.MaterialTheme.Apply(appOptions.ControlMaterial.Value);
     }
 
     public SizeInt32 InitSize { get => ScaledSizeInt32.CreateForWindow(1200, 741, this); }
@@ -57,6 +77,11 @@ public sealed partial class MainWindow : Microsoft.UI.Xaml.Window,
     public FrameworkElement TitleBarCaptionAccess { get => MainView.TitleBar; }
 
     public ImmutableArray<FrameworkElement> TitleBarPassthrough { get => []; }
+
+    public void OnSessionLockChanged(bool isLocked)
+    {
+        backgroundMediaPlayerService.SetSessionLocked(isLocked);
+    }
 
     private void RootGrid_PointerPressed(object sender, PointerRoutedEventArgs e)
     {

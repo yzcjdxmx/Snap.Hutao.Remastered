@@ -1,4 +1,3 @@
-#addin nuget:?package=Cake.Http&version=4.0.0
 
 var target = Argument("target", "Publish");
 var configuration = Argument("configuration", "Release");
@@ -12,7 +11,9 @@ var repoDir = GitHubActions.IsRunningOnGitHubActions
 var project = System.IO.Path.Combine(repoDir, "src", "Snap.Hutao.Remastered", "Snap.Hutao.Remastered", "Snap.Hutao.Remastered.csproj");
 var manifest = System.IO.Path.Combine(repoDir, "src", "Snap.Hutao.Remastered", "Snap.Hutao.Remastered", "Package.appxmanifest");
 
-var binPath = System.IO.Path.Combine(repoDir, "src", "Snap.Hutao.Remastered", "Snap.Hutao.Remastered", "bin", "x64", "Release", "net10.0-windows10.0.26100.0", "win-x64");
+var targetFramework = XmlPeek(project, "/Project/PropertyGroup/TargetFramework/text()").Trim();
+var runtimeIdentifier = XmlPeek(project, "/Project/PropertyGroup/RuntimeIdentifier/text()").Trim();
+var binPath = System.IO.Path.Combine(repoDir, "src", "Snap.Hutao.Remastered", "Snap.Hutao.Remastered", "bin", "x64", configuration, targetFramework, runtimeIdentifier);
 var outputPath = System.IO.Path.Combine(repoDir, "src", "output");
 
 // Version: read from Package.appxmanifest

@@ -1,4 +1,4 @@
-name: Snap Hutao Remastered Publish
+﻿name: Snap Hutao Remastered Publish
 on:
   workflow_dispatch:
 
@@ -12,7 +12,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.0
+          dotnet-version: 11
 
       - name: Cache NuGet packages
         uses: actions/cache@v6

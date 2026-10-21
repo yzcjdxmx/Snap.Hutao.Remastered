@@ -1,5 +1,4 @@
 #tool "nuget:?package=nuget.commandline&version=6.9.1"
-#addin nuget:?package=Cake.Http&version=4.0.0
 
 var target = Argument("target", "Build");
 var configuration = Argument("configuration", "Release");
@@ -22,9 +21,17 @@ string project
 {
     get => System.IO.Path.Combine(repoDir, "src", "Snap.Hutao.Remastered", "Snap.Hutao.Remastered", "Snap.Hutao.Remastered.csproj");
 }
+string targetFramework
+{
+    get => XmlPeek(project, "/Project/PropertyGroup/TargetFramework/text()").Trim();
+}
+string runtimeIdentifier
+{
+    get => XmlPeek(project, "/Project/PropertyGroup/RuntimeIdentifier/text()").Trim();
+}
 string binPath
 {
-    get => System.IO.Path.Combine(repoDir, "src", "Snap.Hutao.Remastered", "Snap.Hutao.Remastered", "bin", "x64", "Release", "net10.0-windows10.0.26100.0", "win-x64");
+    get => System.IO.Path.Combine(repoDir, "src", "Snap.Hutao.Remastered", "Snap.Hutao.Remastered", "bin", "x64", configuration, targetFramework, runtimeIdentifier);
 }
 string installerPublishDir
 {

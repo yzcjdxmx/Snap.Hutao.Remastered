@@ -186,7 +186,7 @@ public sealed partial class CultivationViewModel : Abstraction.ViewModel
         Projects?.MoveCurrentToFirst();
     }
 
-    private async ValueTask UpdateEntryCollectionAsync(CultivateProject? project)
+    private async ValueTask UpdateEntryCollectionAsync(CultivateProject? project, bool refresh = false)
     {
         if (project is null)
         {
@@ -203,12 +203,13 @@ public sealed partial class CultivationViewModel : Abstraction.ViewModel
                 .ConfigureAwait(false);
 
             ObservableCollection<CultivateEntryView> entries = await cultivationService
-                .GetCultivateEntryCollectionAsync(project, context)
+                .GetCultivateEntryCollectionAsync(project, context, refresh)
                 .ConfigureAwait(false);
 
             await taskContext.SwitchToMainThreadAsync();
 
             IAdvancedCollectionView<CultivateEntryView> entriesView = entries.AsAdvancedCollectionView();
+            entriesView.Filter = CultivateEntryViewFilter.Compile(SearchData, context);
             CultivateEntries = entriesView;
 
             await UpdateInventoryItemsAsync().ConfigureAwait(false);
@@ -229,11 +230,21 @@ public sealed partial class CultivationViewModel : Abstraction.ViewModel
     {
         SentrySdk.AddBreadcrumb(BreadcrumbFactory.CreateUI("Remove entry", "CultivationViewModel.Command"));
 
-        if (entry is not null)
+        await taskContext.SwitchToMainThreadAsync();
+        if (entry is not null && CultivateEntries is { } entries)
         {
-            ArgumentNullException.ThrowIfNull(CultivateEntries);
-            CultivateEntries.Remove(entry);
-            await cultivationService.RemoveCultivateEntryAsync(entry.EntryId).ConfigureAwait(false);
+            int index = entries.Source.IndexOf(entry);
+            if (index < 0 || !entries.Remove(entry)) return;
+            try
+            {
+                await cultivationService.RemoveCultivateEntryAsync(entry.EntryId).ConfigureAwait(false);
+            }
+            catch
+            {
+                await taskContext.SwitchToMainThreadAsync();
+                entries.Source.Insert(Math.Min(index, entries.Source.Count), entry);
+                throw;
+            }
             await UpdateStatisticsItemsAsync().ConfigureAwait(false);
         }
     }
@@ -243,10 +254,30 @@ public sealed partial class CultivationViewModel : Abstraction.ViewModel
     {
         SentrySdk.AddBreadcrumb(BreadcrumbFactory.CreateUI("Toggle item finish state", "CultivationViewModel.Command"));
 
-        if (item is not null)
+        await taskContext.SwitchToMainThreadAsync();
+        if (item is not null && CultivateEntries?.Source.Any(entry => entry.Items.Contains(item)) is true)
         {
-            item.IsFinished = !item.IsFinished;
-            cultivationService.SaveCultivateItem(item);
+            bool previous = item.IsFinished;
+            item.IsFinished = !previous;
+            bool saved;
+            try
+            {
+                await taskContext.SwitchToBackgroundAsync();
+                saved = cultivationService.SaveCultivateItem(item);
+            }
+            catch
+            {
+                await taskContext.SwitchToMainThreadAsync();
+                item.IsFinished = previous;
+                throw;
+            }
+            await taskContext.SwitchToMainThreadAsync();
+            if (!saved)
+            {
+                item.IsFinished = previous;
+                await UpdateEntryCollectionAsync(Projects?.CurrentItem, refresh: true).ConfigureAwait(false);
+                return;
+            }
             await UpdateStatisticsItemsAsync().ConfigureAwait(false);
         }
     }
@@ -443,6 +474,7 @@ public sealed partial class CultivationViewModel : Abstraction.ViewModel
 
                     // The game record skill id matches the metadata proud skill id.
                     FrozenDictionary<SkillId, SkillLevel> talents = character.Skills.ToFrozenDictionary(static s => s.SkillId, static s => s.Level);
+                    FrozenDictionary<SkillId, SkillLevel> extraLevels = AvatarSkillExtraLevelResolver.Resolve(avatar.SkillDepot, character.Constellations);
 
                     if (!talents.TryGetValue(skillA.Id, out SkillLevel talentA)
                         || !talents.TryGetValue(skillE.Id, out SkillLevel talentE)
@@ -452,6 +484,12 @@ public sealed partial class CultivationViewModel : Abstraction.ViewModel
                         continue;
                     }
 
+                    // The game record talent level contains the constellation and inherent talent bonus,
+                    // the cultivation plan only consumes the non extra leveled 1 - 10 level.
+                    uint levelA = GetNonExtraLevel(skillA.Id, talentA, extraLevels);
+                    uint levelE = GetNonExtraLevel(skillE.Id, talentE, extraLevels);
+                    uint levelQ = GetNonExtraLevel(skillQ.Id, talentQ, extraLevels);
+
                     AvatarPromotionDelta delta = new()
                     {
                         AvatarId = avatar.Id,
@@ -460,9 +498,9 @@ public sealed partial class CultivationViewModel : Abstraction.ViewModel
                         AvatarPromoteLevel = character.Base.PromoteLevel,
                         SkillList =
                         [
-                            new PromotionDelta { Id = skillA.GroupId, LevelCurrent = Math.Min((uint)talentA, levelInfo.SkillALevelTo), LevelTarget = levelInfo.SkillALevelTo },
-                            new PromotionDelta { Id = skillE.GroupId, LevelCurrent = Math.Min((uint)talentE, levelInfo.SkillELevelTo), LevelTarget = levelInfo.SkillELevelTo },
-                            new PromotionDelta { Id = skillQ.GroupId, LevelCurrent = Math.Min((uint)talentQ, levelInfo.SkillQLevelTo), LevelTarget = levelInfo.SkillQLevelTo },
+                            new PromotionDelta { Id = skillA.GroupId, LevelCurrent = Math.Min(levelA, levelInfo.SkillALevelTo), LevelTarget = levelInfo.SkillALevelTo },
+                            new PromotionDelta { Id = skillE.GroupId, LevelCurrent = Math.Min(levelE, levelInfo.SkillELevelTo), LevelTarget = levelInfo.SkillELevelTo },
+                            new PromotionDelta { Id = skillQ.GroupId, LevelCurrent = Math.Min(levelQ, levelInfo.SkillQLevelTo), LevelTarget = levelInfo.SkillQLevelTo },
                         ],
                     };
 
@@ -502,6 +540,18 @@ public sealed partial class CultivationViewModel : Abstraction.ViewModel
 
             messenger.Send(message);
         }
+    }
+
+    private static uint GetNonExtraLevel(SkillId skillId, SkillLevel level, FrozenDictionary<SkillId, SkillLevel> extraLevels)
+    {
+        uint result = (uint)level;
+        if (extraLevels.TryGetValue(skillId, out SkillLevel extraLevel))
+        {
+            uint extra = (uint)extraLevel;
+            result = result > extra ? result - extra : 1U;
+        }
+
+        return result;
     }
 
     private static bool IsSameLevelInformation(CultivateEntryLevelInformation current, LevelInformation updated)
@@ -762,8 +812,13 @@ public sealed partial class CultivationViewModel : Abstraction.ViewModel
 
         if (typeString is not null)
         {
-            Type? pageType = Type.GetType(typeString);
-            ArgumentNullException.ThrowIfNull(pageType);
+            Type pageType = typeString switch
+            {
+                "Snap.Hutao.Remastered.UI.Xaml.View.Page.WikiAvatarPage" => typeof(UI.Xaml.View.Page.WikiAvatarPage),
+                "Snap.Hutao.Remastered.UI.Xaml.View.Page.WikiWeaponPage" => typeof(UI.Xaml.View.Page.WikiWeaponPage),
+                "Snap.Hutao.Remastered.UI.Xaml.View.Page.AvatarPropertyPage" => typeof(UI.Xaml.View.Page.AvatarPropertyPage),
+                _ => throw new ArgumentException("Unknown cultivation navigation target.", nameof(typeString)),
+            };
             navigationService.Navigate(pageType, NavigationExtraData.Default, true);
         }
     }

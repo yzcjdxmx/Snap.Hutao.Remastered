@@ -1,40 +1,65 @@
 // Copyright (c) DGP Studio. All rights reserved.
 // Licensed under the MIT license.
 
-using System.Collections.Immutable;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Snap.Hutao.Remastered.Model.Entity;
 using Snap.Hutao.Remastered.Model.Intrinsic;
+using Snap.Hutao.Remastered.Model.Metadata.Avatar;
 using Snap.Hutao.Remastered.Model.Metadata.Converter;
 using Snap.Hutao.Remastered.Model.Metadata.Item;
 using Snap.Hutao.Remastered.Model.Metadata.Reliquary;
 using Snap.Hutao.Remastered.Model.Metadata.Weapon;
+using Snap.Hutao.Remastered.Model.Primitive;
 using Snap.Hutao.Remastered.Service.Backpack;
+using System.Collections.Immutable;
 
 namespace Snap.Hutao.Remastered.ViewModel.Backpack;
 
-public class BackpackItemView
+public partial class BackpackItemView : ObservableObject
 {
-    public BackpackItem Entity { get; protected init; } = default!;
+    public BackpackItem Entity { get; protected init => SetProperty(ref field, value); } = default!;
 
-    public BackpackItemCategory Category { get; protected set; }
+    [ObservableProperty]
+    public partial BackpackItemCategory Category { get; protected set; }
 
-    public Material? Material { get; protected set; }
+    [ObservableProperty]
+    public partial Material? Material { get; protected set; }
 
-    public string Name { get; protected set; } = string.Empty;
+    [ObservableProperty]
+    public partial string Name { get; protected set; } = string.Empty;
 
     public string DisplayCount => Entity.Count > 1 ? $"x{Entity.Count}" : string.Empty;
 
-    public string Description { get; protected set; } = string.Empty;
+    [ObservableProperty]
+    public partial string Description { get; protected set; } = string.Empty;
 
-    public string TypeDescription { get; protected set; } = string.Empty;
+    [ObservableProperty]
+    public partial string TypeDescription { get; protected set; } = string.Empty;
 
-    public Uri IconUri { get; protected set; } = default!;
+    [ObservableProperty]
+    public partial Uri IconUri { get; protected set; } = default!;
 
-    public QualityType Quality { get; protected set; }
+    [ObservableProperty]
+    public partial QualityType Quality { get; protected set; }
 
-    public ImmutableArray<string> SetDescriptions { get; protected set; } = [];
+    [ObservableProperty]
+    public partial ImmutableArray<string> SetDescriptions { get; protected set; } = [];
 
     public bool HasSetDescriptions => !SetDescriptions.IsDefaultOrEmpty;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasEquippedAvatar))]
+    [NotifyPropertyChangedFor(nameof(EquippedAvatarDisplayName))]
+    public partial string? EquippedAvatarName { get; protected set; }
+
+    [ObservableProperty]
+    public partial Uri? EquippedAvatarIconUri { get; protected set; }
+
+    public bool HasEquippedAvatar => EquippedAvatarName is not null;
+
+    public string EquippedAvatarDisplayName => EquippedAvatarName is null
+        ? string.Empty
+        : SH.FormatViewPageBackpackEquippedState(EquippedAvatarName);
 
     public static BackpackItemView Create(BackpackItem entity, BackpackServiceMetadataContext context)
     {
@@ -64,6 +89,42 @@ public class BackpackItemView
             Quality = material?.RankLevel ?? QualityType.QUALITY_NONE,
         };
 
+        view.FillEquippedAvatar(context);
+
         return view;
+    }
+
+    /// <summary>
+    /// Resolves the equipping avatar from metadata. Missing avatar metadata is a degrade, not an error.
+    /// </summary>
+    protected void FillEquippedAvatar(BackpackServiceMetadataContext context)
+    {
+        // null = 旧存档未记录装备状态（按未装备处理），0 = 未装备；两者都没有要显示的装备角色
+        if (Entity.EquippedAvatarId is not { } equippedAvatarId || equippedAvatarId is 0)
+        {
+            return;
+        }
+
+        if (!context.IdAvatarMap.TryGetValue((AvatarId)equippedAvatarId, out Avatar? avatar))
+        {
+            return;
+        }
+
+        EquippedAvatarName = avatar.Name;
+        EquippedAvatarIconUri = AvatarSideIconConverter.IconNameToUri(avatar.SideIcon);
+    }
+
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+        switch (e.PropertyName)
+        {
+            case nameof(SetDescriptions):
+                OnPropertyChanged(nameof(HasSetDescriptions));
+                break;
+            case nameof(Entity):
+                OnPropertyChanged(nameof(DisplayCount));
+                break;
+        }
     }
 }

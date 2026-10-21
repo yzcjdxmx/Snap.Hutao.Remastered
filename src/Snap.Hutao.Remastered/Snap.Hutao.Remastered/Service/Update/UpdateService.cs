@@ -81,7 +81,7 @@ public sealed partial class UpdateService : IUpdateService
         }
     }
 
-    public async ValueTask TriggerUpdateAsync(CheckUpdateResult result, CancellationToken token = default)
+    public async ValueTask TriggerUpdateAsync(CheckUpdateResult result, bool isAutomatic = false, CancellationToken token = default)
     {
         if (result.Kind is not CheckUpdateResultKind.UpdateAvailable)
         {
@@ -101,12 +101,26 @@ public sealed partial class UpdateService : IUpdateService
 
             try
             {
+                // The user already skipped this version once, don't prompt again on automatic checks.
+                // A manual check from the setting page always shows the dialog, so the user can
+                // still choose to update.
+                if (isAutomatic && IsVersionSkipped(result.PackageInformation?.Version))
+                {
+                    return;
+                }
+
                 ContentDialogResult installUpdateUserConsentResult = await contentDialogFactory
-                    .CreateForConfirmCancelAsync(
+                    .CreateForConfirmCancelWithSecondaryAsync(
                         SH.FormatViewTitleUpdatePackageAvailableTitle(result.PackageInformation?.Version),
                         SH.ViewTitileUpdatePackageAvailableContent,
-                        ContentDialogButton.Primary)
+                        SH.ViewTitleUpdatePackageSkipVersionButtonText)
                     .ConfigureAwait(false);
+
+                if (installUpdateUserConsentResult is ContentDialogResult.Secondary)
+                {
+                    SkipVersion(result.PackageInformation?.Version, messenger);
+                    return;
+                }
 
                 if (installUpdateUserConsentResult is not ContentDialogResult.Primary)
                 {
@@ -158,6 +172,22 @@ public sealed partial class UpdateService : IUpdateService
                 messenger.Send(InfoBarMessage.Error(ex));
             }
         }
+    }
+
+    private static bool IsVersionSkipped(Version? version)
+    {
+        return version is not null && LocalSetting.Get(SettingKeys.SkippedUpdateVersion, string.Empty) == version.ToString();
+    }
+
+    private static void SkipVersion(Version? version, IMessenger messenger)
+    {
+        if (version is null)
+        {
+            return;
+        }
+
+        LocalSetting.Set(SettingKeys.SkippedUpdateVersion, version.ToString());
+        messenger.Send(InfoBarMessage.Success(SH.FormatViewTitleUpdatePackageSkipVersionInfoBarMessage(version)));
     }
 
     private async ValueTask LaunchUpdaterAsync(DownloadSourceKind downloadSource = DownloadSourceKind.Official)

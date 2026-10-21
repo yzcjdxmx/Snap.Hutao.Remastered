@@ -14,6 +14,9 @@ using Snap.Hutao.Remastered.Core.Setting;
 using Snap.Hutao.Remastered.Factory.Process;
 using Snap.Hutao.Remastered.Service;
 using Snap.Hutao.Remastered.UI.Xaml;
+using Snap.Hutao.Remastered.UI.Windowing;
+using Snap.Hutao.Remastered.Service.Job;
+using Snap.Hutao.Remastered.UI.Xaml.Behavior;
 using Snap.Hutao.Remastered.UI.Xaml.Control.Theme;
 using System.Diagnostics;
 using System.IO;
@@ -44,6 +47,7 @@ public sealed partial class App : Application
     private readonly IServiceProvider serviceProvider;
     private readonly IAppActivation activation;
     private readonly ILogger<App> logger;
+    private bool exitRequested;
 
     [GeneratedConstructor(InitializeComponent = true)]
     public partial App(IServiceProvider serviceProvider);
@@ -68,16 +72,29 @@ public sealed partial class App : Application
     [SuppressMessage("", "SA1202")]
     public new void Exit()
     {
+        if (exitRequested) return;
+        exitRequested = true;
         XamlApplicationLifetime.Exiting = true;
+        FlyoutOpenStateBinding.CancelPendingSwitches();
         SentrySdk.AddBreadcrumb(BreadcrumbFactory.CreateInfo("Application exiting", "Hutao"));
         // #114
         //SpinWait.SpinUntil(static () => XamlApplicationLifetime.ActivationAndInitializationCompleted);
-        base.Exit();
+        ExitAfterContentDetachedAsync().SafeForget();
+    }
+
+    private async Task ExitAfterContentDetachedAsync()
+    {
+        // Shutdown must happen before Application.Start returns. Quartz job setup
+        // and running jobs may otherwise await a dispatcher already destroyed.
+        await serviceProvider.GetRequiredService<IQuartzService>().ShutdownAsync().ConfigureAwait(true);
+        await WindowExtension.DetachAllContentAsync().ConfigureAwait(true);
+        // Leave the final Window.Closed callback before stopping its dispatcher.
+        Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread().TryEnqueue(() => base.Exit());
     }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
-        DebugPatchXamlDiagnosticsRemoveRootObjectFromLVT();
+        // DebugPatchXamlDiagnosticsRemoveRootObjectFromLVT();
 
         try
         {
@@ -268,7 +285,7 @@ public sealed partial class App : Application
     }
 
     [Conditional("DEBUG")]
-    private static void DebugPatchXamlDiagnosticsRemoveRootObjectFromLVT()
+    private void DebugPatchXamlDiagnosticsRemoveRootObjectFromLVT()
     {
         // Extremely dangerous patch to workaround XamlDiagnostics::RemoveRootObjectFromLVT crashing when
         // Window is closed during debugging. at LiveVisualTree.cpp line 423
@@ -278,20 +295,26 @@ public sealed partial class App : Application
         // But the RuntimeObject is actually closed properly.
 
         // If no debugger is attached, do not patch. There will be no diagnostics LVT.
-        if (Debugger.IsAttached)
+        if (!Debugger.IsAttached)
         {
-            // 74 65            jz      short loc_8E219D
-            // 48 8D 55 F0      lea     root, [rbp+50h + p] ; p
-            // 48 8B CB         mov     this, rbx; this
-            // E8 58 DF FF FF   call    ??$As @UIVisualTreeServiceCallback3@@@?$ComPtr @UIVisualTreeServiceCallback@@@WRL @Microsoft@@QEBAJV ?$ComPtrRef @V?$ComPtr @UIVisualTreeServiceCallback3@@@WRL @Microsoft@@@Details@12@@Z; Microsoft::WRL::ComPtr < IVisualTreeServiceCallback >::As<IVisualTreeServiceCallback3>(Microsoft::WRL::Details::ComPtrRef<Microsoft::WRL::ComPtr<IVisualTreeServiceCallback3>>)
-            // 85 C0            test    eax, eax
-            // 78 55            js      short loc_8E219D
-            // Should be 78 xx (js near)
-            Win32.MemoryUtilities.Patch("Microsoft.ui.xaml.dll", 0x0090C1D6, 2, static codes =>
-            {
-                // Rewrite to jmp
-                codes[0] = 0xEB;
-            });
+            return;
         }
+
+        // The RVA changes on every WindowsAppSDK update, re-derive it with the byte sequence below
+        // (unique in the whole module) and then adjust the offset.
+        // Microsoft.ui.xaml.dll 3.2.0.2511
+        // XamlDiagnostics::RemoveRootObjectFromLVT + 0x132
+        // 74 65            jz      short loc_18090C48D
+        // 48 8D 55 F0      lea     rdx, [rbp-10h] ; p
+        // 48 8B CB         mov     rcx, rbx ; this
+        // E8 00 DF FF FF   call    ??$As @UIVisualTreeServiceCallback3@@@?$ComPtr @UIVisualTreeServiceCallback@@@WRL @Microsoft@@QEBAJV ?$ComPtrRef @V?$ComPtr @UIVisualTreeServiceCallback3@@@WRL @Microsoft@@@Details@12@@Z; Microsoft::WRL::ComPtr < IVisualTreeServiceCallback >::As<IVisualTreeServiceCallback3>(Microsoft::WRL::Details::ComPtrRef<Microsoft::WRL::ComPtr<IVisualTreeServiceCallback3>>)
+        // 85 C0            test    eax, eax
+        // 78 55            js      short loc_18090C48D
+        // Should be 78 xx (js near)
+        Win32.MemoryUtilities.Patch("Microsoft.ui.xaml.dll", 0x0090C436, 3, codes =>
+        {
+            // Rewrite js to jmp
+            codes[2] = 0xEB;
+        });
     }
 }

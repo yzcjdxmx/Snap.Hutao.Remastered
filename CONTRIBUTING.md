@@ -11,7 +11,7 @@
 
 ### Start Pull Request
 
-- All code-related changes from authors' own branches are only allowed be merged to `dev-master` branch
+- All code-related changes from authors' own branches are only allowed be merged to `dev` branch
 - Please use [keywords](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/using-keywords-in-issues-and-pull-requests) to link your PR or commits with issues, so issues can be automatically closed once commits are merged into `main` branch.
 
 ### Test Binary Package

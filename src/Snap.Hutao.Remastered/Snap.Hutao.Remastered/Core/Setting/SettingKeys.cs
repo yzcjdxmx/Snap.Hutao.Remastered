@@ -22,6 +22,7 @@ public static class SettingKeys
     public const string PendingRefreshAutoStartTaskAfterUpdate = "Snap::Hutao::Application::Update::StartupTask::PendingRefresh";
     public const string OverrideUpdateVersionComparison = "Snap::Hutao::Application::Update::VersionComparison::Override";
     public const string MirrorChyanCdk = "Snap::Hutao::Application::Update::MirrorChyanCdk";
+    public const string SkippedUpdateVersion = "Snap::Hutao::Application::Update::SkippedVersion";
 
     // Globalization
     public const string FirstDayOfWeek               = "Snap::Hutao::Globalization::FirstDayOfWeek";
@@ -36,6 +37,7 @@ public static class SettingKeys
     public const string IsBackgroundMediaMuted       = "Snap::Hutao::UI::BackgroundMedia::IsMuted";
     public const string IsBackgroundMediaLooping     = "Snap::Hutao::UI::BackgroundMedia::IsLooping";
     public const string ElementTheme                 = "Snap::Hutao::UI::ElementTheme";
+    public const string ControlMaterial              = "Snap::Hutao::UI::ControlMaterial";
     public const string SystemBackdropType           = "Snap::Hutao::UI::SystemBackdropType";
     public const string GuideState                   = "Snap::Hutao::UI::Windowing::GuideWindow::State::1.17";
     public const string LastWindowCloseBehavior      = "Snap::Hutao::UI::Windowing::LastWindowCloseBehavior";
@@ -156,6 +158,7 @@ public static class SettingKeys
     public const string LaunchCombineMenuHotkey                          = "Snap::Hutao::Game::Island::Synthesis::Hotkey";
     public const string LaunchWeakMapCheck                               = "Snap::Hutao::Game::Island::OpenMap::WeakCheck";
     public const string LaunchFastSkipTalk                               = "Snap::Hutao::Game::Island::Dialogue::SkipCooldown::Remove";
+    public const string LaunchRedirectCatherine                          = "Snap::Hutao::Game::Island::DailyCommission::Catherine::Redirect";
     public const string LaunchUsingOverlay                               = "Snap::Hutao::Game::Overlay";
     public const string LaunchOverlaySelectedCatalogId                   = "Snap::Hutao::Game::Overlay::CatalogId";
     public const string LaunchOverlayWindowIsVisible                     = "Snap::Hutao::Game::Overlay::Visible";

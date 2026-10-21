@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -886,6 +886,9 @@
   </data>
   <data name="ServiceBackgroundActivityMetadataInitializationDescription" xml:space="preserve">
     <value>Preparazione in corso. Se non succede nulla per molto tempo, prova a riavviare o controlla la connessione di rete e lo stato del server</value>
+  </data>
+  <data name="ServiceBackgroundImageDecodeFailed" xml:space="preserve">
+    <value>Impossibile decodificare l'immagine di sfondo: nel sistema mancano componenti di decodifica delle immagini disponibili, cambio dello sfondo saltato</value>
   </data>
   <data name="ServiceBackgroundImageTypeBing" xml:space="preserve">
     <value>Sfondo del giorno di Bing</value>
@@ -1994,6 +1997,15 @@ Spazio disponibile: {2}</value>
   <data name="ViewModelCultivationResinStatisticsWeeklyBossTitle" xml:space="preserve">
     <value>BOSS settimanali</value>
   </data>
+  <data name="ViewModelCultivationSyncAvatarInfoCompleted" xml:space="preserve">
+    <value>Aggiornate {0} voci dei personaggi, saltate {1}</value>
+  </data>
+  <data name="ViewModelCultivationSyncAvatarInfoNoCharacter" xml:space="preserve">
+    <value>Nessun dettaglio dei personaggi disponibile per la sincronizzazione</value>
+  </data>
+  <data name="ViewModelCultivationSyncAvatarInfoProgress" xml:space="preserve">
+    <value>Sincronizzazione dei livelli e dei talenti dei personaggi da HoYoLAB in corso</value>
+  </data>
   <data name="ViewModelDailyNoteConfigWebhookUrlComplete" xml:space="preserve">
     <value>URL Webhook nota in tempo reale configurato correttamente</value>
   </data>
@@ -2614,6 +2626,9 @@ Spazio disponibile: {2}</value>
   </data>
   <data name="ViewPageCultivationRefreshInventoryByBackpackArchive" xml:space="preserve">
     <value>Sincronizza tramite archivio oggetti inventario</value>
+  </data>
+  <data name="ViewPageCultivationSyncAvatarInfo" xml:space="preserve">
+    <value>Sincronizza livelli e talenti dei personaggi</value>
   </data>
   <data name="ViewPageCultivationRemoveEntry" xml:space="preserve">
     <value>Elimina lista</value>
@@ -3278,6 +3293,12 @@ Spazio disponibile: {2}</value>
   <data name="ViewPageSettingAppearanceCloseButtonBehaviorHeader" xml:space="preserve">
     <value>Comportamento del pulsante di chiusura</value>
   </data>
+  <data name="ViewPageSettingAppearanceNotifyIconBackgroundHintDescription" xml:space="preserve">
+    <value>Quando si chiude la finestra per l'esecuzione in background, mostra la notifica di sistema "Hutao è in esecuzione in background"</value>
+  </data>
+  <data name="ViewPageSettingAppearanceNotifyIconBackgroundHintHeader" xml:space="preserve">
+    <value>Notifica di esecuzione in background</value>
+  </data>
   <data name="ViewPageSettingApperanceFirstDayOfWeekDescription" xml:space="preserve">
     <value>Seleziona il primo giorno della settimana</value>
   </data>
@@ -3656,6 +3677,30 @@ Spazio disponibile: {2}</value>
   <data name="ViewPageSettingThemeHeader" xml:space="preserve">
     <value>Tema</value>
   </data>
+  <data name="ViewPageSettingControlMaterialHeader" xml:space="preserve">
+    <value>Materiale dei controlli</value>
+  </data>
+  <data name="ViewPageSettingControlMaterialDescription" xml:space="preserve">
+    <value>Modifica l'effetto materiale delle schede e dei pannelli delle schede</value>
+  </data>
+  <data name="ViewPageSettingControlMaterialDefault" xml:space="preserve">
+    <value>Predefinito</value>
+  </data>
+  <data name="ViewPageSettingControlMaterialLiquidGlass" xml:space="preserve">
+    <value>Vetro liquido (anteprima sperimentale)</value>
+  </data>
+  <data name="ViewGuideMaterialTitle" xml:space="preserve">
+    <value>Seleziona il materiale dei controlli</value>
+  </data>
+  <data name="ViewGuideMaterialDescription" xml:space="preserve">
+    <value>Confronta le superfici Fluent native con il vetro liquido, quindi scegli il materiale dei controlli da applicare globalmente.</value>
+  </data>
+  <data name="ViewGuideMaterialDefaultPreviewDescription" xml:space="preserve">
+    <value>Superficie Fluent nativa</value>
+  </data>
+  <data name="ViewGuideMaterialLiquidGlassPreviewDescription" xml:space="preserve">
+    <value>Sfocatura, rifrazione e riflesso sui bordi</value>
+  </data>
   <data name="ViewPageSettingTranslateNavigate" xml:space="preserve">
     <value>Contribuisci alle traduzioni</value>
   </data>
@@ -3889,6 +3934,12 @@ Spazio disponibile: {2}</value>
   </data>
   <data name="ViewTitleUpdatePackageAvailableTitle" xml:space="preserve">
     <value>La versione {0} di Hutao è ora disponibile</value>
+  </data>
+  <data name="ViewTitleUpdatePackageSkipVersionButtonText" xml:space="preserve">
+    <value>Salta questa versione</value>
+  </data>
+  <data name="ViewTitleUpdatePackageSkipVersionInfoBarMessage" xml:space="preserve">
+    <value>La versione {0} è stata saltata: all'avvio non verrà più segnalata automaticamente. Puoi comunque verificare manualmente la presenza di aggiornamenti nelle impostazioni</value>
   </data>
   <data name="ViewToolHeader" xml:space="preserve">
     <value>Strumenti</value>
@@ -4280,6 +4331,36 @@ Spazio disponibile: {2}</value>
   <data name="ViewPageLaunchGameIslandHidePlayerInfoDescription" xml:space="preserve">
     <value>Nascondi informazioni giocatore</value>
   </data>
+  <data name="ViewPageLaunchGameIslandFastSkipTalkHeader" xml:space="preserve">
+    <value>Rimuovi il tempo di attesa per il salto dei dialoghi</value>
+  </data>
+  <data name="ViewPageLaunchGameIslandFastSkipTalkDescription" xml:space="preserve">
+    <value>Rimuovi il tempo di attesa dopo il salto dei dialoghi</value>
+  </data>
+  <data name="ViewPageLaunchGameIslandRedirectCatherineHeader" xml:space="preserve">
+    <value>Reindirizzamento di Catherine</value>
+  </data>
+  <data name="ViewPageLaunchGameIslandRedirectCatherineDescription" xml:space="preserve">
+    <value>Fa sì che il collegamento a Catherine nelle Commissioni giornaliere del Manuale dell'avventuriero apra direttamente la finestra di conferma delle ricompense delle commissioni di Catherine</value>
+  </data>
+  <data name="ViewDialogFastSkipTalkConfirmTitle" xml:space="preserve">
+    <value>Rimuovi il tempo di attesa per il salto dei dialoghi</value>
+  </data>
+  <data name="ViewDialogFastSkipTalkConfirmHint" xml:space="preserve">
+    <value>Questa funzione può causare molto facilmente la sospensione dell'account. Usare con cautela</value>
+  </data>
+  <data name="ViewDialogFastSkipTalkConfirmPrimaryButtonText" xml:space="preserve">
+    <value>So quello che sto facendo!</value>
+  </data>
+  <data name="ViewDialogCountdownConfirmCountdownSuffix" xml:space="preserve">
+    <value>{0}({1}s)</value>
+  </data>
+  <data name="ViewDialogResinListItemAllDisabledTitle" xml:space="preserve">
+    <value>Tutte le opzioni degli oggetti Resina sono state disattivate</value>
+  </data>
+  <data name="ViewDialogResinListItemAllDisabledHint" xml:space="preserve">
+    <value>Dopo aver disattivato tutte le opzioni degli oggetti Resina, non sarà più possibile ritirare le ricompense nei Domini. Confermi la disattivazione?</value>
+  </data>
   <data name="ViewPageLaunchGameDisablePlayerPerspectiveDescription" xml:space="preserve">
     <value>Disabilita sfocatura personaggio</value>
   </data>
@@ -4436,6 +4517,21 @@ Spazio disponibile: {2}</value>
   <data name="ServicePluginUninstallDescription" xml:space="preserve">
     <value>Sei sicuro di voler disinstallare il plugin {0}? Questa azione non può essere annullata.</value>
   </data>
+  <data name="ViewPagePluginSettingLoadFailed" xml:space="preserve">
+    <value>Impossibile caricare le impostazioni del plugin</value>
+  </data>
+  <data name="ViewPagePluginSettingSaveSuccess" xml:space="preserve">
+    <value>Impostazione '{0}' salvata</value>
+  </data>
+  <data name="ViewPagePluginSettingSaveFailed" xml:space="preserve">
+    <value>Impossibile salvare l'impostazione '{0}'</value>
+  </data>
+  <data name="ViewPagePluginSettingResetSuccess" xml:space="preserve">
+    <value>Impostazione '{0}' ripristinata</value>
+  </data>
+  <data name="ViewPagePluginSettingResetFailed" xml:space="preserve">
+    <value>Impossibile ripristinare l'impostazione '{0}'</value>
+  </data>
   <data name="ViewPageLaunchGameIslandGamepadHotSwitchEnabledHeader" xml:space="preserve">
     <value>Cambio rapido controller</value>
   </data>
@@ -4510,6 +4606,15 @@ Spazio disponibile: {2}</value>
   </data>
   <data name="ViewPageAvatarPropertyTotalScore" xml:space="preserve">
     <value>Punteggio totale del personaggio:</value>
+  </data>
+  <data name="ViewPageAvatarPropertyScoreAlgorithm" xml:space="preserve">
+    <value>Algoritmo di valutazione degli artefatti</value>
+  </data>
+  <data name="ViewPageAvatarPropertyScoreAlgorithmHoyolabRecommend" xml:space="preserve">
+    <value>Attributi consigliati da HoYoLAB</value>
+  </data>
+  <data name="ViewPageAvatarPropertyConfigureScore" xml:space="preserve">
+    <value>Configurazione valutazione</value>
   </data>
   <data name="ViewPageLaunchGameAdvancedStartOptionsHeader" xml:space="preserve">
     <value>Avvio personalizzato</value>
@@ -4934,6 +5039,24 @@ Spazio disponibile: {2}</value>
   <data name="ViewPageBackpackFilterUnmarked" xml:space="preserve">
     <value>Non contrassegnato</value>
   </data>
+  <data name="ViewPageBackpackFilterEquipped" xml:space="preserve">
+    <value>Equipaggiato</value>
+  </data>
+  <data name="ViewPageBackpackFilterUnequipped" xml:space="preserve">
+    <value>Non equipaggiato</value>
+  </data>
+  <data name="ViewPageBackpackFilterPurchasedAppendProp" xml:space="preserve">
+    <value>Definito da Elisir Santificante</value>
+  </data>
+  <data name="ViewPageBackpackFilterNotPurchasedAppendProp" xml:space="preserve">
+    <value>Non definito da Elisir Santificante</value>
+  </data>
+  <data name="ViewPageBackpackEquippedState" xml:space="preserve">
+    <value>{0} equipaggiato</value>
+  </data>
+  <data name="ViewPageBackpackPurchasedAppendPropTitle" xml:space="preserve">
+    <value>Affissi definiti da Elisir Santificante</value>
+  </data>
   <data name="ViewPageBackpackFilterFoodQualitySuspicious" xml:space="preserve">
     <value>Sospetto</value>
   </data>
@@ -4948,6 +5071,9 @@ Spazio disponibile: {2}</value>
   </data>
   <data name="ViewPageBackpackReliquaryScoreValue" xml:space="preserve">
     <value>{0:F1} punti</value>
+  </data>
+  <data name="ViewPageBackpackReliquarySubStatInactive" xml:space="preserve">
+    <value>(Non attivo)</value>
   </data>
   <data name="ViewPageBackpackSetEffectLabel" xml:space="preserve">
     <value>Effetto set {0} pezzi: </value>
@@ -5094,7 +5220,10 @@ Spazio disponibile: {2}</value>
     <value>Mirror-chan CDK</value>
   </data>
   <data name="ViewDialogMirrorChyanCdkHint" xml:space="preserve">
-    <value>Inserisci la chiave di attivazione Mirror酱 (CDK), lascia vuoto per saltare. Disponibile su mirrorchyan.com.</value>
+    <value>Inserisci la chiave di attivazione (CDK) di Mirror酱; lascia vuoto per saltare.</value>
+  </data>
+  <data name="ViewDialogMirrorChyanCdkGetCdk" xml:space="preserve">
+    <value>Ottieni CDK</value>
   </data>
   <data name="ViewTravelersDiaryHeader" xml:space="preserve">
     <value>Diario del Viaggiatore</value>
@@ -5105,7 +5234,364 @@ Spazio disponibile: {2}</value>
   <data name="ViewTravelersDiaryMonth" xml:space="preserve">
     <value>Questo mese</value>
   </data>
+  <data name="ViewTravelersDiaryNoIncomeSourceHint" xml:space="preserve">
+    <value>Nessuna registrazione di Primogem ricevuti questo mese</value>
+  </data>
   <data name="ViewControlStatisticsCardGreenText" xml:space="preserve">
     <value>Due stelle</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassButton" xml:space="preserve">
+    <value>Pulsante</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassToggleButton" xml:space="preserve">
+    <value>Pulsante di commutazione</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassHyperlinkButton" xml:space="preserve">
+    <value>Pulsante ipertestuale</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassCheckBox" xml:space="preserve">
+    <value>Casella di controllo</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRadioButton" xml:space="preserve">
+    <value>Pulsante di opzione</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassSlider" xml:space="preserve">
+    <value>Dispositivo di scorrimento</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassTextBox" xml:space="preserve">
+    <value>Casella di testo</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassPasswordBox" xml:space="preserve">
+    <value>Casella password</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassComboBox" xml:space="preserve">
+    <value>Casella combinata</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassToggleSwitch" xml:space="preserve">
+    <value>Interruttore</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassCard" xml:space="preserve">
+    <value>Schede e superfici</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassStrength" xml:space="preserve">
+    <value>Intensità complessiva (0–2×)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassBlurScale" xml:space="preserve">
+    <value>Intensità sfocatura (0–2×)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRefractionScale" xml:space="preserve">
+    <value>Intensità rifrazione (0–2×)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassDispersionScale" xml:space="preserve">
+    <value>Intensità dispersione (0–2×)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassHighlightScale" xml:space="preserve">
+    <value>Intensità riflesso (0–2×)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassMagnificationScale" xml:space="preserve">
+    <value>Intensità ingrandimento (0–2×)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassHeader" xml:space="preserve">
+    <value>Controlli ed effetti del vetro liquido</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassDescription" xml:space="preserve">
+    <value>Abilita l'effetto vetro per tipo di controllo. Le modifiche hanno effetto immediato; i moltiplicatori ottici si basano sui preset originali di ciascun controllo.</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassSearchBox" xml:space="preserve">
+    <value>Casella di ricerca</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassDispersionRange" xml:space="preserve">
+    <value>Intervallo dispersione</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRefFresnelRange" xml:space="preserve">
+    <value>Intervallo Fresnel (DIP)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRefFresnelHardness" xml:space="preserve">
+    <value>Durezza Fresnel</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRefFresnelFactor" xml:space="preserve">
+    <value>Intensità Fresnel</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareRange" xml:space="preserve">
+    <value>Intervallo bagliore</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareHardness" xml:space="preserve">
+    <value>Durezza bagliore</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareFactor" xml:space="preserve">
+    <value>Intensità bagliore</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareConvergence" xml:space="preserve">
+    <value>Convergenza bagliore</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareOppositeFactor" xml:space="preserve">
+    <value>Intensità bagliore opposto</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareAngle" xml:space="preserve">
+    <value>Angolo di illuminazione (gradi)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassMagnification" xml:space="preserve">
+    <value>Fattore di ingrandimento</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassBloomAmount" xml:space="preserve">
+    <value>Quantità di bloom</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassBrightness" xml:space="preserve">
+    <value>Luminosità</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassTemperature" xml:space="preserve">
+    <value>Temperatura colore</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassVibrance" xml:space="preserve">
+    <value>Vividezza</value>
+  </data>
+  <data name="LiquidGlassControlsWindowTitle" xml:space="preserve">
+    <value>Controlli del vetro liquido</value>
+  </data>
+  <data name="LiquidGlassEffectsWindowTitle" xml:space="preserve">
+    <value>Effetti del vetro liquido</value>
+  </data>
+  <data name="GlassControlsCardDescription" xml:space="preserve">
+    <value>Scegli i tipi di controllo per cui abilitare il materiale vetro e visualizza l'anteprima interattiva.</value>
+  </data>
+  <data name="GlassEffectsCardDescription" xml:space="preserve">
+    <value>Regola i parametri per ciascun tipo di controllo; sono disponibili anteprima e ripristino dei valori predefiniti.</value>
+  </data>
+  <data name="GlassControlsIntro" xml:space="preserve">
+    <value>Scegli il materiale da applicare e i vari tipi di controllo. Le modifiche hanno effetto immediato e vengono salvate automaticamente. L'effetto vetro liquido influisce sulle prestazioni.</value>
+  </data>
+  <data name="GlassEffectsIntro" xml:space="preserve">
+    <value>Ogni tipo di controllo ha parametri indipendenti; le modifiche hanno effetto immediato e vengono salvate automaticamente.</value>
+  </data>
+  <data name="GlassNativeMaterial" xml:space="preserve">
+    <value>Materiale predefinito</value>
+  </data>
+  <data name="GlassLiquidMaterial" xml:space="preserve">
+    <value>Vetro liquido</value>
+  </data>
+  <data name="GlassPreviewHeading" xml:space="preserve">
+    <value>Anteprima interattiva</value>
+  </data>
+  <data name="GlassControlsPreviewHint" xml:space="preserve">
+    <value>L'anteprima segue il materiale dell'app e lo stato di attivazione di questo tipo. Prova a passare il mouse, premere, mettere a fuoco, digitare e trascinare.</value>
+  </data>
+  <data name="GlassEffectsPreviewHint" xml:space="preserve">
+    <value>Questa anteprima mostra sempre il vetro, anche se l'app non ha abilitato questo tipo di controllo. L'editor mantiene l'aspetto nativo.</value>
+  </data>
+  <data name="GlassPresetHint" xml:space="preserve">
+    <value>I valori predefiniti provengono dalla libreria dei controlli. Il ripristino influisce solo sui parametri del tipo corrente, senza modificare gli altri tipi o l'interruttore di attivazione.</value>
+  </data>
+  <data name="GlassResetType" xml:space="preserve">
+    <value>Ripristina l'effetto predefinito per questo tipo</value>
+  </data>
+  <data name="GlassResetParameter" xml:space="preserve">
+    <value>Ripristina</value>
+  </data>
+  <data name="GlassDefaultValue" xml:space="preserve">
+    <value>Valore predefinito:</value>
+  </data>
+  <data name="GlassPreviewButton" xml:space="preserve">
+    <value>Pulsante di anteprima</value>
+  </data>
+  <data name="GlassPreviewInput" xml:space="preserve">
+    <value>Digita del testo per visualizzare l'effetto di messa a fuoco</value>
+  </data>
+  <data name="GlassPreviewSearch" xml:space="preserve">
+    <value>Anteprima ricerca</value>
+  </data>
+  <data name="GlassPreviewPassword" xml:space="preserve">
+    <value>Anteprima password</value>
+  </data>
+  <data name="GlassPreviewSurface" xml:space="preserve">
+    <value>Superficie in vetro — il contenuto rimane leggibile</value>
+  </data>
+  <data name="GlassProfileButton" xml:space="preserve">
+    <value>Pulsante</value>
+  </data>
+  <data name="GlassProfileToggleButton" xml:space="preserve">
+    <value>Pulsante di commutazione</value>
+  </data>
+  <data name="GlassProfileHyperlinkButton" xml:space="preserve">
+    <value>Pulsante ipertestuale</value>
+  </data>
+  <data name="GlassProfileCheckBox" xml:space="preserve">
+    <value>Casella di controllo</value>
+  </data>
+  <data name="GlassProfileRadioButton" xml:space="preserve">
+    <value>Pulsante di opzione</value>
+  </data>
+  <data name="GlassProfileSlider" xml:space="preserve">
+    <value>Dispositivo di scorrimento</value>
+  </data>
+  <data name="GlassProfileTextBox" xml:space="preserve">
+    <value>Casella di testo</value>
+  </data>
+  <data name="GlassProfileSearchBox" xml:space="preserve">
+    <value>Casella di ricerca</value>
+  </data>
+  <data name="GlassProfilePasswordBox" xml:space="preserve">
+    <value>Casella password</value>
+  </data>
+  <data name="GlassProfileComboBox" xml:space="preserve">
+    <value>Casella combinata</value>
+  </data>
+  <data name="GlassProfileToggleSwitch" xml:space="preserve">
+    <value>Interruttore</value>
+  </data>
+  <data name="GlassProfileCard" xml:space="preserve">
+    <value>Schede e superfici</value>
+  </data>
+  <data name="GlassProfileFloatingPanel" xml:space="preserve">
+    <value>Pannello fluttuante</value>
+  </data>
+  <data name="GlassProfileTabBar" xml:space="preserve">
+    <value>Barra delle schede</value>
+  </data>
+  <data name="GlassParameterSwitchScale" xml:space="preserve">
+    <value>Proporzione delle dimensioni dell'interruttore</value>
+  </data>
+  <data name="GlassParameterSwitchScaleDescription" xml:space="preserve">
+    <value>Regola proporzionalmente le dimensioni della grafica dell'interruttore senza modificare la dimensione del testo. Le modifiche hanno effetto immediato.</value>
+  </data>
+  <data name="GlassParameterBlurRadius" xml:space="preserve">
+    <value>Raggio di sfocatura</value>
+  </data>
+  <data name="GlassParameterRefractionStrength" xml:space="preserve">
+    <value>Intensità rifrazione</value>
+  </data>
+  <data name="GlassParameterDispersionStrength" xml:space="preserve">
+    <value>Intensità dispersione</value>
+  </data>
+  <data name="GlassParameterHighlightStrength" xml:space="preserve">
+    <value>Intensità riflesso</value>
+  </data>
+  <data name="GlassParameterHighlightSharpness" xml:space="preserve">
+    <value>Nitidezza riflesso</value>
+  </data>
+  <data name="GlassParameterSpecularSaturation" xml:space="preserve">
+    <value>Saturazione speculare</value>
+  </data>
+  <data name="GlassParameterSpecularWidth" xml:space="preserve">
+    <value>Larghezza speculare</value>
+  </data>
+  <data name="GlassParameterRefractiveIndex" xml:space="preserve">
+    <value>Indice di rifrazione</value>
+  </data>
+  <data name="GlassParameterTintOpacity" xml:space="preserve">
+    <value>Opacità della tinta</value>
+  </data>
+  <data name="GlassParameterInnerShadowStrength" xml:space="preserve">
+    <value>Intensità ombra interna</value>
+  </data>
+  <data name="GlassParameterSaturation" xml:space="preserve">
+    <value>Saturazione</value>
+  </data>
+  <data name="GlassParameterContrast" xml:space="preserve">
+    <value>Contrasto</value>
+  </data>
+  <data name="GlassParameterExposure" xml:space="preserve">
+    <value>Esposizione</value>
+  </data>
+  <data name="GlassParameterMaterialOpacity" xml:space="preserve">
+    <value>Opacità del materiale</value>
+  </data>
+  <data name="GlassParameterDispersionRange" xml:space="preserve">
+    <value>Intervallo dispersione</value>
+  </data>
+  <data name="GlassParameterRefFresnelRange" xml:space="preserve">
+    <value>Intervallo Fresnel</value>
+  </data>
+  <data name="GlassParameterRefFresnelHardness" xml:space="preserve">
+    <value>Durezza Fresnel</value>
+  </data>
+  <data name="GlassParameterRefFresnelFactor" xml:space="preserve">
+    <value>Intensità Fresnel</value>
+  </data>
+  <data name="GlassParameterGlareRange" xml:space="preserve">
+    <value>Intervallo bagliore</value>
+  </data>
+  <data name="GlassParameterGlareHardness" xml:space="preserve">
+    <value>Durezza bagliore</value>
+  </data>
+  <data name="GlassParameterGlareFactor" xml:space="preserve">
+    <value>Intensità bagliore</value>
+  </data>
+  <data name="GlassParameterGlareConvergence" xml:space="preserve">
+    <value>Convergenza bagliore</value>
+  </data>
+  <data name="GlassParameterGlareOppositeFactor" xml:space="preserve">
+    <value>Proporzione bagliore opposto</value>
+  </data>
+  <data name="GlassParameterGlareAngle" xml:space="preserve">
+    <value>Direzione bagliore (°)</value>
+  </data>
+  <data name="GlassParameterMagnification" xml:space="preserve">
+    <value>Ingrandimento complessivo dello sfondo</value>
+  </data>
+  <data name="GlassParameterMagnificationStrength" xml:space="preserve">
+    <value>Intensità ingrandimento locale</value>
+  </data>
+  <data name="GlassParameterBloomAmount" xml:space="preserve">
+    <value>Proporzione di miscelazione sfocatura</value>
+  </data>
+  <data name="GlassParameterBrightness" xml:space="preserve">
+    <value>Luminosità</value>
+  </data>
+  <data name="GlassParameterTemperature" xml:space="preserve">
+    <value>Temperatura colore</value>
+  </data>
+  <data name="GlassParameterVibrance" xml:space="preserve">
+    <value>Vividezza</value>
+  </data>
+  <data name="GlassPreviewFirst" xml:space="preserve">
+    <value>Primo elemento</value>
+  </data>
+  <data name="GlassPreviewSecond" xml:space="preserve">
+    <value>Secondo elemento</value>
+  </data>
+  <data name="GlassPreviewOverview" xml:space="preserve">
+    <value>Panoramica</value>
+  </data>
+  <data name="GlassPreviewDetails" xml:space="preserve">
+    <value>Dettagli</value>
+  </data>
+  <data name="GlassPreviewActivity" xml:space="preserve">
+    <value>Attività</value>
+  </data>
+  <data name="RepositoryServerOfflineWarning" xml:space="preserve">
+    <value>Connessione al server non riuscita; è stata attivata la modalità offline e viene usato l'elenco locale dei repository. Le risorse online come le immagini potrebbero non caricarsi; puoi fare clic sul pulsante accanto all'attività in background per riconnetterti.</value>
+  </data>
+  <data name="RepositoryServerConnectionRestored" xml:space="preserve">
+    <value>Riconnessione al server riuscita; modalità offline disattivata.</value>
+  </data>
+  <data name="RepositoryServerReconnect" xml:space="preserve">
+    <value>Tenta di riconnetterti al server</value>
+  </data>
+  <data name="RepositoryServerReconnectFailed" xml:space="preserve">
+    <value>Impossibile connettersi al server; si continua a usare la modalità offline. Puoi riprovare più tardi.</value>
+  </data>
+  <data name="RepositoryServerOfflineStatus" xml:space="preserve">
+    <value>Modalità offline · Riconnetti</value>
+  </data>
+  <data name="RepositoryServerReconnecting" xml:space="preserve">
+    <value>Modalità offline · Riconnessione in corso</value>
+  </data>
+  <data name="ViewModelGuideResourceDownloadIncomplete" xml:space="preserve">
+    <value>Alcune risorse immagine non sono state scaricate correttamente. Riprova o scegli di saltare il download.</value>
+  </data>
+  <data name="ServiceAchievementImportSummary" xml:space="preserve">
+    <value>Il salvataggio attuale ha completato {0} obiettivi. Record importati (inclusi elementi non completati o non registrati): aggiunti {1}, aggiornati {2}, rimossi {3}.</value>
+  </data>
+  <data name="GlassParameterLightAngle" xml:space="preserve">
+    <value>Angolo della luce statica (radianti)</value>
+  </data>
+  <data name="GlassPointerLighting" xml:space="preserve">
+    <value>Direzione del riflesso segue il mouse</value>
+  </data>
+  <data name="GlassPointerLightingDescription" xml:space="preserve">
+    <value>Controlla la direzione della luce del riflesso sul bordo del vetro. L'intensità del riflesso ne controlla la luminosità, la saturazione del riflesso ne controlla il colore; con un grado di inseguimento pari a 0 la direzione della luce resta statica, con 1 segue completamente il mouse. Il riflesso locale interattivo del vetro viene comunque mantenuto.</value>
+  </data>
+  <data name="GlassPointerLightInfluence" xml:space="preserve">
+    <value>Grado di inseguimento della luce</value>
   </data>
 </root>

@@ -445,6 +445,11 @@ public sealed partial class CompactWebView2Window : Microsoft.UI.Xaml.Window,
         XamlWindowRegionRects.Update(this);
     }
 
+    private void OnAddressPresenterLoaded(object sender, RoutedEventArgs e)
+    {
+        XamlWindowRegionRects.Update(this);
+    }
+
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new(propertyName));

@@ -2,14 +2,17 @@
 // Licensed under the MIT license.
 
 using Microsoft.UI.Xaml;
+using Microsoft.Windows.AppLifecycle;
 using Microsoft.Windows.AppNotifications;
 using Snap.Hutao.Remastered.Core;
+using Snap.Hutao.Remastered.Core.LifeCycle;
 using Snap.Hutao.Remastered.Core.LifeCycle.InterProcess;
 using Snap.Hutao.Remastered.Core.LifeCycle.InterProcess.Model;
 using Snap.Hutao.Remastered.Core.Logging;
 using Snap.Hutao.Remastered.Core.Security.Principal;
 using Snap.Hutao.Remastered.Core.Setting;
 using Snap.Hutao.Remastered.Factory.Process;
+using Snap.Hutao.Remastered.Service.Job;
 using Snap.Hutao.Remastered.Win32;
 using System.Diagnostics;
 using System.IO;
@@ -47,35 +50,48 @@ public static partial class Bootstrap
             return;
         }
 
-        // Check if we should restart as administrator
-        if (ShouldRestartAsAdmin())
+        bool hasRunningInstance = HasRunningInstance();
+
+        // 1. Another instance is already running, hand this activation over to it.
+        // If the redirect fails, fall through to full startup: the pipe server may not be ready yet
+        // during first instance init.
+        if (hasRunningInstance && PrivateNamedPipeClient.TryLightweightRedirect(args))
         {
-            RestartAsAdministrator();
             return;
         }
 
-        if (EventWaitHandle.TryOpenExisting(LockName, out _))
+        // 2. Check if we should restart as administrator. The command-line arguments carry the
+        // activation (hutao:// URI, notification arguments, ...) and are passed on to the restarted
+        // instance, so it continues what this process was started for.
+        if (ShouldRestartAsAdmin())
         {
-            // Another instance is already running. Try a lightweight named pipe
-            // redirect and exit quickly; otherwise fall through to full startup
-            // (the pipe server may not be ready yet during first instance init).
-            if (PrivateNamedPipeClient.TryLightweightRedirect(args))
-            {
-                return;
-            }
+            RestartAsAdministrator(args);
+            return;
         }
-        else
+
+        // 3. Without an instance to hand over to, this process becomes the single instance. Its own
+        // activation is read from the command-line arguments by the application.
+        if (!hasRunningInstance)
         {
             try
             {
-                instanceHandle = new EventWaitHandle(false, EventResetMode.ManualReset, LockName, out bool created);
-                Debug.Assert(created);
                 EventWaitHandleSecurity handleSecurity = new();
                 handleSecurity.AddAccessRule(new(SecurityIdentifiers.Everyone, EventWaitHandleRights.FullControl, AccessControlType.Allow));
-                instanceHandle.SetAccessControl(handleSecurity);
+
+                // The security descriptor is applied while the lock is created: setting it afterwards
+                // leaves a window in which another instance sees the default descriptor of this
+                // process, which an unelevated instance of the same user cannot open.
+                instanceHandle = EventWaitHandleAcl.Create(false, EventResetMode.ManualReset, LockName, out bool created, handleSecurity);
+                Debug.Assert(created);
             }
             catch (WaitHandleCannotBeOpenedException)
             {
+                return;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Another instance created the lock in the meantime and this process may not open it.
+                SentrySdk.CaptureException(ex);
                 return;
             }
         }
@@ -101,14 +117,25 @@ public static partial class Bootstrap
                 Microsoft.UI.Xaml.Settings.XamlOptionalChanges.EnableChange(Microsoft.UI.Xaml.Settings.XamlChangeId.DefaultStyleOptimizations);
                 Microsoft.UI.Xaml.Settings.XamlOptionalChanges.EnableChange(Microsoft.UI.Xaml.Settings.XamlChangeId.DeferContextFlyoutInit);
                 Microsoft.UI.Xaml.Settings.XamlOptionalChanges.EnableChange(Microsoft.UI.Xaml.Settings.XamlChangeId.IconNoGridOptimization);
-                Microsoft.UI.Xaml.Settings.XamlOptionalChanges.EnableChange(Microsoft.UI.Xaml.Settings.XamlChangeId.OptimizeApplyStyles);
+                // Microsoft.UI.Xaml.Settings.XamlOptionalChanges.EnableChange(Microsoft.UI.Xaml.Settings.XamlChangeId.OptimizeApplyStyles);
 
                 // If you hit a COMException REGDB_E_CLASSNOTREG (0x80040154) during debugging
                 // You can delete bin and obj folder and then rebuild.
                 // In a Desktop app this runs a message pump publicly,
                 // and does not return until the application shuts down.
-                Application.Start(AppInitializationCallback);
-                XamlApplicationLifetime.Exited = true;
+                try
+                {
+                    Application.Start(AppInitializationCallback);
+                }
+                finally
+                {
+                    // Also cover natural dispatcher shutdown and restart paths
+                    // which do not pass through App.Exit. Cancel before disposing
+                    // the root container, then join Quartz's bounded shutdown.
+                    XamlApplicationLifetime.Exiting = true;
+                    serviceProvider.GetRequiredService<IQuartzService>().ShutdownAsync().GetAwaiter().GetResult();
+                    XamlApplicationLifetime.Exited = true;
+                }
             }
 
             SentrySdk.Flush();
@@ -136,6 +163,23 @@ public static partial class Bootstrap
         return principal.IsInRole(WindowsBuiltInRole.Administrator);
     }
 
+    /// <summary>
+    /// Whether an instance of the application is already running. The lock is only ever used as an
+    /// existence marker, so failing to open it means that someone else owns it as well.
+    /// </summary>
+    private static bool HasRunningInstance()
+    {
+        try
+        {
+            return EventWaitHandle.TryOpenExisting(LockName, out _);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            SentrySdk.CaptureException(ex);
+            return true;
+        }
+    }
+
     private static bool ShouldRestartAsAdmin()
     {
         try
@@ -153,19 +197,48 @@ public static partial class Bootstrap
         }
     }
 
-    private static void RestartAsAdministrator()
+    private static void RestartAsAdministrator(string[] args)
     {
         try
         {
             string? currentProcessPath = Environment.ProcessPath ?? Process.GetCurrentProcess().MainModule?.FileName;
             ArgumentNullException.ThrowIfNull(currentProcessPath);
 
-            ProcessFactory.StartUsingShellExecuteRunAs(currentProcessPath);
+            string forwardedArguments = RuntimeEnvironment.IsUnpackaged
+                ? GetForwardedArguments(args)
+                : GetAppModelForwardedArguments();
+
+            ProcessFactory.StartUsingShellExecuteRunAs(currentProcessPath, forwardedArguments);
             Environment.Exit(0);
         }
         catch (Exception ex)
         {
             SentrySdk.CaptureException(ex);
+        }
+    }
+
+    private static string GetForwardedArguments(string[] args)
+    {
+        return string.Join(' ', args.Select(static arg => arg.Contains(' ') ? $"\"{arg}\"" : arg));
+    }
+
+    private static string GetAppModelForwardedArguments()
+    {
+        try
+        {
+            ComWrappersSupport.InitializeComWrappers();
+
+            HutaoActivationArguments activation = HutaoActivationArguments.FromAppActivationArguments(AppInstance.GetCurrent().GetActivatedEventArgs());
+            return activation switch
+            {
+                { Kind: HutaoActivationKind.Protocol, ProtocolActivatedUri: { } uri } => $"\"{uri.OriginalString}\"",
+                _ => string.Empty,
+            };
+        }
+        catch (Exception ex)
+        {
+            SentrySdk.CaptureException(ex);
+            return string.Empty;
         }
     }
 

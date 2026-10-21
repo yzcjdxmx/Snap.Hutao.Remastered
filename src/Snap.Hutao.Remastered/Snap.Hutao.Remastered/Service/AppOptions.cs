@@ -10,6 +10,7 @@ using Snap.Hutao.Remastered.Model;
 using Snap.Hutao.Remastered.Service.Abstraction;
 using Snap.Hutao.Remastered.Service.BackgroundImage;
 using Snap.Hutao.Remastered.Service.BackgroundMediaPlayer;
+using Snap.Hutao.Remastered.UI.Xaml.Control.Theme;
 using Snap.Hutao.Remastered.UI.Xaml.Media.Backdrop;
 using Snap.Hutao.Remastered.Web.Bridge;
 using Snap.Hutao.Remastered.Web;
@@ -23,6 +24,8 @@ namespace Snap.Hutao.Remastered.Service;
 [Service(ServiceLifetime.Singleton)]
 public sealed partial class AppOptions : DbStoreOptions
 {
+    private readonly IServerDomainService serverDomain;
+
     [GeneratedConstructor(CallBaseConstructor = true)]
     public partial AppOptions(IServiceProvider serviceProvider);
 
@@ -48,6 +51,12 @@ public sealed partial class AppOptions : DbStoreOptions
     });
 
     public ImmutableArray<NameValue<BackdropType>> BackdropTypes { get; } = ImmutableCollectionsNameValue.FromEnum<BackdropType>(type => type >= 0);
+
+    public ImmutableArray<NameValue<ControlMaterial>> ControlMaterials { get; } =
+    [
+        new(SH.ViewPageSettingControlMaterialDefault, UI.Xaml.Control.Theme.ControlMaterial.Default),
+        new(SH.ViewPageSettingControlMaterialLiquidGlass, UI.Xaml.Control.Theme.ControlMaterial.LiquidGlass),
+    ];
 
     public ImmutableArray<NameValue<BackgroundImageType>> BackgroundImageTypes { get; } = ImmutableCollectionsNameValue.FromEnum<BackgroundImageType>(type => type.GetLocalizedDescription(SH.ResourceManager, CultureInfo.CurrentCulture) ?? string.Empty);
 
@@ -80,6 +89,42 @@ public sealed partial class AppOptions : DbStoreOptions
 
     [field: MaybeNull]
     public IObservableProperty<ElementTheme> ElementTheme { get => field ??= CreateProperty(SettingKeys.ElementTheme, Microsoft.UI.Xaml.ElementTheme.Default); }
+
+    [field: MaybeNull]
+    public IObservableProperty<ControlMaterial> ControlMaterial
+    {
+        get
+        {
+            if (field is null)
+            {
+                field = CreateProperty(SettingKeys.ControlMaterial, UI.Xaml.Control.Theme.ControlMaterial.Default)
+                    .WithValueChangedCallback(OnControlMaterialChanged, this);
+                OnControlMaterialChanged(field.Value, this);
+            }
+
+            return field;
+        }
+    }
+
+    private static void OnControlMaterialChanged(ControlMaterial material, AppOptions appOptions)
+    {
+        // System backdrops leave stale pixels beneath liquid glass. Also
+        // normalize a persisted glass selection before applying it at startup.
+        BackdropOverrideState<BackdropType> previous = new(appOptions.IsGlassBackdropOverrideActive.Value, appOptions.BackdropBeforeGlass.Value, appOptions.BackdropType.Value);
+        BackdropOverrideState<BackdropType> next = previous.Select(material is UI.Xaml.Control.Theme.ControlMaterial.LiquidGlass, UI.Xaml.Media.Backdrop.BackdropType.None);
+        if (next != previous)
+        {
+            appOptions.BackdropBeforeGlass.Value = next.Previous;
+            appOptions.IsGlassBackdropOverrideActive.Value = next.IsActive;
+            appOptions.BackdropType.Value = next.Current;
+        }
+    }
+
+    [field: MaybeNull]
+    private IObservableProperty<bool> IsGlassBackdropOverrideActive { get => field ??= CreateProperty("GlassBackdropOverrideActive", false); }
+
+    [field: MaybeNull]
+    private IObservableProperty<BackdropType> BackdropBeforeGlass { get => field ??= CreateProperty("BackdropBeforeGlass", UI.Xaml.Media.Backdrop.BackdropType.None); }
 
     [field: MaybeNull]
     public IObservableProperty<BackgroundImageType> BackgroundImageType { get => field ??= CreateProperty(SettingKeys.BackgroundImageType, BackgroundImage.BackgroundImageType.None); }
@@ -119,17 +164,17 @@ public sealed partial class AppOptions : DbStoreOptions
             if (field is null)
             {
                 ServerDomainMode initial = UnsafeLocalSetting.Get(SettingKeys.ServerDomainMode, Web.ServerDomainMode.Primary);
-                field = new ObservablePropertyValueChangedCallbackWrapper<ServerDomainMode>(new ObservableProperty<ServerDomainMode>(initial), OnServerDomainModeChanged);
-                ServerDomain.SetMode(initial);
+                field = new ObservablePropertyValueChangedCallbackWrapper<ServerDomainMode, AppOptions>(new ObservableProperty<ServerDomainMode>(initial), OnServerDomainModeChanged, this);
+                serverDomain.SetMode(initial);
             }
 
             return field;
         }
     }
 
-    private static void OnServerDomainModeChanged(ServerDomainMode mode)
+    private static void OnServerDomainModeChanged(ServerDomainMode mode, AppOptions appOptions)
     {
-        ServerDomain.SetMode(mode);
+        appOptions.serverDomain.SetMode(mode);
         UnsafeLocalSetting.Set(SettingKeys.ServerDomainMode, mode);
     }
 

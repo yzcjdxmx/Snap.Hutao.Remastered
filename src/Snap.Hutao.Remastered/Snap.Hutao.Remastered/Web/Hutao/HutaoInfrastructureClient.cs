@@ -10,6 +10,7 @@ using Snap.Hutao.Remastered.Web.Request.Builder.Abstraction;
 using Snap.Hutao.Remastered.Win32;
 using System.Collections.Immutable;
 using System.Net.Http;
+using System.IO;
 
 namespace Snap.Hutao.Remastered.Web.Hutao;
 
@@ -88,5 +89,25 @@ public sealed partial class HutaoInfrastructureClient
 
         HutaoResponse<ImmutableArray<GitRepository>>? resp = await builder.SendAsync<HutaoResponse<ImmutableArray<GitRepository>>>(httpClient, token).ConfigureAwait(false);
         return Web.Response.Response.DefaultIfNull(resp);
+    }
+
+    public async Task<ImmutableArray<GitRepository>> GetAllGitRepositoriesAsync(CancellationToken token)
+    {
+        HttpRequestMessageBuilder builder = httpRequestMessageBuilderFactory.Create()
+            .SetRequestUri(hutaoEndpointsFactory.Create().AllGitRepositories())
+            .SetOptions(RetryHttpHandler.DisableRetry, true)
+            .Get();
+        using HttpRequestMessage request = builder.HttpRequestMessage;
+        using HttpResponseMessage response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, token).ConfigureAwait(false);
+        response.EnsureSuccessStatusCode();
+        using Stream content = await response.Content.ReadAsStreamAsync(token).ConfigureAwait(false);
+        using JsonDocument document = await JsonDocument.ParseAsync(content, cancellationToken: token).ConfigureAwait(false);
+        if (document.RootElement.TryGetProperty("code", out JsonElement code) && code.ValueKind is JsonValueKind.Number && code.GetInt32() != 0)
+            throw new InvalidOperationException("Repository endpoint returned an unsuccessful business status.");
+        HutaoResponse<ImmutableArray<GitRepository>>? result = document.RootElement
+            .Deserialize(InfrastructureJsonContext.Wire.GitRepositoriesResponse);
+        if (result is null || result.ReturnCode != 0 || result.Data.IsDefaultOrEmpty)
+            throw new InvalidOperationException("Repository endpoint returned an invalid or unsuccessful catalogue response.");
+        return result.Data;
     }
 }

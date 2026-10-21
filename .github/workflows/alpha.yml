@@ -14,10 +14,14 @@ jobs:
       - name: Checkout your fork
         uses: actions/checkout@v7
 
-      - name: Setup .NET 10
+      - name: Setup .NET 11 RC2
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.0.x
+          dotnet-version: 11.0.100-rc.2.26504.105
+
+      - name: Run upstream tests
+        shell: pwsh
+        run: dotnet test src/Snap.Hutao.Remastered/Snap.Hutao.Remastered.Test/Snap.Hutao.Remastered.Test.csproj --configuration Release --logger "trx;LogFileName=tests.trx"
 
       - name: Build personal test MSIX
         shell: pwsh

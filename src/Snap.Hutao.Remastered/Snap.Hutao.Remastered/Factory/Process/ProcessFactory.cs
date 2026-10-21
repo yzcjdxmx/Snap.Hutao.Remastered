@@ -172,8 +172,14 @@ public sealed class ProcessFactory
 
     public static void StartUsingShellExecuteRunAs(string fileName)
     {
+        StartUsingShellExecuteRunAs(fileName, string.Empty);
+    }
+
+    public static void StartUsingShellExecuteRunAs(string fileName, string arguments)
+    {
         global::System.Diagnostics.Process.Start(new global::System.Diagnostics.ProcessStartInfo
         {
+            Arguments = arguments,
             FileName = fileName,
             UseShellExecute = true,
             Verb = "runas",

@@ -22,6 +22,10 @@
     <File Path="../../.github/workflows/canary.yml" />
     <File Path="../../.github/workflows/close_stale.yml" />
     <File Path="../../.github/workflows/issue_similarity.yml" />
+    <File Path="../../.github/workflows/mirrorchyan_release.yml" />
+    <File Path="../../.github/workflows/mirrorchyan_release_note.yml" />
+    <File Path="../../.github/workflows/publish.yml" />
+    <File Path="../../.github/workflows/publish_signpath.yml" />
   </Folder>
   <Project Path="Snap.Hutao.Remastered.Test/Snap.Hutao.Remastered.Test.csproj" />
   <Project Path="Snap.Hutao.Remastered/Snap.Hutao.Remastered.csproj">

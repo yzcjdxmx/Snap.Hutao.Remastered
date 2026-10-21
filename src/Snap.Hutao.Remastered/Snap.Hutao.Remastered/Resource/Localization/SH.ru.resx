@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -887,6 +887,9 @@
   <data name="ServiceBackgroundActivityMetadataInitializationDescription" xml:space="preserve">
     <value>Подготовка, если долго не реагирует, попробуйте перезапустить или проверьте сеть и состояние сервера</value>
   </data>
+  <data name="ServiceBackgroundImageDecodeFailed" xml:space="preserve">
+    <value>Не удалось декодировать фоновое изображение: в системе отсутствуют доступные компоненты декодирования изображений, переключение обоев пропущено</value>
+  </data>
   <data name="ServiceBackgroundImageTypeBing" xml:space="preserve">
     <value>Ежедневное изображение Bing</value>
   </data>
@@ -1638,7 +1641,7 @@
     <value>Для обеспечения независимого суждения пользователей мы будем время от времени обновлять условия включения этих функций. Если вы создатель контента, пожалуйста, не раскрывайте конкретные методы активации в своих материалах о Snap Hutao.</value>
   </data>
   <data name="ViewDialogReconfirmTextHeader" xml:space="preserve">
-    <value>Чтобы избежать случайного включения, введите <b>название</b> включаемой функции</value>
+    <value>Чтобы избежать случайного включения, введите &lt;b&gt;название&lt;/b&gt; включаемой функции</value>
   </data>
   <data name="ViewDialogReconfirmTitle" xml:space="preserve">
     <value>Вы включаете опасную функцию</value>
@@ -1993,6 +1996,15 @@
   </data>
   <data name="ViewModelCultivationResinStatisticsWeeklyBossTitle" xml:space="preserve">
     <value>Еженедельный босс</value>
+  </data>
+  <data name="ViewModelCultivationSyncAvatarInfoCompleted" xml:space="preserve">
+    <value>Обновлено записей персонажей: {0}, пропущено: {1}</value>
+  </data>
+  <data name="ViewModelCultivationSyncAvatarInfoNoCharacter" xml:space="preserve">
+    <value>Не удалось получить данные персонажей для синхронизации</value>
+  </data>
+  <data name="ViewModelCultivationSyncAvatarInfoProgress" xml:space="preserve">
+    <value>Синхронизация уровней и талантов персонажей из HoYoLAB</value>
   </data>
   <data name="ViewModelDailyNoteConfigWebhookUrlComplete" xml:space="preserve">
     <value>URL-адрес Webhook для заметок в реальном времени успешно настроен</value>
@@ -2614,6 +2626,9 @@
   </data>
   <data name="ViewPageCultivationRefreshInventoryByBackpackArchive" xml:space="preserve">
     <value>Синхронизировать через архив предметов инвентаря</value>
+  </data>
+  <data name="ViewPageCultivationSyncAvatarInfo" xml:space="preserve">
+    <value>Синхронизировать уровни и таланты персонажей</value>
   </data>
   <data name="ViewPageCultivationRemoveEntry" xml:space="preserve">
     <value>Удалить список</value>
@@ -3284,6 +3299,12 @@
   <data name="ViewPageSettingAppearanceCloseButtonBehaviorHeader" xml:space="preserve">
     <value>Поведение кнопки закрытия</value>
   </data>
+  <data name="ViewPageSettingAppearanceNotifyIconBackgroundHintDescription" xml:space="preserve">
+    <value>При закрытии окна и переходе в фоновый режим показывать системное уведомление «Hutao перешла в фоновый режим»</value>
+  </data>
+  <data name="ViewPageSettingAppearanceNotifyIconBackgroundHintHeader" xml:space="preserve">
+    <value>Уведомление о переходе в фоновый режим</value>
+  </data>
   <data name="ViewPageSettingApperanceFirstDayOfWeekDescription" xml:space="preserve">
     <value>Выберите первый день недели, который вам подходит</value>
   </data>
@@ -3662,6 +3683,30 @@
   <data name="ViewPageSettingThemeHeader" xml:space="preserve">
     <value>Цветовая тема</value>
   </data>
+  <data name="ViewPageSettingControlMaterialHeader" xml:space="preserve">
+    <value>Материал элементов управления</value>
+  </data>
+  <data name="ViewPageSettingControlMaterialDescription" xml:space="preserve">
+    <value>Изменить эффект материала карточек и панелей карточек</value>
+  </data>
+  <data name="ViewPageSettingControlMaterialDefault" xml:space="preserve">
+    <value>По умолчанию</value>
+  </data>
+  <data name="ViewPageSettingControlMaterialLiquidGlass" xml:space="preserve">
+    <value>Жидкое стекло (экспериментальный предпросмотр)</value>
+  </data>
+  <data name="ViewGuideMaterialTitle" xml:space="preserve">
+    <value>Выбор материала элементов управления</value>
+  </data>
+  <data name="ViewGuideMaterialDescription" xml:space="preserve">
+    <value>Сравните нативную поверхность Fluent и жидкое стекло, затем выберите материал элементов управления, который будет использоваться во всём приложении.</value>
+  </data>
+  <data name="ViewGuideMaterialDefaultPreviewDescription" xml:space="preserve">
+    <value>Нативная поверхность Fluent</value>
+  </data>
+  <data name="ViewGuideMaterialLiquidGlassPreviewDescription" xml:space="preserve">
+    <value>Размытие, преломление и блики на кромках</value>
+  </data>
   <data name="ViewPageSettingTranslateNavigate" xml:space="preserve">
     <value>Помочь с переводом</value>
   </data>
@@ -3895,6 +3940,12 @@
   </data>
   <data name="ViewTitleUpdatePackageAvailableTitle" xml:space="preserve">
     <value>Версия Snap Hutao {0} теперь доступна</value>
+  </data>
+  <data name="ViewTitleUpdatePackageSkipVersionButtonText" xml:space="preserve">
+    <value>Пропустить эту версию</value>
+  </data>
+  <data name="ViewTitleUpdatePackageSkipVersionInfoBarMessage" xml:space="preserve">
+    <value>Версия {0} пропущена. При запуске напоминание о ней больше не будет появляться, но вы по-прежнему можете проверить обновления вручную в настройках</value>
   </data>
   <data name="ViewToolHeader" xml:space="preserve">
     <value>Инструменты</value>
@@ -4286,6 +4337,36 @@
   <data name="ViewPageLaunchGameIslandHidePlayerInfoDescription" xml:space="preserve">
     <value>Скрыть информацию об игроке</value>
   </data>
+  <data name="ViewPageLaunchGameIslandFastSkipTalkHeader" xml:space="preserve">
+    <value>Убрать задержку пропуска диалогов</value>
+  </data>
+  <data name="ViewPageLaunchGameIslandFastSkipTalkDescription" xml:space="preserve">
+    <value>Убрать задержку после пропуска диалогов</value>
+  </data>
+  <data name="ViewPageLaunchGameIslandRedirectCatherineHeader" xml:space="preserve">
+    <value>Перенаправление Кэтрин</value>
+  </data>
+  <data name="ViewPageLaunchGameIslandRedirectCatherineDescription" xml:space="preserve">
+    <value>Пункт перехода к Кэтрин в «Руководстве приключенца» теперь будет напрямую открывать окно подтверждения наград за ежедневные поручения Кэтрин</value>
+  </data>
+  <data name="ViewDialogFastSkipTalkConfirmTitle" xml:space="preserve">
+    <value>Убрать задержку пропуска диалогов</value>
+  </data>
+  <data name="ViewDialogFastSkipTalkConfirmHint" xml:space="preserve">
+    <value>Эта функция может легко привести к блокировке аккаунта. Используйте с осторожностью</value>
+  </data>
+  <data name="ViewDialogFastSkipTalkConfirmPrimaryButtonText" xml:space="preserve">
+    <value>Я знаю, что делаю!</value>
+  </data>
+  <data name="ViewDialogCountdownConfirmCountdownSuffix" xml:space="preserve">
+    <value>{0}({1}с)</value>
+  </data>
+  <data name="ViewDialogResinListItemAllDisabledTitle" xml:space="preserve">
+    <value>Все опции предметов смолы отключены</value>
+  </data>
+  <data name="ViewDialogResinListItemAllDisabledHint" xml:space="preserve">
+    <value>После отключения всех опций предметов смолы вы не сможете получать награды в подземельях. Подтвердить отключение?</value>
+  </data>
   <data name="ViewPageLaunchGameDisablePlayerPerspectiveDescription" xml:space="preserve">
     <value>Отключить прозрачность персонажа</value>
   </data>
@@ -4442,6 +4523,21 @@
   <data name="ServicePluginUninstallDescription" xml:space="preserve">
     <value>Вы уверены, что хотите удалить плагин {0}? Это действие необратимо.</value>
   </data>
+  <data name="ViewPagePluginSettingLoadFailed" xml:space="preserve">
+    <value>Не удалось загрузить настройки плагина</value>
+  </data>
+  <data name="ViewPagePluginSettingSaveSuccess" xml:space="preserve">
+    <value>Настройка «{0}» сохранена</value>
+  </data>
+  <data name="ViewPagePluginSettingSaveFailed" xml:space="preserve">
+    <value>Не удалось сохранить настройку «{0}»</value>
+  </data>
+  <data name="ViewPagePluginSettingResetSuccess" xml:space="preserve">
+    <value>Настройка «{0}» сброшена</value>
+  </data>
+  <data name="ViewPagePluginSettingResetFailed" xml:space="preserve">
+    <value>Не удалось сбросить настройку «{0}»</value>
+  </data>
   <data name="ViewPageLaunchGameIslandGamepadHotSwitchEnabledHeader" xml:space="preserve">
     <value>Быстрое переключение геймпада</value>
   </data>
@@ -4516,6 +4612,15 @@
   </data>
   <data name="ViewPageAvatarPropertyTotalScore" xml:space="preserve">
     <value>Общий балл персонажа:</value>
+  </data>
+  <data name="ViewPageAvatarPropertyScoreAlgorithm" xml:space="preserve">
+    <value>Алгоритм оценки артефактов</value>
+  </data>
+  <data name="ViewPageAvatarPropertyScoreAlgorithmHoyolabRecommend" xml:space="preserve">
+    <value>Рекомендуемые характеристики HoYoLAB</value>
+  </data>
+  <data name="ViewPageAvatarPropertyConfigureScore" xml:space="preserve">
+    <value>Настройка оценки</value>
   </data>
   <data name="ViewPageLaunchGameAdvancedStartOptionsHeader" xml:space="preserve">
     <value>Пользовательский запуск</value>
@@ -4940,6 +5045,24 @@
   <data name="ViewPageBackpackFilterUnmarked" xml:space="preserve">
     <value>Не помечено</value>
   </data>
+  <data name="ViewPageBackpackFilterEquipped" xml:space="preserve">
+    <value>Экипировано</value>
+  </data>
+  <data name="ViewPageBackpackFilterUnequipped" xml:space="preserve">
+    <value>Не экипировано</value>
+  </data>
+  <data name="ViewPageBackpackFilterPurchasedAppendProp" xml:space="preserve">
+    <value>Определено освящающим эликсиром</value>
+  </data>
+  <data name="ViewPageBackpackFilterNotPurchasedAppendProp" xml:space="preserve">
+    <value>Не определено освящающим эликсиром</value>
+  </data>
+  <data name="ViewPageBackpackEquippedState" xml:space="preserve">
+    <value>{0} экипировано</value>
+  </data>
+  <data name="ViewPageBackpackPurchasedAppendPropTitle" xml:space="preserve">
+    <value>Характеристики, определённые освящающим эликсиром</value>
+  </data>
   <data name="ViewPageBackpackFilterFoodQualitySuspicious" xml:space="preserve">
     <value>Странное</value>
   </data>
@@ -4954,6 +5077,9 @@
   </data>
   <data name="ViewPageBackpackReliquaryScoreValue" xml:space="preserve">
     <value>{0:F1} баллов</value>
+  </data>
+  <data name="ViewPageBackpackReliquarySubStatInactive" xml:space="preserve">
+    <value>(не активно)</value>
   </data>
   <data name="ViewPageBackpackSetEffectLabel" xml:space="preserve">
     <value>{0} предметов: </value>
@@ -5100,7 +5226,10 @@
     <value>CDK Mirror酱</value>
   </data>
   <data name="ViewDialogMirrorChyanCdkHint" xml:space="preserve">
-    <value>Введите ключ активации Mirror酱 (CDK). Оставьте пустым, чтобы пропустить. Получить можно на mirrorchyan.com.</value>
+    <value>Введите ключ активации (CDK) Mirror酱, оставьте пустым для пропуска.</value>
+  </data>
+  <data name="ViewDialogMirrorChyanCdkGetCdk" xml:space="preserve">
+    <value>Получить CDK</value>
   </data>
   <data name="ViewTravelersDiaryHeader" xml:space="preserve">
     <value>Дневник путешественника</value>
@@ -5111,7 +5240,364 @@
   <data name="ViewTravelersDiaryMonth" xml:space="preserve">
     <value>Этот месяц</value>
   </data>
+  <data name="ViewTravelersDiaryNoIncomeSourceHint" xml:space="preserve">
+    <value>В этом месяце нет записей о получении камней Истока</value>
+  </data>
   <data name="ViewControlStatisticsCardGreenText" xml:space="preserve">
     <value>2★</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassButton" xml:space="preserve">
+    <value>Кнопка</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassToggleButton" xml:space="preserve">
+    <value>Кнопка-переключатель</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassHyperlinkButton" xml:space="preserve">
+    <value>Кнопка-гиперссылка</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassCheckBox" xml:space="preserve">
+    <value>Флажок</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRadioButton" xml:space="preserve">
+    <value>Радиокнопка</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassSlider" xml:space="preserve">
+    <value>Ползунок</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassTextBox" xml:space="preserve">
+    <value>Текстовое поле</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassPasswordBox" xml:space="preserve">
+    <value>Поле пароля</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassComboBox" xml:space="preserve">
+    <value>Раскрывающийся список</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassToggleSwitch" xml:space="preserve">
+    <value>Тумблер</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassCard" xml:space="preserve">
+    <value>Карточки и поверхности</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassStrength" xml:space="preserve">
+    <value>Общая интенсивность (0–2×)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassBlurScale" xml:space="preserve">
+    <value>Интенсивность размытия (0–2×)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRefractionScale" xml:space="preserve">
+    <value>Интенсивность преломления (0–2×)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassDispersionScale" xml:space="preserve">
+    <value>Интенсивность дисперсии (0–2×)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassHighlightScale" xml:space="preserve">
+    <value>Интенсивность бликов (0–2×)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassMagnificationScale" xml:space="preserve">
+    <value>Интенсивность увеличения (0–2×)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassHeader" xml:space="preserve">
+    <value>Элементы управления и эффекты жидкого стекла</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassDescription" xml:space="preserve">
+    <value>Включение стеклянного эффекта по типу элемента управления. Изменения применяются сразу; оптические множители основаны на исходных предустановках каждого элемента управления.</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassSearchBox" xml:space="preserve">
+    <value>Поле поиска</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassDispersionRange" xml:space="preserve">
+    <value>Диапазон дисперсии</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRefFresnelRange" xml:space="preserve">
+    <value>Диапазон Френеля (DIP)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRefFresnelHardness" xml:space="preserve">
+    <value>Жёсткость Френеля</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRefFresnelFactor" xml:space="preserve">
+    <value>Интенсивность Френеля</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareRange" xml:space="preserve">
+    <value>Диапазон блика</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareHardness" xml:space="preserve">
+    <value>Жёсткость блика</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareFactor" xml:space="preserve">
+    <value>Интенсивность блика</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareConvergence" xml:space="preserve">
+    <value>Сходимость блика</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareOppositeFactor" xml:space="preserve">
+    <value>Интенсивность обратного блика</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareAngle" xml:space="preserve">
+    <value>Угол освещения (градусы)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassMagnification" xml:space="preserve">
+    <value>Кратность увеличения</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassBloomAmount" xml:space="preserve">
+    <value>Величина свечения</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassBrightness" xml:space="preserve">
+    <value>Яркость</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassTemperature" xml:space="preserve">
+    <value>Цветовая температура</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassVibrance" xml:space="preserve">
+    <value>Естественная насыщенность</value>
+  </data>
+  <data name="LiquidGlassControlsWindowTitle" xml:space="preserve">
+    <value>Элементы управления жидкого стекла</value>
+  </data>
+  <data name="LiquidGlassEffectsWindowTitle" xml:space="preserve">
+    <value>Эффекты жидкого стекла</value>
+  </data>
+  <data name="GlassControlsCardDescription" xml:space="preserve">
+    <value>Выберите типы элементов управления со стеклянным материалом и просмотрите интерактивный предпросмотр.</value>
+  </data>
+  <data name="GlassEffectsCardDescription" xml:space="preserve">
+    <value>Настраивайте параметры отдельно для каждого типа элементов управления; доступны предпросмотр и сброс к значениям по умолчанию.</value>
+  </data>
+  <data name="GlassControlsIntro" xml:space="preserve">
+    <value>Выберите материал приложения и типы элементов управления. Изменения применяются сразу и сохраняются автоматически. Эффект жидкого стекла несколько снижает производительность.</value>
+  </data>
+  <data name="GlassEffectsIntro" xml:space="preserve">
+    <value>У каждого типа элементов управления свои параметры; изменения применяются сразу и сохраняются автоматически.</value>
+  </data>
+  <data name="GlassNativeMaterial" xml:space="preserve">
+    <value>Материал по умолчанию</value>
+  </data>
+  <data name="GlassLiquidMaterial" xml:space="preserve">
+    <value>Жидкое стекло</value>
+  </data>
+  <data name="GlassPreviewHeading" xml:space="preserve">
+    <value>Интерактивный предпросмотр</value>
+  </data>
+  <data name="GlassControlsPreviewHint" xml:space="preserve">
+    <value>Предпросмотр учитывает материал приложения и состояние включения этого типа. Попробуйте наведение, нажатие, фокус, ввод и перетаскивание.</value>
+  </data>
+  <data name="GlassEffectsPreviewHint" xml:space="preserve">
+    <value>Этот предпросмотр всегда показывает стекло, даже если для приложения не включён этот тип элементов управления. Редактор сохраняет нативный вид.</value>
+  </data>
+  <data name="GlassPresetHint" xml:space="preserve">
+    <value>Значения по умолчанию взяты из библиотеки элементов управления. Сброс влияет только на параметры текущего типа и не меняет другие типы или переключатели включения.</value>
+  </data>
+  <data name="GlassResetType" xml:space="preserve">
+    <value>Восстановить эффект по умолчанию для этого типа</value>
+  </data>
+  <data name="GlassResetParameter" xml:space="preserve">
+    <value>Сбросить</value>
+  </data>
+  <data name="GlassDefaultValue" xml:space="preserve">
+    <value>По умолчанию:</value>
+  </data>
+  <data name="GlassPreviewButton" xml:space="preserve">
+    <value>Кнопка предпросмотра</value>
+  </data>
+  <data name="GlassPreviewInput" xml:space="preserve">
+    <value>Введите текст для предпросмотра эффекта фокуса</value>
+  </data>
+  <data name="GlassPreviewSearch" xml:space="preserve">
+    <value>Предпросмотр поиска</value>
+  </data>
+  <data name="GlassPreviewPassword" xml:space="preserve">
+    <value>Предпросмотр пароля</value>
+  </data>
+  <data name="GlassPreviewSurface" xml:space="preserve">
+    <value>Стеклянная поверхность — содержимое остаётся читаемым</value>
+  </data>
+  <data name="GlassProfileButton" xml:space="preserve">
+    <value>Кнопка</value>
+  </data>
+  <data name="GlassProfileToggleButton" xml:space="preserve">
+    <value>Кнопка-переключатель</value>
+  </data>
+  <data name="GlassProfileHyperlinkButton" xml:space="preserve">
+    <value>Кнопка-гиперссылка</value>
+  </data>
+  <data name="GlassProfileCheckBox" xml:space="preserve">
+    <value>Флажок</value>
+  </data>
+  <data name="GlassProfileRadioButton" xml:space="preserve">
+    <value>Радиокнопка</value>
+  </data>
+  <data name="GlassProfileSlider" xml:space="preserve">
+    <value>Ползунок</value>
+  </data>
+  <data name="GlassProfileTextBox" xml:space="preserve">
+    <value>Текстовое поле</value>
+  </data>
+  <data name="GlassProfileSearchBox" xml:space="preserve">
+    <value>Поле поиска</value>
+  </data>
+  <data name="GlassProfilePasswordBox" xml:space="preserve">
+    <value>Поле пароля</value>
+  </data>
+  <data name="GlassProfileComboBox" xml:space="preserve">
+    <value>Раскрывающийся список</value>
+  </data>
+  <data name="GlassProfileToggleSwitch" xml:space="preserve">
+    <value>Тумблер</value>
+  </data>
+  <data name="GlassProfileCard" xml:space="preserve">
+    <value>Карточки и поверхности</value>
+  </data>
+  <data name="GlassProfileFloatingPanel" xml:space="preserve">
+    <value>Плавающая панель</value>
+  </data>
+  <data name="GlassProfileTabBar" xml:space="preserve">
+    <value>Панель вкладок</value>
+  </data>
+  <data name="GlassParameterSwitchScale" xml:space="preserve">
+    <value>Масштаб размера переключателя</value>
+  </data>
+  <data name="GlassParameterSwitchScaleDescription" xml:space="preserve">
+    <value>Пропорционально изменяет размер графики переключателя, не меняя размер текста. Изменения применяются сразу.</value>
+  </data>
+  <data name="GlassParameterBlurRadius" xml:space="preserve">
+    <value>Радиус размытия</value>
+  </data>
+  <data name="GlassParameterRefractionStrength" xml:space="preserve">
+    <value>Интенсивность преломления</value>
+  </data>
+  <data name="GlassParameterDispersionStrength" xml:space="preserve">
+    <value>Интенсивность дисперсии</value>
+  </data>
+  <data name="GlassParameterHighlightStrength" xml:space="preserve">
+    <value>Интенсивность бликов</value>
+  </data>
+  <data name="GlassParameterHighlightSharpness" xml:space="preserve">
+    <value>Резкость бликов</value>
+  </data>
+  <data name="GlassParameterSpecularSaturation" xml:space="preserve">
+    <value>Насыщенность зеркального отражения</value>
+  </data>
+  <data name="GlassParameterSpecularWidth" xml:space="preserve">
+    <value>Ширина зеркального отражения</value>
+  </data>
+  <data name="GlassParameterRefractiveIndex" xml:space="preserve">
+    <value>Показатель преломления</value>
+  </data>
+  <data name="GlassParameterTintOpacity" xml:space="preserve">
+    <value>Непрозрачность тонирования</value>
+  </data>
+  <data name="GlassParameterInnerShadowStrength" xml:space="preserve">
+    <value>Интенсивность внутренней тени</value>
+  </data>
+  <data name="GlassParameterSaturation" xml:space="preserve">
+    <value>Насыщенность</value>
+  </data>
+  <data name="GlassParameterContrast" xml:space="preserve">
+    <value>Контрастность</value>
+  </data>
+  <data name="GlassParameterExposure" xml:space="preserve">
+    <value>Экспозиция</value>
+  </data>
+  <data name="GlassParameterMaterialOpacity" xml:space="preserve">
+    <value>Непрозрачность материала</value>
+  </data>
+  <data name="GlassParameterDispersionRange" xml:space="preserve">
+    <value>Диапазон дисперсии</value>
+  </data>
+  <data name="GlassParameterRefFresnelRange" xml:space="preserve">
+    <value>Диапазон Френеля</value>
+  </data>
+  <data name="GlassParameterRefFresnelHardness" xml:space="preserve">
+    <value>Жёсткость Френеля</value>
+  </data>
+  <data name="GlassParameterRefFresnelFactor" xml:space="preserve">
+    <value>Интенсивность Френеля</value>
+  </data>
+  <data name="GlassParameterGlareRange" xml:space="preserve">
+    <value>Диапазон блика</value>
+  </data>
+  <data name="GlassParameterGlareHardness" xml:space="preserve">
+    <value>Жёсткость блика</value>
+  </data>
+  <data name="GlassParameterGlareFactor" xml:space="preserve">
+    <value>Интенсивность блика</value>
+  </data>
+  <data name="GlassParameterGlareConvergence" xml:space="preserve">
+    <value>Сходимость блика</value>
+  </data>
+  <data name="GlassParameterGlareOppositeFactor" xml:space="preserve">
+    <value>Доля обратного блика</value>
+  </data>
+  <data name="GlassParameterGlareAngle" xml:space="preserve">
+    <value>Направление блика (°)</value>
+  </data>
+  <data name="GlassParameterMagnification" xml:space="preserve">
+    <value>Общее увеличение фона</value>
+  </data>
+  <data name="GlassParameterMagnificationStrength" xml:space="preserve">
+    <value>Интенсивность локального увеличения</value>
+  </data>
+  <data name="GlassParameterBloomAmount" xml:space="preserve">
+    <value>Доля смешивания размытия</value>
+  </data>
+  <data name="GlassParameterBrightness" xml:space="preserve">
+    <value>Яркость</value>
+  </data>
+  <data name="GlassParameterTemperature" xml:space="preserve">
+    <value>Цветовая температура</value>
+  </data>
+  <data name="GlassParameterVibrance" xml:space="preserve">
+    <value>Естественная насыщенность</value>
+  </data>
+  <data name="GlassPreviewFirst" xml:space="preserve">
+    <value>Первый элемент</value>
+  </data>
+  <data name="GlassPreviewSecond" xml:space="preserve">
+    <value>Второй элемент</value>
+  </data>
+  <data name="GlassPreviewOverview" xml:space="preserve">
+    <value>Обзор</value>
+  </data>
+  <data name="GlassPreviewDetails" xml:space="preserve">
+    <value>Подробности</value>
+  </data>
+  <data name="GlassPreviewActivity" xml:space="preserve">
+    <value>События</value>
+  </data>
+  <data name="RepositoryServerOfflineWarning" xml:space="preserve">
+    <value>Не удалось подключиться к серверу, включён автономный режим с локальным списком репозиториев. Онлайн-ресурсы, например изображения, могут не загружаться. Чтобы повторить подключение, нажмите кнопку рядом с фоновыми задачами.</value>
+  </data>
+  <data name="RepositoryServerConnectionRestored" xml:space="preserve">
+    <value>Подключение к серверу восстановлено, автономный режим отключён.</value>
+  </data>
+  <data name="RepositoryServerReconnect" xml:space="preserve">
+    <value>Повторить попытку подключения к серверу</value>
+  </data>
+  <data name="RepositoryServerReconnectFailed" xml:space="preserve">
+    <value>По-прежнему не удаётся подключиться к серверу, продолжается автономный режим. Можно повторить попытку позже.</value>
+  </data>
+  <data name="RepositoryServerOfflineStatus" xml:space="preserve">
+    <value>Автономный режим · Переподключиться</value>
+  </data>
+  <data name="RepositoryServerReconnecting" xml:space="preserve">
+    <value>Автономный режим · Переподключение</value>
+  </data>
+  <data name="ViewModelGuideResourceDownloadIncomplete" xml:space="preserve">
+    <value>Некоторые ресурсы изображений не удалось загрузить. Повторите попытку или выберите пропуск загрузки.</value>
+  </data>
+  <data name="ServiceAchievementImportSummary" xml:space="preserve">
+    <value>В текущем сохранении выполнено достижений: {0}. Импорт записей (включая незавершённые и отсутствующие): добавлено {1}, обновлено {2}, удалено {3}.</value>
+  </data>
+  <data name="GlassParameterLightAngle" xml:space="preserve">
+    <value>Угол статического источника света (радианы)</value>
+  </data>
+  <data name="GlassPointerLighting" xml:space="preserve">
+    <value>Направление блика следует за мышью</value>
+  </data>
+  <data name="GlassPointerLightingDescription" xml:space="preserve">
+    <value>Управляет направлением света блика на краях стекла. Интенсивность блика определяет яркость, насыщенность блика — цвет; при степени следования 0 сохраняется направление статического источника света, при 1 — полностью следует за мышью. Локальный блик стекла при взаимодействии сохраняется.</value>
+  </data>
+  <data name="GlassPointerLightInfluence" xml:space="preserve">
+    <value>Степень следования источника света</value>
   </data>
 </root>

@@ -4,6 +4,7 @@
 using Snap.Hutao.Remastered.Model.Entity;
 using Snap.Hutao.Remastered.Model.Intrinsic;
 using Snap.Hutao.Remastered.Model.Metadata;
+using Snap.Hutao.Remastered.Model.Metadata.Avatar;
 using Snap.Hutao.Remastered.Model.Metadata.Item;
 using Snap.Hutao.Remastered.Model.Metadata.Reliquary;
 using Snap.Hutao.Remastered.Model.Metadata.Weapon;
@@ -11,6 +12,7 @@ using Snap.Hutao.Remastered.Model.Primitive;
 using Snap.Hutao.Remastered.Service.Metadata.ContextAbstraction;
 using Snap.Hutao.Remastered.Service.Metadata.ContextAbstraction.ImmutableArray;
 using Snap.Hutao.Remastered.Service.Metadata.ContextAbstraction.ImmutableDictionary;
+using System.Collections.Frozen;
 using System.Collections.Immutable;
 
 namespace Snap.Hutao.Remastered.Service.Backpack;
@@ -25,8 +27,13 @@ public sealed class BackpackServiceMetadataContext : IMetadataContext,
     IMetadataDictionaryIdReliquarySubAffixSource,
     IMetadataArrayReliquaryMainAffixLevelSource,
     IMetadataArrayCookRecipeSource,
-    IMetadataDictionaryIdCookRecipeSource
+    IMetadataDictionaryIdCookRecipeSource,
+    IMetadataDictionaryIdAvatarWithPlayersSource
 {
+    private FrozenDictionary<(QualityType Rank, uint Level), ReliquaryMainAffixLevel>? reliquaryMainAffixLevelMap;
+
+    public ImmutableDictionary<AvatarId, Avatar> IdAvatarMap { get; set; } = default!;
+
     public ImmutableDictionary<MaterialId, DisplayItem> IdDisplayItemAndMaterialMap { get; set; } = default!;
 
     public ImmutableDictionary<MaterialId, Material> IdMaterialMap { get; set; } = default!;
@@ -41,11 +48,31 @@ public sealed class BackpackServiceMetadataContext : IMetadataContext,
 
     public ImmutableDictionary<ReliquarySubAffixId, ReliquarySubAffix> IdReliquarySubAffixMap { get; set; } = default!;
 
-    public ImmutableArray<ReliquaryMainAffixLevel> ReliquaryMainAffixLevels { get; set; }
+    public ImmutableArray<ReliquaryMainAffixLevel> ReliquaryMainAffixLevels { get; set; } = [];
 
-    public ImmutableArray<CookRecipe> CookRecipes { get; set; }
+    /// <summary>
+    /// Gets the reliquary main affix growth table indexed by rank and level.
+    /// </summary>
+    public FrozenDictionary<(QualityType Rank, uint Level), ReliquaryMainAffixLevel> ReliquaryMainAffixLevelMap
+        => reliquaryMainAffixLevelMap ??= BuildReliquaryMainAffixLevelMap();
+
+    public ImmutableArray<CookRecipe> CookRecipes { get; set; } = [];
 
     public ImmutableDictionary<CookRecipeId, CookRecipe> IdCookRecipeMap { get; set; } = default!;
 
     public BackpackReliquaryScoreConfig ReliquaryScoreConfig { get; set; } = default!;
+
+    private FrozenDictionary<(QualityType Rank, uint Level), ReliquaryMainAffixLevel> BuildReliquaryMainAffixLevelMap()
+    {
+        Dictionary<(QualityType Rank, uint Level), ReliquaryMainAffixLevel> map = [];
+        // Iterate the span: an unassigned (default) ImmutableArray is a valid empty span,
+        // while foreach over the struct itself would throw a NullReferenceException and
+        // take the whole backpack inventory down with it
+        foreach (ref readonly ReliquaryMainAffixLevel level in ReliquaryMainAffixLevels.AsSpan())
+        {
+            map.TryAdd((level.Rank, level.Level), level);
+        }
+
+        return map.ToFrozenDictionary();
+    }
 }

@@ -6,6 +6,7 @@ using Snap.Hutao.Remastered.Core;
 using Snap.Hutao.Remastered.Core.Caching;
 using Snap.Hutao.Remastered.Core.Graphics.Imaging;
 using Snap.Hutao.Remastered.Core.IO;
+using Snap.Hutao.Remastered.Service.Notification;
 using Snap.Hutao.Remastered.UI;
 using Snap.Hutao.Remastered.Web.Hutao.Wallpaper;
 using Snap.Hutao.Remastered.Web.Response;
@@ -26,9 +27,13 @@ public sealed partial class BackgroundImageService : IBackgroundImageService
     private readonly IServiceProvider serviceProvider;
     private readonly ITaskContext taskContext;
     private readonly AppOptions appOptions;
+    private readonly ILogger<BackgroundImageService> logger;
+    private readonly IMessenger messenger;
 
     private HashSet<string>? availableBackgroundPathSet;
     private string? currentBackgroundFolder;
+
+    private int decodeFailureHintShown;
 
     [GeneratedConstructor]
     public partial BackgroundImageService(IServiceProvider serviceProvider);
@@ -65,7 +70,6 @@ public sealed partial class BackgroundImageService : IBackgroundImageService
         }
         catch (IOException)
         {
-            // The process cannot access the file '?' because it is being used by another process.
             return new(false, default!);
         }
 
@@ -82,9 +86,11 @@ public sealed partial class BackgroundImageService : IBackgroundImageService
             }
             catch (COMException comException)
             {
+                logger.LogWarning(comException, "Failed to decode the background image '{Path}' (type={Type}, HResult=0x{HResult:X8})", path, appOptions.BackgroundImageType.Value, comException.HResult);
+
                 if (appOptions.BackgroundImageType.Value is not BackgroundImageType.LocalFolder)
                 {
-                    // For web wallpaper, skip invalid file, as users can't control the file
+                    NotifyDecodeFailureOnce(comException);
                     return new(false, default!);
                 }
 
@@ -192,8 +198,9 @@ public sealed partial class BackgroundImageService : IBackgroundImageService
                         ValueFile file = await scope.ServiceProvider.GetRequiredService<IImageCache>().GetFileFromCacheAsync(url).ConfigureAwait(false);
                         availableBackgroundPathSet = [file];
                     }
-                    catch (publicImageCacheException)
+                    catch (publicImageCacheException ex)
                     {
+                        logger.LogWarning(ex, "Failed to download the background image '{Url}'", url);
                         availableBackgroundPathSet = [];
                     }
                 }
@@ -202,5 +209,23 @@ public sealed partial class BackgroundImageService : IBackgroundImageService
                 backgroundImageOptions.Wallpaper = wallpaper;
             }
         }
+    }
+
+    // 0x88982F8B WINCODEC_ERR_COMPONENTINITIALIZEFAILURE and 0x88982F50 WINCODEC_ERR_COMPONENTNOTFOUND both
+    // mean that this machine has no usable codec for the image format: tell the user once instead of silently
+    // keeping the previous wallpaper (the web wallpaper are provided by us, users cannot fix the file).
+    private void NotifyDecodeFailureOnce(COMException comException)
+    {
+        if (comException.HResult is not (unchecked((int)0x88982F8B) or unchecked((int)0x88982F50)))
+        {
+            return;
+        }
+
+        if (Interlocked.Exchange(ref decodeFailureHintShown, 1) is 1)
+        {
+            return;
+        }
+
+        messenger.Send(InfoBarMessage.Warning(SH.ServiceBackgroundImageDecodeFailed));
     }
 }

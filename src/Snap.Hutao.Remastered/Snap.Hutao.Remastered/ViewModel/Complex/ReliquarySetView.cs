@@ -12,7 +12,7 @@ namespace Snap.Hutao.Remastered.ViewModel.Complex;
 /// <summary>
 /// 圣遗物套装
 /// </summary>
-public sealed class ReliquarySetView : RateAndDelta
+public sealed partial class ReliquarySetView : RateAndDelta
 {
     public ReliquarySetView(ImmutableDictionary<ExtendedEquipAffixId, Model.Metadata.Reliquary.ReliquarySet> idReliquarySetMap, ItemRate<ReliquarySets, double> setRate, ItemRate<ReliquarySets, double>? lastSetRate)
         : base(setRate.Rate, lastSetRate?.Rate)
@@ -42,10 +42,10 @@ public sealed class ReliquarySetView : RateAndDelta
     /// <summary>
     /// 名称
     /// </summary>
-    public string Name { get; }
+    public string Name { get; private set => SetProperty(ref field, value); }
 
     /// <summary>
     /// 图标
     /// </summary>
-    public List<Uri>? Icons { get; }
+    public List<Uri>? Icons { get; private set => SetProperty(ref field, value); }
 }

@@ -48,6 +48,8 @@ public sealed partial class BackpackViewModel : Abstraction.ViewModel
         BackpackItemCategory.Furniture,
     ];
 
+    private static readonly ImmutableArray<BackpackItemCategory> AllCategories = [.. Enum.GetValues<BackpackItemCategory>()];
+
     [GeneratedConstructor]
     public partial BackpackViewModel(IServiceProvider serviceProvider);
 
@@ -224,7 +226,13 @@ public sealed partial class BackpackViewModel : Abstraction.ViewModel
         }
 
         result.IsActive = true;
-        result = scopeContext.BackpackService.SaveReliquaryScoreConfig(result);
+
+        // 删除当前配置后对话框会返回一条未落库的未命名默认预设，保存它只会让刚删掉的配置凭空长回来
+        if (!result.IsTransientDefaultPreset)
+        {
+            result = scopeContext.BackpackService.SaveReliquaryScoreConfig(result);
+        }
+
         ScoreConfig = result;
 
         // Refresh all items to update scores with the saved config
@@ -286,6 +294,11 @@ public sealed partial class BackpackViewModel : Abstraction.ViewModel
             return;
         }
 
+        await RebuildItemsAsync(archive, token).ConfigureAwait(false);
+    }
+
+    private async ValueTask RebuildItemsAsync(BackpackArchive archive, CancellationToken token)
+    {
         using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(token, CancellationToken);
         BackpackServiceMetadataContext context = await scopeContext.MetadataService
             .GetContextAsync<BackpackServiceMetadataContext>(linkedCts.Token)
@@ -294,16 +307,16 @@ public sealed partial class BackpackViewModel : Abstraction.ViewModel
         context.ReliquaryScoreConfig = scopeContext.BackpackService.GetActiveReliquaryScoreConfig();
         ScoreConfig = context.ReliquaryScoreConfig;
 
-        ImmutableArray<BackpackItemView> allItems = [.. scopeContext.BackpackService
-            .GetBackpackItemImmutableArrayByArchiveId(archive.InnerId)
-            .Select(item => BackpackItemView.Create(item, context))];
+        ImmutableArray<BackpackItemView> allItems = BuildItemViews(archive, context, out Exception? itemFailure);
 
         // Calculate scores for reliquary items
         foreach (BackpackItemView item in allItems)
         {
             if (item is BackpackReliquaryItemView relicItem)
             {
-                relicItem.Score = ReliquaryScoreCalculator.CalculateWithWeights(relicItem.SubStats.Select(s => (s.FightProp, s.Value)), context.ReliquaryScoreConfig.GetWeight);
+                relicItem.Score = ReliquaryScoreCalculator.CalculateWithWeights(
+                    relicItem.SubStats.Where(s => s.State is not ReliquarySubStatState.Inactive).Select(s => (s.FightProp, s.Value)),
+                    context.ReliquaryScoreConfig.GetWeight);
             }
         }
 
@@ -328,7 +341,7 @@ public sealed partial class BackpackViewModel : Abstraction.ViewModel
         // Pre-build token dictionaries for all categories (on background thread)
         ImmutableDictionary<BackpackItemCategory, FrozenDictionary<string, SearchToken>>.Builder tokenBuilder =
             ImmutableDictionary.CreateBuilder<BackpackItemCategory, FrozenDictionary<string, SearchToken>>();
-        foreach (BackpackItemCategory cat in Enum.GetValues<BackpackItemCategory>())
+        foreach (BackpackItemCategory cat in AllCategories)
         {
             ImmutableArray<BackpackItemView> catItems = categoryItems.GetValueOrDefault(cat, []);
             tokenBuilder.Add(cat, BackpackFilterTokenBuilder.Build(cat, catItems));
@@ -341,10 +354,46 @@ public sealed partial class BackpackViewModel : Abstraction.ViewModel
         await scopeContext.TaskContext.SwitchToMainThreadAsync();
         token.ThrowIfCancellationRequested();
 
+        if (itemFailure is not null)
+        {
+            scopeContext.Messenger.Send(InfoBarMessage.Error(itemFailure));
+        }
+
         BackpackItemCategory category = GetSelectedCategory();
         BuildSearchData(category);
         BuildSortTokens(category);
         UpdateItemsFilter(category);
+    }
+
+    private ImmutableArray<BackpackItemView> BuildItemViews(BackpackArchive archive, BackpackServiceMetadataContext context, out Exception? itemFailure)
+    {
+        ImmutableArray<BackpackItem> entities = scopeContext.BackpackService.GetBackpackItemImmutableArrayByArchiveId(archive.InnerId);
+        ImmutableArray<BackpackItemView>.Builder builder = ImmutableArray.CreateBuilder<BackpackItemView>(entities.Length);
+        List<Exception>? failures = null;
+
+        foreach (ref readonly BackpackItem entity in entities.AsSpan())
+        {
+            try
+            {
+                builder.Add(BackpackItemView.Create(entity, context));
+            }
+            catch (Exception ex)
+            {
+                ex.Data["ItemId"] = entity.ItemId;
+                (failures ??= []).Add(ex);
+            }
+        }
+
+        itemFailure = failures is null
+            ? null
+            : new AggregateException($"{failures.Count} backpack item view(s) failed to build, {builder.Count} succeeded.", failures);
+
+        if (itemFailure is not null)
+        {
+            SentrySdk.CaptureException(itemFailure);
+        }
+
+        return builder.ToImmutable();
     }
 
     [Command("FilterCommand")]
@@ -388,6 +437,11 @@ public sealed partial class BackpackViewModel : Abstraction.ViewModel
 
     private static ImmutableArray<BackpackItemView> ApplyDefaultSort(ImmutableArray<BackpackItemView> items, BackpackItemCategory category)
     {
+        if (items.Length is 0)
+        {
+            return [];
+        }
+
         return category switch
         {
             BackpackItemCategory.Weapon => [.. items
@@ -407,15 +461,34 @@ public sealed partial class BackpackViewModel : Abstraction.ViewModel
 
     private static ImmutableDictionary<BackpackItemCategory, ImmutableArray<BackpackItemView>> BuildCategoryViews(ImmutableArray<BackpackItemView> all)
     {
+        // Single pass over the whole inventory: bucket every item by its own category instead of
+        // re-scanning the full list once per category.
+        Dictionary<BackpackItemCategory, ImmutableArray<BackpackItemView>.Builder> buckets = [];
+        foreach (BackpackItemView item in all)
+        {
+            BackpackItemCategory category = item.Category;
+            if (!IsCorrectType(item, category))
+            {
+                continue;
+            }
+
+            if (!buckets.TryGetValue(category, out ImmutableArray<BackpackItemView>.Builder? bucket))
+            {
+                bucket = ImmutableArray.CreateBuilder<BackpackItemView>();
+                buckets.Add(category, bucket);
+            }
+
+            bucket.Add(item);
+        }
+
         ImmutableDictionary<BackpackItemCategory, ImmutableArray<BackpackItemView>>.Builder builder =
             ImmutableDictionary.CreateBuilder<BackpackItemCategory, ImmutableArray<BackpackItemView>>();
 
-        foreach (BackpackItemCategory cat in Enum.GetValues<BackpackItemCategory>())
+        foreach (BackpackItemCategory category in AllCategories)
         {
-            ImmutableArray<BackpackItemView> items = [.. all
-                .Where(item => item.Category == cat && IsCorrectType(item, cat))];
-
-            builder.Add(cat, ApplyDefaultSort(items, cat));
+            builder.Add(category, buckets.TryGetValue(category, out ImmutableArray<BackpackItemView>.Builder? bucketBuilder)
+                ? ApplyDefaultSort(bucketBuilder.ToImmutable(), category)
+                : []);
         }
 
         return builder.ToImmutable();

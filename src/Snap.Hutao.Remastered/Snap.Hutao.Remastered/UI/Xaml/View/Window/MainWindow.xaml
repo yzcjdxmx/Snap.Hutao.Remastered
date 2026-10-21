@@ -3,11 +3,18 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:essential="using:WinUI3Package"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shuxv="using:Snap.Hutao.Remastered.UI.Xaml.View"
     mc:Ignorable="d">
 
     <Grid PointerPressed="RootGrid_PointerPressed">
+        <Grid.Resources>
+            <ResourceDictionary>
+                <essential:ModernStandardWindowContextMenu x:Name="Menu" Window="{x:Bind}"/>
+                <essential:ModernWindowCaptionButtonToolTip x:Name="CaptionButtonToolTip" Window="{x:Bind}"/>
+            </ResourceDictionary>
+        </Grid.Resources>
         <shuxv:MainView x:Name="MainView"/>
     </Grid>
 </Window>

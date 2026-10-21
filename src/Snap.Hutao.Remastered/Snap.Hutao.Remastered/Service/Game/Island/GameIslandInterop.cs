@@ -97,12 +97,15 @@ public sealed class GameIslandInterop : IGameIslandInterop
                     IPluginService pluginService = context.PluginService;
 
                     // Load dll in inject of plugins
-                    foreach (HutaoPlugin plugin in pluginService.GetAllPlugins())
+                    foreach (PluginInfo plugin in pluginService.GetAllPluginInfos())
                     {
                         if (!plugin.IsEnabled) continue;
-                        if (!Directory.Exists(Path.Combine(pluginService.GetPluginPath(plugin), "inject"))) continue;
 
-                        string injectPath = Path.Combine(pluginService.GetPluginPath(plugin), "inject");
+                        string? pluginDirectory = pluginService.GetPluginPath(plugin.Id);
+                        if (pluginDirectory is null) continue;
+                        if (!Directory.Exists(Path.Combine(pluginDirectory, "inject"))) continue;
+
+                        string injectPath = Path.Combine(pluginDirectory, "inject");
 
                         foreach (FileInfo inject in new DirectoryInfo(injectPath).GetFiles("*.dll", SearchOption.TopDirectoryOnly))
                         {
@@ -168,6 +171,7 @@ public sealed class GameIslandInterop : IGameIslandInterop
         pIslandEnvironment->CombineHotkey = options.CombineMenuHotkey.Value;
         pIslandEnvironment->WeakMapCheck = options.WeakMapCheck.Value;
         pIslandEnvironment->FastSkipTalk = options.FastSkipTalk.Value;
+        pIslandEnvironment->RedirectCatherine = options.RedirectCatherine.Value;
 
         return pIslandEnvironment->View;
     }
@@ -234,6 +238,7 @@ public sealed class GameIslandInterop : IGameIslandInterop
                 {
                     unsafe
                     {
+                        // Size 由 DLL 写入（DLL 侧不再校验 Provider 的大小），这里只由 UI 判断版本是否匹配
                         if (view.State is IslandState.Started && view.Size < sizeof(IslandEnvironment))
                         {
                             HutaoException.Throw("IslandEnvironment size mismatch");

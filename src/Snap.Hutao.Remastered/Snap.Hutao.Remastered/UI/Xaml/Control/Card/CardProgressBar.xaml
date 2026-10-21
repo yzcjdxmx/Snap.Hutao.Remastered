@@ -1,12 +1,12 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:shuxcc="using:Snap.Hutao.Remastered.UI.Xaml.Control.Card">
+    xmlns:shuxcc="using:Snap.Hutao.Remastered.UI.Xaml.Control.Card"
+    xmlns:shuxcth="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme">
 
     <Style BasedOn="{StaticResource DefaultCardProgressBarStyle}" TargetType="shuxcc:CardProgressBar"/>
 
     <Style x:Key="DefaultCardProgressBarStyle" TargetType="shuxcc:CardProgressBar">
-        <Setter Property="Background" Value="{ThemeResource ControlAltFillColorSecondaryBrush}"/>
         <Setter Property="MinHeight" Value="40"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -52,10 +52,11 @@
             </Setter.Value>
         </Setter>
         <Setter Property="TextForeground" Value="{ThemeResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.GlassBrush" Value="{ThemeResource HutaoSurfaceBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.NativeBrush" Value="{ThemeResource ControlAltFillColorSecondaryBrush}"/>
     </Style>
 
     <Style x:Key="CompactCardProgressBarStyle" TargetType="shuxcc:CardProgressBar">
-        <Setter Property="Background" Value="{ThemeResource ControlAltFillColorSecondaryBrush}"/>
         <Setter Property="MinHeight" Value="40"/>
         <Setter Property="ProgressForeground" Value="{ThemeResource ProgressBarForegroundThemeBrush}"/>
         <Setter Property="Template">
@@ -94,6 +95,8 @@
             </Setter.Value>
         </Setter>
         <Setter Property="TextForeground" Value="{ThemeResource TextFillColorPrimaryBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.GlassBrush" Value="{ThemeResource HutaoSurfaceBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.NativeBrush" Value="{ThemeResource ControlAltFillColorSecondaryBrush}"/>
     </Style>
 
 </ResourceDictionary>

@@ -18,43 +18,27 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          ref: dev
           fetch-depth: 0
 
       - name: Merge all branches into dev locally
         id: merge
-        run: |
-          $continue = $true
-
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin '+refs/heads/*:refs/remotes/origin/*'
-          git checkout origin/dev
-          $response = curl -s https://api.github.com/repos/SnapHutaoRemasteringProject/Snap.Hutao.Remastered/pulls?state=open
-          $refs = $response | ConvertFrom-Json | Where-Object { $_.draft -eq $false } | ForEach-Object { $_.head.ref }
-          if ($refs.Count -eq 0 -or ($refs.Count -eq 1 -and $refs -eq "l10n_dev")) {
-              echo "No PRs to merge"
-              $continue = $false
-              echo "continue=$continue" >> $Env:GITHUB_OUTPUT
-              exit
-          }
-
-          foreach ($ref in $refs) {
-              echo "Merging $ref into dev"
-              git merge "origin/$ref" --strategy=ort --allow-unrelated-histories -m "Merge $ref into dev"
-          }
-
-          echo "continue=$continue" >> $Env:GITHUB_OUTPUT
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./scripts/PrepareCanarySource.ps1
 
       - name: Setup .NET
         if: ${{ steps.merge.outputs.continue == 'true' }}
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.0
+          dotnet-version: 11
 
       - name: Cache NuGet packages
         if: ${{ steps.merge.outputs.continue == 'true' }}
@@ -110,7 +94,7 @@ jobs:
         run: |
           $summary = "
           > [!WARNING]
-          > 该版本是由 CI 程序自动打包生成的 \`Canary\` 测试版本，包含新功能原型及问题修复
+          > 该版本是由 CI 程序自动打包生成的 Canary 测试版本，包含新功能原型及问题修复
 
           > [!IMPORTANT]
           > 直接旁加载 MSIX 时，请将 SnapHutaoRemasteringProject 工件中的证书安装到 **受信任的人员（TrustedPeople）** 存储

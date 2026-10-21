@@ -16,6 +16,8 @@ public interface IContentDialogFactory
 
     ValueTask<ContentDialogResult> CreateForConfirmCancelAsync([LocalizationRequired] string title, [LocalizationRequired] string content, ContentDialogButton defaultButton = ContentDialogButton.Close, bool isPrimaryButtonEnabled = true);
 
+    ValueTask<ContentDialogResult> CreateForConfirmCancelWithSecondaryAsync([LocalizationRequired] string title, [LocalizationRequired] string content, [LocalizationRequired] string secondaryButtonText, ContentDialogButton defaultButton = ContentDialogButton.Primary);
+
     ValueTask<Microsoft.UI.Xaml.Controls.ContentDialog> CreateForIndeterminateProgressAsync([LocalizationRequired] string title);
 
     ValueTask<TContentDialog> CreateInstanceAsync<TContentDialog>(IServiceProvider serviceProvider, params object[] parameters)

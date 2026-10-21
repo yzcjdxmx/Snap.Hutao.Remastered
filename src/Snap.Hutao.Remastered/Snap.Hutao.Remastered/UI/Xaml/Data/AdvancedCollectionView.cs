@@ -43,7 +43,11 @@ public partial class AdvancedCollectionView<T> : IAdvancedCollectionView<T>, INo
 
     public event VectorChangedEventHandler<object>? VectorChanged;
 
+    public event NotifyCollectionChangedEventHandler? CollectionChanged;
+
     public int Count { get => view.Count; }
+
+    public int SourceCount { get => Source.Count; }
 
     public bool IsReadOnly { get => Source.IsReadOnly; }
 
@@ -320,7 +324,7 @@ public partial class AdvancedCollectionView<T> : IAdvancedCollectionView<T>, INo
         if (newViewIndex != oldViewIndex)
         {
             bool itemWasCurrent = oldViewIndex == CurrentPosition;
-            OnVectorChanged(new VectorChangedEventArgs(CollectionChange.ItemRemoved, oldViewIndex));
+            OnVectorChanged(new VectorChangedEventArgs(CollectionChange.ItemRemoved, oldViewIndex), typedItem);
 
             view.Insert(newViewIndex, typedItem);
 
@@ -441,6 +445,7 @@ public partial class AdvancedCollectionView<T> : IAdvancedCollectionView<T>, INo
 
         OnVectorChanged(new VectorChangedEventArgs(CollectionChange.Reset));
         MoveCurrentTo(currentItem);
+        OnPropertyChanged(nameof(SourceCount));
     }
 
     private void SourceNotifyCollectionChangedCollectionChanged(NotifyCollectionChangedEventArgs e)
@@ -493,6 +498,8 @@ public partial class AdvancedCollectionView<T> : IAdvancedCollectionView<T>, INo
 
                 break;
         }
+
+        if (deferCounter is 0) OnPropertyChanged(nameof(SourceCount));
     }
 
     private bool HandleSourceItemAdded(int newStartingIndex, T newItem, int? viewIndex = null)
@@ -602,6 +609,7 @@ public partial class AdvancedCollectionView<T> : IAdvancedCollectionView<T>, INo
             MoveCurrentToIndex(-1);
         }
 
+        T removedItem = view[itemIndex];
         view.RemoveAt(itemIndex);
 
         if (itemIndex < CurrentPosition)
@@ -610,7 +618,7 @@ public partial class AdvancedCollectionView<T> : IAdvancedCollectionView<T>, INo
             CurrentPosition--;
         }
 
-        OnVectorChanged(new VectorChangedEventArgs(CollectionChange.ItemRemoved, itemIndex));
+        OnVectorChanged(new VectorChangedEventArgs(CollectionChange.ItemRemoved, itemIndex), removedItem);
     }
 
     private void SortDescriptionsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -693,14 +701,24 @@ public partial class AdvancedCollectionView<T> : IAdvancedCollectionView<T>, INo
         OnPropertyChanged(nameof(CurrentItem));
     }
 
-    private void OnVectorChanged(IVectorChangedEventArgs e)
+    private void OnVectorChanged(IVectorChangedEventArgs e, T? removedItem = null)
     {
         if (!created || deferCounter > 0)
         {
             return;
         }
 
+        // ItemsRepeater can consume a managed collection through a bindable-vector
+        // adapter. Expose the standard notification contract as well as WinRT's
+        // vector event, using view indices after filtering/sorting.
+        NotifyCollectionChangedEventArgs change = e.CollectionChange switch
+        {
+            CollectionChange.ItemInserted => new(NotifyCollectionChangedAction.Add, view[(int)e.Index], (int)e.Index),
+            CollectionChange.ItemRemoved => new(NotifyCollectionChangedAction.Remove, removedItem, (int)e.Index),
+            _ => new(NotifyCollectionChangedAction.Reset),
+        };
         VectorChanged?.Invoke(this, e);
+        CollectionChanged?.Invoke(this, change);
         OnPropertyChanged(nameof(Count));
     }
 

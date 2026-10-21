@@ -4,6 +4,7 @@
 // Licensed under the MIT license.
 
 using Snap.Hutao.Remastered.Core.ExceptionService;
+using Snap.Hutao.Remastered.Core.Shell;
 using Snap.Hutao.Remastered.UI.Input.HotKey;
 using Snap.Hutao.Remastered.UI.Windowing;
 using Snap.Hutao.Remastered.Win32.Foundation;
@@ -11,6 +12,7 @@ using System.Buffers;
 using System.Runtime.InteropServices;
 using WinRT;
 using WinRT.Interop;
+using RuntimeEnvironment = Snap.Hutao.Remastered.Core.RuntimeEnvironment;
 
 namespace Snap.Hutao.Remastered.Win32;
 
@@ -144,6 +146,12 @@ public sealed unsafe class HutaoNative
 
     public void CreateAutoStartTaskForThisUser(BOOL runElevated)
     {
+        if (RuntimeEnvironment.IsUnpackaged)
+        {
+            UnpackagedStartupTask.Register(runElevated);
+            return;
+        }
+
         HutaoException.NotSupportedIf(objRefPrivate3 is null, "IHutaoPrivate3 is not supported");
 #if DEBUG
         Marshal.ThrowExceptionForHR(objRefPrivate3.Vftbl.CreateAutoStartTaskForThisUser(objRefPrivate3.ThisPtr, runElevated, true));

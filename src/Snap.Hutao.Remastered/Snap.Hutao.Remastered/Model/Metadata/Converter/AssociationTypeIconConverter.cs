@@ -27,7 +27,7 @@ public sealed partial class AssociationTypeIconConverter : ValueConverter<Associ
             AssociationType.ASSOC_TYPE_NODKRAI => "Nodkrai",
             AssociationType.ASSOC_TYPE_NODKRAI_ZIBAI => "Nodkrai",
             AssociationType.ASSOC_TYPE_HVISION => default,
-            AssociationType.ASSOC_TYPE_SNEZHNAYA_STAR => default,
+            AssociationType.ASSOC_TYPE_SNEZHNAYA_STAR => "Snezhnaya",
             _ => throw HutaoException.NotSupported(),
         };
 

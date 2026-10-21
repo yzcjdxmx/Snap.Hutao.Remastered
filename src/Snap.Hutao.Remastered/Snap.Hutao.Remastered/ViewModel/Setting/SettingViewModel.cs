@@ -60,8 +60,38 @@ public sealed partial class SettingViewModel : Abstraction.ViewModel, INavigatio
 
     public partial AppOptions AppOptions { get; }
 
+    partial void PostConstruct(IServiceProvider serviceProvider)
+    {
+        AppOptions.AutoRestartAsAdmin.PropertyChanged += OnStartupOptionChanged;
+        AppOptions.IsStartupEnabled.PropertyChanged += OnStartupOptionChanged;
+        AppOptions.IsStartupAsAdminEnabled.PropertyChanged += OnStartupOptionChanged;
+    }
+
+    private void OnStartupOptionChanged(object? sender, PropertyChangedEventArgs args)
+    {
+        OnPropertyChanged(nameof(AutoRestartAsAdminEnabled));
+        OnPropertyChanged(nameof(IsStartupEnabled));
+        OnPropertyChanged(nameof(IsStartupAsAdminEnabled));
+        OnPropertyChanged(nameof(IsStartupAsAdminCardEnabled));
+    }
+
+    public override void Dispose()
+    {
+        AppOptions.AutoRestartAsAdmin.PropertyChanged -= OnStartupOptionChanged;
+        AppOptions.IsStartupEnabled.PropertyChanged -= OnStartupOptionChanged;
+        AppOptions.IsStartupAsAdminEnabled.PropertyChanged -= OnStartupOptionChanged;
+        base.Dispose();
+    }
+
     [ObservableProperty]
     public partial string? UpdateInfo { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsStartupSettingsEnabled))]
+    [NotifyPropertyChangedFor(nameof(IsStartupAsAdminCardEnabled))]
+    public partial bool IsStartupUpdating { get; private set; }
+
+    public bool IsStartupSettingsEnabled => Environment.IsPrivilegedProcess && !IsStartupUpdating;
 
     // TODO: Replace with IObservableProperty
     public NameValue<ServerDomainMode>? SelectedServerDomainMode
@@ -86,13 +116,19 @@ public sealed partial class SettingViewModel : Abstraction.ViewModel, INavigatio
                 return;
             }
 
-            if (AppOptions.AutoRestartAsAdmin.Value == value)
+            if (AppOptions.AutoRestartAsAdmin.Value == value || IsStartupUpdating)
             {
                 return;
             }
 
             if (value && !IsStartupAsAdminEnabled)
             {
+                if (IsStartupEnabled)
+                {
+                    UpdateStartupTaskAsync(true, true, value).SafeForget();
+                    return;
+                }
+
                 IsStartupAsAdminEnabled = true;
             }
 
@@ -105,7 +141,7 @@ public sealed partial class SettingViewModel : Abstraction.ViewModel, INavigatio
 
     public bool IsStartupAsAdminCardEnabled
     {
-        get => IsStartupEnabled && !AutoRestartAsAdminEnabled;
+        get => IsStartupSettingsEnabled && IsStartupEnabled && !AutoRestartAsAdminEnabled;
     }
 
     public bool IsStartupEnabled
@@ -118,16 +154,12 @@ public sealed partial class SettingViewModel : Abstraction.ViewModel, INavigatio
                 return;
             }
 
-            if (AppOptions.IsStartupEnabled.Value == value)
+            if (AppOptions.IsStartupEnabled.Value == value || IsStartupUpdating)
             {
                 return;
             }
 
-            AppOptions.IsStartupEnabled.Value = value;
-            OnStartupEnabledChanged(value);
-            OnPropertyChanged(nameof(IsStartupEnabled));
-            OnPropertyChanged(nameof(IsStartupAsAdminCardEnabled));
-            OnPropertyChanged(nameof(IsStartupAsAdminEnabled));
+            UpdateStartupTaskAsync(value, IsStartupAsAdminEnabled).SafeForget();
         }
     }
 
@@ -141,14 +173,20 @@ public sealed partial class SettingViewModel : Abstraction.ViewModel, INavigatio
                 return;
             }
 
-            if (AppOptions.IsStartupAsAdminEnabled.Value == value)
+            if (AppOptions.IsStartupAsAdminEnabled.Value == value || IsStartupUpdating)
             {
                 return;
             }
 
-            AppOptions.IsStartupAsAdminEnabled.Value = value;
-            OnStartupAsAdminEnabledChanged(value);
-            OnPropertyChanged(nameof(IsStartupAsAdminEnabled));
+            if (IsStartupEnabled)
+            {
+                UpdateStartupTaskAsync(true, value).SafeForget();
+            }
+            else
+            {
+                AppOptions.IsStartupAsAdminEnabled.Value = value;
+                OnPropertyChanged(nameof(IsStartupAsAdminEnabled));
+            }
         }
     }
 
@@ -182,7 +220,7 @@ public sealed partial class SettingViewModel : Abstraction.ViewModel, INavigatio
         return false;
     }
 
-    protected override ValueTask<bool> LoadOverrideAsync(CancellationToken token)
+    protected override async ValueTask<bool> LoadOverrideAsync(CancellationToken token)
     {
         MakeSubViewModel([Geetest, Appearance, Storage, HotKey, Home, Game, GachaLog, WebView]);
 
@@ -190,6 +228,35 @@ public sealed partial class SettingViewModel : Abstraction.ViewModel, INavigatio
         Storage.DataFolderView = new(taskContext, HutaoRuntime.DataDirectory);
 
         UpdateInfo = updateService.UpdateInfo;
+
+        // Read the actual task, not a value left behind by a failed registration
+        // or by an external disable/delete in Task Scheduler.
+        await taskContext.SwitchToBackgroundAsync();
+        try
+        {
+            bool enabled = HutaoNative.Instance.IsAutoStartTaskActiveForThisUser();
+            bool elevated = enabled && HutaoNative.Instance.IsAutoStartTaskRunElevatedForThisUser();
+            if (RuntimeEnvironment.IsUnpackaged && enabled && Environment.IsPrivilegedProcess
+                && !string.Equals(HutaoNative.Instance.GetAutoStartTaskExecutablePathForThisUser(), Environment.ProcessPath, StringComparison.OrdinalIgnoreCase))
+            {
+                // Repair tasks registered by an older version with a missing
+                // WindowsApps alias, or after moving the unpackaged executable.
+                HutaoNative.Instance.CreateAutoStartTaskForThisUser(elevated);
+            }
+
+            await taskContext.SwitchToMainThreadAsync();
+            AppOptions.IsStartupEnabled.Value = enabled;
+            if (enabled)
+            {
+                AppOptions.IsStartupAsAdminEnabled.Value = elevated;
+            }
+        }
+        catch (Exception ex)
+        {
+            await taskContext.SwitchToMainThreadAsync();
+            SentrySdk.CaptureException(ex);
+            messenger.Send(InfoBarMessage.Error(SH.ViewModelSettingStartupRegistrationFailed, ex));
+        }
 
         if (AutoRestartAsAdminEnabled && !IsStartupAsAdminEnabled)
         {
@@ -200,7 +267,7 @@ public sealed partial class SettingViewModel : Abstraction.ViewModel, INavigatio
         // Bootstrap runs before DI/SQLite is initialized, so it can only read from LocalSetting.
         LocalSetting.Set(SettingKeys.AutoRestartAsAdmin, AutoRestartAsAdminEnabled);
 
-        return ValueTask.FromResult(true);
+        return true;
     }
 
     [Command("CheckUpdateCommand")]
@@ -278,47 +345,78 @@ public sealed partial class SettingViewModel : Abstraction.ViewModel, INavigatio
             : messenger.Send(InfoBarMessage.Warning(SH.ViewModelSettingCreateDesktopShortcutFailed));
     }
 
-    private void OnStartupEnabledChanged(bool isEnabled)
+    private async ValueTask UpdateStartupTaskAsync(bool isEnabled, bool runElevated, bool? autoRestart = null)
     {
-        // Only manage task scheduler when process is elevated (the UI has checked) 
+        if (!IsStartupSettingsEnabled)
+        {
+            OnStartupOptionChanged(this, new PropertyChangedEventArgs(null));
+            return;
+        }
+
+        bool previousElevation = IsStartupAsAdminEnabled;
+        bool recreatePackagedTask = RuntimeEnvironment.IsPackaged && IsStartupEnabled && previousElevation != runElevated;
+        IsStartupUpdating = true;
         try
         {
+            await taskContext.SwitchToBackgroundAsync();
             if (isEnabled)
             {
-                BOOL runElevated = IsStartupAsAdminEnabled;
-                HutaoNative.Instance.CreateAutoStartTaskForThisUser(runElevated);
+                if (recreatePackagedTask)
+                {
+                    // The native packaged implementation only enables existing
+                    // tasks. Keep its delete/recreate contract for level changes,
+                    // and restore the original task if recreation fails.
+                    HutaoNative.Instance.DeleteAutoStartTaskForThisUser();
+                    try
+                    {
+                        HutaoNative.Instance.CreateAutoStartTaskForThisUser(runElevated);
+                    }
+                    catch (Exception registrationError)
+                    {
+                        try
+                        {
+                            HutaoNative.Instance.CreateAutoStartTaskForThisUser(previousElevation);
+                        }
+                        catch (Exception rollbackError)
+                        {
+                            throw new AggregateException(registrationError, rollbackError);
+                        }
+
+                        throw;
+                    }
+                }
+                else
+                {
+                    HutaoNative.Instance.CreateAutoStartTaskForThisUser(runElevated);
+                }
             }
             else
             {
                 // Delete the task if disabled
                 HutaoNative.Instance.DeleteAutoStartTaskForThisUser();
             }
+
+            await taskContext.SwitchToMainThreadAsync();
+            // Commit after the OS accepts the change; failed registrations must
+            // not leave an enabled SQLite flag or an optimistic checked switch.
+            AppOptions.IsStartupAsAdminEnabled.Value = runElevated;
+            AppOptions.IsStartupEnabled.Value = isEnabled;
+            if (autoRestart is { } restart)
+            {
+                AppOptions.AutoRestartAsAdmin.Value = restart;
+            }
         }
         catch (Exception ex)
         {
-            // Log the error but don't throw to prevent UI disruption
+            await taskContext.SwitchToMainThreadAsync();
             SentrySdk.CaptureException(ex);
+            messenger.Send(InfoBarMessage.Error(SH.ViewModelSettingStartupRegistrationFailed, ex));
         }
-    }
-
-    private void OnStartupAsAdminEnabledChanged(bool isAdminEnabled)
-    {
-        // Only manage task scheduler when process is elevated and startup is enabled
-        if (!Environment.IsPrivilegedProcess || !IsStartupEnabled)
+        finally
         {
-            return;
-        }
-
-        try
-        {
-            // Recreate the task with the new elevation level
-            HutaoNative.Instance.DeleteAutoStartTaskForThisUser();
-            HutaoNative.Instance.CreateAutoStartTaskForThisUser(isAdminEnabled ? (BOOL)true : (BOOL)false);
-        }
-        catch (Exception ex)
-        {
-            // Log the error but don't throw to prevent UI disruption
-            SentrySdk.CaptureException(ex);
+            await taskContext.SwitchToMainThreadAsync();
+            IsStartupUpdating = false;
+            OnStartupOptionChanged(this, new PropertyChangedEventArgs(null));
         }
     }
 }

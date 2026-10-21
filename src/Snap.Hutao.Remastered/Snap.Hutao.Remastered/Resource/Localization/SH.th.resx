@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -886,6 +886,9 @@
   </data>
   <data name="ServiceBackgroundActivityMetadataInitializationDescription" xml:space="preserve">
     <value>准备中，若长时间无反应请尝试重启或检查网络与服务器状态</value>
+  </data>
+  <data name="ServiceBackgroundImageDecodeFailed" xml:space="preserve">
+    <value>ไม่สามารถถอดรหัสภาพพื้นหลังได้: ระบบไม่มีคอมโพเนนต์ถอดรหัสภาพที่ใช้งานได้ จึงข้ามการเปลี่ยนวอลเปเปอร์ในครั้งนี้</value>
   </data>
   <data name="ServiceBackgroundImageTypeBing" xml:space="preserve">
     <value>ภาพพื้นหลัง Bing ประจำวัน</value>
@@ -1994,6 +1997,15 @@
   <data name="ViewModelCultivationResinStatisticsWeeklyBossTitle" xml:space="preserve">
     <value>บอสประจำสัปดาห์</value>
   </data>
+  <data name="ViewModelCultivationSyncAvatarInfoCompleted" xml:space="preserve">
+    <value>อัปเดตรายการตัวละครแล้ว {0} รายการ ข้าม {1} รายการ</value>
+  </data>
+  <data name="ViewModelCultivationSyncAvatarInfoNoCharacter" xml:space="preserve">
+    <value>ไม่พบรายละเอียดตัวละครที่สามารถใช้ซิงค์ได้</value>
+  </data>
+  <data name="ViewModelCultivationSyncAvatarInfoProgress" xml:space="preserve">
+    <value>กำลังซิงค์ระดับและพรสวรรค์ของตัวละครจาก HoYoLAB</value>
+  </data>
   <data name="ViewModelDailyNoteConfigWebhookUrlComplete" xml:space="preserve">
     <value>กำหนดค่า URL Webhook บันทึกเรียลไทม์สำเร็จ</value>
   </data>
@@ -2614,6 +2626,9 @@
   </data>
   <data name="ViewPageCultivationRefreshInventoryByBackpackArchive" xml:space="preserve">
     <value>ซิงค์ผ่านที่เก็บถาวรไอเทมในกระเป๋า</value>
+  </data>
+  <data name="ViewPageCultivationSyncAvatarInfo" xml:space="preserve">
+    <value>ซิงค์ระดับและพรสวรรค์ของตัวละคร</value>
   </data>
   <data name="ViewPageCultivationRemoveEntry" xml:space="preserve">
     <value>ลบรายการ</value>
@@ -3278,6 +3293,12 @@
   <data name="ViewPageSettingAppearanceCloseButtonBehaviorHeader" xml:space="preserve">
     <value>พฤติกรรมของปุ่มปิด</value>
   </data>
+  <data name="ViewPageSettingAppearanceNotifyIconBackgroundHintDescription" xml:space="preserve">
+    <value>เมื่อปิดหน้าต่างเพื่อทำงานเบื้องหลัง จะแสดงการแจ้งเตือนของระบบ “Hutao กำลังทำงานเบื้องหลัง”</value>
+  </data>
+  <data name="ViewPageSettingAppearanceNotifyIconBackgroundHintHeader" xml:space="preserve">
+    <value>การแจ้งเตือนเมื่อเข้าสู่การทำงานเบื้องหลัง</value>
+  </data>
   <data name="ViewPageSettingApperanceFirstDayOfWeekDescription" xml:space="preserve">
     <value>เลือกวันแรกของสัปดาห์ที่เหมาะกับคุณ</value>
   </data>
@@ -3656,6 +3677,30 @@
   <data name="ViewPageSettingThemeHeader" xml:space="preserve">
     <value>ชุดสี</value>
   </data>
+  <data name="ViewPageSettingControlMaterialHeader" xml:space="preserve">
+    <value>วัสดุของคอนโทรล</value>
+  </data>
+  <data name="ViewPageSettingControlMaterialDescription" xml:space="preserve">
+    <value>เปลี่ยนเอฟเฟกต์วัสดุของการ์ดและแผงการ์ด</value>
+  </data>
+  <data name="ViewPageSettingControlMaterialDefault" xml:space="preserve">
+    <value>ค่าเริ่มต้น</value>
+  </data>
+  <data name="ViewPageSettingControlMaterialLiquidGlass" xml:space="preserve">
+    <value>ลิกควิดกลาส (พรีวิวทดลอง)</value>
+  </data>
+  <data name="ViewGuideMaterialTitle" xml:space="preserve">
+    <value>เลือกวัสดุของคอนโทรล</value>
+  </data>
+  <data name="ViewGuideMaterialDescription" xml:space="preserve">
+    <value>เปรียบเทียบพื้นผิว Fluent แบบดั้งเดิมกับลิกควิดกลาส แล้วเลือกวัสดุของคอนโทรลที่ใช้ทั่วทั้งแอป</value>
+  </data>
+  <data name="ViewGuideMaterialDefaultPreviewDescription" xml:space="preserve">
+    <value>พื้นผิว Fluent แบบดั้งเดิม</value>
+  </data>
+  <data name="ViewGuideMaterialLiquidGlassPreviewDescription" xml:space="preserve">
+    <value>ความเบลอ การหักเห และไฮไลต์ขอบ</value>
+  </data>
   <data name="ViewPageSettingTranslateNavigate" xml:space="preserve">
     <value>ร่วมแปลภาษา</value>
   </data>
@@ -3889,6 +3934,12 @@
   </data>
   <data name="ViewTitleUpdatePackageAvailableTitle" xml:space="preserve">
     <value>เวอร์ชัน {0} ของฮูโตะพร้อมใช้งานแล้ว</value>
+  </data>
+  <data name="ViewTitleUpdatePackageSkipVersionButtonText" xml:space="preserve">
+    <value>ข้ามเวอร์ชันนี้</value>
+  </data>
+  <data name="ViewTitleUpdatePackageSkipVersionInfoBarMessage" xml:space="preserve">
+    <value>ข้ามเวอร์ชัน {0} แล้ว ระบบจะไม่แจ้งเตือนเวอร์ชันนี้อัตโนมัติเมื่อเริ่มโปรแกรม คุณยังสามารถตรวจสอบอัปเดตได้ด้วยตนเองในการตั้งค่า</value>
   </data>
   <data name="ViewToolHeader" xml:space="preserve">
     <value>เครื่องมือ</value>
@@ -4280,6 +4331,36 @@
   <data name="ViewPageLaunchGameIslandHidePlayerInfoDescription" xml:space="preserve">
     <value>隐藏玩家信息</value>
   </data>
+  <data name="ViewPageLaunchGameIslandFastSkipTalkHeader" xml:space="preserve">
+    <value>ลบเวลาคูลดาวน์การข้ามบทสนทนา</value>
+  </data>
+  <data name="ViewPageLaunchGameIslandFastSkipTalkDescription" xml:space="preserve">
+    <value>ลบเวลาคูลดาวน์หลังการข้ามบทสนทนา</value>
+  </data>
+  <data name="ViewPageLaunchGameIslandRedirectCatherineHeader" xml:space="preserve">
+    <value>เปลี่ยนเส้นทางแคทเธอรีน</value>
+  </data>
+  <data name="ViewPageLaunchGameIslandRedirectCatherineDescription" xml:space="preserve">
+    <value>เปลี่ยนทางเข้าเควสต์ประจำวันของแคทเธอรีนในคู่มือนักผจญภัย ให้เปิดหน้าต่างยืนยันรางวัลเควสต์ของแคทเธอรีนโดยตรง</value>
+  </data>
+  <data name="ViewDialogFastSkipTalkConfirmTitle" xml:space="preserve">
+    <value>ลบเวลาคูลดาวน์การข้ามบทสนทนา</value>
+  </data>
+  <data name="ViewDialogFastSkipTalkConfirmHint" xml:space="preserve">
+    <value>ฟีเจอร์นี้มีความเสี่ยงสูงที่จะทำให้บัญชีถูกแบน โปรดใช้ด้วยความระมัดระวัง</value>
+  </data>
+  <data name="ViewDialogFastSkipTalkConfirmPrimaryButtonText" xml:space="preserve">
+    <value>ฉันรู้ว่าฉันกำลังทำอะไรอยู่!</value>
+  </data>
+  <data name="ViewDialogCountdownConfirmCountdownSuffix" xml:space="preserve">
+    <value>{0}({1}วิ)</value>
+  </data>
+  <data name="ViewDialogResinListItemAllDisabledTitle" xml:space="preserve">
+    <value>ตัวเลือกไอเทมที่ใช้เรซินถูกปิดทั้งหมดแล้ว</value>
+  </data>
+  <data name="ViewDialogResinListItemAllDisabledHint" xml:space="preserve">
+    <value>หลังจากปิดตัวเลือกไอเทมที่ใช้เรซินทั้งหมดแล้ว จะไม่สามารถรับรางวัลในโดเมนได้ ยืนยันที่จะปิดหรือไม่?</value>
+  </data>
   <data name="ViewPageLaunchGameDisablePlayerPerspectiveDescription" xml:space="preserve">
     <value>反角色虚化</value>
   </data>
@@ -4436,6 +4517,21 @@
   <data name="ServicePluginUninstallDescription" xml:space="preserve">
     <value>确定要卸载插件 {0} 吗？此操作不可恢复。</value>
   </data>
+  <data name="ViewPagePluginSettingLoadFailed" xml:space="preserve">
+    <value>โหลดการตั้งค่าปลั๊กอินไม่สำเร็จ</value>
+  </data>
+  <data name="ViewPagePluginSettingSaveSuccess" xml:space="preserve">
+    <value>บันทึกการตั้งค่า'{0}'แล้ว</value>
+  </data>
+  <data name="ViewPagePluginSettingSaveFailed" xml:space="preserve">
+    <value>บันทึกการตั้งค่า'{0}'ไม่สำเร็จ</value>
+  </data>
+  <data name="ViewPagePluginSettingResetSuccess" xml:space="preserve">
+    <value>รีเซ็ตการตั้งค่า'{0}'แล้ว</value>
+  </data>
+  <data name="ViewPagePluginSettingResetFailed" xml:space="preserve">
+    <value>รีเซ็ตการตั้งค่า'{0}'ไม่สำเร็จ</value>
+  </data>
   <data name="ViewPageLaunchGameIslandGamepadHotSwitchEnabledHeader" xml:space="preserve">
     <value>手柄热切换</value>
   </data>
@@ -4510,6 +4606,15 @@
   </data>
   <data name="ViewPageAvatarPropertyTotalScore" xml:space="preserve">
     <value>คะแนนรวมตัวละคร:</value>
+  </data>
+  <data name="ViewPageAvatarPropertyScoreAlgorithm" xml:space="preserve">
+    <value>อัลกอริทึมการให้คะแนนอาร์ติแฟกต์</value>
+  </data>
+  <data name="ViewPageAvatarPropertyScoreAlgorithmHoyolabRecommend" xml:space="preserve">
+    <value>คุณสมบัติที่ HoYoLAB แนะนำ</value>
+  </data>
+  <data name="ViewPageAvatarPropertyConfigureScore" xml:space="preserve">
+    <value>การตั้งค่าคะแนน</value>
   </data>
   <data name="ViewPageLaunchGameAdvancedStartOptionsHeader" xml:space="preserve">
     <value>การเริ่มต้นแบบกำหนดเอง</value>
@@ -4934,6 +5039,24 @@
   <data name="ViewPageBackpackFilterUnmarked" xml:space="preserve">
     <value>ไม่ได้ทำเครื่องหมาย</value>
   </data>
+  <data name="ViewPageBackpackFilterEquipped" xml:space="preserve">
+    <value>สวมใส่แล้ว</value>
+  </data>
+  <data name="ViewPageBackpackFilterUnequipped" xml:space="preserve">
+    <value>ยังไม่ได้สวมใส่</value>
+  </data>
+  <data name="ViewPageBackpackFilterPurchasedAppendProp" xml:space="preserve">
+    <value>กำหนดโดยน้ำอมฤตศักดิ์สิทธิ์</value>
+  </data>
+  <data name="ViewPageBackpackFilterNotPurchasedAppendProp" xml:space="preserve">
+    <value>ไม่ได้กำหนดโดยน้ำอมฤตศักดิ์สิทธิ์</value>
+  </data>
+  <data name="ViewPageBackpackEquippedState" xml:space="preserve">
+    <value>{0} สวมใส่แล้ว</value>
+  </data>
+  <data name="ViewPageBackpackPurchasedAppendPropTitle" xml:space="preserve">
+    <value>คุณสมบัติที่กำหนดโดยน้ำอมฤตศักดิ์สิทธิ์</value>
+  </data>
   <data name="ViewPageBackpackFilterFoodQualitySuspicious" xml:space="preserve">
     <value>พิลึก</value>
   </data>
@@ -4948,6 +5071,9 @@
   </data>
   <data name="ViewPageBackpackReliquaryScoreValue" xml:space="preserve">
     <value>{0:F1} คะแนน</value>
+  </data>
+  <data name="ViewPageBackpackReliquarySubStatInactive" xml:space="preserve">
+    <value>(ยังไม่เปิดใช้งาน)</value>
   </data>
   <data name="ViewPageBackpackSetEffectLabel" xml:space="preserve">
     <value>เอฟเฟกต์เซ็ต {0} ชิ้น: </value>
@@ -5094,7 +5220,10 @@
     <value>มิเรอร์酱 CDK</value>
   </data>
   <data name="ViewDialogMirrorChyanCdkHint" xml:space="preserve">
-    <value>กรุณาใส่คีย์การเปิดใช้งาน Mirror酱 (CDK) หากเว้นว่างไว้จะข้าม สามารถรับได้จาก mirrorchyan.com</value>
+    <value>กรุณากรอกรหัสเปิดใช้งาน (CDK) ของ Mirror酱 หากเว้นว่างไว้จะข้าม</value>
+  </data>
+  <data name="ViewDialogMirrorChyanCdkGetCdk" xml:space="preserve">
+    <value>รับ CDK</value>
   </data>
   <data name="ViewTravelersDiaryHeader" xml:space="preserve">
     <value>บันทึกนักเดินทาง</value>
@@ -5105,7 +5234,364 @@
   <data name="ViewTravelersDiaryMonth" xml:space="preserve">
     <value>เดือนนี้</value>
   </data>
+  <data name="ViewTravelersDiaryNoIncomeSourceHint" xml:space="preserve">
+    <value>เดือนนี้ยังไม่มีบันทึกรายได้หินต้นกำเนิด</value>
+  </data>
   <data name="ViewControlStatisticsCardGreenText" xml:space="preserve">
     <value>ดาวสองดวง</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassButton" xml:space="preserve">
+    <value>ปุ่ม</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassToggleButton" xml:space="preserve">
+    <value>ปุ่มสลับ</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassHyperlinkButton" xml:space="preserve">
+    <value>ปุ่มไฮเปอร์ลิงก์</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassCheckBox" xml:space="preserve">
+    <value>กล่องกาเครื่องหมาย</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRadioButton" xml:space="preserve">
+    <value>ปุ่มตัวเลือก</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassSlider" xml:space="preserve">
+    <value>แถบเลื่อน</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassTextBox" xml:space="preserve">
+    <value>กล่องข้อความ</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassPasswordBox" xml:space="preserve">
+    <value>กล่องรหัสผ่าน</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassComboBox" xml:space="preserve">
+    <value>กล่องเลือกแบบดรอปดาวน์</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassToggleSwitch" xml:space="preserve">
+    <value>สวิตช์</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassCard" xml:space="preserve">
+    <value>การ์ดและพื้นผิว</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassStrength" xml:space="preserve">
+    <value>ความเข้มรวม (0–2 เท่า)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassBlurScale" xml:space="preserve">
+    <value>ความเข้มความเบลอ (0–2 เท่า)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRefractionScale" xml:space="preserve">
+    <value>ความเข้มการหักเห (0–2 เท่า)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassDispersionScale" xml:space="preserve">
+    <value>ความเข้มการกระจายแสง (0–2 เท่า)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassHighlightScale" xml:space="preserve">
+    <value>ความเข้มไฮไลต์ (0–2 เท่า)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassMagnificationScale" xml:space="preserve">
+    <value>ความเข้มการขยาย (0–2 เท่า)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassHeader" xml:space="preserve">
+    <value>คอนโทรลและเอฟเฟกต์ลิกควิดกลาส</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassDescription" xml:space="preserve">
+    <value>เปิดใช้เอฟเฟกต์กระจกตามประเภทคอนโทรล การเปลี่ยนแปลงมีผลทันที; ตัวคูณทางแสงอิงจากพรีเซ็ตเดิมของแต่ละคอนโทรล</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassSearchBox" xml:space="preserve">
+    <value>กล่องค้นหา</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassDispersionRange" xml:space="preserve">
+    <value>ช่วงการกระจายแสง</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRefFresnelRange" xml:space="preserve">
+    <value>ช่วงเฟรสเนล (DIP)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRefFresnelHardness" xml:space="preserve">
+    <value>ความแข็งของเฟรสเนล</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassRefFresnelFactor" xml:space="preserve">
+    <value>ความเข้มเฟรสเนล</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareRange" xml:space="preserve">
+    <value>ช่วงแสงจ้า</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareHardness" xml:space="preserve">
+    <value>ความแข็งของแสงจ้า</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareFactor" xml:space="preserve">
+    <value>ความเข้มแสงจ้า</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareConvergence" xml:space="preserve">
+    <value>การรวมแสงจ้า</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareOppositeFactor" xml:space="preserve">
+    <value>ความเข้มแสงจ้าตรงข้าม</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassGlareAngle" xml:space="preserve">
+    <value>มุมแสง (องศา)</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassMagnification" xml:space="preserve">
+    <value>อัตราการขยาย</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassBloomAmount" xml:space="preserve">
+    <value>ปริมาณบลูม</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassBrightness" xml:space="preserve">
+    <value>ความสว่าง</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassTemperature" xml:space="preserve">
+    <value>อุณหภูมิสี</value>
+  </data>
+  <data name="ViewPageSettingLiquidGlassVibrance" xml:space="preserve">
+    <value>ความอิ่มตัวตามธรรมชาติ</value>
+  </data>
+  <data name="LiquidGlassControlsWindowTitle" xml:space="preserve">
+    <value>คอนโทรลลิกควิดกลาส</value>
+  </data>
+  <data name="LiquidGlassEffectsWindowTitle" xml:space="preserve">
+    <value>เอฟเฟกต์ลิกควิดกลาส</value>
+  </data>
+  <data name="GlassControlsCardDescription" xml:space="preserve">
+    <value>เลือกประเภทคอนโทรลที่เปิดใช้วัสดุกระจก และดูตัวอย่างการโต้ตอบ</value>
+  </data>
+  <data name="GlassEffectsCardDescription" xml:space="preserve">
+    <value>ปรับพารามิเตอร์แยกตามประเภทคอนโทรล รองรับการพรีวิวและการคืนค่าเริ่มต้น</value>
+  </data>
+  <data name="GlassControlsIntro" xml:space="preserve">
+    <value>เลือกวัสดุของแอปและประเภทคอนโทรล การเปลี่ยนแปลงมีผลทันทีและบันทึกอัตโนมัติ เอฟเฟกต์ลิกควิดกลาสส่งผลต่อประสิทธิภาพบ้าง</value>
+  </data>
+  <data name="GlassEffectsIntro" xml:space="preserve">
+    <value>คอนโทรลแต่ละประเภทมีพารามิเตอร์แยกกัน การเปลี่ยนแปลงมีผลทันทีและบันทึกอัตโนมัติ</value>
+  </data>
+  <data name="GlassNativeMaterial" xml:space="preserve">
+    <value>วัสดุเริ่มต้น</value>
+  </data>
+  <data name="GlassLiquidMaterial" xml:space="preserve">
+    <value>ลิกควิดกลาส</value>
+  </data>
+  <data name="GlassPreviewHeading" xml:space="preserve">
+    <value>พรีวิวการโต้ตอบ</value>
+  </data>
+  <data name="GlassControlsPreviewHint" xml:space="preserve">
+    <value>พรีวิวเป็นไปตามวัสดุของแอปและสถานะการเปิดใช้งานของประเภทนี้ ลองวางเมาส์ กด โฟกัส พิมพ์ และลากได้</value>
+  </data>
+  <data name="GlassEffectsPreviewHint" xml:space="preserve">
+    <value>พรีวิวนี้จะแสดงกระจกเสมอ แม้แอปไม่ได้เปิดใช้คอนโทรลประเภทนี้ ตัวแก้ไขจะคงรูปลักษณ์ดั้งเดิม</value>
+  </data>
+  <data name="GlassPresetHint" xml:space="preserve">
+    <value>ค่าเริ่มต้นมาจากไลบรารีคอนโทรล การคืนค่าเริ่มต้นมีผลเฉพาะพารามิเตอร์ของประเภทปัจจุบัน ไม่เปลี่ยนประเภทอื่นหรือสวิตช์เปิดใช้งาน</value>
+  </data>
+  <data name="GlassResetType" xml:space="preserve">
+    <value>คืนค่าเอฟเฟกต์เริ่มต้นของประเภทนี้</value>
+  </data>
+  <data name="GlassResetParameter" xml:space="preserve">
+    <value>รีเซ็ต</value>
+  </data>
+  <data name="GlassDefaultValue" xml:space="preserve">
+    <value>ค่าเริ่มต้น:</value>
+  </data>
+  <data name="GlassPreviewButton" xml:space="preserve">
+    <value>ปุ่มพรีวิว</value>
+  </data>
+  <data name="GlassPreviewInput" xml:space="preserve">
+    <value>พิมพ์ข้อความเพื่อพรีวิวเอฟเฟกต์โฟกัส</value>
+  </data>
+  <data name="GlassPreviewSearch" xml:space="preserve">
+    <value>พรีวิวการค้นหา</value>
+  </data>
+  <data name="GlassPreviewPassword" xml:space="preserve">
+    <value>พรีวิวรหัสผ่าน</value>
+  </data>
+  <data name="GlassPreviewSurface" xml:space="preserve">
+    <value>พื้นผิวกระจก — เนื้อหายังอ่านได้ชัดเจน</value>
+  </data>
+  <data name="GlassProfileButton" xml:space="preserve">
+    <value>ปุ่ม</value>
+  </data>
+  <data name="GlassProfileToggleButton" xml:space="preserve">
+    <value>ปุ่มสลับ</value>
+  </data>
+  <data name="GlassProfileHyperlinkButton" xml:space="preserve">
+    <value>ปุ่มไฮเปอร์ลิงก์</value>
+  </data>
+  <data name="GlassProfileCheckBox" xml:space="preserve">
+    <value>กล่องกาเครื่องหมาย</value>
+  </data>
+  <data name="GlassProfileRadioButton" xml:space="preserve">
+    <value>ปุ่มตัวเลือก</value>
+  </data>
+  <data name="GlassProfileSlider" xml:space="preserve">
+    <value>แถบเลื่อน</value>
+  </data>
+  <data name="GlassProfileTextBox" xml:space="preserve">
+    <value>กล่องข้อความ</value>
+  </data>
+  <data name="GlassProfileSearchBox" xml:space="preserve">
+    <value>กล่องค้นหา</value>
+  </data>
+  <data name="GlassProfilePasswordBox" xml:space="preserve">
+    <value>กล่องรหัสผ่าน</value>
+  </data>
+  <data name="GlassProfileComboBox" xml:space="preserve">
+    <value>กล่องเลือกแบบดรอปดาวน์</value>
+  </data>
+  <data name="GlassProfileToggleSwitch" xml:space="preserve">
+    <value>สวิตช์</value>
+  </data>
+  <data name="GlassProfileCard" xml:space="preserve">
+    <value>การ์ดและพื้นผิว</value>
+  </data>
+  <data name="GlassProfileFloatingPanel" xml:space="preserve">
+    <value>แผงลอย</value>
+  </data>
+  <data name="GlassProfileTabBar" xml:space="preserve">
+    <value>แถบแท็บ</value>
+  </data>
+  <data name="GlassParameterSwitchScale" xml:space="preserve">
+    <value>สัดส่วนขนาดสวิตช์</value>
+  </data>
+  <data name="GlassParameterSwitchScaleDescription" xml:space="preserve">
+    <value>ปรับขนาดกราฟิกสวิตช์ตามสัดส่วน โดยไม่เปลี่ยนขนาดตัวอักษร การเปลี่ยนแปลงมีผลทันที</value>
+  </data>
+  <data name="GlassParameterBlurRadius" xml:space="preserve">
+    <value>รัศมีความเบลอ</value>
+  </data>
+  <data name="GlassParameterRefractionStrength" xml:space="preserve">
+    <value>ความเข้มการหักเห</value>
+  </data>
+  <data name="GlassParameterDispersionStrength" xml:space="preserve">
+    <value>ความเข้มการกระจายแสง</value>
+  </data>
+  <data name="GlassParameterHighlightStrength" xml:space="preserve">
+    <value>ความเข้มไฮไลต์</value>
+  </data>
+  <data name="GlassParameterHighlightSharpness" xml:space="preserve">
+    <value>ความคมชัดของไฮไลต์</value>
+  </data>
+  <data name="GlassParameterSpecularSaturation" xml:space="preserve">
+    <value>ความอิ่มตัวของสเปกูลาร์</value>
+  </data>
+  <data name="GlassParameterSpecularWidth" xml:space="preserve">
+    <value>ความกว้างของสเปกูลาร์</value>
+  </data>
+  <data name="GlassParameterRefractiveIndex" xml:space="preserve">
+    <value>ดัชนีการหักเห</value>
+  </data>
+  <data name="GlassParameterTintOpacity" xml:space="preserve">
+    <value>ความทึบของการย้อมสี</value>
+  </data>
+  <data name="GlassParameterInnerShadowStrength" xml:space="preserve">
+    <value>ความเข้มเงาภายใน</value>
+  </data>
+  <data name="GlassParameterSaturation" xml:space="preserve">
+    <value>ความอิ่มตัว</value>
+  </data>
+  <data name="GlassParameterContrast" xml:space="preserve">
+    <value>คอนทราสต์</value>
+  </data>
+  <data name="GlassParameterExposure" xml:space="preserve">
+    <value>การรับแสง</value>
+  </data>
+  <data name="GlassParameterMaterialOpacity" xml:space="preserve">
+    <value>ความทึบของวัสดุ</value>
+  </data>
+  <data name="GlassParameterDispersionRange" xml:space="preserve">
+    <value>ช่วงการกระจายแสง</value>
+  </data>
+  <data name="GlassParameterRefFresnelRange" xml:space="preserve">
+    <value>ช่วงเฟรสเนล</value>
+  </data>
+  <data name="GlassParameterRefFresnelHardness" xml:space="preserve">
+    <value>ความแข็งของเฟรสเนล</value>
+  </data>
+  <data name="GlassParameterRefFresnelFactor" xml:space="preserve">
+    <value>ความเข้มเฟรสเนล</value>
+  </data>
+  <data name="GlassParameterGlareRange" xml:space="preserve">
+    <value>ช่วงแสงจ้า</value>
+  </data>
+  <data name="GlassParameterGlareHardness" xml:space="preserve">
+    <value>ความแข็งของแสงจ้า</value>
+  </data>
+  <data name="GlassParameterGlareFactor" xml:space="preserve">
+    <value>ความเข้มแสงจ้า</value>
+  </data>
+  <data name="GlassParameterGlareConvergence" xml:space="preserve">
+    <value>การรวมตัวของแสงจ้า</value>
+  </data>
+  <data name="GlassParameterGlareOppositeFactor" xml:space="preserve">
+    <value>สัดส่วนแสงจ้าตรงข้าม</value>
+  </data>
+  <data name="GlassParameterGlareAngle" xml:space="preserve">
+    <value>ทิศทางแสงจ้า (°)</value>
+  </data>
+  <data name="GlassParameterMagnification" xml:space="preserve">
+    <value>การขยายพื้นหลังโดยรวม</value>
+  </data>
+  <data name="GlassParameterMagnificationStrength" xml:space="preserve">
+    <value>ความเข้มการขยายเฉพาะจุด</value>
+  </data>
+  <data name="GlassParameterBloomAmount" xml:space="preserve">
+    <value>สัดส่วนการผสมความเบลอ</value>
+  </data>
+  <data name="GlassParameterBrightness" xml:space="preserve">
+    <value>ความสว่าง</value>
+  </data>
+  <data name="GlassParameterTemperature" xml:space="preserve">
+    <value>อุณหภูมิสี</value>
+  </data>
+  <data name="GlassParameterVibrance" xml:space="preserve">
+    <value>ความอิ่มตัวตามธรรมชาติ</value>
+  </data>
+  <data name="GlassPreviewFirst" xml:space="preserve">
+    <value>รายการแรก</value>
+  </data>
+  <data name="GlassPreviewSecond" xml:space="preserve">
+    <value>รายการที่สอง</value>
+  </data>
+  <data name="GlassPreviewOverview" xml:space="preserve">
+    <value>ภาพรวม</value>
+  </data>
+  <data name="GlassPreviewDetails" xml:space="preserve">
+    <value>รายละเอียด</value>
+  </data>
+  <data name="GlassPreviewActivity" xml:space="preserve">
+    <value>กิจกรรม</value>
+  </data>
+  <data name="RepositoryServerOfflineWarning" xml:space="preserve">
+    <value>เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ เข้าสู่โหมดออฟไลน์และใช้รายการรีโปซิทอรีในเครื่องแล้ว รูปภาพและทรัพยากรออนไลน์อื่น ๆ อาจโหลดไม่ได้ สามารถคลิกปุ่มข้างงานเบื้องหลังเพื่อเชื่อมต่อใหม่</value>
+  </data>
+  <data name="RepositoryServerConnectionRestored" xml:space="preserve">
+    <value>เชื่อมต่อเซิร์ฟเวอร์ใหม่แล้ว ออกจากโหมดออฟไลน์</value>
+  </data>
+  <data name="RepositoryServerReconnect" xml:space="preserve">
+    <value>ลองเชื่อมต่อเซิร์ฟเวอร์อีกครั้ง</value>
+  </data>
+  <data name="RepositoryServerReconnectFailed" xml:space="preserve">
+    <value>ยังเชื่อมต่อเซิร์ฟเวอร์ไม่ได้ ใช้โหมดออฟไลน์ต่อ สามารถลองใหม่ภายหลังได้</value>
+  </data>
+  <data name="RepositoryServerOfflineStatus" xml:space="preserve">
+    <value>โหมดออฟไลน์ · เชื่อมต่อใหม่</value>
+  </data>
+  <data name="RepositoryServerReconnecting" xml:space="preserve">
+    <value>โหมดออฟไลน์ · กำลังเชื่อมต่อใหม่</value>
+  </data>
+  <data name="ViewModelGuideResourceDownloadIncomplete" xml:space="preserve">
+    <value>ดาวน์โหลดไฟล์รูปภาพบางส่วนไม่สำเร็จ โปรดลองอีกครั้งหรือเลือกข้ามการดาวน์โหลด</value>
+  </data>
+  <data name="ServiceAchievementImportSummary" xml:space="preserve">
+    <value>ข้อมูลบันทึกปัจจุบันสำเร็จความสำเร็จแล้ว {0} รายการ บันทึกการนำเข้า (รวมรายการที่ยังไม่สำเร็จหรือยังไม่ได้บันทึก): เพิ่ม {1} อัปเดต {2} ลบ {3}</value>
+  </data>
+  <data name="GlassParameterLightAngle" xml:space="preserve">
+    <value>มุมของแหล่งกำเนิดแสงแบบคงที่ (เรเดียน)</value>
+  </data>
+  <data name="GlassPointerLighting" xml:space="preserve">
+    <value>ทิศทางไฮไลต์ติดตามเมาส์</value>
+  </data>
+  <data name="GlassPointerLightingDescription" xml:space="preserve">
+    <value>ควบคุมทิศทางแสงของไฮไลต์ขอบกระจก ความเข้มของไฮไลต์ควบคุมความสว่าง ความอิ่มตัวของไฮไลต์ควบคุมสี เมื่อระดับการติดตามเป็น 0 จะคงทิศทางแหล่งกำเนิดแสงแบบคงที่ เมื่อเป็น 1 จะติดตามเมาส์อย่างสมบูรณ์ ไฮไลต์จากการโต้ตอบภายในของกระจกเองยังคงอยู่</value>
+  </data>
+  <data name="GlassPointerLightInfluence" xml:space="preserve">
+    <value>ระดับการติดตามแหล่งกำเนิดแสง</value>
   </data>
 </root>

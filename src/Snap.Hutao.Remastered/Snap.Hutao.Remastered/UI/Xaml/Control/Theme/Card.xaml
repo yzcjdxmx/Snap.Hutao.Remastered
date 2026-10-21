@@ -1,15 +1,96 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:cwm="using:CommunityToolkit.WinUI.Media">
+    xmlns:cwm="using:CommunityToolkit.WinUI.Media"
+    xmlns:shuxcth="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme">
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
             <x:Double x:Key="CompatShadowThemeOpacity">0.14</x:Double>
+            <SolidColorBrush x:Key="NativeHomeCardBackgroundBrush" Color="#E6FFFFFF"/>
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
             <x:Double x:Key="CompatShadowThemeOpacity">0.28</x:Double>
+            <SolidColorBrush x:Key="NativeHomeCardBackgroundBrush" Color="#D92C2C2C"/>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="HighContrast">
+            <x:Double x:Key="CompatShadowThemeOpacity">0</x:Double>
+            <SolidColorBrush x:Key="NativeHomeCardBackgroundBrush" Color="{ThemeResource SystemColorWindowColor}"/>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
+
+    <!--  No second background, border, rounded clip or padding around the active surface.  -->
+    <ControlTemplate x:Key="HomeCardHostTemplate" TargetType="ContentControl">
+        <ContentPresenter
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            Content="{TemplateBinding Content}"/>
+    </ControlTemplate>
+
+    <!--
+        Keep the sole surface in every state; stock Button states replace its
+        background with translucent fills intended for a separate card behind it.
+    -->
+    <ControlTemplate x:Key="NativeHomeCardButtonTemplate" TargetType="Button">
+        <!--  The rounded ancestor clips the content too, including full-bleed card headers and footers.  -->
+        <Grid x:Name="Root" CornerRadius="{TemplateBinding CornerRadius}">
+            <Border
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"/>
+            <Border
+                x:Name="StateOverlay"
+                Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                IsHitTestVisible="False"
+                Opacity="0"/>
+            <ContentPresenter
+                x:Name="ContentPresenter"
+                Padding="{TemplateBinding Padding}"
+                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                AutomationProperties.AccessibilityView="Raw"
+                Content="{TemplateBinding Content}"
+                ContentTemplate="{TemplateBinding ContentTemplate}"
+                ContentTransitions="{TemplateBinding ContentTransitions}"
+                Control.IsTemplateFocusTarget="True"
+                Foreground="{TemplateBinding Foreground}"/>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal"/>
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Target="StateOverlay.Opacity" Value="0.12"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Target="StateOverlay.Opacity" Value="0.20"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Target="Root.Opacity" Value="0.45"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Grid>
+    </ControlTemplate>
+
+    <Style
+        x:Key="NativeHomeCardButtonStyle"
+        BasedOn="{StaticResource DefaultButtonStyle}"
+        TargetType="Button">
+        <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicElementBrush}"/>
+        <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="{ThemeResource OverlayCornerRadius}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Template" Value="{StaticResource NativeHomeCardButtonTemplate}"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+    </Style>
 
     <cwm:AttachedCardShadow
         x:Key="CompatCardShadow"
@@ -18,96 +99,108 @@
         Offset="0,4,0"/>
 
     <Style x:Key="BorderCardStyle" TargetType="Border">
-        <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}"/>
         <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}"/>
+        <Setter Property="shuxcth:MaterialBackground.GlassBrush" Value="{ThemeResource HutaoCardBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.NativeBrush" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}"/>
     </Style>
 
     <Style x:Key="BorderShimmerStyle" TargetType="Border">
-        <Setter Property="Background" Value="{ThemeResource ControlAltFillColorSecondaryBrush}"/>
         <Setter Property="BorderBrush" Value="{ThemeResource ControlStrokeColorDefaultBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}"/>
+        <Setter Property="shuxcth:MaterialBackground.GlassBrush" Value="{ThemeResource HutaoSurfaceBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.NativeBrush" Value="{ThemeResource ControlAltFillColorSecondaryBrush}"/>
     </Style>
 
     <Style x:Key="SecondaryBorderCardStyle" TargetType="Border">
-        <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorSecondaryBrush}"/>
         <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}"/>
+        <Setter Property="shuxcth:MaterialBackground.GlassBrush" Value="{ThemeResource HutaoSurfaceBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.NativeBrush" Value="{ThemeResource CardBackgroundFillColorSecondaryBrush}"/>
     </Style>
 
     <Style
         x:Key="AcrylicBorderCardStyle"
         BasedOn="{StaticResource BorderCardStyle}"
         TargetType="Border">
-        <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicElementBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="shuxcth:MaterialBackground.GlassBrush" Value="{ThemeResource HutaoCardBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.NativeBrush" Value="{ThemeResource SystemControlAcrylicElementBrush}"/>
     </Style>
 
     <Style
         x:Key="AcrylicSecondaryBorderCardStyle"
         BasedOn="{StaticResource BorderCardStyle}"
         TargetType="Border">
-        <Setter Property="Background" Value="{ThemeResource SystemControlChromeMediumAcrylicElementMediumBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="shuxcth:MaterialBackground.GlassBrush" Value="{ThemeResource HutaoSurfaceBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.NativeBrush" Value="{ThemeResource SystemControlChromeMediumAcrylicElementMediumBrush}"/>
     </Style>
 
     <Style x:Key="GridCardStyle" TargetType="Grid">
-        <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}"/>
         <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}"/>
+        <Setter Property="shuxcth:MaterialBackground.GlassBrush" Value="{ThemeResource HutaoCardBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.NativeBrush" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}"/>
     </Style>
 
     <Style x:Key="GridShimmerStyle" TargetType="Grid">
-        <Setter Property="Background" Value="{ThemeResource ControlAltFillColorSecondaryBrush}"/>
         <Setter Property="BorderBrush" Value="{ThemeResource ControlStrokeColorDefaultBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}"/>
+        <Setter Property="shuxcth:MaterialBackground.GlassBrush" Value="{ThemeResource HutaoSurfaceBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.NativeBrush" Value="{ThemeResource ControlAltFillColorSecondaryBrush}"/>
     </Style>
 
     <Style x:Key="SecondaryGridCardStyle" TargetType="Grid">
-        <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorSecondaryBrush}"/>
         <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}"/>
+        <Setter Property="shuxcth:MaterialBackground.GlassBrush" Value="{ThemeResource HutaoSurfaceBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.NativeBrush" Value="{ThemeResource CardBackgroundFillColorSecondaryBrush}"/>
     </Style>
 
     <Style
         x:Key="AcrylicGridCardStyle"
         BasedOn="{StaticResource GridCardStyle}"
         TargetType="Grid">
-        <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicElementBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="shuxcth:MaterialBackground.GlassBrush" Value="{ThemeResource HutaoCardBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.NativeBrush" Value="{ThemeResource SystemControlAcrylicElementBrush}"/>
     </Style>
 
     <Style
         x:Key="AcrylicSecondaryGridCardStyle"
         BasedOn="{StaticResource GridCardStyle}"
         TargetType="Grid">
-        <Setter Property="Background" Value="{ThemeResource SystemControlChromeMediumAcrylicElementMediumBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="shuxcth:MaterialBackground.GlassBrush" Value="{ThemeResource HutaoSurfaceBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.NativeBrush" Value="{ThemeResource SystemControlChromeMediumAcrylicElementMediumBrush}"/>
     </Style>
 
     <Style
         x:Key="ShimmerButtonStyle"
         BasedOn="{StaticResource DefaultButtonStyle}"
         TargetType="Button">
-        <Setter Property="Background" Value="{ThemeResource ControlAltFillColorSecondaryBrush}"/>
         <Setter Property="BorderBrush" Value="{ThemeResource ControlStrokeColorDefaultBrush}"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="shuxcth:MaterialBackground.GlassBrush" Value="{ThemeResource HutaoSurfaceBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.NativeBrush" Value="{ThemeResource ControlAltFillColorSecondaryBrush}"/>
     </Style>
 
     <Style
         x:Key="ShimmerComboBoxStyle"
         BasedOn="{StaticResource DefaultComboBoxStyle}"
         TargetType="ComboBox">
-        <Setter Property="Background" Value="{ThemeResource ControlAltFillColorSecondaryBrush}"/>
         <Setter Property="BorderBrush" Value="{ThemeResource ControlStrokeColorDefaultBrush}"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="shuxcth:MaterialBackground.GlassBrush" Value="{ThemeResource HutaoSurfaceBrush}"/>
+        <Setter Property="shuxcth:MaterialBackground.NativeBrush" Value="{ThemeResource ControlAltFillColorSecondaryBrush}"/>
     </Style>
 </ResourceDictionary>

@@ -41,6 +41,8 @@ public sealed partial class UserService : IUserService
         return userCollectionService.GetUsersAsync();
     }
 
+    public ValueTask<AdvancedDbCollectionView<BindingUser, EntityUser>> GetUsersAsync(CancellationToken token) => userCollectionService.GetUsersAsync(token);
+
     public async ValueTask<ValueResult<UserOptionResultKind, string?>> ProcessInputCookieAsync(InputCookie inputCookie)
     {
         ContentDialog dialog = await contentDialogFactory
@@ -64,19 +66,22 @@ public sealed partial class UserService : IUserService
                 return await userCollectionService.TryCreateAndAddUserFromInputCookieAsync(inputCookie).ConfigureAwait(false);
             }
 
-            user.IsInitialized = false;
-
             if (!cookie.TryGetSToken(out Cookie? sToken))
             {
                 return new(UserOptionResultKind.CookieInvalid, SH.ServiceUserProcessCookieNoSToken);
             }
 
+            // Re-adding an account updates the same instance displayed by UserView.
+            await TaskContext.SwitchToMainThreadAsync();
+            user.IsInitialized = false;
             user.SToken = sToken;
             user.LToken = cookie.TryGetLToken(out Cookie? lToken) ? lToken : user.LToken;
             user.CookieToken = cookie.TryGetCookieToken(out Cookie? cookieToken) ? cookieToken : user.CookieToken;
             user.TryUpdateFingerprint(deviceFp);
 
+            await TaskContext.SwitchToBackgroundAsync();
             await userInitializationService.ResumeUserAsync(user).ConfigureAwait(false);
+            await TaskContext.SwitchToBackgroundAsync();
             userRepository.UpdateUser(user.Entity);
             return new(UserOptionResultKind.CookieUpdated, mid);
         }

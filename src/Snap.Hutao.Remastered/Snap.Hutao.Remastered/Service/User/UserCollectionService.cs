@@ -22,25 +22,34 @@ public sealed partial class UserCollectionService : IUserCollectionService, IDis
     private readonly IMessenger messenger;
 
     private readonly AsyncLock collectionLocker = new();
+    private readonly SemaphoreSlim retryGate = new(1, 1);
 
     private AdvancedDbCollectionView<BindingUser, EntityUser>? users;
 
     [GeneratedConstructor]
     public partial UserCollectionService(IServiceProvider serviceProvider);
 
-    public async ValueTask<AdvancedDbCollectionView<BindingUser, EntityUser>> GetUsersAsync()
+    public ValueTask<AdvancedDbCollectionView<BindingUser, EntityUser>> GetUsersAsync() => GetUsersAsync(default);
+
+    public async ValueTask<AdvancedDbCollectionView<BindingUser, EntityUser>> GetUsersAsync(CancellationToken token)
     {
+        using CancellationTokenSource linked = CancellationTokenSource.CreateLinkedTokenSource(token, XamlApplicationLifetime.ShutdownToken);
+        token = linked.Token;
         // Force run in background thread, otherwise will cause re-entrance
         await Task.CompletedTask.ConfigureAwait(ConfigureAwaitOptions.ForceYielding);
+        token.ThrowIfCancellationRequested();
         using (await collectionLocker.LockAsync().ConfigureAwait(false))
         {
+            token.ThrowIfCancellationRequested();
             if (users is null)
             {
                 ImmutableArray<EntityUser> entityUsers = userRepository.GetUserImmutableArray();
                 List<BindingUser> bindingUsers = new(entityUsers.Length);
                 foreach (EntityUser entity in entityUsers)
                 {
-                    BindingUser user = await userInitializationService.ResumeUserAsync(entity).ConfigureAwait(false);
+                    BindingUser user = await userInitializationService.ResumeUserAsync(entity, token).ConfigureAwait(false);
+                    await taskContext.SwitchToBackgroundAsync();
+                    token.ThrowIfCancellationRequested();
                     if (user.NeedDbUpdateAfterResume)
                     {
                         userRepository.UpdateUser(user.Entity);
@@ -117,10 +126,23 @@ public sealed partial class UserCollectionService : IUserCollectionService, IDis
 
     public async ValueTask<bool> RetryResumeUninitializedUsersAsync(CancellationToken token = default)
     {
-        AdvancedDbCollectionView<BindingUser, EntityUser> users = await GetUsersAsync().ConfigureAwait(false);
+        // Startup and the user view can recover together. Serialize the shared
+        // accounts' initialization instead of issuing duplicate account requests.
+        await retryGate.WaitAsync(token).ConfigureAwait(false);
+        try { return await RetryResumeUninitializedUsersCoreAsync(token).ConfigureAwait(false); }
+        finally { retryGate.Release(); }
+    }
+
+    private async ValueTask<bool> RetryResumeUninitializedUsersCoreAsync(CancellationToken token)
+    {
+        AdvancedDbCollectionView<BindingUser, EntityUser> users = await GetUsersAsync(token).ConfigureAwait(false);
+        await taskContext.SwitchToMainThreadAsync();
+        token.ThrowIfCancellationRequested();
+        BindingUser[] snapshot = [.. users.Source];
+        await taskContext.SwitchToBackgroundAsync();
 
         bool recovered = false;
-        foreach (BindingUser user in users.Source)
+        foreach (BindingUser user in snapshot)
         {
             if (user.IsInitialized)
             {
@@ -128,6 +150,8 @@ public sealed partial class UserCollectionService : IUserCollectionService, IDis
             }
 
             await userInitializationService.ResumeUserAsync(user, token).ConfigureAwait(false);
+            await taskContext.SwitchToBackgroundAsync();
+            token.ThrowIfCancellationRequested();
             if (user.IsInitialized)
             {
                 recovered = true;

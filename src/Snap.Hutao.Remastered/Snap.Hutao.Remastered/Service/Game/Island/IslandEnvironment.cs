@@ -31,7 +31,7 @@ public struct IslandEnvironment
     public BOOL ResinListItemId107009Allowed;
     public BOOL ResinListItemId107012Allowed;
     public BOOL ResinListItemId220007Allowed;
-    
+
     public BOOL DisplayPaimon;
     public BOOL DebugMode;
     public BOOL HidePlayerInfo;
@@ -42,6 +42,7 @@ public struct IslandEnvironment
     public BOOL WeakMapCheck;
     public BOOL DisablePlayerDiveMosaic;
     public BOOL FastSkipTalk;
+    public BOOL RedirectCatherine;
 }
 
 public class HexStringToNintConverter : JsonConverter<nint>

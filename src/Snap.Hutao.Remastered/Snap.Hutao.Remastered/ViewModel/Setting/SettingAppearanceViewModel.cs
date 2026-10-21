@@ -1,6 +1,7 @@
 // Copyright (c) DGP Studio. All rights reserved.
 // Licensed under the MIT license.
 
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using Snap.Hutao.Remastered.Factory.Picker;
@@ -29,6 +30,47 @@ public sealed partial class SettingAppearanceViewModel : Abstraction.ViewModel
     public partial BackgroundImageOptions BackgroundImageOptions { get; }
 
     public partial IMessenger Messenger { get; }
+
+    public int ControlMaterialState => (int)AppOptions.ControlMaterial.Value;
+
+    public bool IsBackdropSelectionEnabled => AppOptions.ControlMaterial.Value is not ControlMaterial.LiquidGlass;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ControlMaterialState))]
+    public partial NameValue<ControlMaterial>? SelectedControlMaterial { get; set; }
+
+    partial void PostConstruct(IServiceProvider serviceProvider)
+    {
+        SelectedControlMaterial = AppOptions.ControlMaterials.Single(material => material.Value == AppOptions.ControlMaterial.Value);
+        AppOptions.ControlMaterial.PropertyChanged += OnControlMaterialChanged;
+        AppOptions.BackdropType.PropertyChanged += OnBackdropTypeChanged;
+    }
+
+    partial void OnSelectedControlMaterialChanged(NameValue<ControlMaterial>? value)
+    {
+        if (value is null || AppOptions.ControlMaterial.Value == value.Value) return;
+        AppOptions.ControlMaterial.Value = value.Value;
+        MaterialTheme.Apply(value.Value);
+    }
+
+    private void OnControlMaterialChanged(object? sender, PropertyChangedEventArgs args)
+    {
+        SelectedControlMaterial = AppOptions.ControlMaterials.Single(material => material.Value == AppOptions.ControlMaterial.Value);
+        OnPropertyChanged(nameof(ControlMaterialState));
+        OnPropertyChanged(nameof(IsBackdropSelectionEnabled));
+    }
+
+    private void OnBackdropTypeChanged(object? sender, PropertyChangedEventArgs args)
+    {
+        SelectedBackdropType = AppOptions.BackdropTypes.Single(backdrop => backdrop.Value == AppOptions.BackdropType.Value);
+    }
+
+    public override void Dispose()
+    {
+        AppOptions.ControlMaterial.PropertyChanged -= OnControlMaterialChanged;
+        AppOptions.BackdropType.PropertyChanged -= OnBackdropTypeChanged;
+        base.Dispose();
+    }
 
     // TODO: Replace with IObservableProperty
     public NameValue<BackgroundMediaType>? SelectedBackgroundMediaType
@@ -117,8 +159,11 @@ public sealed partial class SettingAppearanceViewModel : Abstraction.ViewModel
         {
             if (SetProperty(ref field, value) && value is not null)
             {
-                CultureOptions.CurrentCulture.Value = value.Value;
-                AppInstance.Restart(string.Empty);
+                if (!Equals(CultureOptions.CurrentCulture.Value, value.Value))
+                {
+                    CultureOptions.CurrentCulture.Value = value.Value;
+                    AppInstance.Restart(string.Empty);
+                }
             }
         }
     }
@@ -142,6 +187,11 @@ public sealed partial class SettingAppearanceViewModel : Abstraction.ViewModel
         get => field ??= AppOptions.BackdropTypes.Single(t => t.Value == AppOptions.BackdropType.Value);
         set
         {
+            if (!IsBackdropSelectionEnabled && value?.Value is not BackdropType.None)
+            {
+                return;
+            }
+
             if (SetProperty(ref field, value) && value is not null)
             {
                 AppOptions.BackdropType.Value = value.Value;

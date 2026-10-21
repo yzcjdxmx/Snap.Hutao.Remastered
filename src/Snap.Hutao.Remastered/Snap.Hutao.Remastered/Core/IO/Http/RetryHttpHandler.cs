@@ -12,6 +12,16 @@ namespace Snap.Hutao.Remastered.Core.IO.Http;
 [Service(ServiceLifetime.Transient)]
 public sealed partial class RetryHttpHandler : DelegatingHandler
 {
+    private const int MaxAttemptCount = 3;
+    private const int BaseRetryDelayMilliseconds = 200;
+
+    private readonly IServerDomainService serverDomain;
+
+    public RetryHttpHandler(IServerDomainService serverDomain)
+    {
+        this.serverDomain = serverDomain;
+    }
+
     public static HttpRequestOptionsKey<bool> DisableRetry { get; } = new("DisableRetry");
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -21,14 +31,21 @@ public sealed partial class RetryHttpHandler : DelegatingHandler
             return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
         }
 
+        // Only idempotent methods may be replayed. Retrying a non idempotent request
+        // (sign-in, gacha log upload, ...) can apply the operation twice on the server.
+        bool retryable = IsIdempotentMethod(request.Method);
+        HttpRequestMessageSnapshot? snapshot = retryable ? await HttpRequestMessageSnapshot.CreateAsync(request, cancellationToken).ConfigureAwait(false) : null;
+
         ExceptionDispatchInfo? dispatch = default;
-        int requestCount = 0;
-        while (requestCount < 3)
+        for (int attempt = 0; attempt < MaxAttemptCount; attempt++)
         {
+            using HttpRequestMessage? replay = attempt is 0 ? null : snapshot!.CreateRequest();
+            HttpRequestMessage current = replay ?? request;
+            current.RequestUri = request.RequestUri;
             HttpResponseMessage? response = null;
             try
             {
-                response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
+                response = await base.SendAsync(current, cancellationToken).ConfigureAwait(false);
 
                 // Retry on server error status codes (5xx) such as 502 Bad Gateway
                 if ((int)response.StatusCode >= 500)
@@ -41,38 +58,51 @@ public sealed partial class RetryHttpHandler : DelegatingHandler
             catch (HttpRequestException ex)
             {
                 response?.Dispose();
+                dispatch = ExceptionDispatchInfo.Capture(ex);
 
-                // Detect SSL connection error → auto switch to backup domain + rewrite request URL
-                NetworkError networkError = HttpRequestExceptionHandling.HttpRequestExceptionToNetworkError(ex);
-                if (networkError is NetworkError.ERR_SECURE_CONNECTION_RESET
-                                 or NetworkError.ERR_SECURE_CONNECTION_ERROR
-                                 or NetworkError.ERR_SECURE_CONNECTION_ABORTED)
+                if (!retryable || attempt == MaxAttemptCount - 1)
                 {
-                    ServerDomain.TryAutoFallback();
-                    RewriteToBackupDomain(request);
+                    break;
                 }
 
-                dispatch = ExceptionDispatchInfo.Capture(ex);
-                request.Resurrect();
-            }
+                PrepareForRetry(request, ex);
 
-            requestCount++;
+                // Exponential backoff with jitter: ~200ms, ~400ms
+                await Task.Delay(GetRetryDelay(attempt + 1), cancellationToken).ConfigureAwait(false);
+            }
         }
 
         dispatch?.Throw();
         throw HutaoException.InvalidOperation("Unexpected request retry state");
     }
 
-    private static void RewriteToBackupDomain(HttpRequestMessage request)
+    private static bool IsIdempotentMethod(HttpMethod method)
     {
-        if (request.RequestUri is Uri uri)
+        return method == HttpMethod.Get
+            || method == HttpMethod.Head
+            || method == HttpMethod.Options
+            || method == HttpMethod.Put
+            || method == HttpMethod.Delete;
+    }
+
+    private static TimeSpan GetRetryDelay(int retryCount)
+    {
+        int backoff = BaseRetryDelayMilliseconds << (retryCount - 1);
+        int jitter = System.Random.Shared.Next(BaseRetryDelayMilliseconds);
+        return TimeSpan.FromMilliseconds(backoff + jitter);
+    }
+
+    private void PrepareForRetry(HttpRequestMessage request, HttpRequestException exception)
+    {
+        // Detect SSL connection error → auto switch to backup domain + rewrite request URL
+        NetworkError networkError = HttpRequestExceptionHandling.HttpRequestExceptionToNetworkError(exception);
+        if (networkError is NetworkError.ERR_SECURE_CONNECTION_RESET
+                         or NetworkError.ERR_SECURE_CONNECTION_ERROR
+                         or NetworkError.ERR_SECURE_CONNECTION_ABORTED)
         {
-            string original = uri.OriginalString;
-            string rewritten = original.Replace("snaphutaorp.org", "hutaorp.org");
-            if (rewritten != original)
-            {
-                request.RequestUri = new Uri(rewritten);
-            }
+            serverDomain.TryAutoFallback();
+
+            request.RequestUri = serverDomain.RewriteHostToCurrentMode(request.RequestUri);
         }
     }
 }
