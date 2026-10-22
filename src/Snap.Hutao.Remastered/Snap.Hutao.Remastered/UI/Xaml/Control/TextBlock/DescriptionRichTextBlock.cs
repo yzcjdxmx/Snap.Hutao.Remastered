@@ -281,6 +281,7 @@ public sealed partial class DescriptionRichTextBlock : ContentControl
                 LinkContext = LinkContext,
             },
         };
+        WinUI3Package.FlyoutHelper.SetAcrylicWorkaround(flyout, true);
 
         Rect rect = sender.ElementStart.GetCharacterRect(LogicalDirection.Forward);
         Rect rectEnd = sender.ElementEnd.GetCharacterRect(LogicalDirection.Backward);

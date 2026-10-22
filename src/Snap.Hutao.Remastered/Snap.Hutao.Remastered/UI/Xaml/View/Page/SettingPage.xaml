@@ -7,6 +7,7 @@
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:cwcvt="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:essential="using:WinUI3Package"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shs="using:Snap.Hutao.Remastered.Service"
@@ -1340,6 +1341,13 @@
                                         </cwc:SwitchPresenter>
                                     </shuxc:SizeRestrictedContentControl>
                                 </cwc:SettingsCard>
+                                <!--  Account history charts and API analysis  -->
+                                <cwc:SettingsCard
+                                    Command="{x:Bind ((shvs:SettingViewModel)DataContext).OpenAccountInsightsCommand, Mode=OneWay}"
+                                    Description="{shuxm:ResourceString Name=ViewDialogAccountInsightsDescription}"
+                                    Header="{shuxm:ResourceString Name=ViewDialogAccountInsightsOpen}"
+                                    HeaderIcon="{shuxm:FontIcon Glyph=&#xE9D9;}"
+                                    IsClickEnabled="True"/>
                             </StackPanel>
                         </Border>
                     </Border>
@@ -1561,7 +1569,10 @@
                                                     FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                                     Style="{ThemeResource SettingButtonStyle}">
                                                     <Button.Flyout>
-                                                        <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding16And10Style}" ShouldConstrainToRootBounds="False">
+                                                        <Flyout
+                                                            essential:FlyoutHelper.AcrylicWorkaround="True"
+                                                            FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding16And10Style}"
+                                                            ShouldConstrainToRootBounds="False">
                                                             <cwc:UniformGrid
                                                                 ColumnSpacing="16"
                                                                 Columns="2"
@@ -1728,7 +1739,10 @@
                                                     FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                                     Style="{ThemeResource SettingButtonStyle}">
                                                     <wl:LiquidGlassButton.Flyout>
-                                                        <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding16And10Style}" ShouldConstrainToRootBounds="False">
+                                                        <Flyout
+                                                            essential:FlyoutHelper.AcrylicWorkaround="True"
+                                                            FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding16And10Style}"
+                                                            ShouldConstrainToRootBounds="False">
                                                             <cwc:UniformGrid
                                                                 ColumnSpacing="16"
                                                                 Columns="2"
@@ -2003,7 +2017,10 @@
                                                     FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                                     Style="{ThemeResource SettingButtonStyle}">
                                                     <Button.Flyout>
-                                                        <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding16And10Style}" ShouldConstrainToRootBounds="False">
+                                                        <Flyout
+                                                            essential:FlyoutHelper.AcrylicWorkaround="True"
+                                                            FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding16And10Style}"
+                                                            ShouldConstrainToRootBounds="False">
                                                             <cwc:UniformGrid
                                                                 ColumnSpacing="16"
                                                                 Columns="2"
@@ -2170,7 +2187,10 @@
                                                     FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                                     Style="{ThemeResource SettingButtonStyle}">
                                                     <wl:LiquidGlassButton.Flyout>
-                                                        <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding16And10Style}" ShouldConstrainToRootBounds="False">
+                                                        <Flyout
+                                                            essential:FlyoutHelper.AcrylicWorkaround="True"
+                                                            FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding16And10Style}"
+                                                            ShouldConstrainToRootBounds="False">
                                                             <cwc:UniformGrid
                                                                 ColumnSpacing="16"
                                                                 Columns="2"
@@ -2511,6 +2531,7 @@
                                         <NumberBox
                                             MinWidth="{ThemeResource SettingsCardContentControlMinWidth}"
                                             VerticalAlignment="Center"
+                                            essential:NumberBoxHelper.AcrylicWorkaround="True"
                                             AcceptsExpression="False"
                                             Value="{x:Bind ((shvs:SettingViewModel)DataContext).HotKey.VideoSeekSeconds, Mode=TwoWay}"/>
                                         <TextBlock VerticalAlignment="Center" Text="秒"/>
@@ -2745,6 +2766,7 @@
                                         <NumberBox
                                             MinWidth="{ThemeResource SettingsCardContentControlMinWidth}"
                                             VerticalAlignment="Center"
+                                            essential:NumberBoxHelper.AcrylicWorkaround="True"
                                             AcceptsExpression="False"
                                             LargeChange="10"
                                             Maximum="100"
@@ -3069,6 +3091,7 @@
                                         <NumberBox
                                             MinWidth="{ThemeResource SettingsCardContentControlMinWidth}"
                                             VerticalAlignment="Center"
+                                            essential:NumberBoxHelper.AcrylicWorkaround="True"
                                             AcceptsExpression="False"
                                             Value="{x:Bind ((shvs:SettingViewModel)DataContext).Game.AppOptions.DownloadSpeedLimitPerSecondInKiloByte.Value, Mode=TwoWay}"/>
                                         <TextBlock VerticalAlignment="Center" Text="KB/s (1MB = 1024KB)"/>

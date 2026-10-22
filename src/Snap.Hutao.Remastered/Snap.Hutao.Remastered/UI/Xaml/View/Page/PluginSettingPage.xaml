@@ -6,6 +6,7 @@
     xmlns:cw1="using:CommunityToolkit.WinUI.Converters"
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:essential="using:WinUI3Package"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shuxb="using:Snap.Hutao.Remastered.UI.Xaml.Behavior"
@@ -205,6 +206,7 @@
 
                                                             <!--  整数类型  -->
                                                             <NumberBox
+                                                                essential:NumberBoxHelper.AcrylicWorkaround="True"
                                                                 PlaceholderText="{shuxm:ResourceString Name=ViewPagePluginSettingIntPlaceholder}"
                                                                 Visibility="{Binding Converter={StaticResource Int32TypeConverter}}"
                                                                 Value="{Binding CurrentValue, Mode=TwoWay}"/>

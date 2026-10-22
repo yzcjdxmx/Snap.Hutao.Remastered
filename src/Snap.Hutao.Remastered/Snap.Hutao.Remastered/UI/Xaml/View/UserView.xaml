@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:essential="using:WinUI3Package"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shux="using:Snap.Hutao.Remastered.UI.Xaml"
@@ -370,9 +371,10 @@
                     </Button.Content>
                     <Button.Flyout>
                         <Flyout
+                            essential:FlyoutHelper.AcrylicWorkaround="True"
                             FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding0Style}"
                             LightDismissOverlayMode="On"
-                            Placement="LeftEdgeAlignedBottom">
+                            Placement="RightEdgeAlignedBottom">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
@@ -394,7 +396,10 @@
                                         Icon="{shuxm:BitmapIcon Source=ms-appx:///Resource/ThirdParty/miyoushe128.png}"
                                         Label="{shuxm:ResourceString Name=ViewUserCookieOperation}">
                                         <AppBarButton.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding2Style}" Placement="Right">
+                                            <Flyout
+                                                essential:FlyoutHelper.AcrylicWorkaround="True"
+                                                FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding2Style}"
+                                                Placement="Right">
                                                 <StackPanel Orientation="Horizontal" Spacing="0">
                                                     <AppBarButton
                                                         Width="{StaticResource LargeAppBarButtonWidth}"
@@ -429,7 +434,10 @@
                                         Icon="{shuxm:BitmapIcon Source=ms-appx:///Resource/ThirdParty/hoyolab128.png}"
                                         Label="{shuxm:ResourceString Name=ViewUserCookieOperation2}">
                                         <AppBarButton.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding2Style}" Placement="Right">
+                                            <Flyout
+                                                essential:FlyoutHelper.AcrylicWorkaround="True"
+                                                FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding2Style}"
+                                                Placement="Right">
                                                 <Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="auto"/>
@@ -597,9 +605,10 @@
                     </wl:LiquidGlassButton.Content>
                     <wl:LiquidGlassButton.Flyout>
                         <Flyout
+                            essential:FlyoutHelper.AcrylicWorkaround="True"
                             FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding0Style}"
                             LightDismissOverlayMode="On"
-                            Placement="LeftEdgeAlignedBottom">
+                            Placement="RightEdgeAlignedBottom">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
@@ -621,7 +630,10 @@
                                         Icon="{shuxm:BitmapIcon Source=ms-appx:///Resource/ThirdParty/miyoushe128.png}"
                                         Label="{shuxm:ResourceString Name=ViewUserCookieOperation}">
                                         <AppBarButton.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding2Style}" Placement="Right">
+                                            <Flyout
+                                                essential:FlyoutHelper.AcrylicWorkaround="True"
+                                                FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding2Style}"
+                                                Placement="Right">
                                                 <StackPanel Orientation="Horizontal" Spacing="0">
                                                     <AppBarButton
                                                         Width="{StaticResource LargeAppBarButtonWidth}"
@@ -656,7 +668,10 @@
                                         Icon="{shuxm:BitmapIcon Source=ms-appx:///Resource/ThirdParty/hoyolab128.png}"
                                         Label="{shuxm:ResourceString Name=ViewUserCookieOperation2}">
                                         <AppBarButton.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding2Style}" Placement="Right">
+                                            <Flyout
+                                                essential:FlyoutHelper.AcrylicWorkaround="True"
+                                                FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding2Style}"
+                                                Placement="Right">
                                                 <Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="auto"/>

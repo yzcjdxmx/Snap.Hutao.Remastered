@@ -6,6 +6,7 @@
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:cwconv="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:essential="using:WinUI3Package"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxca="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
@@ -82,6 +83,7 @@
                             Grid.Column="3"
                             MinWidth="80"
                             VerticalAlignment="Center"
+                            essential:NumberBoxHelper.AcrylicWorkaround="True"
                             Maximum="{x:Bind LevelMax, Mode=OneWay}"
                             Minimum="{x:Bind LevelMin, Mode=OneWay}"
                             SpinButtonPlacementMode="Inline"
@@ -95,6 +97,7 @@
                             Grid.Column="5"
                             MinWidth="80"
                             VerticalAlignment="Center"
+                            essential:NumberBoxHelper.AcrylicWorkaround="True"
                             Maximum="{x:Bind LevelMax, Mode=OneWay}"
                             Minimum="{x:Bind LevelCurrent, Mode=OneWay}"
                             SpinButtonPlacementMode="Inline"
@@ -176,6 +179,7 @@
                                 Grid.Column="3"
                                 MinWidth="80"
                                 VerticalAlignment="Center"
+                                essential:NumberBoxHelper.AcrylicWorkaround="True"
                                 Maximum="{x:Bind Avatar.LevelMax, Mode=OneWay}"
                                 Minimum="{x:Bind Avatar.LevelMin, Mode=OneWay}"
                                 SpinButtonPlacementMode="Inline"
@@ -189,6 +193,7 @@
                                 Grid.Column="5"
                                 MinWidth="80"
                                 VerticalAlignment="Center"
+                                essential:NumberBoxHelper.AcrylicWorkaround="True"
                                 Maximum="{x:Bind Avatar.LevelMax, Mode=OneWay}"
                                 Minimum="{x:Bind Avatar.LevelCurrent, Mode=OneWay}"
                                 SpinButtonPlacementMode="Inline"
@@ -263,6 +268,7 @@
                                 Grid.Column="3"
                                 MinWidth="80"
                                 VerticalAlignment="Center"
+                                essential:NumberBoxHelper.AcrylicWorkaround="True"
                                 Maximum="{x:Bind Weapon.LevelMax, Mode=OneWay}"
                                 Minimum="{x:Bind Weapon.LevelMin, Mode=OneWay}"
                                 SpinButtonPlacementMode="Inline"
@@ -276,6 +282,7 @@
                                 Grid.Column="5"
                                 MinWidth="80"
                                 VerticalAlignment="Center"
+                                essential:NumberBoxHelper.AcrylicWorkaround="True"
                                 Maximum="{x:Bind Weapon.LevelMax, Mode=OneWay}"
                                 Minimum="{x:Bind Weapon.LevelCurrent, Mode=OneWay}"
                                 SpinButtonPlacementMode="Inline"
@@ -394,16 +401,16 @@
 
             <Flyout
                 x:Key="CultivateEntryFlyout"
+                essential:FlyoutHelper.AcrylicWorkaround="True"
                 Placement="RightEdgeAlignedTop"
                 ShouldConstrainToRootBounds="False">
                 <Flyout.FlyoutPresenterStyle>
                     <Style BasedOn="{StaticResource FlyoutPresenterPadding8Style}" TargetType="FlyoutPresenter">
+                        <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="MaxWidth" Value="Infinity"/>
                     </Style>
                 </Flyout.FlyoutPresenterStyle>
-                <ContentControl
-                    HorizontalContentAlignment="Stretch"
-                    ContentTemplate="{StaticResource CultivateEntryFlyoutContentTemplate}"/>
+                <ContentControl HorizontalContentAlignment="Stretch" ContentTemplate="{StaticResource CultivateEntryFlyoutContentTemplate}"/>
             </Flyout>
 
             <cwconv:BoolToObjectConverter x:Key="BoolToOpacityConverter">
@@ -754,7 +761,7 @@
                                 </shuxcc:HorizontalCard.Right>
                             </shuxcc:HorizontalCard>
                             <Button.Flyout>
-                                <Flyout>
+                                <Flyout essential:FlyoutHelper.AcrylicWorkaround="True">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>
@@ -766,6 +773,7 @@
                                             Grid.Row="1"
                                             MinWidth="160"
                                             Margin="0,16,0,0"
+                                            essential:NumberBoxHelper.AcrylicWorkaround="True"
                                             Maximum="4294967295"
                                             Minimum="0"
                                             Value="{x:Bind Count, Mode=TwoWay}"/>
@@ -808,7 +816,7 @@
                                 </shuxcc:HorizontalCard.Right>
                             </shuxcc:HorizontalCard>
                             <wl:LiquidGlassButton.Flyout>
-                                <Flyout>
+                                <Flyout essential:FlyoutHelper.AcrylicWorkaround="True">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>
@@ -820,6 +828,7 @@
                                             Grid.Row="1"
                                             MinWidth="160"
                                             Margin="0,16,0,0"
+                                            essential:NumberBoxHelper.AcrylicWorkaround="True"
                                             Maximum="4294967295"
                                             Minimum="0"
                                             Value="{x:Bind Count, Mode=TwoWay}"/>
@@ -887,12 +896,13 @@
                                     <cwc:Case.Value>
                                         <x:Int32>0</x:Int32>
                                     </cwc:Case.Value>
-                                    <ComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                    <ComboBox
                                         x:Name="GlassPresenter_33449_State"
+                                        shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                        shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_33449}"
                                         DataContext="{x:Bind GlassPresenter_33449.DataContext, Mode=OneWay}"
                                         DisplayMemberPath="Name"
                                         ItemsSource="{x:Bind ((shvcu:CultivationViewModel)DataContext).Projects, Mode=OneWay}"
-                                        shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_33449}"
                                         SelectedItem="{x:Bind ((shvcu:CultivationViewModel)DataContext).Projects.CurrentItem, Mode=TwoWay}"
                                         Style="{ThemeResource CommandBarComboBoxStyle}"/>
                                 </cwc:Case>
@@ -900,7 +910,7 @@
                                     <cwc:Case.Value>
                                         <x:Int32>1</x:Int32>
                                     </cwc:Case.Value>
-                                    <wl:LiquidGlassComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                    <wl:LiquidGlassComboBox
                                         x:Name="GlassPresenter_33449_StateGlass"
                                         Width="{x:Bind GlassPresenter_33449_State.Width, Mode=OneWay}"
                                         Height="{x:Bind GlassPresenter_33449_State.Height, Mode=OneWay}"
@@ -909,6 +919,7 @@
                                         MaxWidth="{x:Bind GlassPresenter_33449_State.MaxWidth, Mode=OneWay}"
                                         MaxHeight="{x:Bind GlassPresenter_33449_State.MaxHeight, Mode=OneWay}"
                                         Padding="{x:Bind shuxcth:ControlMaterialState.ComboBoxPadding(GlassPresenter_33449_State.Padding), Mode=OneWay}"
+                                        shuxcth:ComboBoxPopupLifetime.IsManaged="True"
                                         shuxcth:ControlMaterialState.IsManaged="True"
                                         shuxcth:ControlMaterialState.NativeControl="{x:Bind GlassPresenter_33449_State, Mode=OneWay}"
                                         shuxcth:ControlMaterialState.UsesCompiledEnabledBinding="True"
@@ -1056,7 +1067,10 @@
                                     Visibility="{x:Bind ((PivotItem)MaterialListPivot.SelectedItem).Tag, Converter={StaticResource MaterialListSelectedItemIsStatisticsViewConverter}, Mode=OneWay}"/>
                                 <AppBarButton Icon="{shuxm:FontIcon Glyph=&#xE946;}" Label="{shuxm:ResourceString Name=ViewPageCultivationMaterialListResinStatisticsLabel}">
                                     <AppBarButton.Flyout>
-                                        <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding0Style}" Placement="BottomEdgeAlignedRight">
+                                        <Flyout
+                                            essential:FlyoutHelper.AcrylicWorkaround="True"
+                                            FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding0Style}"
+                                            Placement="BottomEdgeAlignedRight">
                                             <StackPanel DataContext="{x:Bind ((shvcu:CultivationViewModel)DataContext).ResinStatistics, Mode=OneWay}">
                                                 <Border
                                                     Padding="8"
@@ -1090,19 +1104,20 @@
                                                                     <cwc:Case.Value>
                                                                         <x:Int32>0</x:Int32>
                                                                     </cwc:Case.Value>
-                                                                    <ComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                    <ComboBox
                                                                         x:Name="GlassPresenter_45763_State"
+                                                                        shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                        shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_45763}"
                                                                         DataContext="{x:Bind GlassPresenter_45763.DataContext, Mode=OneWay}"
                                                                         DisplayMemberPath="WorldLevel"
                                                                         ItemsSource="{x:Bind ((shvcu:CultivationViewModel)DataContext).ResinStatistics.DropDistributions, Mode=OneWay}"
-                                                                        shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_45763}"
                                                                         SelectedItem="{x:Bind ((shvcu:CultivationViewModel)DataContext).ResinStatistics.SelectedDropDistribution, Mode=TwoWay}"/>
                                                                 </cwc:Case>
                                                                 <cwc:Case>
                                                                     <cwc:Case.Value>
                                                                         <x:Int32>1</x:Int32>
                                                                     </cwc:Case.Value>
-                                                                    <wl:LiquidGlassComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                    <wl:LiquidGlassComboBox
                                                                         x:Name="GlassPresenter_45763_StateGlass"
                                                                         Width="{x:Bind GlassPresenter_45763_State.Width, Mode=OneWay}"
                                                                         Height="{x:Bind GlassPresenter_45763_State.Height, Mode=OneWay}"
@@ -1111,6 +1126,7 @@
                                                                         MaxWidth="{x:Bind GlassPresenter_45763_State.MaxWidth, Mode=OneWay}"
                                                                         MaxHeight="{x:Bind GlassPresenter_45763_State.MaxHeight, Mode=OneWay}"
                                                                         Padding="{x:Bind shuxcth:ControlMaterialState.ComboBoxPadding(GlassPresenter_45763_State.Padding), Mode=OneWay}"
+                                                                        shuxcth:ComboBoxPopupLifetime.IsManaged="True"
                                                                         shuxcth:ControlMaterialState.IsManaged="True"
                                                                         shuxcth:ControlMaterialState.NativeControl="{x:Bind GlassPresenter_45763_State, Mode=OneWay}"
                                                                         shuxcth:ControlMaterialState.UsesCompiledEnabledBinding="True"

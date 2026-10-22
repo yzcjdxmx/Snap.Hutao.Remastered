@@ -9,6 +9,7 @@
     xmlns:cwconv="using:CommunityToolkit.WinUI.Converters"
     xmlns:cwm="using:CommunityToolkit.WinUI.Media"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:essential="using:WinUI3Package"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shux="using:Snap.Hutao.Remastered.UI.Xaml"
@@ -242,7 +243,7 @@
                                     </cwc:Case.Value>
                                     <Button Padding="0">
                                         <Button.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -296,7 +297,7 @@
                                     </cwc:Case.Value>
                                     <wl:LiquidGlassButton Padding="0" shuxcth:ControlMaterialState.IsManaged="True">
                                         <wl:LiquidGlassButton.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -405,7 +406,7 @@
                                     </cwc:Case.Value>
                                     <Button Padding="0">
                                         <Button.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -459,7 +460,7 @@
                                     </cwc:Case.Value>
                                     <wl:LiquidGlassButton Padding="0" shuxcth:ControlMaterialState.IsManaged="True">
                                         <wl:LiquidGlassButton.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -568,7 +569,7 @@
                                     </cwc:Case.Value>
                                     <Button Padding="0">
                                         <Button.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -622,7 +623,7 @@
                                     </cwc:Case.Value>
                                     <wl:LiquidGlassButton Padding="0" shuxcth:ControlMaterialState.IsManaged="True">
                                         <wl:LiquidGlassButton.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -731,7 +732,7 @@
                                     </cwc:Case.Value>
                                     <Button Padding="0">
                                         <Button.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -785,7 +786,7 @@
                                     </cwc:Case.Value>
                                     <wl:LiquidGlassButton Padding="0" shuxcth:ControlMaterialState.IsManaged="True">
                                         <wl:LiquidGlassButton.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -894,7 +895,7 @@
                                     </cwc:Case.Value>
                                     <Button Padding="0">
                                         <Button.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -948,7 +949,7 @@
                                     </cwc:Case.Value>
                                     <wl:LiquidGlassButton Padding="0" shuxcth:ControlMaterialState.IsManaged="True">
                                         <wl:LiquidGlassButton.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -1058,7 +1059,7 @@
                                     </cwc:Case.Value>
                                     <Button Padding="0">
                                         <Button.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -1112,7 +1113,7 @@
                                     </cwc:Case.Value>
                                     <wl:LiquidGlassButton Padding="0" shuxcth:ControlMaterialState.IsManaged="True">
                                         <wl:LiquidGlassButton.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -1222,7 +1223,7 @@
                                     </cwc:Case.Value>
                                     <Button Padding="0">
                                         <Button.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -1276,7 +1277,7 @@
                                     </cwc:Case.Value>
                                     <wl:LiquidGlassButton Padding="0" shuxcth:ControlMaterialState.IsManaged="True">
                                         <wl:LiquidGlassButton.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -1386,7 +1387,7 @@
                                     </cwc:Case.Value>
                                     <Button Padding="0">
                                         <Button.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -1440,7 +1441,7 @@
                                     </cwc:Case.Value>
                                     <wl:LiquidGlassButton Padding="0" shuxcth:ControlMaterialState.IsManaged="True">
                                         <wl:LiquidGlassButton.Flyout>
-                                            <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding6Style}">
                                                 <ItemsControl ItemsPanel="{StaticResource UniformGridColumns4Spacing6Template}" ItemsSource="{x:Bind RewardList, Mode=OneWay}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
@@ -1537,7 +1538,10 @@
                                 Label="{shuxm:ResourceString Name=ViewPageAnnouncementRedeemCodeLabel}"
                                 Visibility="{x:Bind ((shvh:AnnouncementViewModel)DataContext).RedeemCodes, Converter={StaticResource EmptyCollectionToVisibilityConverter}, Mode=OneWay}">
                                 <AppBarButton.Flyout>
-                                    <Flyout FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding12Style}" Placement="BottomEdgeAlignedRight">
+                                    <Flyout
+                                        essential:FlyoutHelper.AcrylicWorkaround="True"
+                                        FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding12Style}"
+                                        Placement="BottomEdgeAlignedRight">
                                         <ItemsControl ItemsPanel="{ThemeResource StackPanelSpacing8Template}" ItemsSource="{x:Bind ((shvh:AnnouncementViewModel)DataContext).RedeemCodes, Mode=OneWay}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>

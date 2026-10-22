@@ -5,6 +5,7 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:essential="using:WinUI3Package"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shuxb="using:Snap.Hutao.Remastered.UI.Xaml.Behavior"
@@ -300,6 +301,7 @@
                                     </Button.Content>
                                     <Button.Flyout>
                                         <Flyout
+                                            essential:FlyoutHelper.AcrylicWorkaround="True"
                                             shuxb:FlyoutOpenStateBinding.IsOpen="{x:Bind ((shvm:MainViewModel)DataContext).IsFlyoutOpen, Mode=TwoWay}"
                                             shuxb:FlyoutOpenStateBinding.IsTrackingEnabled="True"
                                             shuxb:FlyoutOpenStateBinding.SwitchDelayMilliseconds="120"
@@ -458,6 +460,7 @@
                                     </wl:LiquidGlassButton.Content>
                                     <wl:LiquidGlassButton.Flyout>
                                         <Flyout
+                                            essential:FlyoutHelper.AcrylicWorkaround="True"
                                             shuxb:FlyoutOpenStateBinding.IsOpen="{x:Bind ((shvm:MainViewModel)DataContext).IsFlyoutOpen, Mode=TwoWay}"
                                             shuxb:FlyoutOpenStateBinding.IsTrackingEnabled="True"
                                             shuxb:FlyoutOpenStateBinding.SwitchDelayMilliseconds="120"

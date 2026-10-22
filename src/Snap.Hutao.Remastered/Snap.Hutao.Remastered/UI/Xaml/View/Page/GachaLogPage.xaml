@@ -6,6 +6,7 @@
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:cwconv="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:essential="using:WinUI3Package"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shuxb="using:Snap.Hutao.Remastered.UI.Xaml.Behavior"
@@ -43,10 +44,12 @@
 
         <Flyout
             x:Key="HutaoCloudFlyout"
+            essential:FlyoutHelper.AcrylicWorkaround="True"
             Placement="Bottom"
             ShouldConstrainToRootBounds="False">
             <Flyout.FlyoutPresenterStyle>
                 <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                    <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="MinHeight" Value="0"/>
                     <Setter Property="Padding" Value="0"/>
                 </Style>
@@ -92,8 +95,8 @@
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
                             <StackPanel
-                                shuxcth:MaterialBackground.NativeBrush="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                                 shuxcth:MaterialBackground.GlassBrush="{ThemeResource HutaoCardBrush}"
+                                shuxcth:MaterialBackground.NativeBrush="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                 BorderThickness="0,0,0,1"
                                 Spacing="8">
@@ -250,8 +253,8 @@
                             Grid.Row="2"
                             Padding="8"
                             HorizontalAlignment="Stretch"
-                            shuxcth:MaterialBackground.NativeBrush="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                             shuxcth:MaterialBackground.GlassBrush="{ThemeResource HutaoCardBrush}"
+                            shuxcth:MaterialBackground.NativeBrush="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                             BorderThickness="0,1,0,0">
                             <cwc:SwitchPresenter
@@ -476,12 +479,13 @@
                             <cwc:Case.Value>
                                 <x:Int32>0</x:Int32>
                             </cwc:Case.Value>
-                            <ComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                            <ComboBox
                                 x:Name="GlassPresenter_22004_State"
+                                shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_22004}"
                                 DataContext="{x:Bind GlassPresenter_22004.DataContext, Mode=OneWay}"
                                 DisplayMemberPath="Uid"
                                 ItemsSource="{x:Bind ((shvg:GachaLogViewModel)DataContext).Archives, Mode=OneWay}"
-                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_22004}"
                                 SelectedItem="{x:Bind ((shvg:GachaLogViewModel)DataContext).Archives.CurrentItem, Mode=TwoWay}"
                                 Style="{ThemeResource CommandBarComboBoxStyle}"/>
                         </cwc:Case>
@@ -489,7 +493,7 @@
                             <cwc:Case.Value>
                                 <x:Int32>1</x:Int32>
                             </cwc:Case.Value>
-                            <wl:LiquidGlassComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                            <wl:LiquidGlassComboBox
                                 x:Name="GlassPresenter_22004_StateGlass"
                                 Width="{x:Bind GlassPresenter_22004_State.Width, Mode=OneWay}"
                                 Height="{x:Bind GlassPresenter_22004_State.Height, Mode=OneWay}"
@@ -498,6 +502,7 @@
                                 MaxWidth="{x:Bind GlassPresenter_22004_State.MaxWidth, Mode=OneWay}"
                                 MaxHeight="{x:Bind GlassPresenter_22004_State.MaxHeight, Mode=OneWay}"
                                 Padding="{x:Bind shuxcth:ControlMaterialState.ComboBoxPadding(GlassPresenter_22004_State.Padding), Mode=OneWay}"
+                                shuxcth:ComboBoxPopupLifetime.IsManaged="True"
                                 shuxcth:ControlMaterialState.IsManaged="True"
                                 shuxcth:ControlMaterialState.NativeControl="{x:Bind GlassPresenter_22004_State, Mode=OneWay}"
                                 shuxcth:ControlMaterialState.UsesCompiledEnabledBinding="True"
@@ -570,6 +575,10 @@
                     <AppBarSeparator/>
                     <CommandBar.SecondaryCommands>
                         <AppBarButton
+                            Command="{x:Bind ((shvg:GachaLogViewModel)DataContext).OpenAccountInsightsCommand, Mode=OneWay}"
+                            Icon="{shuxm:FontIcon Glyph=&#xE9D9;}"
+                            Label="{shuxm:ResourceString Name=ViewDialogAccountInsightsOpen}"/>
+                        <AppBarButton
                             Command="{x:Bind ((shvg:GachaLogViewModel)DataContext).ImportExportCommand, Mode=OneWay}"
                             Icon="{shuxm:FontIcon Glyph=&#xE8C9;}"
                             Label="{shuxm:ResourceString Name=ViewPageGachaLogImportExportAction}"/>
@@ -629,11 +638,11 @@
                 <Border Margin="16" cw:Effects.Shadow="{ThemeResource CompatCardShadow}">
                     <Border Style="{ThemeResource AcrylicBorderCardStyle}">
                         <SplitView
+                            shuxcth:MaterialBackground.GlassPaneBrush="{ThemeResource HutaoSurfaceBrush}"
+                            shuxcth:MaterialBackground.NativePaneBrush="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
                             DisplayMode="Inline"
                             IsPaneOpen="True"
-                            OpenPaneLength="439"
-                            shuxcth:MaterialBackground.NativePaneBrush="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
-                            shuxcth:MaterialBackground.GlassPaneBrush="{ThemeResource HutaoSurfaceBrush}">
+                            OpenPaneLength="439">
                             <SplitView.Pane>
                                 <ListView
                                     Padding="{ThemeResource ListViewInSplitPanePadding}"

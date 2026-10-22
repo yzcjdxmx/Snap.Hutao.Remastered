@@ -5,6 +5,7 @@
     xmlns:cw="using:CommunityToolkit.WinUI"
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:essential="using:WinUI3Package"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shuxc="using:Snap.Hutao.Remastered.UI.Xaml.Control"
     xmlns:shuxcc="using:Snap.Hutao.Remastered.UI.Xaml.Control.Card"
@@ -127,6 +128,7 @@
                             Style="{ThemeResource SettingButtonStyle}">
                             <Button.Flyout>
                                 <Flyout
+                                    essential:FlyoutHelper.AcrylicWorkaround="True"
                                     FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding0Style}"
                                     Placement="Right"
                                     ShouldConstrainToRootBounds="False">
@@ -137,8 +139,8 @@
                                         </Grid.RowDefinitions>
                                         <Grid
                                             Grid.Row="0"
-                                            shuxcth:MaterialBackground.NativeBrush="{ThemeResource ControlAltFillColorSecondaryBrush}"
                                             shuxcth:MaterialBackground.GlassBrush="{ThemeResource HutaoSurfaceBrush}"
+                                            shuxcth:MaterialBackground.NativeBrush="{ThemeResource ControlAltFillColorSecondaryBrush}"
                                             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                             BorderThickness="0,0,0,1">
                                             <TextBlock
@@ -178,6 +180,7 @@
                             Style="{ThemeResource SettingButtonStyle}">
                             <wl:LiquidGlassButton.Flyout>
                                 <Flyout
+                                    essential:FlyoutHelper.AcrylicWorkaround="True"
                                     FlyoutPresenterStyle="{ThemeResource FlyoutPresenterPadding0Style}"
                                     Placement="Right"
                                     ShouldConstrainToRootBounds="False">
@@ -188,8 +191,8 @@
                                         </Grid.RowDefinitions>
                                         <Grid
                                             Grid.Row="0"
-                                            shuxcth:MaterialBackground.NativeBrush="{ThemeResource ControlAltFillColorSecondaryBrush}"
                                             shuxcth:MaterialBackground.GlassBrush="{ThemeResource HutaoSurfaceBrush}"
+                                            shuxcth:MaterialBackground.NativeBrush="{ThemeResource ControlAltFillColorSecondaryBrush}"
                                             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                             BorderThickness="0,0,0,1">
                                             <TextBlock
@@ -225,8 +228,8 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Border
-                shuxcth:MaterialBackground.NativeBrush="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                 shuxcth:MaterialBackground.GlassBrush="{ThemeResource HutaoCardBrush}"
+                shuxcth:MaterialBackground.NativeBrush="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="0,0,0,1">
                 <TextBlock

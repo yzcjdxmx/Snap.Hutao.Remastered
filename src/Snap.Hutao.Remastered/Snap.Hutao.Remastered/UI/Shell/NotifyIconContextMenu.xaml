@@ -4,12 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:essential="using:WinUI3Package"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shuxcth="using:Snap.Hutao.Remastered.UI.Xaml.Control.Theme"
     xmlns:shuxm="using:Snap.Hutao.Remastered.UI.Xaml.Markup"
     xmlns:shuxmb="using:Snap.Hutao.Remastered.UI.Xaml.Media.Backdrop"
     xmlns:shv="using:Snap.Hutao.Remastered.ViewModel"
     xmlns:wl="using:WinUI.LiquidGlass"
+    essential:FlyoutHelper.AcrylicWorkaround="True"
     ShouldConstrainToRootBounds="False"
     mc:Ignorable="d">
 

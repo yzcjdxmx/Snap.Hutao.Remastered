@@ -13,7 +13,7 @@
     <UseWindowsForms>False</UseWindowsForms>
     <ImplicitUsings>False</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <NoWarn>$(NoWarn);CA2012</NoWarn>
+    <NoWarn>$(NoWarn);CA2012;MAAI001;SCME0001;MEAI001;OPENAI001</NoWarn>
     <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
     <NeutralLanguage>zh-CN</NeutralLanguage>
     <DefaultLanguage>zh-CN</DefaultLanguage>
@@ -42,6 +42,7 @@
     -->
     <SelfContained>true</SelfContained>
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <PublishReadyToRun>true</PublishReadyToRun>
     <MvvmToolkitEnableINotifyPropertyChangingSupport>false</MvvmToolkitEnableINotifyPropertyChangingSupport>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -391,6 +392,9 @@
     <PackageReference Include="Google.Protobuf" Version="3.36.2" />
     <PackageReference Include="JetBrains.Annotations" Version="2026.2.0" />
     <PackageReference Include="Lib.Harmony" Version="3.0.0-rc.3" />
+    <PackageReference Include="Microsoft.Agents.AI.Anthropic" Version="1.25.0" />
+    <PackageReference Include="Microsoft.Agents.AI.Harness" Version="1.25.0" />
+    <PackageReference Include="Microsoft.Agents.AI.OpenAI" Version="1.25.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="5.6.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -404,6 +408,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="11.0.0-rc.2.26504.105" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="11.0.0-rc.2.26504.105" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="11.0.0-rc.2.26504.105" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="11.0.0-rc.2.26504.105" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="11.0.0-rc.2.26504.105" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="11.0.0-rc.2.26504.105" />
@@ -418,17 +423,17 @@
     <PackageReference Include="QRCoder" Version="1.8.1" />
     <PackageReference Include="Quartz" Version="4.6.0" />
     <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="4.6.0" />
-    <PackageReference Include="Sentry.Extensions.Logging" Version="6.12.1" />
-    <PackageReference Include="Snap.HPatch" Version="0.0.2">
+    <PackageReference Include="Sentry.Extensions.Logging" Version="7.0.0-rc.2" />
+    <PackageReference Include="Snap.HPatch" Version="0.0.2" Publish="true">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Snap.Hutao.FileUnlocker" Version="1.2.0" />
-    <PackageReference Include="Snap.Hutao.Remastered.Deployment.Runtime" Version="1.8.1">
+    <PackageReference Include="Snap.Hutao.Remastered.Deployment.Runtime" Version="1.8.1" Publish="true">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Snap.Hutao.Remastered.Native" Version="1.5.0">
+    <PackageReference Include="Snap.Hutao.Remastered.Native" Version="1.5.0" Publish="true">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -444,8 +449,8 @@
     <PackageReference Include="System.Threading.RateLimiting" Version="11.0.0-rc.2.26504.105" />
     <PackageReference Include="WinUI.Composition.Hlsl" Version="1.3.0" />
     <PackageReference Include="WinUI.LiquidGlass" Version="1.3.0" />
-    <PackageReference Include="WinUIEssential.WinUI3" Version="1.8.2" />
-    <PackageReference Include="Yae.Lib" Version="5.5.0">
+    <PackageReference Include="WinUIEssential.WinUI3" Version="1.8.4" />
+    <PackageReference Include="Yae.Lib" Version="5.5.0" Publish="true">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -457,4 +462,5 @@
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnablePreviewMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>
+  <Import Project="Build\ReadyToRun.targets" />
 </Project>

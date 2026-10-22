@@ -6,6 +6,7 @@
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:cwconv="using:CommunityToolkit.WinUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:essential="using:WinUI3Package"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shc="using:Snap.Hutao.Remastered.Core"
@@ -387,7 +388,10 @@
                                                 ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageDailyNoteAttendanceStatusInfo}">
                                                 <shuxm:BitmapIconExtension ShowAsMonochrome="True" Source="ms-appx:///Resource/Icon/UI_IconSmall_EP.png"/>
                                                 <Button.Flyout>
-                                                    <Flyout FlyoutPresenterStyle="{StaticResource FlyoutPresenterPadding6Style}" Placement="BottomEdgeAlignedRight">
+                                                    <Flyout
+                                                        essential:FlyoutHelper.AcrylicWorkaround="True"
+                                                        FlyoutPresenterStyle="{StaticResource FlyoutPresenterPadding6Style}"
+                                                        Placement="BottomEdgeAlignedRight">
                                                         <Grid>
                                                             <Grid.RowDefinitions>
                                                                 <RowDefinition Height="auto"/>
@@ -439,7 +443,10 @@
                                                 ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageDailyNoteAttendanceStatusInfo}">
                                                 <shuxm:BitmapIconExtension ShowAsMonochrome="True" Source="ms-appx:///Resource/Icon/UI_IconSmall_EP.png"/>
                                                 <wl:LiquidGlassButton.Flyout>
-                                                    <Flyout FlyoutPresenterStyle="{StaticResource FlyoutPresenterPadding6Style}" Placement="BottomEdgeAlignedRight">
+                                                    <Flyout
+                                                        essential:FlyoutHelper.AcrylicWorkaround="True"
+                                                        FlyoutPresenterStyle="{StaticResource FlyoutPresenterPadding6Style}"
+                                                        Placement="BottomEdgeAlignedRight">
                                                         <Grid>
                                                             <Grid.RowDefinitions>
                                                                 <RowDefinition Height="auto"/>
@@ -647,9 +654,10 @@
                         Label="{shuxm:ResourceString Name=ViewPageDailyNoteAddEntry}"/>
                     <AppBarButton Icon="{shuxm:FontIcon Glyph={StaticResource FontIconContentSetting}}" Label="{shuxm:ResourceString Name=ViewPageDailyNoteNotificationSetting}">
                         <AppBarButton.Flyout>
-                            <Flyout Placement="BottomEdgeAlignedRight">
+                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True" Placement="BottomEdgeAlignedRight">
                                 <Flyout.FlyoutPresenterStyle>
                                     <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                        <Setter Property="Background" Value="Transparent"/>
                                         <Setter Property="MaxWidth" Value="NaN"/>
                                     </Style>
                                 </Flyout.FlyoutPresenterStyle>

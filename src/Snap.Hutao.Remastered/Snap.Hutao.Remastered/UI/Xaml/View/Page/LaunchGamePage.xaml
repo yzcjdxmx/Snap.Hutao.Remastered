@@ -5,6 +5,7 @@
     xmlns:cw="using:CommunityToolkit.WinUI"
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:essential="using:WinUI3Package"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shas="using:Snap.Hutao.Remastered.Service.Game.AdvancedStart.Model"
@@ -367,35 +368,86 @@
                                                 <RowDefinition Height="auto"/>
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
-                                            <StackPanel
+                                            <Grid
                                                 Padding="16"
                                                 Background="{ThemeResource LayerOnAcrylicFillColorDefaultBrush}"
                                                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                                 BorderThickness="0,0,0,1"
-                                                Orientation="Horizontal"
-                                                Spacing="16">
+                                                ColumnSpacing="16">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
                                                 <shuxci:CachedImage
                                                     shux:FrameworkElementHelper.SquareLength="48"
                                                     CornerRadius="{ThemeResource ControlCornerRadius}"
                                                     Source="{StaticResource IconGame}"/>
                                                 <StackPanel
+                                                    Grid.Column="1"
                                                     VerticalAlignment="Center"
                                                     Orientation="Vertical"
                                                     Spacing="{ThemeResource SettingsCardSpacing}">
                                                     <TextBlock Text="{x:Bind ((shvg:LaunchGameViewModel)DataContext).GamePackageViewModel.LocalVersionText, Mode=OneWay}"/>
                                                     <TextBlock Text="{x:Bind ((shvg:LaunchGameViewModel)DataContext).GamePackageViewModel.RemoteVersionText, Mode=OneWay}"/>
+                                                    <Grid ColumnSpacing="8">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock
+                                                            VerticalAlignment="Center"
+                                                            FontSize="12"
+                                                            Opacity="0.7"
+                                                            Text="{x:Bind ((shvg:LaunchGameViewModel)DataContext).GamePackageViewModel.VersionSourcesText, Mode=OneWay}"
+                                                            TextWrapping="Wrap"/>
+                                                        <TeachingTip
+                                                            x:Name="GameInstallationInfoTeachingTip"
+                                                            Title="{shuxm:ResourceString Name=ViewPageGameInstallationInfoTitle}"
+                                                            IsLightDismissEnabled="True"
+                                                            Subtitle="{shuxm:ResourceString Name=ViewPageGameInstallationInfoDescription}"
+                                                            Target="{x:Bind GameInstallationInfoButton}"/>
+                                                        <Button
+                                                            x:Name="GameInstallationInfoButton"
+                                                            Grid.Column="1"
+                                                            MinWidth="24"
+                                                            MinHeight="24"
+                                                            Padding="1"
+                                                            VerticalAlignment="Center"
+                                                            AutomationProperties.Name="{shuxm:ResourceString Name=ViewPageGameInstallationInfoTitle}"
+                                                            ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageGameInstallationInfoTitle}">
+                                                            <mxi:Interaction.Behaviors>
+                                                                <mxi:EventTriggerBehavior EventName="Click">
+                                                                    <mxi:EventTriggerBehavior.Actions>
+                                                                        <shuxba:ShowTeachingTipAction TeachingTip="{x:Bind GameInstallationInfoTeachingTip}"/>
+                                                                    </mxi:EventTriggerBehavior.Actions>
+                                                                </mxi:EventTriggerBehavior>
+                                                            </mxi:Interaction.Behaviors>
+                                                            <FontIcon FontSize="12" Glyph="&#xE946;"/>
+                                                        </Button>
+                                                    </Grid>
+                                                    <InfoBar
+                                                        IsClosable="False"
+                                                        IsOpen="{x:Bind ((shvg:LaunchGameViewModel)DataContext).GamePackageViewModel.HasInstallationWarning, Mode=OneWay}"
+                                                        Message="{x:Bind ((shvg:LaunchGameViewModel)DataContext).GamePackageViewModel.InstallationStatusText, Mode=OneWay}"
+                                                        Severity="Warning"/>
                                                 </StackPanel>
-                                            </StackPanel>
+                                            </Grid>
                                             <StackPanel
                                                 Grid.Row="1"
                                                 Margin="-2,-6"
                                                 Padding="16"
                                                 Orientation="Horizontal">
                                                 <AppBarButton
+                                                    Command="{x:Bind ((shvg:LaunchGameViewModel)DataContext).GamePackageViewModel.RefreshInstallationCommand, Mode=OneWay}"
+                                                    Icon="Refresh"
+                                                    IsEnabled="{x:Bind ((shvg:LaunchGameViewModel)DataContext).GamePackageViewModel.IsNotRefreshing, Mode=OneWay}"
+                                                    Label="{shuxm:ResourceString Name=ViewPageGameRefreshInstallation}"/>
+                                                <AppBarButton
                                                     Command="{x:Bind ((shvg:LaunchGameViewModel)DataContext).GamePackageViewModel.StartCommand, Mode=OneWay}"
                                                     CommandParameter="Verify"
                                                     Icon="{shuxm:FontIcon Glyph={StaticResource FontIconContentDeveloperTools}}"
-                                                    Label="{shuxm:ResourceString Name=ViewPageLaunchGamePackageOperationVerify}"
+                                                    IsEnabled="{x:Bind ((shvg:LaunchGameViewModel)DataContext).GamePackageViewModel.CanOperate, Mode=OneWay}"
+                                                    Label="{x:Bind ((shvg:LaunchGameViewModel)DataContext).GamePackageViewModel.VerifyOperationLabel, Mode=OneWay}"
                                                     Style="{StaticResource DefaultAppBarButtonStyle}"/>
                                                 <AppBarButton
                                                     Command="{x:Bind ((shvg:LaunchGameViewModel)DataContext).GamePackageViewModel.StartCommand, Mode=OneWay}"
@@ -552,21 +604,22 @@
                                                                         <cwc:Case.Value>
                                                                             <x:Int32>0</x:Int32>
                                                                         </cwc:Case.Value>
-                                                                        <ComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                        <ComboBox
                                                                             x:Name="GlassPresenter_26355_State"
                                                                             MinWidth="120"
                                                                             VerticalAlignment="Center"
+                                                                            shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                            shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_26355}"
                                                                             DataContext="{x:Bind GlassPresenter_26355.DataContext, Mode=OneWay}"
                                                                             DisplayMemberPath="Name"
                                                                             ItemsSource="{x:Bind shuil:LowLevelKeyOptions.VirtualKeys}"
-                                                                            shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_26355}"
                                                                             SelectedItem="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LowLevelKeyOptions.OverlayHideKey, Mode=TwoWay}"/>
                                                                     </cwc:Case>
                                                                     <cwc:Case>
                                                                         <cwc:Case.Value>
                                                                             <x:Int32>1</x:Int32>
                                                                         </cwc:Case.Value>
-                                                                        <wl:LiquidGlassComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                        <wl:LiquidGlassComboBox
                                                                             x:Name="GlassPresenter_26355_StateGlass"
                                                                             Width="{x:Bind GlassPresenter_26355_State.Width, Mode=OneWay}"
                                                                             Height="{x:Bind GlassPresenter_26355_State.Height, Mode=OneWay}"
@@ -576,6 +629,7 @@
                                                                             MaxHeight="{x:Bind GlassPresenter_26355_State.MaxHeight, Mode=OneWay}"
                                                                             Padding="{x:Bind shuxcth:ControlMaterialState.ComboBoxPadding(GlassPresenter_26355_State.Padding), Mode=OneWay}"
                                                                             VerticalAlignment="Center"
+                                                                            shuxcth:ComboBoxPopupLifetime.IsManaged="True"
                                                                             shuxcth:ControlMaterialState.IsManaged="True"
                                                                             shuxcth:ControlMaterialState.NativeControl="{x:Bind GlassPresenter_26355_State, Mode=OneWay}"
                                                                             shuxcth:ControlMaterialState.UsesCompiledEnabledBinding="True"
@@ -843,21 +897,22 @@
                                                                     <cwc:Case.Value>
                                                                         <x:Int32>0</x:Int32>
                                                                     </cwc:Case.Value>
-                                                                    <ComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                    <ComboBox
                                                                         x:Name="GlassPresenter_36147_State"
                                                                         MinWidth="{ThemeResource SettingsCardContentControlMinWidth2}"
+                                                                        shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                        shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_36147}"
                                                                         DataContext="{x:Bind GlassPresenter_36147.DataContext, Mode=OneWay}"
                                                                         DisplayMemberPath="Name"
                                                                         IsEnabled="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.IsPlatformTypeEnabled.Value, Mode=OneWay}"
                                                                         ItemsSource="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.PlatformTypes, Mode=OneWay}"
-                                                                        shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_36147}"
                                                                         SelectedItem="{x:Bind ((shvg:LaunchGameViewModel)DataContext).SelectedPlatformType.Value, Mode=TwoWay}"/>
                                                                 </cwc:Case>
                                                                 <cwc:Case>
                                                                     <cwc:Case.Value>
                                                                         <x:Int32>1</x:Int32>
                                                                     </cwc:Case.Value>
-                                                                    <wl:LiquidGlassComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                    <wl:LiquidGlassComboBox
                                                                         x:Name="GlassPresenter_36147_StateGlass"
                                                                         Width="{x:Bind GlassPresenter_36147_State.Width, Mode=OneWay}"
                                                                         Height="{x:Bind GlassPresenter_36147_State.Height, Mode=OneWay}"
@@ -866,6 +921,7 @@
                                                                         MaxWidth="{x:Bind GlassPresenter_36147_State.MaxWidth, Mode=OneWay}"
                                                                         MaxHeight="{x:Bind GlassPresenter_36147_State.MaxHeight, Mode=OneWay}"
                                                                         Padding="{x:Bind shuxcth:ControlMaterialState.ComboBoxPadding(GlassPresenter_36147_State.Padding), Mode=OneWay}"
+                                                                        shuxcth:ComboBoxPopupLifetime.IsManaged="True"
                                                                         shuxcth:ControlMaterialState.IsManaged="True"
                                                                         shuxcth:ControlMaterialState.NativeControl="{x:Bind GlassPresenter_36147_State, Mode=OneWay}"
                                                                         shuxcth:ControlMaterialState.UsesCompiledEnabledBinding="True"
@@ -928,14 +984,15 @@
                                                                 <cwc:Case.Value>
                                                                     <x:Int32>0</x:Int32>
                                                                 </cwc:Case.Value>
-                                                                <ComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                <ComboBox
                                                                     x:Name="GlassPresenter_37616_State"
                                                                     MinWidth="{ThemeResource SettingsCardContentControlMinWidth2}"
+                                                                    shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                    shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_37616}"
                                                                     DataContext="{x:Bind GlassPresenter_37616.DataContext, Mode=OneWay}"
                                                                     ItemTemplateSelector="{StaticResource AspectRatioComboBoxTemplateSelector}"
                                                                     ItemsSource="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.AspectRatios.Value, Mode=OneWay}"
                                                                     PlaceholderText="{shuxm:ResourceString Name=ViewPageLaunchGameAppearanceAspectRatioPlaceHolder}"
-                                                                    shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_37616}"
                                                                     SelectedItem="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.SelectedAspectRatio, Mode=TwoWay}"
                                                                     Style="{ThemeResource DefaultComboBoxStyle}"/>
                                                             </cwc:Case>
@@ -943,7 +1000,7 @@
                                                                 <cwc:Case.Value>
                                                                     <x:Int32>1</x:Int32>
                                                                 </cwc:Case.Value>
-                                                                <wl:LiquidGlassComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                <wl:LiquidGlassComboBox
                                                                     x:Name="GlassPresenter_37616_StateGlass"
                                                                     Width="{x:Bind GlassPresenter_37616_State.Width, Mode=OneWay}"
                                                                     Height="{x:Bind GlassPresenter_37616_State.Height, Mode=OneWay}"
@@ -952,6 +1009,7 @@
                                                                     MaxWidth="{x:Bind GlassPresenter_37616_State.MaxWidth, Mode=OneWay}"
                                                                     MaxHeight="{x:Bind GlassPresenter_37616_State.MaxHeight, Mode=OneWay}"
                                                                     Padding="{x:Bind shuxcth:ControlMaterialState.ComboBoxPadding(GlassPresenter_37616_State.Padding), Mode=OneWay}"
+                                                                    shuxcth:ComboBoxPopupLifetime.IsManaged="True"
                                                                     shuxcth:ControlMaterialState.IsManaged="True"
                                                                     shuxcth:ControlMaterialState.NativeControl="{x:Bind GlassPresenter_37616_State, Mode=OneWay}"
                                                                     shuxcth:ControlMaterialState.UsesCompiledEnabledBinding="True"
@@ -983,6 +1041,7 @@
                                                             MinWidth="{ThemeResource SettingsCardContentControlMinWidth2}"
                                                             Padding="12,6,0,0"
                                                             VerticalAlignment="Center"
+                                                            essential:NumberBoxHelper.AcrylicWorkaround="True"
                                                             IsEnabled="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.IsScreenWidthEnabled.Value, Mode=OneWay}"
                                                             Value="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.ScreenWidth.Value, Mode=TwoWay}"/>
                                                         <cwc:SwitchPresenter
@@ -1016,6 +1075,7 @@
                                                             MinWidth="{ThemeResource SettingsCardContentControlMinWidth2}"
                                                             Padding="12,6,0,0"
                                                             VerticalAlignment="Center"
+                                                            essential:NumberBoxHelper.AcrylicWorkaround="True"
                                                             IsEnabled="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.IsScreenHeightEnabled.Value, Mode=OneWay}"
                                                             Value="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.ScreenHeight.Value, Mode=TwoWay}"/>
                                                         <cwc:SwitchPresenter
@@ -1085,21 +1145,22 @@
                                                                     <cwc:Case.Value>
                                                                         <x:Int32>0</x:Int32>
                                                                     </cwc:Case.Value>
-                                                                    <ComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                    <ComboBox
                                                                         x:Name="GlassPresenter_41899_State"
                                                                         MinWidth="{ThemeResource SettingsCardContentControlMinWidth2}"
+                                                                        shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                        shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_41899}"
                                                                         DataContext="{x:Bind GlassPresenter_41899.DataContext, Mode=OneWay}"
                                                                         DisplayMemberPath="Name"
                                                                         IsEnabled="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.IsMonitorEnabled.Value, Mode=OneWay}"
                                                                         ItemsSource="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.Monitors, Mode=OneWay}"
-                                                                        shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_41899}"
                                                                         SelectedItem="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.Monitor.Value, Mode=TwoWay}"/>
                                                                 </cwc:Case>
                                                                 <cwc:Case>
                                                                     <cwc:Case.Value>
                                                                         <x:Int32>1</x:Int32>
                                                                     </cwc:Case.Value>
-                                                                    <wl:LiquidGlassComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                                    <wl:LiquidGlassComboBox
                                                                         x:Name="GlassPresenter_41899_StateGlass"
                                                                         Width="{x:Bind GlassPresenter_41899_State.Width, Mode=OneWay}"
                                                                         Height="{x:Bind GlassPresenter_41899_State.Height, Mode=OneWay}"
@@ -1108,6 +1169,7 @@
                                                                         MaxWidth="{x:Bind GlassPresenter_41899_State.MaxWidth, Mode=OneWay}"
                                                                         MaxHeight="{x:Bind GlassPresenter_41899_State.MaxHeight, Mode=OneWay}"
                                                                         Padding="{x:Bind shuxcth:ControlMaterialState.ComboBoxPadding(GlassPresenter_41899_State.Padding), Mode=OneWay}"
+                                                                        shuxcth:ComboBoxPopupLifetime.IsManaged="True"
                                                                         shuxcth:ControlMaterialState.IsManaged="True"
                                                                         shuxcth:ControlMaterialState.NativeControl="{x:Bind GlassPresenter_41899_State, Mode=OneWay}"
                                                                         shuxcth:ControlMaterialState.UsesCompiledEnabledBinding="True"
@@ -1662,6 +1724,7 @@
                                                                 MinWidth="36"
                                                                 Margin="0,0,18,0"
                                                                 VerticalAlignment="Center"
+                                                                essential:NumberBoxHelper.AcrylicWorkaround="True"
                                                                 Value="{x:Bind DelaySeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                                         </cwc:DataRow>
                                                     </DataTemplate>
@@ -1887,6 +1950,7 @@
                                         Grid.Row="0"
                                         Grid.Column="1"
                                         Padding="10,8,6,6"
+                                        essential:NumberBoxHelper.AcrylicWorkaround="True"
                                         Header="{shuxm:ResourceString Name=ViewPageLaunchGameTargetFovHeader}"
                                         IsEnabled="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.IsSetFieldOfViewEnabled.Value, Mode=OneWay}"
                                         LargeChange="10"
@@ -1948,9 +2012,9 @@
                                             </cwc:Case.Value>
                                             <ToggleSwitch
                                                 x:Name="TargetFpsToggleSwitch"
+                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_128983}"
                                                 DataContext="{x:Bind GlassPresenter_128983.DataContext, Mode=OneWay}"
                                                 IsOn="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.IsSetTargetFrameRateEnabled.Value, Mode=TwoWay}"
-                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_128983}"
                                                 ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameHotSwitchDescription}">
                                                 <mxi:Interaction.Behaviors>
                                                     <shuxb:ToggleSwitchHeaderHitTestVisibleBehavior/>
@@ -2109,6 +2173,7 @@
                                         Grid.Row="1"
                                         Grid.Column="1"
                                         Padding="10,8,6,6"
+                                        essential:NumberBoxHelper.AcrylicWorkaround="True"
                                         Header="{shuxm:ResourceString Name=ViewPageLaunchGameTargetFpsHeader}"
                                         IsEnabled="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.IsSetTargetFrameRateEnabled.Value, Mode=OneWay}"
                                         Maximum="2000"
@@ -2132,10 +2197,10 @@
                                             </cwc:Case.Value>
                                             <ToggleSwitch
                                                 x:Name="DisablePlayerPerspectiveToggleSwitch"
+                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_78392}"
                                                 DataContext="{x:Bind GlassPresenter_78392.DataContext, Mode=OneWay}"
                                                 Header="{shuxm:ResourceString Name=ViewPageLaunchGameDisablePlayerPerspectiveDescription}"
                                                 IsOn="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.DisablePlayerPerspective.Value, Mode=TwoWay}"
-                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_78392}"
                                                 ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameDisablePlayerPerspectiveDescription}"/>
                                         </cwc:Case>
                                         <cwc:Case>
@@ -2187,11 +2252,11 @@
                                             </cwc:Case.Value>
                                             <ToggleSwitch
                                                 x:Name="HideQuestBannerToggleSwitch"
+                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_138209}"
                                                 DataContext="{x:Bind GlassPresenter_138209.DataContext, Mode=OneWay}"
                                                 IsOn="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.HideQuestBanner.Value, Mode=TwoWay}"
                                                 OffContent="{shuxm:ResourceString Name=ViewPageLaunchGameDisableFogOff}"
                                                 OnContent="{shuxm:ResourceString Name=ViewPageLaunchGameDisableFogOn}"
-                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_138209}"
                                                 ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameHotSwitchDescription}">
                                                 <mxi:Interaction.Behaviors>
                                                     <shuxb:ToggleSwitchHeaderHitTestVisibleBehavior/>
@@ -2496,9 +2561,9 @@
                                             </cwc:Case.Value>
                                             <ToggleSwitch
                                                 x:Name="RedirectCombineEntryToggleSwitch"
+                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_153403}"
                                                 DataContext="{x:Bind GlassPresenter_153403.DataContext, Mode=OneWay}"
                                                 IsOn="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.RedirectCombineEntry.Value, Mode=TwoWay}"
-                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_153403}"
                                                 Style="{ThemeResource DefaultToggleSwitchStyle}"
                                                 ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameIslandRedirectCombineEntryDescription}">
                                                 <mxi:Interaction.Behaviors>
@@ -2682,15 +2747,16 @@
                                             <cwc:Case.Value>
                                                 <x:Int32>0</x:Int32>
                                             </cwc:Case.Value>
-                                            <ComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                            <ComboBox
                                                 x:Name="GlassPresenter_89103_State"
                                                 Padding="10,8,6,6"
                                                 VerticalAlignment="Center"
+                                                shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_89103}"
                                                 DataContext="{x:Bind GlassPresenter_89103.DataContext, Mode=OneWay}"
                                                 DisplayMemberPath="Name"
                                                 Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandCombineMenuHotkeyHeader}"
                                                 ItemsSource="{x:Bind shsg:LaunchOptions.VirtualKeys}"
-                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_89103}"
                                                 SelectedValue="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.CombineMenuHotkey.Value, Mode=TwoWay, Converter={StaticResource IntToNameValueVirtualKeyConverter}}"
                                                 ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameIslandCombineMenuHotkeyDescription}"/>
                                         </cwc:Case>
@@ -2698,7 +2764,7 @@
                                             <cwc:Case.Value>
                                                 <x:Int32>1</x:Int32>
                                             </cwc:Case.Value>
-                                            <wl:LiquidGlassComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                            <wl:LiquidGlassComboBox
                                                 x:Name="GlassPresenter_89103_StateGlass"
                                                 Width="{x:Bind GlassPresenter_89103_State.Width, Mode=OneWay}"
                                                 Height="{x:Bind GlassPresenter_89103_State.Height, Mode=OneWay}"
@@ -2708,6 +2774,7 @@
                                                 MaxHeight="{x:Bind GlassPresenter_89103_State.MaxHeight, Mode=OneWay}"
                                                 Padding="{x:Bind shuxcth:ControlMaterialState.ComboBoxPadding(GlassPresenter_89103_State.Padding), Mode=OneWay}"
                                                 VerticalAlignment="Center"
+                                                shuxcth:ComboBoxPopupLifetime.IsManaged="True"
                                                 shuxcth:ControlMaterialState.IsManaged="True"
                                                 shuxcth:ControlMaterialState.NativeControl="{x:Bind GlassPresenter_89103_State, Mode=OneWay}"
                                                 shuxcth:ControlMaterialState.UsesCompiledEnabledBinding="True"
@@ -2895,10 +2962,10 @@
                                             </cwc:Case.Value>
                                             <ToggleSwitch
                                                 x:Name="OriginalResinAllowedToggleSwitch"
+                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_92790}"
                                                 DataContext="{x:Bind GlassPresenter_92790.DataContext, Mode=OneWay}"
                                                 Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandResinListItemAllowOriginalResinHeader}"
                                                 IsOn="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.ResinListItemId000106Allowed.Value, Mode=TwoWay}"
-                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_92790}"
                                                 Toggled="ResinListItemToggle_Toggled"/>
                                         </cwc:Case>
                                         <cwc:Case>
@@ -2948,10 +3015,10 @@
                                             </cwc:Case.Value>
                                             <ToggleSwitch
                                                 x:Name="PrimogemAllowedToggleSwitch"
+                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_93369}"
                                                 DataContext="{x:Bind GlassPresenter_93369.DataContext, Mode=OneWay}"
                                                 Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandResinListItemAllowPrimogemHeader}"
                                                 IsOn="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.ResinListItemId000201Allowed.Value, Mode=TwoWay}"
-                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_93369}"
                                                 Toggled="ResinListItemToggle_Toggled"/>
                                         </cwc:Case>
                                         <cwc:Case>
@@ -3001,10 +3068,10 @@
                                             </cwc:Case.Value>
                                             <ToggleSwitch
                                                 x:Name="FragileResinAllowedToggleSwitch"
+                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_93938}"
                                                 DataContext="{x:Bind GlassPresenter_93938.DataContext, Mode=OneWay}"
                                                 Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandResinListItemAllowFragileResinHeader}"
                                                 IsOn="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.ResinListItemId107009Allowed.Value, Mode=TwoWay}"
-                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_93938}"
                                                 Toggled="ResinListItemToggle_Toggled"/>
                                         </cwc:Case>
                                         <cwc:Case>
@@ -3054,10 +3121,10 @@
                                             </cwc:Case.Value>
                                             <ToggleSwitch
                                                 x:Name="TransientResinAllowedToggleSwitch"
+                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_94515}"
                                                 DataContext="{x:Bind GlassPresenter_94515.DataContext, Mode=OneWay}"
                                                 Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandResinListItemAllowTransientResinHeader}"
                                                 IsOn="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.ResinListItemId107012Allowed.Value, Mode=TwoWay}"
-                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_94515}"
                                                 Toggled="ResinListItemToggle_Toggled"/>
                                         </cwc:Case>
                                         <cwc:Case>
@@ -3107,10 +3174,10 @@
                                             </cwc:Case.Value>
                                             <ToggleSwitch
                                                 x:Name="CondensedResinAllowedToggleSwitch"
+                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_95096}"
                                                 DataContext="{x:Bind GlassPresenter_95096.DataContext, Mode=OneWay}"
                                                 Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandResinListItemAllowCondensedResinHeader}"
                                                 IsOn="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.ResinListItemId220007Allowed.Value, Mode=TwoWay}"
-                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_95096}"
                                                 Toggled="ResinListItemToggle_Toggled"/>
                                         </cwc:Case>
                                         <cwc:Case>
@@ -3248,10 +3315,10 @@
                                             </cwc:Case.Value>
                                             <ToggleSwitch
                                                 x:Name="FastSkipTalkToggleSwitch"
+                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_97461}"
                                                 DataContext="{x:Bind GlassPresenter_97461.DataContext, Mode=OneWay}"
                                                 Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandFastSkipTalkHeader}"
                                                 IsOn="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.FastSkipTalk.Value, Mode=TwoWay}"
-                                                shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_97461}"
                                                 Toggled="FastSkipTalkToggleSwitch_Toggled"
                                                 ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameIslandFastSkipTalkDescription}"
                                                 Visibility="{x:Bind ((shvg:LaunchGameViewModel)DataContext).IsDeveloperAndLoggedIn, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>

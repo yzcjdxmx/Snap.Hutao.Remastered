@@ -5,6 +5,7 @@
     xmlns:cw="using:CommunityToolkit.WinUI"
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:essential="using:WinUI3Package"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxi="using:Microsoft.Xaml.Interactivity"
     xmlns:shuxb="using:Snap.Hutao.Remastered.UI.Xaml.Behavior"
@@ -62,9 +63,10 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
-            <Flyout x:Key="ItemDetailFlyout">
+            <Flyout x:Key="ItemDetailFlyout" essential:FlyoutHelper.AcrylicWorkaround="True">
                 <Flyout.FlyoutPresenterStyle>
                     <Style TargetType="FlyoutPresenter">
+                        <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="Padding" Value="0"/>
                     </Style>
                 </Flyout.FlyoutPresenterStyle>
@@ -72,9 +74,10 @@
             </Flyout>
 
             <!--  Properties defined by 祝圣之霜, only reachable from a reliquary crafted with it  -->
-            <Flyout x:Key="PurchasedAppendPropFlyout">
+            <Flyout x:Key="PurchasedAppendPropFlyout" essential:FlyoutHelper.AcrylicWorkaround="True">
                 <Flyout.FlyoutPresenterStyle>
                     <Style TargetType="FlyoutPresenter">
+                        <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="Padding" Value="0"/>
                     </Style>
                 </Flyout.FlyoutPresenterStyle>
@@ -139,10 +142,10 @@
                                 Icon="{x:Bind Weapon.Icon, Converter={StaticResource EquipIconConverter}, Mode=OneWay}"
                                 Quality="{x:Bind Weapon.RankLevel, Mode=OneWay}"/>
                             <ContentControl
-                                Content="{Binding}"
-                                ContentTemplate="{StaticResource EquippedAvatarBadgeTemplate}"
                                 HorizontalContentAlignment="Right"
-                                VerticalContentAlignment="Bottom"/>
+                                VerticalContentAlignment="Bottom"
+                                Content="{Binding}"
+                                ContentTemplate="{StaticResource EquippedAvatarBadgeTemplate}"/>
                         </Grid>
                     </shuxcc:HorizontalCard.Left>
                     <shuxcc:HorizontalCard.Right>
@@ -238,10 +241,10 @@
                                     Icon="{x:Bind Reliquary.Icon, Converter={StaticResource ItemIconConverter}, Mode=OneWay}"
                                     Quality="{x:Bind Reliquary.RankLevel, Mode=OneWay}"/>
                                 <ContentControl
-                                    Content="{Binding}"
-                                    ContentTemplate="{StaticResource EquippedAvatarBadgeTemplate}"
                                     HorizontalContentAlignment="Right"
-                                    VerticalContentAlignment="Bottom"/>
+                                    VerticalContentAlignment="Bottom"
+                                    Content="{Binding}"
+                                    ContentTemplate="{StaticResource EquippedAvatarBadgeTemplate}"/>
                             </Grid>
                             <Grid Grid.Column="1">
                                 <StackPanel VerticalAlignment="Center" Spacing="2">
@@ -563,7 +566,7 @@
                                     </cwc:Case.Value>
                                     <Button VerticalAlignment="Center">
                                         <Button.Flyout>
-                                            <Flyout>
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True">
                                                 <shuxcas:AutoSortList
                                                     Width="260"
                                                     AvailableTokens="{x:Bind ((shv:BackpackViewModel)DataContext).AvailableSortTokens, Mode=OneWay}"
@@ -582,7 +585,7 @@
                                     </cwc:Case.Value>
                                     <wl:LiquidGlassButton VerticalAlignment="Center" shuxcth:ControlMaterialState.IsManaged="True">
                                         <wl:LiquidGlassButton.Flyout>
-                                            <Flyout>
+                                            <Flyout essential:FlyoutHelper.AcrylicWorkaround="True">
                                                 <shuxcas:AutoSortList
                                                     Width="260"
                                                     AvailableTokens="{x:Bind ((shv:BackpackViewModel)DataContext).AvailableSortTokens, Mode=OneWay}"
@@ -621,12 +624,13 @@
                                         <cwc:Case.Value>
                                             <x:Int32>0</x:Int32>
                                         </cwc:Case.Value>
-                                        <ComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                        <ComboBox
                                             x:Name="GlassPresenter_24224_State"
+                                            shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                            shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_24224}"
                                             DataContext="{x:Bind GlassPresenter_24224.DataContext, Mode=OneWay}"
                                             DisplayMemberPath="Name"
                                             ItemsSource="{x:Bind ((shv:BackpackViewModel)DataContext).Archives, Mode=OneWay}"
-                                            shuxcth:ThemeSynchronization.Source="{x:Bind GlassPresenter_24224}"
                                             SelectedItem="{x:Bind ((shv:BackpackViewModel)DataContext).Archives.CurrentItem, Mode=TwoWay}"
                                             Style="{ThemeResource CommandBarComboBoxStyle}"/>
                                     </cwc:Case>
@@ -634,7 +638,7 @@
                                         <cwc:Case.Value>
                                             <x:Int32>1</x:Int32>
                                         </cwc:Case.Value>
-                                        <wl:LiquidGlassComboBox shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                        <wl:LiquidGlassComboBox
                                             x:Name="GlassPresenter_24224_StateGlass"
                                             Width="{x:Bind GlassPresenter_24224_State.Width, Mode=OneWay}"
                                             Height="{x:Bind GlassPresenter_24224_State.Height, Mode=OneWay}"
@@ -643,6 +647,7 @@
                                             MaxWidth="{x:Bind GlassPresenter_24224_State.MaxWidth, Mode=OneWay}"
                                             MaxHeight="{x:Bind GlassPresenter_24224_State.MaxHeight, Mode=OneWay}"
                                             Padding="{x:Bind shuxcth:ControlMaterialState.ComboBoxPadding(GlassPresenter_24224_State.Padding), Mode=OneWay}"
+                                            shuxcth:ComboBoxPopupLifetime.IsManaged="True"
                                             shuxcth:ControlMaterialState.IsManaged="True"
                                             shuxcth:ControlMaterialState.NativeControl="{x:Bind GlassPresenter_24224_State, Mode=OneWay}"
                                             shuxcth:ControlMaterialState.UsesCompiledEnabledBinding="True"

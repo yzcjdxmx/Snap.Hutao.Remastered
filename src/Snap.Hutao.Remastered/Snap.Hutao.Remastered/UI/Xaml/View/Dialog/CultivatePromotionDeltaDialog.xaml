@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cwc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:essential="using:WinUI3Package"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shuxc="using:Snap.Hutao.Remastered.UI.Xaml.Control"
     xmlns:shuxci="using:Snap.Hutao.Remastered.UI.Xaml.Control.Image"
@@ -47,6 +48,7 @@
                         Grid.Column="3"
                         MinWidth="{StaticResource NumberBoxMinWidth}"
                         VerticalAlignment="Center"
+                        essential:NumberBoxHelper.AcrylicWorkaround="True"
                         Maximum="{Binding LevelMax}"
                         Minimum="{Binding LevelMin}"
                         SpinButtonPlacementMode="Inline"
@@ -60,6 +62,7 @@
                         Grid.Column="5"
                         MinWidth="{StaticResource NumberBoxMinWidth}"
                         VerticalAlignment="Center"
+                        essential:NumberBoxHelper.AcrylicWorkaround="True"
                         Maximum="{Binding LevelMax}"
                         Minimum="{Binding LevelCurrent, Mode=OneWay}"
                         SpinButtonPlacementMode="Inline"
@@ -139,6 +142,7 @@
                     Grid.Column="3"
                     MinWidth="{StaticResource NumberBoxMinWidth}"
                     VerticalAlignment="Center"
+                    essential:NumberBoxHelper.AcrylicWorkaround="True"
                     Maximum="{Binding LevelMax}"
                     Minimum="{Binding LevelMin}"
                     SpinButtonPlacementMode="Inline"
@@ -152,6 +156,7 @@
                     Grid.Column="5"
                     MinWidth="{StaticResource NumberBoxMinWidth}"
                     VerticalAlignment="Center"
+                    essential:NumberBoxHelper.AcrylicWorkaround="True"
                     Maximum="{Binding LevelMax}"
                     Minimum="{Binding LevelCurrent, Mode=OneWay}"
                     SpinButtonPlacementMode="Inline"
@@ -225,6 +230,7 @@
                     Grid.Column="3"
                     MinWidth="{StaticResource NumberBoxMinWidth}"
                     VerticalAlignment="Center"
+                    essential:NumberBoxHelper.AcrylicWorkaround="True"
                     Maximum="{Binding LevelMax}"
                     Minimum="{Binding LevelMin}"
                     SpinButtonPlacementMode="Inline"
@@ -238,6 +244,7 @@
                     Grid.Column="5"
                     MinWidth="{StaticResource NumberBoxMinWidth}"
                     VerticalAlignment="Center"
+                    essential:NumberBoxHelper.AcrylicWorkaround="True"
                     Maximum="{Binding LevelMax}"
                     Minimum="{Binding LevelCurrent, Mode=OneWay}"
                     SpinButtonPlacementMode="Inline"
@@ -261,19 +268,19 @@
                     SelectedIndex="0">
                     <RadioButton
                         x:Name="GlassNative_9260"
+                        shuxcth:ThemeSynchronization.Source="{x:Bind MaterialSelector_SaveModeSelector}"
                         Content="{shuxm:ResourceString Name=ViewDialogCultivationConsumptionSaveStrategyPreserveExisting}"
-                        DataContext="{x:Bind MaterialSelector_SaveModeSelector.DataContext, Mode=OneWay}"
-                        shuxcth:ThemeSynchronization.Source="{x:Bind MaterialSelector_SaveModeSelector}"/>
+                        DataContext="{x:Bind MaterialSelector_SaveModeSelector.DataContext, Mode=OneWay}"/>
                     <RadioButton
                         x:Name="GlassNative_9386"
+                        shuxcth:ThemeSynchronization.Source="{x:Bind MaterialSelector_SaveModeSelector}"
                         Content="{shuxm:ResourceString Name=ViewDialogCultivationConsumptionSaveStrategyOverwriteExisting}"
-                        DataContext="{x:Bind MaterialSelector_SaveModeSelector.DataContext, Mode=OneWay}"
-                        shuxcth:ThemeSynchronization.Source="{x:Bind MaterialSelector_SaveModeSelector}"/>
+                        DataContext="{x:Bind MaterialSelector_SaveModeSelector.DataContext, Mode=OneWay}"/>
                     <RadioButton
                         x:Name="GlassNative_9513"
+                        shuxcth:ThemeSynchronization.Source="{x:Bind MaterialSelector_SaveModeSelector}"
                         Content="{shuxm:ResourceString Name=ViewDialogCultivationConsumptionSaveStrategyCreateNewEntry}"
-                        DataContext="{x:Bind MaterialSelector_SaveModeSelector.DataContext, Mode=OneWay}"
-                        shuxcth:ThemeSynchronization.Source="{x:Bind MaterialSelector_SaveModeSelector}"/>
+                        DataContext="{x:Bind MaterialSelector_SaveModeSelector.DataContext, Mode=OneWay}"/>
                 </RadioButtons>
             </cwc:Case>
             <cwc:Case Value="{shuxm:Int32 Value=1}">
