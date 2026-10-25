@@ -1,0 +1,22 @@
+diff --git a/src/Snap.Hutao.Remastered.UnlockerIsland/hook/HookWndProc.cpp b/src/Snap.Hutao.Remastered.UnlockerIsland/hook/HookWndProc.cpp
+--- a/src/Snap.Hutao.Remastered.UnlockerIsland/hook/HookWndProc.cpp
++++ b/src/Snap.Hutao.Remastered.UnlockerIsland/hook/HookWndProc.cpp
+@@ -1,4 +1,5 @@
+ #include "HookWndProc.h"
++#include "CraftHotkeyBinding.h"
+ #include "Hooks.h"
+ #include "../function/HooksShared.h"
+ #include "../GamepadHotSwitch.h"
+@@ -14,9 +15,11 @@
+     switch (uMsg)
+     {
+     case WM_KEYDOWN:
+-        if (LOWORD(wParam) == g_pEnv->CombineHotkey)
++    case WM_SYSKEYDOWN:
++        if (CraftHotkey::MatchesCurrentMessage(g_pEnv->CombineHotkey, uMsg, wParam, lParam))
+         {
+             RequestOpenCraft();
++            return 0;
+         }
+         [[fallthrough]];
+     case WM_KILLFOCUS:

@@ -28,6 +28,8 @@ public sealed class GameIslandInterop : IGameIslandInterop
     private readonly bool resume;
 
     private string? islandPath;
+    private int combineModifier;
+    private int combineHotkey;
     private int accumulatedBadStateCount;
     private uint previousUid;
 
@@ -38,6 +40,8 @@ public sealed class GameIslandInterop : IGameIslandInterop
 
     public ValueTask BeforeAsync(BeforeLaunchExecutionContext context)
     {
+        combineHotkey = context.LaunchOptions.CombineMenuHotkey.Value;
+        combineModifier = combineHotkey is > 0 and < 255 ? context.LaunchOptions.CombineMenuModifier.Value : 0;
         if (resume)
         {
             return ValueTask.CompletedTask;
@@ -54,6 +58,19 @@ public sealed class GameIslandInterop : IGameIslandInterop
         }
         string repoPath = Path.Combine(HutaoRuntime.GetDataRepositoryDirectory(), "Snap.ContentDelivery");
         islandPath = Path.Combine(repoPath, $"Snap.Hutao.Remastered.UnlockerIsland_{gameVersion}.dll");
+        if (combineModifier != 0)
+        {
+            // This pinned native build is only validated against these game versions.
+            if (gameVersion.ToString() is not ("7.1.0" or "7.2.0"))
+            {
+                throw HutaoException.NotSupported(SH.ServiceGameCraftModifierVersionUnsupported);
+            }
+            islandPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Native", "CraftModifiersIsland.dll");
+            if (!File.Exists(islandPath))
+            {
+                throw HutaoException.InvalidOperation(SH.ServiceGameCraftModifierModuleMissing);
+            }
+        }
         // All BeforeAsync handlers run before CreateProcess. Leave the later check
         // as well, in case the module is removed after this preflight.
         if (!File.Exists(islandPath))
@@ -132,7 +149,7 @@ public sealed class GameIslandInterop : IGameIslandInterop
         }
     }
 
-    private static unsafe void InitializeIslandEnvironment(nint handle, LaunchOptions options, bool isOversea)
+    private unsafe void InitializeIslandEnvironment(nint handle, LaunchOptions options, bool isOversea)
     {
         IslandEnvironment* pIslandEnvironment = (IslandEnvironment*)handle;
 
@@ -151,7 +168,7 @@ public sealed class GameIslandInterop : IGameIslandInterop
         UpdateIslandEnvironment(handle, options);
     }
 
-    private static unsafe IslandEnvironmentView UpdateIslandEnvironment(nint handle, LaunchOptions options)
+    private unsafe IslandEnvironmentView UpdateIslandEnvironment(nint handle, LaunchOptions options)
     {
         IslandEnvironment* pIslandEnvironment = (IslandEnvironment*)handle;
         pIslandEnvironment->ProvideOffsets = Win32.Foundation.BOOL.FALSE;
@@ -179,7 +196,7 @@ public sealed class GameIslandInterop : IGameIslandInterop
         pIslandEnvironment->HidePlayerInfo = options.HidePlayerInfo.Value;
         pIslandEnvironment->GamepadHotSwitchEnabled = options.GamepadHotSwitchEnabled.Value;
         pIslandEnvironment->EnableInLevelClockPageSpeedUp = options.EnableInLevelClockPageSpeedUp.Value;
-        pIslandEnvironment->CombineHotkey = options.CombineMenuHotkey.Value;
+        pIslandEnvironment->CombineHotkey = CombineHotkeyBinding.Encode(combineHotkey, combineModifier);
         pIslandEnvironment->WeakMapCheck = options.WeakMapCheck.Value;
         pIslandEnvironment->FastSkipTalk = options.FastSkipTalk.Value;
         pIslandEnvironment->RedirectCatherine = options.RedirectCatherine.Value;
@@ -262,3 +279,4 @@ public sealed class GameIslandInterop : IGameIslandInterop
         }
     }
 }
+

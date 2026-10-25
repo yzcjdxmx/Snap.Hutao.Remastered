@@ -141,6 +141,11 @@ public sealed partial class LaunchOptions : DbStoreOptions, IRestrictedGamePathA
 
     [field: MaybeNull]
     public IObservableProperty<bool> RedirectCombineEntry { get => field ??= CreateProperty(SettingKeys.LaunchRedirectCombineEntry, false); }
+    public static ImmutableArray<string> CombineMenuModifiers { get => [SH.ViewPageLaunchGameCraftModifierNone, "Ctrl", "Alt", "Shift"]; }
+
+    [field: MaybeNull]
+    public IObservableProperty<int> CombineMenuModifier { get => field ??= CreateProperty(SettingKeys.LaunchCombineMenuModifier, 2); }
+
     [field: MaybeNull]
     public IObservableProperty<int> CombineMenuHotkey { get => field ??= CreateProperty(SettingKeys.LaunchCombineMenuHotkey, (int)VIRTUAL_KEY.VK__none_); }
     [field: MaybeNull]
@@ -235,3 +240,4 @@ public sealed partial class LaunchOptions : DbStoreOptions, IRestrictedGamePathA
         return monitors.ToImmutable();
     }
 }
+

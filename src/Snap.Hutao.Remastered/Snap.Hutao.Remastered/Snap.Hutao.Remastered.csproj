@@ -463,4 +463,8 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <Import Project="Build\ReadyToRun.targets" />
+  <ItemGroup>
+    <Content Include="Assets\Native\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>
+

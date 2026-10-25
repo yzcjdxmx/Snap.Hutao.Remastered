@@ -19,6 +19,10 @@ jobs:
         with:
           dotnet-version: 11.0.100-rc.2.26504.105
 
+      - name: Build and test craft hotkey native module
+        shell: pwsh
+        run: ./scripts/BuildCraftHotkeyIsland.ps1
+
       # This test reads real CN and global game registry entries, absent on hosted runners.
       - name: Run upstream tests (excluding installed-game registry inspection)
         shell: pwsh
@@ -79,3 +83,4 @@ jobs:
           This is a personal test build, not an official release. No upstream signing keys are used.
           The existing HidePlayerInfo option also hides the profile name and birthday.
           '@ >> $env:GITHUB_STEP_SUMMARY
+

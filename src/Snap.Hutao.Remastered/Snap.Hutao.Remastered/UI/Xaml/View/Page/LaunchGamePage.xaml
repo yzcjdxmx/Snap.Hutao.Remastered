@@ -2732,10 +2732,71 @@
                                             <Image Source="ms-appx:///Resource/TeachingTip/LaunchGameIslandRedirectCombineEntry.gif"/>
                                         </TeachingTip.HeroContent>
                                     </TeachingTip>
+                                    <StackPanel Grid.Row="4" Grid.Column="0" Spacing="8">
+                                    <cwc:SwitchPresenter
+                                        x:Name="CraftModifierPresenter"
+                                        VerticalAlignment="Center"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Stretch"
+                                        IsTabStop="False"
+                                        Tag="LiquidGlass:ComboBox"
+                                        Visibility="{x:Bind CraftModifierPresenter_State.Visibility, Mode=OneWay}"
+                                        Value="{x:Bind shuxcth:MaterialBindingSource.Current.ComboBoxMaterial, Mode=OneWay}">
+                                        <cwc:Case>
+                                            <cwc:Case.Value>
+                                                <x:Int32>0</x:Int32>
+                                            </cwc:Case.Value>
+                                            <ComboBox
+                                                x:Name="CraftModifierPresenter_State"
+                                                Padding="10,8,6,6"
+                                                VerticalAlignment="Center"
+                                                shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                shuxcth:ThemeSynchronization.Source="{x:Bind CraftModifierPresenter}"
+                                                DataContext="{x:Bind CraftModifierPresenter.DataContext, Mode=OneWay}"
+                                                Header="{shuxm:ResourceString Name=ViewPageLaunchGameCraftModifierHeader}"
+                                                ItemsSource="{x:Bind shsg:LaunchOptions.CombineMenuModifiers}"
+                                                SelectedIndex="{x:Bind ((shvg:LaunchGameViewModel)DataContext).LaunchOptions.CombineMenuModifier.Value, Mode=TwoWay}"
+                                                ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameCraftModifierDescription}"/>
+                                        </cwc:Case>
+                                        <cwc:Case>
+                                            <cwc:Case.Value>
+                                                <x:Int32>1</x:Int32>
+                                            </cwc:Case.Value>
+                                            <wl:LiquidGlassComboBox
+                                                x:Name="CraftModifierPresenter_StateGlass"
+                                                Width="{x:Bind CraftModifierPresenter_State.Width, Mode=OneWay}"
+                                                Height="{x:Bind CraftModifierPresenter_State.Height, Mode=OneWay}"
+                                                MinWidth="{x:Bind CraftModifierPresenter_State.MinWidth, Mode=OneWay}"
+                                                MinHeight="{x:Bind CraftModifierPresenter_State.MinHeight, Mode=OneWay}"
+                                                MaxWidth="{x:Bind CraftModifierPresenter_State.MaxWidth, Mode=OneWay}"
+                                                MaxHeight="{x:Bind CraftModifierPresenter_State.MaxHeight, Mode=OneWay}"
+                                                Padding="{x:Bind shuxcth:ControlMaterialState.ComboBoxPadding(CraftModifierPresenter_State.Padding), Mode=OneWay}"
+                                                VerticalAlignment="Center"
+                                                shuxcth:ComboBoxPopupLifetime.IsManaged="True"
+                                                shuxcth:ControlMaterialState.IsManaged="True"
+                                                shuxcth:ControlMaterialState.NativeControl="{x:Bind CraftModifierPresenter_State, Mode=OneWay}"
+                                                shuxcth:ControlMaterialState.UsesCompiledEnabledBinding="True"
+                                                BorderThickness="{x:Bind CraftModifierPresenter_State.BorderThickness, Mode=OneWay}"
+                                                FlowDirection="{x:Bind CraftModifierPresenter_State.FlowDirection, Mode=OneWay}"
+                                                FontFamily="{x:Bind CraftModifierPresenter_State.FontFamily, Mode=OneWay}"
+                                                FontSize="{x:Bind CraftModifierPresenter_State.FontSize, Mode=OneWay}"
+                                                FontStyle="{x:Bind CraftModifierPresenter_State.FontStyle, Mode=OneWay}"
+                                                FontWeight="{x:Bind CraftModifierPresenter_State.FontWeight, Mode=OneWay}"
+                                                Header="{x:Bind CraftModifierPresenter_State.Header, Mode=OneWay}"
+                                                HeaderTemplate="{x:Bind CraftModifierPresenter_State.HeaderTemplate, Mode=OneWay}"
+                                                IsEditable="{x:Bind CraftModifierPresenter_State.IsEditable, Mode=OneWay}"
+                                                IsEnabled="{x:Bind CraftModifierPresenter_State.IsEnabled, Mode=OneWay}"
+                                                IsTextSearchEnabled="{x:Bind CraftModifierPresenter_State.IsTextSearchEnabled, Mode=OneWay}"
+                                                ItemsSource="{x:Bind CraftModifierPresenter_State.ItemsSource, Mode=OneWay}"
+                                                MaxDropDownHeight="{x:Bind CraftModifierPresenter_State.MaxDropDownHeight, Mode=OneWay}"
+                                                PlaceholderText="{x:Bind CraftModifierPresenter_State.PlaceholderText, Mode=OneWay}"
+                                                SelectedIndex="{x:Bind CraftModifierPresenter_State.SelectedIndex, Mode=TwoWay}"
+                                                SelectedValuePath="{x:Bind CraftModifierPresenter_State.SelectedValuePath, Mode=OneWay}"
+                                                ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameCraftModifierDescription}"/>
+                                        </cwc:Case>
+                                    </cwc:SwitchPresenter>
                                     <cwc:SwitchPresenter
                                         x:Name="GlassPresenter_89103"
-                                        Grid.Row="4"
-                                        Grid.Column="0"
                                         VerticalAlignment="Center"
                                         HorizontalContentAlignment="Stretch"
                                         VerticalContentAlignment="Stretch"
@@ -2798,6 +2859,7 @@
                                                 ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameIslandCombineMenuHotkeyDescription}"/>
                                         </cwc:Case>
                                     </cwc:SwitchPresenter>
+                                    </StackPanel>
 
                                     <cwc:SwitchPresenter
                                         x:Name="GlassPresenter_89992"
@@ -3395,3 +3457,4 @@
         </Pivot>
     </shuxc:StandardView>
 </shuxc:ScopedPage>
+

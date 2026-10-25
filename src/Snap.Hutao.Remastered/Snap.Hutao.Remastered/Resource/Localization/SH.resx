@@ -6216,4 +6216,20 @@
   <data name="ViewDialogLaunchGameConversionServerRoute" xml:space="preserve">
     <value>本次转换：{0} → {1}</value>
   </data>
+  <data name="ViewPageLaunchGameCraftModifierNone" xml:space="preserve">
+    <value>无</value>
+  </data>
+  <data name="ViewPageLaunchGameCraftModifierHeader" xml:space="preserve">
+    <value>合成台快捷键修饰键</value>
+  </data>
+  <data name="ViewPageLaunchGameCraftModifierDescription" xml:space="preserve">
+    <value>按住修饰键再按下方主键打开合成台。更改主键或修饰键后需重新启动游戏；选择“无”恢复单键触发。</value>
+  </data>
+  <data name="ServiceGameCraftModifierVersionUnsupported" xml:space="preserve">
+    <value>当前游戏版本尚未适配合成台组合快捷键。请将“合成台快捷键修饰键”设为“无”，或安装适配该游戏版本的个人测试包。</value>
+  </data>
+  <data name="ServiceGameCraftModifierModuleMissing" xml:space="preserve">
+    <value>缺少合成台组合快捷键模块。请使用包含原生模块的个人测试包，或将修饰键设为“无”。</value>
+  </data>
 </root>
+
