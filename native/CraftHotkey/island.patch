@@ -13,7 +13,7 @@ diff --git a/src/Snap.Hutao.Remastered.UnlockerIsland/hook/HookWndProc.cpp b/src
      case WM_KEYDOWN:
 -        if (LOWORD(wParam) == g_pEnv->CombineHotkey)
 +    case WM_SYSKEYDOWN:
-+        if (CraftHotkey::MatchesCurrentMessage(g_pEnv->CombineHotkey, uMsg, wParam, lParam))
++        if (g_pEnv->RedirectCombine && CraftHotkey::MatchesCurrentMessage(g_pEnv->CombineHotkey, uMsg, wParam, lParam))
          {
              RequestOpenCraft();
 +            return 0;

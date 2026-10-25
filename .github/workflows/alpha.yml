@@ -64,6 +64,27 @@ jobs:
             $env:PW = $null
           }
 
+      - name: Verify packaged craft hotkey module
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $nativeHash = (Get-FileHash 'src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/Assets/Native/CraftModifiersIsland.dll' -Algorithm SHA256).Hash
+          $packages = @(Get-ChildItem 'src/output/*.msix')
+          if ($packages.Count -ne 1) { throw 'Expected one personal MSIX' }
+          $package = $packages[0]
+          $archive = [IO.Compression.ZipFile]::OpenRead($package.FullName)
+          try {
+            $entry = $archive.GetEntry('Assets/Native/CraftModifiersIsland.dll')
+            if ($null -eq $entry) { throw 'Craft module missing from MSIX' }
+            $stream = $entry.Open()
+            try { $packageHash = (Get-FileHash -InputStream $stream -Algorithm SHA256).Hash }
+            finally { $stream.Dispose() }
+            if ($packageHash -ne $nativeHash) { throw 'Packaged native module hash mismatch' }
+            Write-Output "Packaged native module verified: $nativeHash"
+          }
+          finally { $archive.Dispose() }
+
       - name: Upload personal test package and public certificate
         uses: actions/upload-artifact@v7
         with:
