@@ -10,11 +10,15 @@ Invoke-WebRequest -Uri "https://codeload.github.com/SnapHutaoRemasteringProject/
 Expand-Archive -LiteralPath $archive -DestinationPath $tempRoot -Force
 $sourceRoot = Join-Path $tempRoot "Snap.Hutao.Remastered.UnlockerIsland-$revision"
 $projectRoot = Join-Path $sourceRoot 'src/Snap.Hutao.Remastered.UnlockerIsland'
+$patchFile = Join-Path $tempRoot 'island.patch'
+# Git checkout may turn the patch into CRLF; codeload source uses LF.
+$patchText = [IO.File]::ReadAllText((Join-Path $patchRoot 'island.patch')).Replace("`r`n", "`n")
+[IO.File]::WriteAllText($patchFile, $patchText, [Text.UTF8Encoding]::new($false))
 Push-Location $sourceRoot
 try {
-    git apply --check (Join-Path $patchRoot 'island.patch')
+    git apply --check $patchFile
     if ($LASTEXITCODE -ne 0) { throw 'Pinned native source does not match the patch' }
-    git apply (Join-Path $patchRoot 'island.patch')
+    git apply $patchFile
     if ($LASTEXITCODE -ne 0) { throw 'Native patch failed' }
 }
 finally { Pop-Location }
