@@ -174,6 +174,8 @@ public sealed partial class LaunchGameShared
     public async ValueTask ConvertLaunchExecutionAsync(IViewModelSupportLaunchExecution viewModel)
     {
         ConvertOnlyLaunchExecutionInvoker invoker = new();
+        string title;
+        string message;
         try
         {
             using (IServiceScope scope = serviceProvider.CreateScope())
@@ -188,11 +190,18 @@ public sealed partial class LaunchGameShared
 
                 await invoker.InvokeAsync(context).ConfigureAwait(false);
             }
+
+            title = SH.ViewModelLaunchGameServerConversionCompletedTitle;
+            message = SH.ViewModelLaunchGameServerConversionCompletedContent;
         }
         catch (Exception ex)
         {
             messenger.Send(InfoBarMessage.Error(ex));
+            title = SH.ViewModelLaunchGameEnsureGameResourceFail;
+            message = SH.FormatViewModelLaunchGameServerConversionFailedContent(ex.Message);
         }
+
+        await contentDialogFactory.CreateForConfirmAsync(title, message).ConfigureAwait(false);
     }
     public async Task LaunchAdvancedDelayedAsync(CancellationToken token = default)
     {

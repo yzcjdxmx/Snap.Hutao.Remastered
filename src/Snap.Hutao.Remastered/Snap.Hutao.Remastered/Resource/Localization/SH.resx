@@ -6200,4 +6200,17 @@
 
 普通启动不受 Island 版本支持限制；启用 Island 增强功能时会单独检查兼容性。</value>
   </data>
+  <data name="ViewModelLaunchGameServerConversionCompletedTitle" xml:space="preserve">
+    <value>服务器转换完成</value>
+  </data>
+  <data name="ViewModelLaunchGameServerConversionCompletedContent" xml:space="preserve">
+    <value>游戏客户端已与目标服务器匹配。点击“确定”继续。</value>
+  </data>
+  <data name="ViewModelLaunchGameServerConversionFailedContent" xml:space="preserve">
+    <value>转换未完成。
+
+错误信息：{0}
+
+请检查后重试。</value>
+  </data>
 </root>
