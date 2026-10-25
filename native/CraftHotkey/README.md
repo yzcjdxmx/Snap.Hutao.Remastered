@@ -6,6 +6,10 @@
 原生源码固定为 SnapHutaoRemasteringProject/Snap.Hutao.Remastered.UnlockerIsland
 提交 270016179ea5c01ad9b76ea9331739c200ac3eb7，MIT 许可证。
 CI 下载该源码，应用 island.patch 和 CraftHotkeyBinding.h，再编译并打包 DLL。
+启动游戏前先把 DLL 复制到数据目录 Repository/PersonalNative/CraftHotkey/，
+再向游戏加载该副本。不得直接加载 WindowsApps 内的 DLL：
+未打包的游戏进程可能被拒绝映像加载（Win32 错误 5），即使文件可读取。
+缓存文件名包含内容 SHA-256，更新时不会覆盖已经被游戏加载的旧 DLL。
 原共享内存字段 CombineHotkey 的低 16 位为主键，高 16 位为修饰键编号，
 未增加字段或修改结构布局。Windows 的 Alt 按键通过 WM_SYSKEYDOWN 处理。
 精确匹配一种修饰键；长按产生的重复消息不会重复打开。

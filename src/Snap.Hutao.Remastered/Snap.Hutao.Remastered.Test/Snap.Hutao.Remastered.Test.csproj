@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="../Snap.Hutao.Remastered/Service/Game/Island/CraftHotkeyModuleCache.cs" Link="Production/CraftHotkeyModuleCache.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Service/Game/CombineHotkeyBinding.cs" Link="Production/CombineHotkeyBinding.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Service/Game/Configuration/GameInstallationInfo.cs" Link="Production/Installation/GameInstallationInfo.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Service/Game/Configuration/GameInstallationReader.cs" Link="Production/Installation/GameInstallationReader.cs" />

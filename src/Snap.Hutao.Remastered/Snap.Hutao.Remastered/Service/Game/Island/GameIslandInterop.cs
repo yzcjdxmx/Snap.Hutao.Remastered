@@ -65,11 +65,15 @@ public sealed class GameIslandInterop : IGameIslandInterop
             {
                 throw HutaoException.NotSupported(SH.ServiceGameCraftModifierVersionUnsupported);
             }
-            islandPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Native", "CraftModifiersIsland.dll");
-            if (!File.Exists(islandPath))
+            string packagedModulePath = Path.Combine(AppContext.BaseDirectory, "Assets", "Native", "CraftModifiersIsland.dll");
+            if (!File.Exists(packagedModulePath))
             {
                 throw HutaoException.InvalidOperation(SH.ServiceGameCraftModifierModuleMissing);
             }
+            // WindowsApps DLLs can be read by the app but not mapped as executable
+            // images by the game. Materialize a normal data-directory copy first.
+            string cachePath = Path.Combine(HutaoRuntime.GetDataRepositoryDirectory(), "PersonalNative", "CraftHotkey");
+            islandPath = CraftHotkeyModuleCache.Prepare(packagedModulePath, cachePath);
         }
         // All BeforeAsync handlers run before CreateProcess. Leave the later check
         // as well, in case the module is removed after this preflight.
