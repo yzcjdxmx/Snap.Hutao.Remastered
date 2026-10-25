@@ -173,6 +173,11 @@ public sealed partial class LaunchGameShared
 
     public async ValueTask ConvertLaunchExecutionAsync(IViewModelSupportLaunchExecution viewModel)
     {
+        await taskContext.SwitchToMainThreadAsync();
+        string serverRoute = SH.FormatViewDialogLaunchGameConversionServerRoute(
+            viewModel.CurrentScheme?.DisplayName ?? SH.ViewDialogLaunchGameAdvancedStartUnknownServer,
+            viewModel.TargetScheme?.DisplayName ?? SH.ViewDialogLaunchGameAdvancedStartUnknownServer);
+
         ConvertOnlyLaunchExecutionInvoker invoker = new();
         string title;
         string message;
@@ -201,7 +206,15 @@ public sealed partial class LaunchGameShared
             message = SH.FormatViewModelLaunchGameServerConversionFailedContent(ex.Message);
         }
 
-        await contentDialogFactory.CreateForConfirmAsync(title, message).ConfigureAwait(false);
+        LaunchGameConversionResultDialog dialog = await contentDialogFactory
+            .CreateInstanceAsync<LaunchGameConversionResultDialog>(serviceProvider)
+            .ConfigureAwait(false);
+
+        await taskContext.SwitchToMainThreadAsync();
+        dialog.Title = title;
+        dialog.Message = message;
+        dialog.ServerRoute = serverRoute;
+        await contentDialogFactory.EnqueueAndShowAsync(dialog).ShowTask.ConfigureAwait(false);
     }
     public async Task LaunchAdvancedDelayedAsync(CancellationToken token = default)
     {

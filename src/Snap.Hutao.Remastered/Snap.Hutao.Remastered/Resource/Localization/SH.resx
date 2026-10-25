@@ -6213,4 +6213,7 @@
 
 请检查后重试。</value>
   </data>
+  <data name="ViewDialogLaunchGameConversionServerRoute" xml:space="preserve">
+    <value>本次转换：{0} → {1}</value>
+  </data>
 </root>

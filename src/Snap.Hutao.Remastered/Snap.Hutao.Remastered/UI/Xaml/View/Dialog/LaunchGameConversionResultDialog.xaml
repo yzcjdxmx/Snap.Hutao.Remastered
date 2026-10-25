@@ -1,0 +1,47 @@
+<ContentDialog
+    x:Class="Snap.Hutao.Remastered.UI.Xaml.View.Dialog.LaunchGameConversionResultDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:shuxm="using:Snap.Hutao.Remastered.UI.Xaml.Markup"
+    Loaded="OnLoaded">
+
+    <Grid MinWidth="440" RowSpacing="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer MaxHeight="320" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <TextBlock
+                IsTextSelectionEnabled="True"
+                Text="{Binding Message}"
+                TextWrapping="Wrap"/>
+        </ScrollViewer>
+        <Border
+            Grid.Row="1"
+            Padding="0,20,0,0"
+            BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+            BorderThickness="0,1,0,0">
+            <Grid ColumnSpacing="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    IsTextSelectionEnabled="True"
+                    Style="{StaticResource CaptionTextBlockStyle}"
+                    Text="{Binding ServerRoute}"
+                    TextWrapping="Wrap"/>
+                <Button
+                    x:Name="ConfirmButton"
+                    Grid.Column="1"
+                    MinWidth="120"
+                    VerticalAlignment="Center"
+                    Click="OnConfirmClick"
+                    Content="{shuxm:ResourceString Name=ContentDialogConfirmPrimaryButtonText}"
+                    Style="{StaticResource AccentButtonStyle}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentDialog>
