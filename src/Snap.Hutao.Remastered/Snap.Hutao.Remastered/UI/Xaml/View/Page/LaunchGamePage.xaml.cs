@@ -4,6 +4,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Snap.Hutao.Remastered.Factory.ContentDialog;
+using Snap.Hutao.Remastered.Service.Game;
 using Snap.Hutao.Remastered.UI.Content;
 using Snap.Hutao.Remastered.UI.Xaml.Control;
 using Snap.Hutao.Remastered.UI.Xaml.View.Dialog;
@@ -41,6 +42,22 @@ public sealed partial class LaunchGamePage : ScopedPage
         }
 
         isInitializing = false;
+    }
+
+    private void CraftHotkeyComboBox_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (sender is not ComboBox comboBox || DataContext is not LaunchGameViewModel viewModel)
+        {
+            return;
+        }
+
+        // x:Bind may push SelectedValue before ItemsSource has populated. Restore
+        // the existing selection after loading, for both native and glass controls.
+        int persistedKey = viewModel.LaunchOptions.CombineMenuHotkey.Value;
+        if (LaunchOptions.VirtualKeys.FirstOrDefault(item => (int)item.Value == persistedKey) is { } selectedItem)
+        {
+            comboBox.SelectedItem = selectedItem;
+        }
     }
 
     // 为什么用 Code-Behind 而非 ViewModel：
@@ -157,3 +174,4 @@ public sealed partial class LaunchGamePage : ScopedPage
         }
     }
 }
+

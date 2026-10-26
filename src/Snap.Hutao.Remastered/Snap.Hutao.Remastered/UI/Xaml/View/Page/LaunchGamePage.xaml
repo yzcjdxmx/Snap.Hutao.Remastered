@@ -2810,6 +2810,7 @@
                                             </cwc:Case.Value>
                                             <ComboBox
                                                 x:Name="GlassPresenter_89103_State"
+                                                Loaded="CraftHotkeyComboBox_Loaded"
                                                 Padding="10,8,6,6"
                                                 VerticalAlignment="Center"
                                                 shuxcth:ComboBoxPopupLifetime.IsManaged="True"
@@ -2827,6 +2828,7 @@
                                             </cwc:Case.Value>
                                             <wl:LiquidGlassComboBox
                                                 x:Name="GlassPresenter_89103_StateGlass"
+                                                Loaded="CraftHotkeyComboBox_Loaded"
                                                 Width="{x:Bind GlassPresenter_89103_State.Width, Mode=OneWay}"
                                                 Height="{x:Bind GlassPresenter_89103_State.Height, Mode=OneWay}"
                                                 MinWidth="{x:Bind GlassPresenter_89103_State.MinWidth, Mode=OneWay}"
