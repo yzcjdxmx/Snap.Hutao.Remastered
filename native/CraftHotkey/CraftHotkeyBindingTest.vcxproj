@@ -10,6 +10,6 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ItemDefinitionGroup><ClCompile><LanguageStandard>stdcpp20</LanguageStandard></ClCompile><Link><SubSystem>Console</SubSystem></Link></ItemDefinitionGroup>
-  <ItemGroup><ClCompile Include="CraftHotkeyBindingTest.cpp" /><ClInclude Include="CraftHotkeyBinding.h" /></ItemGroup>
+  <ItemGroup><ClCompile Include="CraftHotkeyBindingTest.cpp" /><ClInclude Include="CraftHotkeyBinding.h" /><ClInclude Include="ResinListOffset.h" /></ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
