@@ -30,7 +30,7 @@ public sealed partial class LaunchOptions : DbStoreOptions, IRestrictedGamePathA
     public static IObservableProperty<bool> IsGameRunning { get => field ??= GameLifeCycle.IsGameRunningProperty; }
 
     [field: MaybeNull]
-    public static IReadOnlyObservableProperty<bool> CanKillGameProcess { get => field ??= Property.Observe(IsGameRunning, value => HutaoRuntime.IsProcessElevated && value); }
+    public static IReadOnlyObservableProperty<bool> CanKillGameProcess { get => field ??= IsGameRunning.AsReadOnly(); }
 
     public AsyncReaderWriterLock GamePathLock { get; } = new();
 

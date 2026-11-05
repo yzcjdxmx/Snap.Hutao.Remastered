@@ -116,6 +116,10 @@ namespace Snap.Hutao.Remastered.Test.RuntimeBehavior
     {
         public static List<Exception> Exceptions { get; } = [];
         public static bool ThrowOnCapture { get; set; }
+        public static void CaptureException(Exception exception)
+        {
+            CaptureException(exception, static _ => { });
+        }
         public static void CaptureException(Exception exception, Action<LiquidGlassTestScope> configure)
         {
             if (ThrowOnCapture) throw new InvalidOperationException("Telemetry unavailable");
@@ -129,3 +133,4 @@ namespace Snap.Hutao.Remastered.Test.RuntimeBehavior
         public void SetExtra(string key, string value) { }
     }
 }
+

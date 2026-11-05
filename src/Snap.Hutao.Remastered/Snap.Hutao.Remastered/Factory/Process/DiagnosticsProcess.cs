@@ -64,6 +64,11 @@ public sealed partial class DiagnosticsProcess : IProcess
         process.WaitForExit();
     }
 
+    public Task WaitForExitAsync(CancellationToken token = default)
+    {
+        return process.WaitForExitAsync(token);
+    }
+
     public void Kill()
     {
         process.Kill();
@@ -74,3 +79,4 @@ public sealed partial class DiagnosticsProcess : IProcess
         process.Dispose();
     }
 }
+

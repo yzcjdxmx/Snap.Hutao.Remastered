@@ -39,68 +39,67 @@ public sealed class ProcessFactory
 
     public static bool IsRunning(ReadOnlySpan<string> processNames, [NotNullWhen(true)] out IProcess? runningProcess)
     {
-        int currentSessionId = global::System.Diagnostics.Process.GetCurrentProcess().SessionId;
-        global::System.Diagnostics.Process[] processes = global::System.Diagnostics.Process.GetProcesses();
-
-        // GetProcesses once and manually loop is O(n)
-        foreach (global::System.Diagnostics.Process process in processes)
+        List<DiagnosticsProcess> processes = GetRunningProcesses(processNames);
+        runningProcess = processes.FirstOrDefault();
+        for (int index = 1; index < processes.Count; index++)
         {
-            try
+            processes[index].Dispose();
+        }
+
+        return runningProcess is not null;
+    }
+
+    internal static List<DiagnosticsProcess> GetRunningProcesses(ReadOnlySpan<string> processNames)
+    {
+        using global::System.Diagnostics.Process currentProcess = global::System.Diagnostics.Process.GetCurrentProcess();
+        int currentSessionId = currentProcess.SessionId;
+        List<DiagnosticsProcess> matches = [];
+        foreach (string name in processNames)
+        {
+            foreach (global::System.Diagnostics.Process process in global::System.Diagnostics.Process.GetProcessesByName(name))
             {
-                if (process.SessionId != currentSessionId)
-                {
-                    continue;
-                }
-
-                if (!process.ProcessName.EqualsAny(processNames, StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                // Force access handle to check whether process has exited
+                bool retained = false;
                 try
                 {
-                    _ = process.Handle;
+                    if (process.SessionId != currentSessionId)
+                    {
+                        continue;
+                    }
+
+                    try
+                    {
+                        if (process.HasExited)
+                        {
+                            continue;
+                        }
+                    }
+                    catch (Win32Exception ex) when (ex.NativeErrorCode == (int)WIN32_ERROR.ERROR_ACCESS_DENIED)
+                    {
+                        // Name and session already match. Detection does not require termination rights.
+                    }
+
+                    matches.Add(new(process));
+                    retained = true;
+                }
+                catch (InvalidOperationException)
+                {
+                    // A process can exit between enumeration and inspection; keep checking the others.
                 }
                 catch (Exception ex)
                 {
-                    // Assume it's running if access is denied.
-                    if (!HutaoNative.IsWin32(ex.HResult, WIN32_ERROR.ERROR_ACCESS_DENIED))
+                    SentrySdk.CaptureException(ex);
+                }
+                finally
+                {
+                    if (!retained)
                     {
-                        throw;
+                        process.Dispose();
                     }
                 }
-
-                runningProcess = new DiagnosticsProcess(process);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                switch (ex)
-                {
-                    // 拒绝访问。
-                    case Win32Exception we:
-                        if (we.NativeErrorCode is (int)WIN32_ERROR.ERROR_ACCESS_DENIED)
-                        {
-                            runningProcess = new DiagnosticsProcess(process);
-                            return true;
-                        }
-
-                        break;
-
-                    // Cannot process request because the process ($id$) has exited.
-                    case InvalidOperationException ioe:
-                        runningProcess = default;
-                        return false;
-                }
-
-                SentrySdk.CaptureException(ex);
-                break;
             }
         }
 
-        runningProcess = default;
-        return false;
+        return matches;
     }
 
     public static IProcess CreateUsingShellExecuteRunAs(string arguments, string fileName, string workingDirectory)
@@ -186,3 +185,4 @@ public sealed class ProcessFactory
         });
     }
 }
+

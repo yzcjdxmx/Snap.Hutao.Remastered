@@ -418,7 +418,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Validation" Version="17.13.22" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4312-prerelease" />
     <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.3.1" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.29648.1000-preview" />
+    <!-- Keep Store-bound PRI generation on a stable SDK toolset; preview makepri versions can be rejected. -->
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.5.4-experimental" />
     <PackageReference Include="QRCoder" Version="1.8.1" />
     <PackageReference Include="Quartz" Version="4.6.0" />

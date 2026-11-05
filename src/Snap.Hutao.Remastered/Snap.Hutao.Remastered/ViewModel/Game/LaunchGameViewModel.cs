@@ -169,6 +169,7 @@ public sealed partial class LaunchGameViewModel : Abstraction.ViewModel, IViewMo
     private CancellationTokenSource? delayedSaveCts;
     protected override async ValueTask<bool> LoadOverrideAsync(CancellationToken token)
     {
+        GameLifeCycle.ObserveGameRunningAsync(taskContext, token).SafeForget();
         AdvancedStartProgramPath = LocalSetting.Get(SettingKeys.LaunchAdvancedStartProgramPath, string.Empty);
 
         // Load delayed program entries
@@ -624,3 +625,4 @@ public sealed partial class LaunchGameViewModel : Abstraction.ViewModel, IViewMo
         store.Save(Entries);
     }
 }
+

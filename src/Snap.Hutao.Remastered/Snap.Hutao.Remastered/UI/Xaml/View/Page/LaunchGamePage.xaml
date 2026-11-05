@@ -3427,7 +3427,6 @@
                                         VerticalContentAlignment="Stretch"
                                         IsTabStop="False"
                                         Tag="LiquidGlass:ToggleSwitch"
-                                        Visibility="{x:Bind ((shvg:LaunchGameViewModel)DataContext).IsDeveloperAndLoggedIn, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                                         Value="{x:Bind shuxcth:MaterialBindingSource.Current.ToggleSwitchMaterial, Mode=OneWay}">
                                         <cwc:Case>
                                             <cwc:Case.Value>

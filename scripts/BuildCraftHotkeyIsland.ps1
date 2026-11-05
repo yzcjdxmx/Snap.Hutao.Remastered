@@ -1,9 +1,9 @@
 $ErrorActionPreference = 'Stop'
 # Pinned upstream source, no edits or PRs are sent to the upstream repository.
-$revision = '270016179ea5c01ad9b76ea9331739c200ac3eb7'
 $repoRoot = Split-Path $PSScriptRoot -Parent
 $patchRoot = Join-Path $repoRoot 'native/CraftHotkey'
-$tempRoot = Join-Path $env:RUNNER_TEMP 'craft-hotkey-native'
+function Build-CraftModule([string]$revision, [string]$outputName) {
+$tempRoot = Join-Path $env:RUNNER_TEMP ('craft-hotkey-native-' + $revision)
 New-Item -ItemType Directory -Path $tempRoot -Force | Out-Null
 $archive = Join-Path $tempRoot 'island.zip'
 Invoke-WebRequest -Uri "https://codeload.github.com/SnapHutaoRemasteringProject/Snap.Hutao.Remastered.UnlockerIsland/zip/$revision" -OutFile $archive
@@ -47,6 +47,12 @@ if ($LASTEXITCODE -ne 0) { throw 'Native hotkey matcher tests failed' }
 if ($LASTEXITCODE -ne 0) { throw 'Native module build failed' }
 $assetRoot = Join-Path $repoRoot 'src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/Assets/Native'
 New-Item -ItemType Directory -Path $assetRoot -Force | Out-Null
-Copy-Item -LiteralPath (Join-Path $nativeOut 'Snap.Hutao.Remastered.UnlockerIsland.dll') -Destination (Join-Path $assetRoot 'CraftModifiersIsland.dll')
+Copy-Item -LiteralPath (Join-Path $nativeOut 'Snap.Hutao.Remastered.UnlockerIsland.dll') -Destination (Join-Path $assetRoot $outputName)
 Copy-Item -LiteralPath (Join-Path $sourceRoot 'LICENSE.txt') -Destination (Join-Path $assetRoot 'UnlockerIsland-LICENSE.txt')
-Write-Output "Built CraftModifiersIsland.dll from $revision; native key matching tests passed."
+Write-Output "Built $outputName from $revision; native key matching tests passed."
+}
+
+# Match the separate upstream 7.1 and 7.2 delivery modules.
+Build-CraftModule '270016179ea5c01ad9b76ea9331739c200ac3eb7' 'CraftModifiersIsland.dll'
+Build-CraftModule 'e309041f5a304b4bcb9090f63ae203dc7520b99c' 'CraftModifiersIsland_7.2.0.dll'
+

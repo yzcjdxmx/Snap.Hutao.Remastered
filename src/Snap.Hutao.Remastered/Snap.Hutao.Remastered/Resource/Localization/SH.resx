@@ -1059,6 +1059,9 @@
   <data name="ServiceGameLaunchExecutionGameRunningKillFailed" xml:space="preserve">
     <value>结束进程失败</value>
   </data>
+  <data name="ServiceGameStopProcessAccessDenied" xml:space="preserve">
+    <value>没有权限结束游戏进程，请以管理员身份运行胡桃后重试</value>
+  </data>
   <data name="ServiceGameLaunchPhaseProcessExited" xml:space="preserve">
     <value>游戏进程已退出</value>
   </data>
@@ -6200,35 +6203,41 @@
 
 普通启动不受 Island 版本支持限制；启用 Island 增强功能时会单独检查兼容性。</value>
   </data>
-  <data name="ViewModelLaunchGameServerConversionCompletedTitle" xml:space="preserve">
+  <data name="ServiceUpdateOpenStoreContent" xml:space="preserve">
+    <value>是否打开 Microsoft Store 获取更新？此版本通过商店更新。如果新版仍在审核或分批发布，商店可能暂时不提供更新，请稍后重试。</value>
+  </data>
+  <data name="ServiceUpdateOpenStoreFailed" xml:space="preserve">
+    <value>无法打开 Microsoft Store 或产品网页。请在 Microsoft Store 中搜索 Snap Hutao Remastered 并检查更新。</value>
+  </data>
+<data name="ViewModelLaunchGameServerConversionCompletedTitle" xml:space="preserve">
     <value>服务器转换完成</value>
   </data>
-  <data name="ViewModelLaunchGameServerConversionCompletedContent" xml:space="preserve">
+<data name="ViewModelLaunchGameServerConversionCompletedContent" xml:space="preserve">
     <value>游戏客户端已与目标服务器匹配。点击“确定”继续。</value>
   </data>
-  <data name="ViewModelLaunchGameServerConversionFailedContent" xml:space="preserve">
+<data name="ViewModelLaunchGameServerConversionFailedContent" xml:space="preserve">
     <value>转换未完成。
 
 错误信息：{0}
 
 请检查后重试。</value>
   </data>
-  <data name="ViewDialogLaunchGameConversionServerRoute" xml:space="preserve">
+<data name="ViewDialogLaunchGameConversionServerRoute" xml:space="preserve">
     <value>本次转换：{0} → {1}</value>
   </data>
-  <data name="ViewPageLaunchGameCraftModifierNone" xml:space="preserve">
+<data name="ViewPageLaunchGameCraftModifierNone" xml:space="preserve">
     <value>无</value>
   </data>
-  <data name="ViewPageLaunchGameCraftModifierHeader" xml:space="preserve">
+<data name="ViewPageLaunchGameCraftModifierHeader" xml:space="preserve">
     <value>合成台快捷键修饰键</value>
   </data>
-  <data name="ViewPageLaunchGameCraftModifierDescription" xml:space="preserve">
+<data name="ViewPageLaunchGameCraftModifierDescription" xml:space="preserve">
     <value>按住修饰键再按下方主键打开合成台。更改主键或修饰键后需重新启动游戏；选择“无”恢复单键触发。</value>
   </data>
-  <data name="ServiceGameCraftModifierVersionUnsupported" xml:space="preserve">
+<data name="ServiceGameCraftModifierVersionUnsupported" xml:space="preserve">
     <value>当前游戏版本尚未适配合成台组合快捷键。请将“合成台快捷键修饰键”设为“无”，或安装适配该游戏版本的个人测试包。</value>
   </data>
-  <data name="ServiceGameCraftModifierModuleMissing" xml:space="preserve">
+<data name="ServiceGameCraftModifierModuleMissing" xml:space="preserve">
     <value>缺少合成台组合快捷键模块。请使用包含原生模块的个人测试包，或将修饰键设为“无”。</value>
   </data>
 </root>

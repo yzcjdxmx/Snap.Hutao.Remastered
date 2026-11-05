@@ -4,7 +4,9 @@
 没有使用 ky3 的二进制文件；隐藏 UID 等既有实现保留。
 
 原生源码固定为 SnapHutaoRemasteringProject/Snap.Hutao.Remastered.UnlockerIsland
-提交 270016179ea5c01ad9b76ea9331739c200ac3eb7，MIT 许可证。
+7.1 使用提交 270016179ea5c01ad9b76ea9331739c200ac3eb7；
+7.2 使用提交 e309041f5a304b4bcb9090f63ae203dc7520b99c（包含新的派蒙显示实现）。
+两者均为 MIT 许可证，各自应用同一份组合键补丁并编译，运行时按游戏版本选择。
 CI 下载该源码，应用 island.patch 和 CraftHotkeyBinding.h，再编译并打包 DLL。
 启动游戏前先把 DLL 复制到数据目录 Repository/PersonalNative/CraftHotkey/，
 再向游戏加载该副本。不得直接加载 WindowsApps 内的 DLL：
@@ -21,3 +23,4 @@ CI 下载该源码，应用 island.patch 和 CraftHotkeyBinding.h，再编译并
 
 云端编译：手动运行个人 alpha.yml，包含 C++ 匹配测试、托管编码测试和 MSIX 打包。
 本地编译该模块需要 Windows、Visual C++ v145、Windows SDK、vcpkg。
+

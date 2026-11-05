@@ -42,8 +42,16 @@ public sealed partial class FeatureService : IFeatureService
 
             using (HttpClient httpClient = httpClientFactory.CreateClient(nameof(FeatureService)))
             {
-                return (await builder.SendAsync<TFeature>(httpClient, CancellationToken.None).ConfigureAwait(false)).Body;
+                TFeature? feature = (await builder.SendAsync<TFeature>(httpClient, CancellationToken.None).ConfigureAwait(false)).Body;
+                if (feature is null)
+                {
+                    // A failed download/parse must be retryable immediately, not cached for six hours.
+                    entry.AbsoluteExpiration = DateTimeOffset.MinValue;
+                }
+
+                return feature;
             }
         }).ConfigureAwait(false);
     }
 }
+

@@ -65,7 +65,8 @@ public sealed class GameIslandInterop : IGameIslandInterop
             {
                 throw HutaoException.NotSupported(SH.ServiceGameCraftModifierVersionUnsupported);
             }
-            string packagedModulePath = Path.Combine(AppContext.BaseDirectory, "Assets", "Native", "CraftModifiersIsland.dll");
+            string moduleName = gameVersion.ToString() == "7.2.0" ? "CraftModifiersIsland_7.2.0.dll" : "CraftModifiersIsland.dll";
+            string packagedModulePath = Path.Combine(AppContext.BaseDirectory, "Assets", "Native", moduleName);
             if (!File.Exists(packagedModulePath))
             {
                 throw HutaoException.InvalidOperation(SH.ServiceGameCraftModifierModuleMissing);
@@ -283,4 +284,5 @@ public sealed class GameIslandInterop : IGameIslandInterop
         }
     }
 }
+
 
