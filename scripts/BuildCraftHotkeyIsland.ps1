@@ -3,7 +3,7 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path $PSScriptRoot -Parent
 $patchRoot = Join-Path $repoRoot 'native/CraftHotkey'
 function Build-CraftModule([string]$revision, [string]$outputName) {
-$tempRoot = Join-Path $env:RUNNER_TEMP ('craft-hotkey-native-' + $revision)
+$tempRoot = Join-Path $env:RUNNER_TEMP ('hk-' + $revision.Substring(0, 8))
 New-Item -ItemType Directory -Path $tempRoot -Force | Out-Null
 $archive = Join-Path $tempRoot 'island.zip'
 Invoke-WebRequest -Uri "https://codeload.github.com/SnapHutaoRemasteringProject/Snap.Hutao.Remastered.UnlockerIsland/zip/$revision" -OutFile $archive
@@ -43,7 +43,7 @@ $testOut = Join-Path $tempRoot 'test-out'
 if ($LASTEXITCODE -ne 0) { throw 'Native hotkey matcher tests failed to compile' }
 & (Join-Path $testOut 'CraftHotkeyBindingTest.exe')
 if ($LASTEXITCODE -ne 0) { throw 'Native hotkey matcher tests failed' }
-& $msbuild (Join-Path $projectRoot 'Snap.Hutao.Remastered.UnlockerIsland.vcxproj') /m /v:minimal /p:Configuration=Release /p:Platform=x64 "/p:OutDir=$nativeOut/" "/p:SolutionDir=$sourceRoot/src/"
+& $msbuild (Join-Path $projectRoot 'Snap.Hutao.Remastered.UnlockerIsland.vcxproj') /m /v:minimal /p:Configuration=Release /p:Platform=x64 "/p:OutDir=$nativeOut/" "/p:IntDir=$tempRoot/obj/" "/p:SolutionDir=$sourceRoot/src/"
 if ($LASTEXITCODE -ne 0) { throw 'Native module build failed' }
 $assetRoot = Join-Path $repoRoot 'src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/Assets/Native'
 New-Item -ItemType Directory -Path $assetRoot -Force | Out-Null
