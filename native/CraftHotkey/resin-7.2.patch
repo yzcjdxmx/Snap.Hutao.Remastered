@@ -18,7 +18,7 @@ index 96c8a2f..1d560e2 100644
 -            offsets.ResinList = Scanner::ReadFieldOffset(funcAddr, 0x1A);
 +        // Match the published 7.2 module, not the stale public-source 0x1A.
 +        offsets.ResinList = ResinListOffset::Read(
-+            static_cast<const unsigned char*>(funcAddr), 0x2E);
++            reinterpret_cast<const unsigned char*>(funcAddr), 0x2E);
 +        if (offsets.ResinList == 0)
 +            offsets.SetupResinList = 0;
      }
