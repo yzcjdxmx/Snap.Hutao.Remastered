@@ -3,6 +3,7 @@
 
 using Snap.Hutao.Remastered.UI.Xaml.Control;
 using Snap.Hutao.Remastered.ViewModel;
+using System.Runtime.CompilerServices;
 
 namespace Snap.Hutao.Remastered.UI.Xaml.View.Page;
 
@@ -17,4 +18,6 @@ public sealed partial class TestPage : ScopedPage
     {
         InitializeDataContext<TestViewModel>();
     }
+
+    public new TestViewModel DataContext { get => Unsafe.As<TestViewModel>(base.DataContext); set => base.DataContext = value; }
 }

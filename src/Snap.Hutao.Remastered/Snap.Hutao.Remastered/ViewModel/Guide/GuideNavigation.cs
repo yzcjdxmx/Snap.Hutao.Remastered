@@ -7,6 +7,16 @@ public static class GuideNavigation
 {
     public static uint Normalize(uint state) => Math.Min(state, (uint)GuideState.Completed);
 
+    public static uint NormalizeResourceStep(uint state, bool preloadResources)
+    {
+        uint normalized = Normalize(state);
+        return !preloadResources && normalized is (uint)GuideState.StaticResourceSetting or (uint)GuideState.StaticResourceBegin
+            ? (uint)GuideState.Material
+            : normalized;
+    }
+
+    public static bool ShouldPreloadResources(bool isPackaged, bool hasBundledImages) => !isPackaged && !hasBundledImages;
+
     public static uint VisibleState(uint state) => Math.Min(state, (uint)GuideState.Material);
 
     public static int StepIndex(uint state) => (int)VisibleState(state);

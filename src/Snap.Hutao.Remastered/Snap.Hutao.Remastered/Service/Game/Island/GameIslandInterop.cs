@@ -12,6 +12,8 @@ using Snap.Hutao.Remastered.Service.Game.FileSystem;
 using Snap.Hutao.Remastered.Service.Game.Configuration;
 using Snap.Hutao.Remastered.Service.Game.Launching.Context;
 using Snap.Hutao.Remastered.Service.Plugin;
+using Snap.Hutao.Remastered.Service.Notification;
+using System.Net.Http;
 using Snap.Hutao.Remastered.Web.Hutao;
 using Snap.Hutao.Remastered.Web.Hutao.Response;
 using Snap.Hutao.Remastered.Web.Response;
@@ -231,10 +233,29 @@ public sealed class GameIslandInterop : IGameIslandInterop
     {
         using (IServiceScope scope = context.ServiceProvider.CreateScope())
         {
-            HutaoResponse response = await scope.ServiceProvider
-                .GetRequiredService<HutaoInfrastructureClient>()
-                .AmIBannedAsync($"{uid}", token)
-                .ConfigureAwait(false);
+            HutaoResponse response;
+            try
+            {
+                response = await scope.ServiceProvider
+                    .GetRequiredService<HutaoInfrastructureClient>()
+                    .AmIBannedAsync($"{uid}", token)
+                    .ConfigureAwait(false);
+            }
+            catch (Exception ex) when (ex is HttpRequestException or IOException || ex is OperationCanceledException && !token.IsCancellationRequested)
+            {
+                // A reset or timeout says nothing about the account's eligibility.
+                SentrySdk.CaptureException(ex);
+                context.Messenger.Send(InfoBarMessage.Warning(SH.ServiceGameIslandVerificationUnavailable));
+                return;
+            }
+
+            if (response.ReturnCode == Response.publicFailure)
+            {
+                // DefaultIfNull creates this sentinel when no usable response was received.
+                SentrySdk.CaptureMessage($"Island verification unavailable: {response.Message}", SentryLevel.Warning);
+                context.Messenger.Send(InfoBarMessage.Warning(SH.ServiceGameIslandVerificationUnavailable));
+                return;
+            }
 
             if (!ResponseValidator.TryValidate(response, context.ServiceProvider))
             {

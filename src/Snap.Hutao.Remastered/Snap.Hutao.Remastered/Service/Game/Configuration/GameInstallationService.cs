@@ -1,7 +1,6 @@
 // Copyright (c) Snap Hutao RP. All rights reserved.
 // Licensed under the MIT license.
 
-using Microsoft.Extensions.Logging;
 using Snap.Hutao.Remastered.Service.Game.FileSystem;
 
 namespace Snap.Hutao.Remastered.Service.Game.Configuration;

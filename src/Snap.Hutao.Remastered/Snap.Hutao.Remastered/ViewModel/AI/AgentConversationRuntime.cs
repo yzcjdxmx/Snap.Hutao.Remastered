@@ -4,7 +4,6 @@
 
 using Microsoft.Agents.AI;
 using Snap.Hutao.Remastered.Service.AI.Models;
-using System.Text.Json;
 
 namespace Snap.Hutao.Remastered.ViewModel.AI;
 

@@ -6,9 +6,6 @@ using Microsoft.Agents.AI;
 using Snap.Hutao.Remastered.Core.AI.Text.Json;
 using Snap.Hutao.Remastered.Service.AI;
 using Snap.Hutao.Remastered.Service.AI.Models;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Snap.Hutao.Remastered.ViewModel.AI;
 

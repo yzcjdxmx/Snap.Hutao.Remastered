@@ -3,6 +3,8 @@
 
 using Snap.Hutao.Remastered.UI.Xaml.Control.Theme;
 using Snap.Hutao.Remastered.ViewModel.Abstraction;
+using Snap.Hutao.Remastered.ViewModel.Achievement;
+using System.Runtime.CompilerServices;
 
 namespace Snap.Hutao.Remastered.UI.Xaml.View.Card;
 
@@ -13,4 +15,6 @@ public sealed partial class AchievementCard : MaterialCardButton
         InitializeComponent();
         this.InitializeViewModelSlim<ViewModel.Achievement.AchievementViewModelSlim>(serviceProvider);
     }
+
+    public new AchievementViewModelSlim DataContext { get => Unsafe.As<AchievementViewModelSlim>(base.DataContext); set => base.DataContext = value; }
 }

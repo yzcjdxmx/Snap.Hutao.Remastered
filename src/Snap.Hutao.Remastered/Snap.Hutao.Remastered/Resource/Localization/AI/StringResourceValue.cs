@@ -4,8 +4,6 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using Snap.Hutao.Remastered.Core.AI.ComponentModel;
-using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace Snap.Hutao.Remastered.Resource.Localization.AI;
 

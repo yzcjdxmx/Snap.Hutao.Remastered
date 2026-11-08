@@ -14,7 +14,7 @@
   <Identity
     Name="SnapHutaoRemasteringProje.SnapHutaoRemastered"
     Publisher="CN=469D671A-3AED-4488-AC4F-75E5394BC7FA"
-    Version="2.0.2.0" />
+    Version="2.1.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="383ddba9-22eb-4b35-91f8-84951953ccd7" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

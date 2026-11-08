@@ -6,7 +6,6 @@ using CommunityToolkit.WinUI.Behaviors;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using System.Windows.Input;
 using Windows.System;
 using Windows.UI.Core;
 

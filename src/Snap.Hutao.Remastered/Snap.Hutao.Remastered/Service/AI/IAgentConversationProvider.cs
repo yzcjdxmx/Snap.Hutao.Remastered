@@ -3,7 +3,6 @@
 // Adapted from Snap.Nicole.
 
 using Snap.Hutao.Remastered.Service.AI.Models;
-using System.Collections.Generic;
 
 namespace Snap.Hutao.Remastered.Service.AI;
 

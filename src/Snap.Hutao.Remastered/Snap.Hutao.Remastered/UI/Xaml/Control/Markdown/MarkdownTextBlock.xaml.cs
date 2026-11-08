@@ -4,7 +4,6 @@
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using System.Collections.Generic;
 
 namespace Snap.Hutao.Remastered.UI.Xaml.Control.Markdown;
 

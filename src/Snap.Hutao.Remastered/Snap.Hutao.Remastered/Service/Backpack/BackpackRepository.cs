@@ -4,6 +4,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Snap.Hutao.Remastered.Core.Database;
+using Snap.Hutao.Remastered.Core.Diagnostics;
 using Snap.Hutao.Remastered.Model.Entity;
 using Snap.Hutao.Remastered.Model.Entity.Database;
 using Snap.Hutao.Remastered.Service.Abstraction;
@@ -54,9 +55,28 @@ public sealed partial class BackpackRepository : IBackpackRepository
         return this.SingleOrDefault<BackpackArchive>(a => a.Name == name);
     }
 
-    public void AddBackpackItemRange(IEnumerable<BackpackItem> items)
+    public void ReplaceBackpackItemRangeByArchiveId(Guid archiveId, IEnumerable<BackpackItem> items)
     {
-        this.AddRange(items);
+        List<BackpackItem> itemList = [.. items];
+        using SentrySpanScope span = SentrySpanScope.StartOperation("db.replace_backpack", "db");
+        span.SetData("db.rows", itemList.Count);
+
+        using (IServiceScope scope = ServiceProvider.CreateScope())
+        {
+            AppDbContext appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+            using (IDbContextTransaction transaction = appDbContext.Database.BeginTransaction())
+            {
+                appDbContext.BackpackItems
+                    .Where(i => i.ArchiveId == archiveId)
+                    .ExecuteDelete();
+
+                appDbContext.BackpackItems.AddRange(itemList);
+                appDbContext.SaveChanges();
+
+                transaction.Commit();
+            }
+        }
     }
 
     public void RemoveBackpackItemRangeByArchiveId(Guid archiveId)
@@ -84,6 +104,8 @@ public sealed partial class BackpackRepository : IBackpackRepository
 
     public void SaveReliquaryScoreConfig(BackpackReliquaryScoreConfig config)
     {
+        using SentrySpanScope span = SentrySpanScope.StartChild("db.save_score_config", config.Name);
+
         using (IServiceScope scope = ServiceProvider.CreateScope())
         {
             AppDbContext appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -125,6 +147,8 @@ public sealed partial class BackpackRepository : IBackpackRepository
 
     public void DeleteReliquaryScoreConfigById(Guid configId)
     {
+        using SentrySpanScope span = SentrySpanScope.StartChild("db.delete_score_config", $"{configId}");
+
         using (IServiceScope scope = ServiceProvider.CreateScope())
         {
             AppDbContext appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();

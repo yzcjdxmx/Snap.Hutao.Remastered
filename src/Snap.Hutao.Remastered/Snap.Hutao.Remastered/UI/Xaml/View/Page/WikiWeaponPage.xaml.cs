@@ -3,6 +3,7 @@
 
 using Snap.Hutao.Remastered.UI.Xaml.Control;
 using Snap.Hutao.Remastered.ViewModel.Wiki;
+using System.Runtime.CompilerServices;
 
 namespace Snap.Hutao.Remastered.UI.Xaml.View.Page;
 
@@ -17,4 +18,6 @@ public sealed partial class WikiWeaponPage : ScopedPage
     {
         InitializeDataContext<WikiWeaponViewModel>();
     }
+
+    public new WikiWeaponViewModel DataContext { get => Unsafe.As<WikiWeaponViewModel>(base.DataContext); set => base.DataContext = value; }
 }

@@ -37,7 +37,11 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=..\LICENSE
 OutputDir={#OutputDir}
+#ifdef IncludeBundledImages
+OutputBaseFilename=Snap.Hutao.Remastered-{#MyAppVersion}-Setup-cache
+#else
 OutputBaseFilename=Snap.Hutao.Remastered-{#MyAppVersion}-Setup
+#endif
 Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern
@@ -64,10 +68,19 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "startmenuicon"; Description: "{cm:CreateStartMenuIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: checkedonce
 
 [Files]
-Source: "{#PublishDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#PublishDir}\*"; DestDir: "{app}"; Excludes: "BundledImages\*"; Flags: ignoreversion recursesubdirs createallsubdirs
+#ifdef IncludeBundledImages
+Source: "{#PublishDir}\BundledImages\*"; DestDir: "{app}\BundledImages"; Flags: ignoreversion recursesubdirs createallsubdirs
+#endif
 Source: "VC_redist.x64.exe"; DestDir: "{tmp}"; Flags: ignoreversion deleteafterinstall; Check: not IsVCInstalled
 #ifdef CodeSigningCertificatePath
 Source: "{#CodeSigningCertificatePath}"; DestDir: "{tmp}"; DestName: "{#CodeSigningCertificateFileName}"; Flags: ignoreversion deleteafterinstall
+#endif
+
+#ifdef IncludeBundledImages
+[InstallDelete]
+; Replace the old immutable snapshot rather than keeping removed files from a previous version.
+Type: filesandordirs; Name: "{app}\BundledImages"
 #endif
 
 [Registry]

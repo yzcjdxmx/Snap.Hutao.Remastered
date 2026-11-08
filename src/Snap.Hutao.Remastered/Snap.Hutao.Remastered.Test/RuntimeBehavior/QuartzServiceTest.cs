@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using Quartz;
-using Snap.Hutao.Remastered.Service.Job;
 
 namespace Snap.Hutao.Remastered.Test.RuntimeBehavior;
 

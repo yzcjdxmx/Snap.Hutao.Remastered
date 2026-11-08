@@ -980,6 +980,9 @@
   <data name="ServiceGachaLogHutaoCloudEndIdFetchFailed" xml:space="preserve">
     <value>获取云端祈愿记录失败</value>
   </data>
+  <data name="ServiceGachaLogItemMetadataNotFound" xml:space="preserve">
+    <value>祈愿物品“{0}”的元数据尚未更新，请稍后重试</value>
+  </data>
   <data name="ServiceGachaLogUrlProviderAuthkeyRequestFailed" xml:space="preserve">
     <value>请求验证密钥失败</value>
   </data>
@@ -4347,6 +4350,9 @@
   <data name="ViewPageLaunchGameIslandRedirectCatherineDescription" xml:space="preserve">
     <value>把冒险之证中跳转凯瑟琳的每日委托入口，改为直接打开凯瑟琳的委托奖励确认弹窗</value>
   </data>
+  <data name="ViewPageLaunchGameIslandRedirectCatherineTeachingTipSubtitle" xml:space="preserve">
+    <value>把冒险之证中跳转凯瑟琳的每日委托入口，改为直接打开凯瑟琳的委托奖励确认弹窗。第一次点击「领取奖励」会先打开冒险派遣页面；第二次点击时，如果委托已完成，则会打开领取奖励界面。</value>
+  </data>
   <data name="ViewDialogFastSkipTalkConfirmTitle" xml:space="preserve">
     <value>移除对话跳过冷却</value>
   </data>
@@ -6209,6 +6215,33 @@
   <data name="ServiceUpdateOpenStoreFailed" xml:space="preserve">
     <value>无法打开 Microsoft Store 或产品网页。请在 Microsoft Store 中搜索 Snap Hutao Remastered 并检查更新。</value>
   </data>
+  <data name="ViewGuideBundledImagesHeader" xml:space="preserve">
+    <value>图片资源</value>
+  </data>
+  <data name="ViewGuideBundledImagesAvailable" xml:space="preserve">
+    <value>安装包附带 {0} 版图片，共 {1} 张，直接从安装目录读取，不复制到缓存。将跳过整包下载；缺少的图片会按需下载，已有缓存继续使用。可在设置的缓存目录中清理与随包图片相同的重复缓存。</value>
+  </data>
+  <data name="ViewGuideBundledImagesUnavailable" xml:space="preserve">
+    <value>此安装包未附带图片，接下来可预下载图片整包，也可跳过并在使用时按需下载。</value>
+  </data>
+  <data name="ViewGuideBundledImagesOnDemand" xml:space="preserve">
+    <value>此商店安装包未附带图片快照，将跳过整包下载。图片会在使用时按需下载到缓存。</value>
+  </data>
+  <data name="ViewSettingImageDuplicatesHeader" xml:space="preserve">
+    <value>清理重复图片缓存</value>
+  </data>
+  <data name="ViewSettingImageDuplicatesDescription" xml:space="preserve">
+    <value>仅删除与安装目录随包图片内容完全相同的缓存。保留不同内容、其他版本及明暗主题派生图片，不修改安装目录。</value>
+  </data>
+  <data name="ViewSettingImageDuplicatesProgress" xml:space="preserve">
+    <value>正在比较并清理重复图片缓存…</value>
+  </data>
+  <data name="ViewSettingImageDuplicatesResult" xml:space="preserve">
+    <value>已清理 {0} 个重复图片缓存，释放 {1}。</value>
+  </data>
+  <data name="ServiceGameIslandVerificationUnavailable" xml:space="preserve">
+    <value>暂时无法连接 Island 账户检查服务，本次检查未完成，游戏将继续运行。请在网络恢复后重试。</value>
+  </data>
 <data name="ViewModelLaunchGameServerConversionCompletedTitle" xml:space="preserve">
     <value>服务器转换完成</value>
   </data>
@@ -6241,4 +6274,3 @@
     <value>缺少合成台组合快捷键模块。请使用包含原生模块的个人测试包，或将修饰键设为“无”。</value>
   </data>
 </root>
-

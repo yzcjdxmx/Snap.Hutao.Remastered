@@ -3,6 +3,7 @@
 
 using Snap.Hutao.Remastered.UI.Xaml.Control;
 using Snap.Hutao.Remastered.ViewModel.Feedback;
+using System.Runtime.CompilerServices;
 
 namespace Snap.Hutao.Remastered.UI.Xaml.View.Page;
 
@@ -17,4 +18,6 @@ public sealed partial class FeedbackPage : ScopedPage
     {
         InitializeDataContext<FeedbackViewModel>();
     }
+
+    public new FeedbackViewModel DataContext { get => Unsafe.As<FeedbackViewModel>(base.DataContext); set => base.DataContext = value; }
 }

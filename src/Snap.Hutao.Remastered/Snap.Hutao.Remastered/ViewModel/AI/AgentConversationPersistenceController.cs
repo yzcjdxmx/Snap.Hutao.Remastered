@@ -4,7 +4,6 @@
 
 using Snap.Hutao.Remastered.Service.AI;
 using Snap.Hutao.Remastered.Service.AI.Models;
-using System.Collections.Generic;
 
 namespace Snap.Hutao.Remastered.ViewModel.AI;
 

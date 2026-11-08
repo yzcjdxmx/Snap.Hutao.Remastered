@@ -3,7 +3,6 @@
 // Adapted from Snap.Nicole.
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Text.Json.Serialization;
 
 namespace Snap.Hutao.Remastered.Service.AI.Observables;
 

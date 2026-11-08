@@ -38,4 +38,6 @@ public sealed partial class PluginSettingPage : ScopedPage
 
         navigationExtraData = Unsafe.As<NavigationExtraData?>(e.Parameter);
     }
+
+    public new PluginSettingViewModel DataContext { get => Unsafe.As<PluginSettingViewModel>(base.DataContext); set => base.DataContext = value; }
 }

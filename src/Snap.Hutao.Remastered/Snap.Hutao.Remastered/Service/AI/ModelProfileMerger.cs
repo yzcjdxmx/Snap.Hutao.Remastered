@@ -1,7 +1,5 @@
 using Snap.Hutao.Remastered.Service.AI.Models;
 using Snap.Hutao.Remastered.Service.AI.Settings;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Snap.Hutao.Remastered.Service.AI;
 

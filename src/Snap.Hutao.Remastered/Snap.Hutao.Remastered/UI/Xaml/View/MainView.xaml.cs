@@ -4,9 +4,9 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using WinUI.LiquidGlass;
 using Snap.Hutao.Remastered.ViewModel;
 using Snap.Hutao.Remastered.ViewModel.User;
+using System.Runtime.CompilerServices;
 
 namespace Snap.Hutao.Remastered.UI.Xaml.View;
 
@@ -25,12 +25,12 @@ public sealed partial class MainView : UserControl, IDataContextInitialized
 
     private void OnBackgroundActivityButtonPointerEntered(object sender, PointerRoutedEventArgs e)
     {
-        if ((sender is LiquidGlassButton ? OpenedChevronAnimatedIconGlass : OpenedChevronAnimatedIcon) is { } OpenedChevronAnimatedIconActive)
+        if (OpenedChevronAnimatedIcon is { } OpenedChevronAnimatedIconActive)
         {
             AnimatedIcon.SetState(OpenedChevronAnimatedIconActive, "PointerOver");
         }
 
-        if ((sender is LiquidGlassButton ? ClosedChevronAnimatedIconGlass : ClosedChevronAnimatedIcon) is { } ClosedChevronAnimatedIconActive)
+        if (ClosedChevronAnimatedIcon is { } ClosedChevronAnimatedIconActive)
         {
             AnimatedIcon.SetState(ClosedChevronAnimatedIconActive, "PointerOver");
         }
@@ -38,12 +38,12 @@ public sealed partial class MainView : UserControl, IDataContextInitialized
 
     private void OnBackgroundActivityButtonPointerExited(object sender, PointerRoutedEventArgs e)
     {
-        if ((sender is LiquidGlassButton ? OpenedChevronAnimatedIconGlass : OpenedChevronAnimatedIcon) is { } OpenedChevronAnimatedIconActive)
+        if (OpenedChevronAnimatedIcon is { } OpenedChevronAnimatedIconActive)
         {
             AnimatedIcon.SetState(OpenedChevronAnimatedIconActive, "Normal");
         }
 
-        if ((sender is LiquidGlassButton ? ClosedChevronAnimatedIconGlass : ClosedChevronAnimatedIcon) is { } ClosedChevronAnimatedIconActive)
+        if (ClosedChevronAnimatedIcon is { } ClosedChevronAnimatedIconActive)
         {
             AnimatedIcon.SetState(ClosedChevronAnimatedIconActive, "Normal");
         }
@@ -55,4 +55,6 @@ public sealed partial class MainView : UserControl, IDataContextInitialized
         UserView.DataContext<UserViewModel>()?.IsViewUnloaded.Value = true;
         this.DataContext<MainViewModel>()?.Uninitialize();
     }
+
+    public new MainViewModel DataContext { get => Unsafe.As<MainViewModel>(base.DataContext); set => base.DataContext = value; }
 }

@@ -4,17 +4,10 @@
 
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
-using Sentry;
-using Snap.Hutao.Remastered.Core.AI.Diagnostics;
 using Snap.Hutao.Remastered.Core.AI.Text.Json;
 using Snap.Hutao.Remastered.Core.AI.Threading;
 using Snap.Hutao.Remastered.Service.AI.Models;
 using Snap.Hutao.Remastered.Service.AI.Observables;
-using Snap.Hutao.Remastered.ViewModel.AI;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Snap.Hutao.Remastered.Service.AI;
 
@@ -39,12 +32,8 @@ internal sealed class AgentService(IServiceProvider serviceProvider) : IAgentSer
         clients.Clear();
     }
 
-    public async ValueTask<SpanStatus> RunStreamingAsync(AgentRunStreamingContext context, TaskScheduler taskScheduler, CancellationToken cancellationToken)
+    public async ValueTask RunStreamingAsync(AgentRunStreamingContext context, TaskScheduler taskScheduler, CancellationToken cancellationToken)
     {
-        using SentryDiagnosticSpan span = SentryDiagnostics.StartSpan(SentryOperations.AIChatStream, "Run streaming chat completion");
-        span.SetTag(SentryTags.AIProvider, context.Options.ProviderType.ToString());
-        span.SetTag(SentryTags.AIModel, context.Options.ModelId);
-
         try
         {
             await Task.Yield();
@@ -60,17 +49,14 @@ internal sealed class AgentService(IServiceProvider serviceProvider) : IAgentSer
 
                 await taskScheduler.Run(ProcessPendingUpdate, context, pendingUpdate, cancellationToken);
             }
-
-            return SpanStatus.Ok;
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
-            span.Finish(SpanStatus.Cancelled);
             throw;
         }
         catch (Exception ex)
         {
-            SentryDiagnostics.CaptureException(ex, span, SentryOperations.AIChatStream);
+            SentrySdk.CaptureException(ex);
 
             ObservableErrorContent errorContent = ObservableErrorContent.Create(ex.Message);
             await taskScheduler.Run(static (context, errorContent) =>
@@ -78,8 +64,6 @@ internal sealed class AgentService(IServiceProvider serviceProvider) : IAgentSer
                 ObservableChatMessage responseMessage = context.EnsureTargetResponseMessage();
                 responseMessage.Contents.AddOrUpdate(errorContent);
             }, context, errorContent, cancellationToken);
-
-            return SpanStatus.InternalError;
         }
     }
 

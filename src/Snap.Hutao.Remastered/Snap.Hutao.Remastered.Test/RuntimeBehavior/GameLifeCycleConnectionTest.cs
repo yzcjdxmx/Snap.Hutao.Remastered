@@ -1,5 +1,4 @@
 using Snap.Hutao.Remastered.Core.Diagnostics;
-using Snap.Hutao.Remastered.Core.Threading;
 using Snap.Hutao.Remastered.Factory.Process;
 using Snap.Hutao.Remastered.Service.Game;
 

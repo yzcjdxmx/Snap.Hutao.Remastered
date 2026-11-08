@@ -5,8 +5,6 @@
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 using Snap.Hutao.Remastered.Service.AI.Observables;
-using System.Collections.Generic;
-using System.Text.Json;
 
 namespace Snap.Hutao.Remastered.Service.AI;
 

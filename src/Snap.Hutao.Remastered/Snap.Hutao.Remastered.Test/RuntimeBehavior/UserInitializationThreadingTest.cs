@@ -1,12 +1,10 @@
 using Snap.Hutao.Remastered.Core.DependencyInjection.Abstraction;
 using Snap.Hutao.Remastered.Service.User;
 using Snap.Hutao.Remastered.ViewModel.User;
-using Snap.Hutao.Remastered.Web.Hoyolab;
 using Snap.Hutao.Remastered.Web.Hoyolab.Bbs.User;
 using Snap.Hutao.Remastered.Web.Hoyolab.Takumi.Binding;
 using Snap.Hutao.Remastered.Web.Response;
 using System.Collections.Concurrent;
-using System.ComponentModel;
 using BindingUser = Snap.Hutao.Remastered.ViewModel.User.User;
 
 namespace Snap.Hutao.Remastered.Test.RuntimeBehavior;

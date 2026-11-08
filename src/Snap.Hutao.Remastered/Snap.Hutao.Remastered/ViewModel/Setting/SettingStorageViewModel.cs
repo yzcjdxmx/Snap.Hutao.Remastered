@@ -28,6 +28,7 @@ public sealed partial class SettingStorageViewModel : Abstraction.ViewModel
     private readonly IContentDialogFactory contentDialogFactory;
     private readonly ITaskContext taskContext;
     private readonly IMessenger messenger;
+    private readonly IImageCache imageCache;
 
     [GeneratedConstructor]
     public partial SettingStorageViewModel(IServiceProvider serviceProvider);
@@ -104,6 +105,35 @@ public sealed partial class SettingStorageViewModel : Abstraction.ViewModel
         }
 
         messenger.Send(InfoBarMessage.Success(SH.ViewModelSettingActionComplete));
+    }
+
+    [Command("RemoveDuplicateImagesCommand")]
+    private async Task RemoveDuplicateImagesAsync()
+    {
+        ContentDialog dialog = await contentDialogFactory
+            .CreateForIndeterminateProgressAsync(SH.ViewSettingImageDuplicatesProgress)
+            .ConfigureAwait(false);
+        using (await contentDialogFactory.BlockAsync(dialog).ConfigureAwait(false))
+        {
+            try
+            {
+                await taskContext.SwitchToBackgroundAsync();
+                (int files, long bytes) = await imageCache.RemoveDuplicateFilesAsync(CancellationToken).ConfigureAwait(false);
+                messenger.Send(InfoBarMessage.Success(SH.FormatViewSettingImageDuplicatesResult(files, CommunityToolkit.Common.Converters.ToFileSizeString(bytes))));
+                if (CacheFolderView is not null)
+                {
+                    await CacheFolderView.UpdateFolderSizeTimeoutAsync(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // The settings page was closed.
+            }
+            catch (Exception ex)
+            {
+                messenger.Send(InfoBarMessage.Error(ex));
+            }
+        }
     }
 
     [Command("ResetStaticResourceCommand")]

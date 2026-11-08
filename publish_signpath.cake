@@ -220,6 +220,11 @@ Task("Compile installer")
     var p = StartProcess(iscc, new ProcessSettings { Arguments = $"/dMyAppVersion=\"{version}\" \"{iss}\"", WorkingDirectory = repoDir });
 
     if (p != 0) { throw new InvalidOperationException($"Inno Setup failed ({p})"); }
+    if (System.IO.File.Exists(System.IO.Path.Combine(repoDir, "Installer", "Publish", "BundledImages", "manifest.json")))
+    {
+        p = StartProcess(iscc, new ProcessSettings { Arguments = $"/dIncludeBundledImages=1 /dMyAppVersion=\"{version}\" \"{iss}\"", WorkingDirectory = repoDir });
+        if (p != 0) { throw new InvalidOperationException($"Cache installer failed ({p})"); }
+    }
     Information("Installer compiled.");
 
     if (GitHubActions.IsRunningOnGitHubActions)
@@ -228,7 +233,7 @@ Task("Compile installer")
         var installer = System.IO.Directory.GetFiles(installerDir, "Snap.Hutao.Remastered-*.exe").FirstOrDefault();
         if (installer != null)
         {
-            GitHubActions.Commands.SetOutputParameter("installer-path", installer);
+            GitHubActions.Commands.SetOutputParameter("installer-path", System.IO.Path.Combine(installerDir, "Snap.Hutao.Remastered-*.exe"));
         }
     }
 });
@@ -260,6 +265,25 @@ Task("Sign MSIX")
     var pfxPath = System.IO.Path.Combine(repoDir, "temp.pfx");
     System.IO.File.WriteAllBytes(pfxPath, System.Convert.FromBase64String(certificateBase64));
 
+
+    var packageManifest = new System.Xml.XmlDocument();
+    packageManifest.Load(System.IO.Path.Combine(binPath, "AppxManifest.xml"));
+    var packagePublisher = packageManifest.DocumentElement.SelectSingleNode("*[local-name()='Identity']").Attributes["Publisher"].Value;
+    using (var certificate = System.Security.Cryptography.X509Certificates.X509CertificateLoader.LoadPkcs12FromFile(
+        pfxPath, pw, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.EphemeralKeySet))
+    {
+        if (!string.Equals(certificate.Subject, packagePublisher, System.StringComparison.Ordinal))
+        {
+            if (packagePublisher != "CN=469D671A-3AED-4488-AC4F-75E5394BC7FA")
+            {
+                throw new InvalidOperationException("MSIX Publisher does not match the signing certificate.");
+            }
+            Warning("Store MSIX retains its Store Publisher and is UNSIGNED. It is for Store submission, not sideload installation. Setup signing is unchanged.");
+            GitHubActions.Commands.SetOutputParameter("msix-signed", "false");
+            return;
+        }
+    }
+    GitHubActions.Commands.SetOutputParameter("msix-signed", "true");
     var signtool = System.IO.Path.Combine(winsdkBinPath, "signtool.exe");
     var msix = System.IO.Path.Combine(outputPath, $"Snap.Hutao.Remastered-{version}.msix");
     var p = StartProcess(signtool, new ProcessSettings { Arguments = $"sign /debug /v /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /f \"{pfxPath}\" /p \"{pw}\" \"{msix}\"" });

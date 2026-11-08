@@ -6208,5 +6208,32 @@ Ordinary launch does not require Island support. Compatibility is checked separa
   <data name="ServiceUpdateOpenStoreFailed" xml:space="preserve">
     <value>Unable to open Microsoft Store or the product web page. Search for Snap Hutao Remastered in Microsoft Store and check for updates.</value>
   </data>
+  <data name="ViewGuideBundledImagesHeader" xml:space="preserve">
+    <value>Image resources</value>
+  </data>
+  <data name="ViewGuideBundledImagesAvailable" xml:space="preserve">
+    <value>Includes image snapshot {0} ({1} images). Images are read directly from the installation without copying them into the cache. Bulk download is skipped; missing images download on demand and existing caches remain usable. Remove duplicate cached copies under Settings &gt; Cache folder.</value>
+  </data>
+  <data name="ViewGuideBundledImagesUnavailable" xml:space="preserve">
+    <value>This installer does not include images. You can download category archives next, or skip and download images as needed.</value>
+  </data>
+  <data name="ViewGuideBundledImagesOnDemand" xml:space="preserve">
+    <value>This packaged build has no image snapshot. Bulk download is skipped; images download to the cache as needed.</value>
+  </data>
+  <data name="ViewSettingImageDuplicatesHeader" xml:space="preserve">
+    <value>Remove duplicate cached images</value>
+  </data>
+  <data name="ViewSettingImageDuplicatesDescription" xml:space="preserve">
+    <value>Remove only cached images identical to bundled images. Different content, other versions and derived theme images are preserved. Installed files remain unchanged.</value>
+  </data>
+  <data name="ViewSettingImageDuplicatesProgress" xml:space="preserve">
+    <value>Comparing and removing duplicate cached images…</value>
+  </data>
+  <data name="ViewSettingImageDuplicatesResult" xml:space="preserve">
+    <value>Removed {0} duplicate cached images, freeing {1}.</value>
+  </data>
+  <data name="ServiceGameIslandVerificationUnavailable" xml:space="preserve">
+    <value>The Island account check service is temporarily unavailable. This check could not be completed; the game will keep running. Try again when the connection is restored.</value>
+  </data>
 </root>
 

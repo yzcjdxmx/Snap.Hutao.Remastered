@@ -17,7 +17,6 @@ using Snap.Hutao.Remastered.UI.Xaml;
 using Snap.Hutao.Remastered.UI.Windowing;
 using Snap.Hutao.Remastered.Service.Job;
 using Snap.Hutao.Remastered.UI.Xaml.Behavior;
-using Snap.Hutao.Remastered.UI.Xaml.Control.Theme;
 using System.Diagnostics;
 using System.IO;
 
@@ -48,6 +47,7 @@ public sealed partial class App : Application
     private readonly IAppActivation activation;
     private readonly ILogger<App> logger;
     private bool exitRequested;
+    private DateTime exitingTime;
 
     [GeneratedConstructor(InitializeComponent = true)]
     public partial App(IServiceProvider serviceProvider);
@@ -77,11 +77,9 @@ public sealed partial class App : Application
         XamlApplicationLifetime.Exiting = true;
         FlyoutOpenStateBinding.CancelPendingSwitches();
         SentrySdk.AddBreadcrumb(BreadcrumbFactory.CreateInfo("Application exiting", "Hutao"));
-        // #114
-        //SpinWait.SpinUntil(static () => XamlApplicationLifetime.ActivationAndInitializationCompleted);
+        SpinWait.SpinUntil(ShouldExitNow);
         ExitAfterContentDetachedAsync().SafeForget();
     }
-
     private async Task ExitAfterContentDetachedAsync()
     {
         // Shutdown must happen before Application.Start returns. Quartz job setup
@@ -197,8 +195,6 @@ public sealed partial class App : Application
 
             logger.LogInformation($"{ConsoleBanner}");
 
-            FrameworkTheming.SetTheme(ThemeHelper.ElementToFramework(serviceProvider.GetRequiredService<AppOptions>().ElementTheme.Value));
-
             // Manually invoke
             SentrySdk.AddBreadcrumb(BreadcrumbFactory.CreateInfo("Activate and Initialize", "Application"));
             activation.ActivateAndInitialize(HutaoActivationArguments.FromAppActivationArguments(activatedEventArgs));
@@ -210,6 +206,16 @@ public sealed partial class App : Application
 
             ProcessFactory.KillCurrent();
         }
+    }
+
+    private bool ShouldExitNow()
+    {
+        if (exitingTime == default)
+        {
+            exitingTime = DateTime.UtcNow;
+        }
+
+        return XamlApplicationLifetime.ActivationAndInitializationCompleted || DateTime.UtcNow >= exitingTime.AddSeconds(5);
     }
 
     /// <summary>

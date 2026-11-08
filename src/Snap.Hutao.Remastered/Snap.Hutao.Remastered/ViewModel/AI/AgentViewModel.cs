@@ -3,12 +3,10 @@
 // Adapted from Snap.Nicole.
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using Snap.Hutao.Remastered.Core.AI.Collections.ObjectModel;
 using Snap.Hutao.Remastered.Service.AI.Settings;
 using Snap.Hutao.Remastered.Service.AI;
 using Snap.Hutao.Remastered.ViewModel.AI.Settings;
-using System.Threading;
 using System.Text;
 using Windows.ApplicationModel.DataTransfer;
 using Snap.Hutao.Remastered.Service.AI.Observables;

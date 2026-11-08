@@ -1,5 +1,3 @@
-using System;
-
 namespace Snap.Hutao.Remastered.Test.RuntimeBehavior;
 
 [TestClass]

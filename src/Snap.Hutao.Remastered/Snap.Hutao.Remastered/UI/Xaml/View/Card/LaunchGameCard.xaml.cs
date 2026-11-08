@@ -3,6 +3,8 @@
 
 using Snap.Hutao.Remastered.UI.Xaml.Control.Theme;
 using Snap.Hutao.Remastered.ViewModel.Abstraction;
+using Snap.Hutao.Remastered.ViewModel.Game;
+using System.Runtime.CompilerServices;
 
 namespace Snap.Hutao.Remastered.UI.Xaml.View.Card;
 
@@ -13,4 +15,6 @@ public sealed partial class LaunchGameCard : MaterialCardButton
         InitializeComponent();
         this.InitializeViewModelSlim<ViewModel.Game.LaunchGameViewModelSlim>(serviceProvider);
     }
+
+    public new LaunchGameViewModelSlim DataContext { get => Unsafe.As<LaunchGameViewModelSlim>(base.DataContext); set => base.DataContext = value; }
 }

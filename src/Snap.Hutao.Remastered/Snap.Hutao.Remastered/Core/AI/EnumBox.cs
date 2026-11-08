@@ -3,8 +3,6 @@
 // Adapted from Snap.Nicole.
 
 using System.Collections.Concurrent;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Snap.Hutao.Remastered.Core.AI;
 

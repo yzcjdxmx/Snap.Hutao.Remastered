@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using Snap.Hutao.Remastered.Core.ExceptionService;
-using Snap.Hutao.Remastered.Core.IO.Ini;
 using Snap.Hutao.Remastered.Service.Game.Configuration;
 using System.IO;
 using System.Runtime.CompilerServices;

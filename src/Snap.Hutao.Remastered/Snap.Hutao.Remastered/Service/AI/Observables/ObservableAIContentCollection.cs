@@ -3,9 +3,7 @@
 // Adapted from Snap.Nicole.
 
 using Microsoft.Extensions.AI;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text.Json;
 
 namespace Snap.Hutao.Remastered.Service.AI.Observables;
 

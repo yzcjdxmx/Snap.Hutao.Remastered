@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Snap.Hutao.Remastered.Test.BaseClassLibrary;
 
 [TestClass]

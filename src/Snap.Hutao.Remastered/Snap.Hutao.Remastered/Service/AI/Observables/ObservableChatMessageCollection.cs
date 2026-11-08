@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 // Adapted from Snap.Nicole.
 
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Snap.Hutao.Remastered.Service.AI.Observables;

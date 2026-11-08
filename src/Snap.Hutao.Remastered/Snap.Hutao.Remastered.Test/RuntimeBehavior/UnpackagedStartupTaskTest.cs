@@ -1,5 +1,4 @@
 using Snap.Hutao.Remastered.Core.Shell;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Xml.Linq;

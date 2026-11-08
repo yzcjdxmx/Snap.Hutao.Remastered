@@ -3,8 +3,11 @@
 
 using CommunityToolkit.Common;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Snap.Hutao.Remastered.Core;
+using Snap.Hutao.Remastered.Core.Caching;
 using Snap.Hutao.Remastered.Core.Setting;
 using Snap.Hutao.Remastered.Model;
+using Snap.Hutao.Remastered.Web.Endpoint.Hutao;
 using Snap.Hutao.Remastered.Web.Hutao;
 using System.Collections.Immutable;
 using System.Globalization;
@@ -14,6 +17,19 @@ namespace Snap.Hutao.Remastered.ViewModel.Guide;
 [Service(ServiceLifetime.Singleton)]
 public sealed partial class StaticResourceOptions : ObservableObject
 {
+    private readonly BundledImageResources bundledImages;
+
+    [GeneratedConstructor]
+    public partial StaticResourceOptions(IServiceProvider serviceProvider);
+
+    public bool HasBundledImages => bundledImages.IsAvailable;
+
+    public string BundledImagesDescription => HasBundledImages
+        ? SH.FormatViewGuideBundledImagesAvailable(bundledImages.Bundle.Version, bundledImages.Bundle.Count)
+        : RuntimeEnvironment.IsPackaged ? SH.ViewGuideBundledImagesOnDemand : SH.ViewGuideBundledImagesUnavailable;
+
+    public bool PreloadResources => GuideNavigation.ShouldPreloadResources(RuntimeEnvironment.IsPackaged, HasBundledImages);
+
     public ImmutableArray<NameValue<StaticResourceQuality>> ImageQualities { get; } = ImmutableCollectionsNameValue.FromEnum<StaticResourceQuality>(static q => q.GetLocalizedDescription(SH.ResourceManager, CultureInfo.CurrentCulture) ?? string.Empty);
 
     public NameValue<StaticResourceQuality>? ImageQuality

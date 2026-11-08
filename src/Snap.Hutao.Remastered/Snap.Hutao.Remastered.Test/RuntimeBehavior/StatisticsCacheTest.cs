@@ -1,6 +1,4 @@
 using Snap.Hutao.Remastered.Service.Hutao;
-using System.Linq;
-using System.Threading;
 
 namespace Snap.Hutao.Remastered.Test.RuntimeBehavior;
 

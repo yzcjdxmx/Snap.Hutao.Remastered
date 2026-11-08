@@ -2,15 +2,12 @@
 // Licensed under the MIT license.
 // Adapted from Snap.Nicole.
 
-using Snap.Hutao.Remastered.Core.AI.Diagnostics;
 using Snap.Hutao.Remastered.Core.AI.IO;
 using Snap.Hutao.Remastered.Core.AI.Text.Json;
 using Snap.Hutao.Remastered.Service.AI.Models;
 using Snap.Hutao.Remastered.Service.AI.Migration;
 using Snap.Hutao.Remastered.Service.AI.Settings;
-using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 
 namespace Snap.Hutao.Remastered.Service.AI;
 
@@ -35,8 +32,6 @@ internal sealed class AgentConversationFileProvider(IServiceProvider serviceProv
 
     public IReadOnlyList<AgentConversation> LoadConversations()
     {
-        using SentryDiagnosticSpan span = SentryDiagnostics.StartSpan(SentryOperations.AgentConversationLoad, "Load agent conversation");
-
         ImportLegacyConversations();
 
         if (!Directory.Exists(DirectoryFullPath))
@@ -59,8 +54,7 @@ internal sealed class AgentConversationFileProvider(IServiceProvider serviceProv
             }
             catch (Exception ex) when (ex is IOException or JsonException or UnauthorizedAccessException)
             {
-                span.SetData(SentryData.AgentConversationFile, filePath);
-                SentryDiagnostics.CaptureException(ex, span, SentryOperations.AgentConversationLoad);
+                SentrySdk.CaptureException(ex, scope => scope.SetExtra("AgentConversation.File", filePath));
             }
         }
 

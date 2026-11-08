@@ -1,8 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-
 namespace Snap.Hutao.Remastered.Test.PlatformExtensions;
 
 [TestClass]

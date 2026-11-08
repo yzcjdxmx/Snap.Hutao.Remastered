@@ -28,6 +28,7 @@ public sealed partial class ImageCache : IImageCache
     private readonly AsyncKeyedLock<string> downloadLocks = new();
 
     private readonly IImageCacheDownloadOperation downloadOperation;
+    private readonly BundledImageResources bundledImages;
 
     [GeneratedConstructor]
     public partial ImageCache(IServiceProvider serviceProvider);
@@ -79,28 +80,45 @@ public sealed partial class ImageCache : IImageCache
 
         using (await themeFileLocks.LockAsync((theme, imageCacheFile.HashedFileName)).ConfigureAwait(false))
         {
-            if (IsFileInvalid(themedFileFullPath))
+            string sourcePath = imageCacheFile.DefaultFilePath;
+            if (IsFileInvalid(themedFileFullPath) || IsFileInvalid(imageCacheFile.DefaultFilePath))
             {
                 using (await downloadLocks.LockAsync(imageCacheFile.HashedFileName).ConfigureAwait(false))
                 {
+                    // Preserve existing cache overrides (including newer snapshots and other qualities).
+                    // Only resolve this application's static-image endpoint to the installed snapshot.
+                    string? bundledPath = GetBundledFile(uri);
                     if (IsFileInvalid(imageCacheFile.DefaultFilePath))
                     {
-                        SentrySdk.AddBreadcrumb(BreadcrumbFactory2.CreateInfo("Begin to download file", "Core.Caching.ImageCache", [("Uri", uri.ToString()), ("File", imageCacheFile.DefaultFilePath)]));
-
-                        try
+                        if (bundledPath is not null)
                         {
-                            await downloadOperation.DownloadFileAsync(uri, imageCacheFile.DefaultFilePath).ConfigureAwait(false);
+                            sourcePath = bundledPath;
                         }
-                        catch (Exception)
+                        else
                         {
-                            Remove(uri);
-                            throw;
+                            SentrySdk.AddBreadcrumb(BreadcrumbFactory2.CreateInfo("Begin to download file", "Core.Caching.ImageCache", [("Uri", uri.ToString()), ("File", imageCacheFile.DefaultFilePath)]));
+
+                            try
+                            {
+                                await downloadOperation.DownloadFileAsync(uri, imageCacheFile.DefaultFilePath).ConfigureAwait(false);
+                            }
+                            catch (Exception)
+                            {
+                                Remove(uri);
+                                throw;
+                            }
                         }
                     }
                 }
             }
 
-            await EnsureThemedMonochromeFileExistsAsync(imageCacheFile, theme).ConfigureAwait(false);
+            // Default-theme images are read in place. Only derived monochrome images need writable storage.
+            if (theme is ElementTheme.Default)
+            {
+                return sourcePath;
+            }
+
+            await EnsureThemedMonochromeFileExistsAsync(imageCacheFile, sourcePath, theme).ConfigureAwait(false);
             return themedFileFullPath;
         }
     }
@@ -120,7 +138,103 @@ public sealed partial class ImageCache : IImageCache
         return new FileInfo(file).Length == 0;
     }
 
-    private static async ValueTask EnsureThemedMonochromeFileExistsAsync(ImageCacheFile imageCacheFile, ElementTheme theme)
+    private string? GetBundledFile(Uri uri)
+    {
+        Uri root = new(StaticResourcesEndpoints.Root.TrimEnd('/') + "/static/raw/");
+        if (!root.IsBaseOf(uri) || !string.IsNullOrEmpty(uri.Query) || !string.IsNullOrEmpty(uri.Fragment))
+        {
+            return null;
+        }
+
+        return bundledImages.Bundle.Find(Uri.UnescapeDataString(root.MakeRelativeUri(uri).ToString()));
+    }
+
+    public async ValueTask StoreFileAsync(string category, string fileName, Stream source, CancellationToken token = default)
+    {
+        if (!ImageResourceBundle.IsResourcePath($"{category}/{fileName}"))
+        {
+            throw new InvalidDataException("Invalid static image archive entry.");
+        }
+
+        ImageCacheFile cache = ImageCacheFile.Create(CacheFolder, StaticResourcesEndpoints.StaticRaw(category, fileName));
+        using (await downloadLocks.LockAsync(cache.HashedFileName).ConfigureAwait(false))
+        {
+            string temporary = cache.DefaultFilePath + "." + Guid.NewGuid().ToString("N") + ".tmp";
+            try
+            {
+                using (FileStream output = File.Create(temporary))
+                {
+                    await source.CopyToAsync(output, token).ConfigureAwait(false);
+                }
+
+                if (new FileInfo(temporary).Length == 0)
+                {
+                    throw new InvalidDataException("Empty static image archive entry.");
+                }
+
+                // The archive may be newer than the installed snapshot: only skip identical bytes.
+                if (await bundledImages.Bundle.FindIdenticalAsync(temporary, $"{category}/{fileName}", token).ConfigureAwait(false) is not null)
+                {
+                    if (await bundledImages.Bundle.FindIdenticalAsync(cache.DefaultFilePath, $"{category}/{fileName}", token).ConfigureAwait(false) is not null)
+                    {
+                        File.Delete(cache.DefaultFilePath);
+                    }
+                }
+                else
+                {
+                    File.Move(temporary, cache.DefaultFilePath, true);
+                }
+            }
+            finally
+            {
+                File.Delete(temporary);
+            }
+        }
+    }
+
+    public async ValueTask<(int Files, long Bytes)> RemoveDuplicateFilesAsync(CancellationToken token = default)
+    {
+        int files = 0;
+        long bytes = 0;
+        if (!bundledImages.IsAvailable)
+        {
+            return (files, bytes);
+        }
+
+        // Preserve the existing URL-hash layout and recognize both current and previous official hosts.
+        string[] roots = [StaticResourcesEndpoints.Root, "https://api.snaphutaorp.org", "https://api.hutaorp.org", "https://static.snaphutaorp.org", "https://static.hutaorp.org"];
+        foreach (string resourcePath in bundledImages.Bundle.ResourcePaths)
+        {
+            foreach (string root in roots.Distinct(StringComparer.Ordinal))
+            {
+                token.ThrowIfCancellationRequested();
+                string name = ImageCacheFile.GetHashedFileName($"{root.TrimEnd('/')}/static/raw/{resourcePath}");
+                string path = Path.Combine(CacheFolder, name);
+
+                using (await downloadLocks.LockAsync(name).ConfigureAwait(false))
+                {
+                    try
+                    {
+                        if (await bundledImages.Bundle.FindIdenticalAsync(path, resourcePath, token).ConfigureAwait(false) is not null)
+                        {
+                            long length = new FileInfo(path).Length;
+                            File.Delete(path);
+                            files++;
+                            bytes += length;
+                        }
+                    }
+                    catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+                    {
+                        SentrySdk.CaptureException(ex);
+                    }
+                }
+            }
+        }
+
+        return (files, bytes);
+    }
+
+    private static async ValueTask EnsureThemedMonochromeFileExistsAsync(ImageCacheFile imageCacheFile, string sourcePath, ElementTheme theme)
     {
         if (theme is ElementTheme.Default)
         {
@@ -129,7 +243,7 @@ public sealed partial class ImageCache : IImageCache
 
         try
         {
-            using (FileStream sourceStream = File.OpenRead(imageCacheFile.DefaultFilePath))
+            using (FileStream sourceStream = File.OpenRead(sourcePath))
             {
                 using (FileStream themeStream = File.Create(imageCacheFile.GetThemedFile(theme)))
                 {
@@ -139,7 +253,8 @@ public sealed partial class ImageCache : IImageCache
         }
         catch (IOException ex)
         {
-            throw publicImageCacheException.Throw("Failed to convert image", ex);
+            throw InternalImageCacheException.Throw("Failed to convert image", ex);
         }
     }
 }
+

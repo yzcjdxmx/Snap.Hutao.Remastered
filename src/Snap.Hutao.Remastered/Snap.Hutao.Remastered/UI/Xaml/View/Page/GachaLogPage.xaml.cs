@@ -3,6 +3,7 @@
 
 using Snap.Hutao.Remastered.UI.Xaml.Control;
 using Snap.Hutao.Remastered.ViewModel.GachaLog;
+using System.Runtime.CompilerServices;
 
 namespace Snap.Hutao.Remastered.UI.Xaml.View.Page;
 
@@ -17,4 +18,6 @@ public sealed partial class GachaLogPage : ScopedPage
     {
         InitializeDataContext<GachaLogViewModel>();
     }
+
+    public new GachaLogViewModel DataContext { get => Unsafe.As<GachaLogViewModel>(base.DataContext); set => base.DataContext = value; }
 }

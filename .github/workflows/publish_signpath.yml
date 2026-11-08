@@ -14,6 +14,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Prepare optional bundled image snapshot
+        shell: pwsh
+        run: ./scripts/Get-BundledImages.ps1
+        env:
+          BUNDLED_IMAGES_URL: ${{ vars.BUNDLED_IMAGES_URL }}
+          BUNDLED_IMAGES_VERSION: ${{ vars.BUNDLED_IMAGES_VERSION }}
+          BUNDLED_IMAGES_SHA256: ${{ vars.BUNDLED_IMAGES_SHA256 }}
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
@@ -82,10 +90,28 @@ jobs:
           wait-for-completion: true
           output-artifact-directory: ${{ github.workspace }}/src/output/signed-installer
 
+      - name: Create Store upload
+        shell: pwsh
+        run: |
+          $symbols = Get-ChildItem src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/bin/x64/Release -Recurse -Filter Snap.Hutao.Remastered.pdb |
+            Where-Object { $_.Directory.Name -eq 'publish' } | Select-Object -First 1
+          Get-ChildItem src/output -Filter *.msix | ForEach-Object {
+            $arguments = @{ PackagePath = $_.FullName }
+            if ($symbols) { $arguments.SymbolsPath = $symbols.FullName }
+            ./scripts/New-MsixUpload.ps1 @arguments
+          }
+
+      - name: Upload Store submission files
+        uses: actions/upload-artifact@v7
+        with:
+          name: Snap.Hutao.Remastered-Store-upload
+          path: ${{ github.workspace }}/src/output/*.msixupload
+          if-no-files-found: error
+
       - name: Upload MSIX
         uses: actions/upload-artifact@v7
         with:
-          name: Snap.Hutao.Remastered-${{ steps.build.outputs.version }}-msix
+          name: Snap.Hutao.Remastered-${{ steps.build.outputs.version }}-MSIX-${{ steps.package.outputs.msix-signed == 'true' && 'signed' || 'unsigned-store-only' }}
           path: ${{ steps.package.outputs.msix-path }}
 
       - name: Upload signed installer
@@ -93,6 +119,30 @@ jobs:
         with:
           name: Snap.Hutao.Remastered-${{ steps.build.outputs.version }}-signed-installer
           path: ${{ github.workspace }}/src/output/signed-installer
+
+      - name: Install rclone
+        shell: pwsh
+        run: |
+          choco install rclone --yes --no-progress
+          if ($LASTEXITCODE -ne 0) { throw 'rclone installation failed.' }
+
+      - name: Publish default installer to R2
+        id: r2
+        shell: pwsh
+        env:
+          RELEASE_VERSION: ${{ steps.build.outputs.version }}
+          RCLONE_CONFIG_R2_TYPE: s3
+          RCLONE_CONFIG_R2_PROVIDER: Cloudflare
+          RCLONE_CONFIG_R2_REGION: auto
+          RCLONE_CONFIG_R2_NO_CHECK_BUCKET: 'true'
+          RCLONE_CONFIG_R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          RCLONE_CONFIG_R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          RCLONE_CONFIG_R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+        run: |
+          $filename = "Snap.Hutao.Remastered-$env:RELEASE_VERSION-Setup.exe"
+          $installers = @(Get-ChildItem 'src/output/signed-installer' -Recurse -File -Filter $filename)
+          if ($installers.Count -ne 1) { throw "Expected exactly one signed default installer: $filename" }
+          ./scripts/Publish-InstallerToR2.ps1 -InstallerPath $installers[0].FullName
 
       - name: Add summary
         shell: pwsh
@@ -102,11 +152,11 @@ jobs:
 
           - **Version:** ${{ steps.build.outputs.version }}
           - **Signing Policy:** release-signing (zip / installer)
-          - **MSIX Signing:** release certificate (PUBLISH_CERT)
+          - **MSIX signed:** ${{ steps.package.outputs.msix-signed }}
           - **Zip Signing Request:** ${{ steps.signpath-zip.outputs.signing-request-web-url }}
           - **Installer Signing Request:** ${{ steps.signpath-installer.outputs.signing-request-web-url }}
 
           > [!IMPORTANT]
-          > 该版本为正式发布版本，zip/安装器由 SignPath release-signing 证书签名，MSIX 由 release 证书签名，可直接安装使用。
+          > zip/安装器使用 SignPath 签名。MSIX 证书与商店 Publisher 不匹配时保持未签名，仅用于商店提交，不可旁加载；请提交 Store-upload 工件内的 .msixupload。
           "@
           echo $summary >> $Env:GITHUB_STEP_SUMMARY

@@ -15,6 +15,7 @@
   <ItemGroup>
     <Compile Include="../Snap.Hutao.Remastered/Service/Game/Island/CraftHotkeyModuleCache.cs" Link="Production/CraftHotkeyModuleCache.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Service/Game/CombineHotkeyBinding.cs" Link="Production/CombineHotkeyBinding.cs" />
+    <Compile Include="../Snap.Hutao.Remastered/Core/Caching/ImageResourceBundle.cs" Link="Production/ImageResourceBundle.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Service/Game/GameLifeCycle.cs" Link="Production/Game/GameLifeCycle.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Service/Game/GameConstants.cs" Link="Production/Game/GameConstants.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Core/Threading/SpinWaitPolyfill.cs" Link="Production/Game/SpinWaitPolyfill.cs" />
@@ -50,11 +51,7 @@
     <Compile Include="../Snap.Hutao.Remastered/Core/AI/BooleanTrueScope.cs" Link="Production/Agent/SettingsTests/BooleanTrueScope.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Core/AI/IO/FileExtensions.cs" Link="Production/Agent/SettingsTests/FileExtensions.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Core/AI/Threading/AgentThreadingContext.cs" Link="Production/Agent/SettingsTests/AgentThreadingContext.cs" />
-    <Compile Include="../Snap.Hutao.Remastered/Core/AI/Diagnostics/SentryOperations.cs" Link="Production/Agent/SettingsTests/SentryOperations.cs" />
-    <Compile Include="../Snap.Hutao.Remastered/Core/AI/Diagnostics/SentryTags.cs" Link="Production/Agent/SettingsTests/SentryTags.cs" />
-    <Compile Include="../Snap.Hutao.Remastered/Core/AI/Diagnostics/SentryData.cs" Link="Production/Agent/SettingsTests/SentryData.cs" />
-    <Compile Include="../Snap.Hutao.Remastered/Core/AI/Diagnostics/SentryBreadcrumbCategories.cs" Link="Production/Agent/SettingsTests/SentryBreadcrumbCategories.cs" />
-    <Compile Include="../Snap.Hutao.Remastered/Core/AI/Diagnostics/SentryBreadcrumbTypes.cs" Link="Production/Agent/SettingsTests/SentryBreadcrumbTypes.cs" />
+    <Compile Include="../Snap.Hutao.Remastered/Core/Logging/BreadcrumbFactory.cs" Link="Production/Agent/SettingsTests/BreadcrumbFactory.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Service/AI/Models/*.cs" Link="Production/Agent/Models/%(Filename)%(Extension)" />
     <Compile Include="../Snap.Hutao.Remastered/Service/AI/Observables/*.cs" Link="Production/Agent/Observables/%(Filename)%(Extension)" />
     <Compile Include="../Snap.Hutao.Remastered/Service/AI/Compatibility/**/*.cs" Link="Production/Agent/Compatibility/%(Filename)%(Extension)" />
@@ -85,6 +82,9 @@
     <Compile Include="../Snap.Hutao.Remastered/Core/Text/Json/Converter/NameEnumConverter.cs" Link="Production/NameEnumConverter.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Model/Primitive/Converter/IdentityConverter.cs" Link="Production/IdentityConverter.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Core/Setting/LocalSettingsJson.cs" Link="Production/LocalSettingsJson.cs" />
+    <Compile Include="../Snap.Hutao.Remastered/Service/Plugin/PluginSettingService.cs" Link="Production/Plugin/PluginSettingService.cs" />
+    <Compile Include="../Snap.Hutao.Remastered/Service/Plugin/IPluginSettingService.cs" Link="Production/Plugin/IPluginSettingService.cs" />
+    <Compile Include="../Snap.Hutao.Remastered/API/Model/Plugin/RegisteredSettingInfo.cs" Link="Production/Plugin/RegisteredSettingInfo.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Core/Shell/UnpackagedStartupTask.cs" Link="Production/UnpackagedStartupTask.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Service/User/UserInitializationService.cs" Link="Production/UserInitializationService.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Service/User/IUserInitializationService.cs" Link="Production/IUserInitializationService.cs" />
@@ -111,6 +111,8 @@
     <Compile Include="../Snap.Hutao.Remastered/UI/Xaml/Control/Theme/PageResourceScope.cs" Link="Production/PageResourceScope.cs" />
     <Compile Include="../Snap.Hutao.Remastered/UI/Xaml/Behavior/PeriodicCommandSignal.cs" Link="Production/PeriodicCommandSignal.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Service/Game/Package/Advanced/PredownloadProgressTracker.cs" Link="Production/PredownloadProgressTracker.cs" />
+    <!--<Compile Include="../Snap.Hutao.Remastered/Service/GachaLog/QueryProvider/GachaLogQueryWebCacheProvider.cs" Link="Production/GachaLogQueryWebCacheProvider.cs" />-->
+    <Compile Include="../Snap.Hutao.Remastered/Extension/MemoryPoolExtension.cs" Link="Production/MemoryPoolExtension.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Model/NameDescription.cs" Link="Production/NameDescription.cs" />
     <Compile Include="../Snap.Hutao.Remastered/Model/INameIcon.cs" Link="Production/INameIcon.cs" />
     <Compile Include="../Snap.Hutao.Remastered/ViewModel/AvatarProperty/NameIconDescription.cs" Link="Production/NameIconDescription.cs" />
@@ -120,22 +122,22 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-    <PackageReference Include="Microsoft.Agents.AI.Anthropic" Version="1.25.0" />
-    <PackageReference Include="Microsoft.Agents.AI.Harness" Version="1.25.0" />
-    <PackageReference Include="Microsoft.Agents.AI.OpenAI" Version="1.25.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="11.0.0-rc.2.26504.105" />
-    <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="11.0.0-rc.2.26504.105" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0-rc.2.26504.105" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="11.0.0-rc.2.26504.105" />
+    <PackageReference Include="Microsoft.Agents.AI.Anthropic" Version="1.28.0" />
+    <PackageReference Include="Microsoft.Agents.AI.Harness" Version="1.28.0" />
+    <PackageReference Include="Microsoft.Agents.AI.OpenAI" Version="1.28.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="11.0.0-rc.3.26522.148" />
+    <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="11.0.0-rc.3.26522.148" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0-rc.3.26522.148" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="11.0.0-rc.3.26522.148" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="4.5.1" />
-    <PackageReference Include="MSTest.TestFramework" Version="4.5.1" />
-    <PackageReference Include="Quartz" Version="4.6.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="4.5.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="4.5.2" />
+    <PackageReference Include="Quartz" Version="4.7.2" />
     <PackageReference Include="coverlet.collector" Version="10.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Threading.RateLimiting" Version="11.0.0-rc.2.26504.105" />
+    <PackageReference Include="System.Threading.RateLimiting" Version="11.0.0-rc.3.26522.148" />
   </ItemGroup>
 
 </Project>

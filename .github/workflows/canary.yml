@@ -34,6 +34,15 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./scripts/PrepareCanarySource.ps1
 
+      - name: Prepare optional bundled image snapshot
+        if: ${{ steps.merge.outputs.continue == 'true' }}
+        shell: pwsh
+        run: ./scripts/Get-BundledImages.ps1
+        env:
+          BUNDLED_IMAGES_URL: ${{ vars.BUNDLED_IMAGES_URL }}
+          BUNDLED_IMAGES_VERSION: ${{ vars.BUNDLED_IMAGES_VERSION }}
+          BUNDLED_IMAGES_SHA256: ${{ vars.BUNDLED_IMAGES_SHA256 }}
+
       - name: Setup .NET
         if: ${{ steps.merge.outputs.continue == 'true' }}
         uses: actions/setup-dotnet@v6
@@ -66,6 +75,26 @@ jobs:
         env:
           CERTIFICATE: ${{ secrets.CERTIFICATE }}
           PW: ${{ secrets.PW }}
+
+      - name: Create Store upload
+        if: ${{ success() && steps.merge.outputs.continue == 'true' }}
+        shell: pwsh
+        run: |
+          $symbols = Get-ChildItem src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/bin/x64/Release -Recurse -Filter Snap.Hutao.Remastered.pdb |
+            Where-Object { $_.Directory.Name -eq 'publish' } | Select-Object -First 1
+          Get-ChildItem src/output -Filter *.msix | ForEach-Object {
+            $arguments = @{ PackagePath = $_.FullName }
+            if ($symbols) { $arguments.SymbolsPath = $symbols.FullName }
+            ./scripts/New-MsixUpload.ps1 @arguments
+          }
+
+      - name: Upload Store submission files
+        if: ${{ success() && steps.merge.outputs.continue == 'true' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: Snap.Hutao.Remastered-Store-upload
+          path: ${{ github.workspace }}/src/output/*.msixupload
+          if-no-files-found: error
 
       - name: Upload signed msix
         if: ${{ success() && steps.merge.outputs.continue == 'true' }}

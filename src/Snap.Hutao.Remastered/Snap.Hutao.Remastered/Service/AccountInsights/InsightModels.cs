@@ -1,6 +1,5 @@
 // Copyright (c) Snap Hutao RP. All rights reserved.
 using Snap.Hutao.Remastered.Model.Entity;
-using System.Collections.Generic;
 
 namespace Snap.Hutao.Remastered.Service.AccountInsights;
 

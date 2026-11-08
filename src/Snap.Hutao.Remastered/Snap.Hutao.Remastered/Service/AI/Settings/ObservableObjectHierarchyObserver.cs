@@ -2,9 +2,6 @@
 // Licensed under the MIT license.
 // Adapted from Snap.Nicole.
 
-using System.Collections.Generic;
-using System.ComponentModel;
-
 namespace Snap.Hutao.Remastered.Service.AI.Settings;
 
 internal sealed class ObservableObjectHierarchyObserver<T, TState> : IDisposable

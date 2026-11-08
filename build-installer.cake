@@ -334,6 +334,15 @@ Task("Compile installer")
     }
 
     Information("Installer compiled successfully.");
+    if (System.IO.File.Exists(System.IO.Path.Combine(installerPublishDir, "BundledImages", "manifest.json")))
+    {
+        p = StartProcess(isccPath, new ProcessSettings
+        {
+            Arguments = $"/dIncludeBundledImages=1 /dMyAppVersion=\"{version}\" {codeSigningCertificatePathArgument}{codeSigningCertificateThumbprintArgument}\"{issFile}\"",
+            WorkingDirectory = repoDir
+        });
+        if (p != 0) { throw new InvalidOperationException($"Cache installer failed ({p})"); }
+    }
     Information($"Output directory: {installerOutputDir}");
 });
 

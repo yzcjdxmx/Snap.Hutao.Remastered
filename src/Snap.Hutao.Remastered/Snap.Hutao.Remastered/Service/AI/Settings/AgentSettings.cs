@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.ComponentModel;
 using Snap.Hutao.Remastered.Core.AI;
 using Snap.Hutao.Remastered.Service.AI.Models;
 

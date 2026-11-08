@@ -7,15 +7,8 @@ using Anthropic.Core;
 using Anthropic.Models.Models;
 using OpenAI;
 using OpenAI.Models;
-using Sentry;
-using Snap.Hutao.Remastered.Core.AI;
-using Snap.Hutao.Remastered.Core.AI.Diagnostics;
 using Snap.Hutao.Remastered.Service.AI.Models;
 using System.ClientModel;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Snap.Hutao.Remastered.Service.AI;
 
@@ -30,31 +23,12 @@ internal sealed class ModelProfileService : IModelProfileService
 
     private static async Task<IReadOnlyList<ModelProfile>> GetModelsCoreAsync(ModelProviderProfile providerProfile, CancellationToken cancellationToken)
     {
-        using SentryDiagnosticSpan span = SentryDiagnostics.StartSpan(SentryOperations.SettingsModelProfilesFetch, "Fetch model list");
-        span.SetTag(SentryTags.AIProvider, providerProfile.ProviderType.Value.ToString());
-
-        try
+        return providerProfile.ProviderType.Value switch
         {
-            IReadOnlyList<ModelProfile> result = providerProfile.ProviderType.Value switch
-            {
-                ModelProviderType.OpenAIChatCompletion or ModelProviderType.OpenAIResponses => await GetOpenAIModelsAsync(providerProfile, cancellationToken),
-                ModelProviderType.Anthropic => await GetAnthropicModelsAsync(providerProfile, cancellationToken),
-                _ => throw new NotSupportedException($"Unsupported model provider type: {providerProfile.ProviderType.Value}"),
-            };
-
-            span.SetData(SentryData.AIModelCount, result.Count);
-            return result;
-        }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-        {
-            span.Finish(SpanStatus.Cancelled);
-            throw;
-        }
-        catch (Exception ex)
-        {
-            span.Finish(ex);
-            throw;
-        }
+            ModelProviderType.OpenAIChatCompletion or ModelProviderType.OpenAIResponses => await GetOpenAIModelsAsync(providerProfile, cancellationToken),
+            ModelProviderType.Anthropic => await GetAnthropicModelsAsync(providerProfile, cancellationToken),
+            _ => throw new NotSupportedException($"Unsupported model provider type: {providerProfile.ProviderType.Value}"),
+        };
     }
 
     private static async Task<IReadOnlyList<ModelProfile>> GetOpenAIModelsAsync(ModelProviderProfile providerProfile, CancellationToken cancellationToken)

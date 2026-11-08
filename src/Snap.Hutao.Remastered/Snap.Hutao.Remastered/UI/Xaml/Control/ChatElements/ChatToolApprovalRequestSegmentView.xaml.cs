@@ -4,7 +4,6 @@
 
 using Microsoft.UI.Xaml.Controls;
 using Snap.Hutao.Remastered.Service.AI.Observables;
-using System.Windows.Input;
 
 namespace Snap.Hutao.Remastered.UI.Xaml.Control.ChatElements;
 

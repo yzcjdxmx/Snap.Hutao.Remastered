@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 // Adapted from Snap.Nicole.
 
-using System;
 using Microsoft.Extensions.AI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;

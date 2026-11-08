@@ -1,17 +1,12 @@
 // Copyright (c) Snap Hutao RP. All rights reserved.
-using Microsoft.Extensions.Logging;
 using Snap.Hutao.Remastered.Model.Entity;
 using Snap.Hutao.Remastered.Web.Hoyolab.Hk4e.Event.GachaInfo;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 using Snap.Hutao.Remastered.Service.GachaLog;
 using Snap.Hutao.Remastered.Service.SpiralAbyss;
 using Snap.Hutao.Remastered.Service.RoleCombat;
 using Snap.Hutao.Remastered.Service.HardChallenge;
-using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace Snap.Hutao.Remastered.Service.AccountInsights;

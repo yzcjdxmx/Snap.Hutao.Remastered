@@ -4,7 +4,6 @@
 // Licensed under the MIT license.
 
 using Microsoft.UI.Windowing;
-using Snap.Hutao.Remastered.Core;
 using Snap.Hutao.Remastered.Core.Property;
 using Snap.Hutao.Remastered.Core.Setting;
 using Snap.Hutao.Remastered.Model;

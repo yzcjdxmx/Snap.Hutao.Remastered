@@ -4,9 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Charts;
 using ChartSamples = Microsoft.UI.Xaml.Controls.Charts.Samples;
 using WinUIChart = Microsoft.UI.Xaml.Controls.Charts.Chart;
-using System;
 using System.Globalization;
-using System.Linq;
 
 using Snap.Hutao.Remastered.Service.AccountInsights;
 

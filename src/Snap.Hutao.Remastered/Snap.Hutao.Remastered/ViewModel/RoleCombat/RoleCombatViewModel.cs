@@ -11,7 +11,6 @@ using Snap.Hutao.Remastered.Service.Notification;
 using Snap.Hutao.Remastered.Service.RoleCombat;
 using Snap.Hutao.Remastered.Service.User;
 using Snap.Hutao.Remastered.UI.Xaml.Data;
-using Snap.Hutao.Remastered.UI.Xaml.View.Dialog;
 using Snap.Hutao.Remastered.UI.Xaml.View.Window;
 using Snap.Hutao.Remastered.ViewModel.Complex;
 using Snap.Hutao.Remastered.ViewModel.User;

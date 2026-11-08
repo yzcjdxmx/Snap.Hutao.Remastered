@@ -8,6 +8,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
 using Snap.Hutao.Remastered.Core;
+using Snap.Hutao.Remastered.Core.Diagnostics;
 using Snap.Hutao.Remastered.Core.Logging;
 using Snap.Hutao.Remastered.Core.Setting;
 using Snap.Hutao.Remastered.Core.Shell;
@@ -18,7 +19,6 @@ using Snap.Hutao.Remastered.Model;
 using Snap.Hutao.Remastered.Service.Navigation;
 using Snap.Hutao.Remastered.Service.Notification;
 using Snap.Hutao.Remastered.Service.Update;
-using Snap.Hutao.Remastered.UI.Xaml.View.Dialog;
 using Snap.Hutao.Remastered.UI.Xaml.View.Window;
 using Snap.Hutao.Remastered.Web;
 using Snap.Hutao.Remastered.Win32;
@@ -288,6 +288,8 @@ public sealed partial class SettingViewModel : Abstraction.ViewModel, INavigatio
     private async Task CheckUpdateAsync()
     {
         SentrySdk.AddBreadcrumb(BreadcrumbFactory.CreateUI("Check update", "SettingViewModel.Command"));
+
+        using SentrySpanScope span = SentrySpanScope.StartCommand(nameof(SettingViewModel));
 
         await taskContext.SwitchToBackgroundAsync();
 

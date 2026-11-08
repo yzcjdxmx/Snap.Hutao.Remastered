@@ -2,9 +2,6 @@
 // Licensed under the MIT license.
 // Adapted from Snap.Nicole.
 
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Snap.Hutao.Remastered.Core.AI.Threading;
 
 internal static class TaskSchedulerExtensions

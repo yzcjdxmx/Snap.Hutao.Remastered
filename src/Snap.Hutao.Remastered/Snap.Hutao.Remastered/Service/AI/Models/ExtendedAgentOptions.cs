@@ -4,11 +4,9 @@
 
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using OpenAI.Chat;
 using Snap.Hutao.Remastered.Service.AI.Compatibility.OpenAIChatCompletion;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Snap.Hutao.Remastered.Service.AI.Models;

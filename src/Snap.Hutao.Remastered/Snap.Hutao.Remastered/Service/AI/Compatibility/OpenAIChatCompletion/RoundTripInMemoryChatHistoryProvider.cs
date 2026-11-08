@@ -7,13 +7,8 @@ using Microsoft.Extensions.AI;
 using Microsoft.Extensions.ObjectPool;
 using Snap.Hutao.Remastered.Core.AI;
 using Snap.Hutao.Remastered.Core.AI.ObjectPool;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Snap.Hutao.Remastered.Service.AI.Compatibility.OpenAIChatCompletion;
 

@@ -1,5 +1,3 @@
-using Snap.Hutao.Remastered.Core.Threading;
-
 namespace Snap.Hutao.Remastered.Test.RuntimeBehavior;
 
 [TestClass]

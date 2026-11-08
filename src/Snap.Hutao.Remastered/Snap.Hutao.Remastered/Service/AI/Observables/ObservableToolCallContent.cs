@@ -4,8 +4,6 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.AI;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Snap.Hutao.Remastered.Service.AI.Observables;
 

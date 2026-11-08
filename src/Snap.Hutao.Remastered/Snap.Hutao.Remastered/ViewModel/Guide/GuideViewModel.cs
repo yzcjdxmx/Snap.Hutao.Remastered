@@ -59,7 +59,7 @@ public sealed partial class GuideViewModel : Abstraction.ViewModel
 
     partial void OnStateChanged(uint value)
     {
-        uint normalized = GuideNavigation.Normalize(value);
+        uint normalized = GuideNavigation.NormalizeResourceStep(value, StaticResourceOptions.PreloadResources);
         if (value != normalized)
         {
             State = normalized;
@@ -364,7 +364,7 @@ public sealed partial class GuideViewModel : Abstraction.ViewModel
     [SuppressMessage("", "SH003")]
     private async Task DownloadStaticResourceAsync()
     {
-        DownloadSummaries = GetUnfulfilledCategoryCollection(serviceProvider);
+        DownloadSummaries = StaticResourceOptions.PreloadResources ? GetUnfulfilledCategoryCollection(serviceProvider) : [];
         skipDownloadRequested = false;
         IsDownloading = true;
 
@@ -425,6 +425,11 @@ public sealed partial class GuideViewModel : Abstraction.ViewModel
         guideReady = true;
         MaterialTheme.Apply(AppOptions.ControlMaterial.Value);
         ApplyGuideState((GuideState)State);
+
+        if (!StaticResourceOptions.PreloadResources)
+        {
+            return true;
+        }
 
         using (IServiceScope scope = serviceProvider.CreateScope())
         {

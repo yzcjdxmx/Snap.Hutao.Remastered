@@ -1,6 +1,3 @@
-using System;
-using System.Text.Json;
-
 namespace Snap.Hutao.Remastered.Test.IncomingFeature;
 
 [TestClass]

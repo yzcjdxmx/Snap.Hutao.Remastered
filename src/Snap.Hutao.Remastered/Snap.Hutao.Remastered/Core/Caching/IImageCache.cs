@@ -3,6 +3,7 @@
 
 using Microsoft.UI.Xaml;
 using Snap.Hutao.Remastered.Core.IO;
+using System.IO;
 
 namespace Snap.Hutao.Remastered.Core.Caching;
 
@@ -15,4 +16,8 @@ public interface IImageCache
     ValueTask<ValueFile> GetFileFromCacheAsync(Uri uri, ElementTheme theme);
 
     void Remove(Uri uriForCachedItem);
+
+    ValueTask StoreFileAsync(string category, string fileName, Stream source, CancellationToken token = default);
+
+    ValueTask<(int Files, long Bytes)> RemoveDuplicateFilesAsync(CancellationToken token = default);
 }

@@ -23,10 +23,13 @@ jobs:
         shell: pwsh
         run: ./scripts/BuildCraftHotkeyIsland.ps1
 
-      # This test reads real CN and global game registry entries, absent on hosted runners.
-      - name: Run upstream tests (excluding installed-game registry inspection)
+      - name: Run complete upstream and personal tests (Debug and Release)
         shell: pwsh
-        run: dotnet test src/Snap.Hutao.Remastered/Snap.Hutao.Remastered.Test/Snap.Hutao.Remastered.Test.csproj --configuration Release --filter "FullyQualifiedName!=Snap.Hutao.Remastered.Test.IncomingFeature.GameRegistryContentTest.GetRegistryContent" --logger "trx;LogFileName=tests.trx"
+        run: |
+          foreach ($configuration in @('Debug', 'Release')) {
+            dotnet test src/Snap.Hutao.Remastered/Snap.Hutao.Remastered.Test/Snap.Hutao.Remastered.Test.csproj --configuration $configuration --logger "trx;LogFileName=tests-$configuration.trx" -- RunConfiguration.TreatNoTestsAsError=true
+            if ($LASTEXITCODE -ne 0) { throw "Tests failed in $configuration" }
+          }
 
       - name: Build personal test MSIX
         shell: pwsh

@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml;
 using Snap.Hutao.Remastered.UI.Xaml.Control;
 using Snap.Hutao.Remastered.UI.Xaml.View.Window;
 using Snap.Hutao.Remastered.ViewModel.Setting;
+using System.Runtime.CompilerServices;
 
 namespace Snap.Hutao.Remastered.UI.Xaml.View.Page;
 
@@ -23,4 +24,6 @@ public sealed partial class SettingPage : ScopedPage
 
     private void OpenGlassControls(object sender, RoutedEventArgs args) => LiquidGlassSettingsWindows.OpenControls();
     private void OpenGlassEffects(object sender, RoutedEventArgs args) => LiquidGlassSettingsWindows.OpenEffects();
+
+    public new SettingViewModel DataContext { get => Unsafe.As<SettingViewModel>(base.DataContext); set => base.DataContext = value; }
 }

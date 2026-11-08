@@ -5,10 +5,7 @@
 using Anthropic;
 using Anthropic.Core;
 using Microsoft.Extensions.AI;
-using Microsoft.Extensions.Logging;
 using OpenAI;
-using OpenAI.Responses;
-using Snap.Hutao.Remastered.Core.AI;
 using Snap.Hutao.Remastered.Service.AI.Compatibility.OpenAIChatCompletion;
 using Snap.Hutao.Remastered.Service.AI.Models;
 using System.ClientModel;

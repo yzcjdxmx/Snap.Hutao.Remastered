@@ -1,0 +1,14 @@
+<Project>
+  <!-- Optional loose files. None avoids MRT language/scale qualification of category names
+       such as Bg. MSIX consumes these files through ComputeFilesToPublish. -->
+  <ItemGroup Condition="'$(BundledImagesSource)' != ''">
+    <None Include="$(BundledImagesSource)\**\*">
+      <Link>BundledImages\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+  <Target Name="ValidateBundledImageSnapshot" BeforeTargets="PrepareForBuild" Condition="'$(BundledImagesSource)' != ''">
+    <Error Condition="!Exists('$(BundledImagesSource)\manifest.json')" Text="BundledImagesSource must point to the prepared snapshot containing manifest.json." />
+  </Target>
+</Project>

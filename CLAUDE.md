@@ -15,10 +15,13 @@
 - **What it is** — Snap Hutao (胡桃工具箱): a C# WinUI 3 desktop application that enhances the
   Genshin Impact experience on Windows without modifying the game client. This repository is the
   **remastered** fork of DGP Studio's upstream (`SnapHutaoRemasteringProject/Snap.Hutao.Remastered`).
-- **Runtime** — **.NET 11**. [`global.json`](global.json) pins SDK `11.0.100-rc.2`
-  (`rollForward: latestFeature`, `allowPrerelease: true`). ⚠️ that file is currently only in the
-  working tree, **not committed** to `dev` (TODO #18) — until it is, a clean clone builds with
-  whatever SDK is installed.
+- **Runtime** — **.NET 11**. There is deliberately **no `global.json`**: the build uses whatever
+  .NET 11 SDK is installed (any `11.x` feature band and patch), so a contributor is never forced
+  onto one particular SDK build. CI follows the same policy and installs only the major version
+  (`actions/setup-dotnet@v6`, `dotnet-version: 11` in all four workflows that build). **Do not
+  reintroduce `global.json` to pin the SDK** — a pin fails the build on machines that carry a
+  different feature band, while the `net11.0*` target frameworks already express the only hard
+  requirement (an 11.x SDK).
 - **Target frameworks** — main app
   [`net11.0-windows10.0.26100.0`](src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/Snap.Hutao.Remastered.csproj)
   (`x64` only, WinUI 3, `SelfContained`), test project
@@ -28,7 +31,7 @@
   ([`Package.appxmanifest`](src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/Package.appxmanifest),
   [`Package.development.appxmanifest`](src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/Package.development.appxmanifest)).
   The public *support statement* (Windows 11 22H2+, Windows 10 22H2 with the Jan-2025 update) is
-  policy, not enforced by the manifest — see TODO #7.
+  policy, not enforced by the manifest — see TODO #5.
 - **Packaging** — MSIX (`Package.appxmanifest` for Release, `Package.development.appxmanifest` for
   Debug; single-project MSIX tooling). The app also runs **unpackaged**, detected at runtime
   (`App.xaml.cs`: `TryRegisterUnpackagedNotification`, `TryDetectUnpackagedActivation`). Any
@@ -91,12 +94,19 @@ dotnet test src/Snap.Hutao.Remastered/Snap.Hutao.Remastered.slnx --filter "Fully
   needs another `<Compile Include>` link. Windows dependencies must either be absent or supplied
   by explicit test doubles, as in `UserInitializationThreadingTest` (real initialization service,
   delayed HTTP responses and a dedicated UI-consumer thread; no real XAML controls).
-- **Prerequisites** — the .NET SDK pinned by `global.json`; the workloads and the Single-project MSIX
+- **Prerequisites** — a **.NET 11 SDK** on the machine (no `global.json`, so any `11.x` feature band
+  works; CI installs major `11`); the workloads and the Single-project MSIX
   packaging extension in `.vsconfig` (`ManagedDesktop`, `NativeDesktop`, `Universal`) for
   packaging/interop work; the WebView2 Runtime on the target machine (the app hosts WebView2 windows
   and `Microsoft.Web.WebView2` is a direct dependency).
 
 ## 3. Repository Layout
+
+Optional image snapshots are prepared by `scripts/Prepare-BundledImages.ps1` and
+included through `Build/BundledImages.targets` using `BundledImagesSource`.
+MSIX and Setup with bundled images skip resource preloading; Setup without images
+retains the existing ZIP guide. See [bundled image distribution](docs/bundled-images.md)
+for the immutable installation/writable cache rules and CI variables.
 
 ```
 .github/                       Issue templates, 8 workflows (alpha/canary/publish/signpath/…), dependabot.yml,
@@ -142,7 +152,7 @@ src/
   shared imports may be declared (`ImplicitUsings` is disabled).
 - [`src/Snap.Hutao.Remastered/.editorconfig`](src/Snap.Hutao.Remastered/.editorconfig) — one level
   **above** the app project, so it also applies to the test project. 200 lines, all severities
-  `suggestion`/`none` (no `error`, no `warning` for StyleCop) — see TODO #5.
+  `suggestion`/`none` (no `error`, no `warning` for StyleCop) — see TODO #3.
 - [`settings.xamlstyler`](src/Snap.Hutao.Remastered/settings.xamlstyler) — XAML formatting rules.
 - [`BannedSymbols.txt`](src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/BannedSymbols.txt) — banned
   APIs (`List<T>.ForEach`, `ContentDialog.ShowAsync`, `UIElement.RasterizationScale`).
@@ -233,7 +243,7 @@ the build fails with `CS9275`); write a normal constructor in that case.
 - **Collection views expose both notification contracts** — `IAdvancedCollectionView<T>` carries
   `INotifyCollectionChanged` as well as WinRT vector events. Publish filtered/sorted view indices
   and the actual removed item; an ItemsRepeater consuming a bindable adapter must observe removals.
-- **Two ViewModel base classes exist** (see TODO #4):
+- **Two ViewModel base classes exist** (see TODO #2):
   - [`ViewModel/Abstraction/ViewModel.cs`](src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/ViewModel/Abstraction/ViewModel.cs)
     — full lifecycle: `Initialization` TCS, `Resurrect()`, `Uninitialize()`, `CriticalSection`,
     `CancellationToken`, `IsViewUnloaded`, `DeferContentLoader`, `[Command("LoadCommand")] LoadAsync`
@@ -252,10 +262,68 @@ the build fails with `CS9275`); write a normal constructor in that case.
 
 ### 5.3 Page / window lifetime
 
-- **Material controls own their theme brushes** — a visible liquid-glass control resolves its
-  default `Foreground` through its own style. Do not bind that value to a detached native peer;
-  forwarding a resolved brush bypasses the visible control's theme resource expression. Preserve
-  explicit caller colors separately. `ThemeSynchronization` still synchronizes inactive peers.
+- **Material switching keeps one control instance** — every materialized control is a
+  `WinUI.LiquidGlass` type that derives from the WinUI control it replaces (`LiquidGlassButton :
+  Button`, `LiquidGlassTextBox : TextBox`, …), marked with
+  `shuxcth:ControlMaterialState.IsManaged="True"`. `UI/Xaml/Control/Theme/MaterialAppearance.cs`
+  swaps its appearance: in the default material it assigns `MaterialNative{Kind}Style` (from
+  `MaterialNative.xaml`, `BasedOn` the framework default style) when the element has no caller
+  style, and clears the glass brush; in the liquid-glass material it restores the caller style and
+  the glass brush. **Do not** reintroduce `cwc:SwitchPresenter` material trees, mirrored
+  `x:Bind …Glass` properties, `ThemeSynchronization`, or a second control instance.
+- **Mirror only caller-defined theme brushes into helper controls** — `MaterialCardButton` hosts the
+  real `Button` that carries the home-card body, so it forwards the card's `Foreground` to that
+  button. Copying the host's *resolved* `Foreground` (its default, or a theme brush resolved while
+  the card is still detached from its window) writes a local value that outranks the button style's
+  `{ThemeResource ButtonForeground}` and freezes the card text in the theme that happened to be
+  active at construction — black text on a dark card when the system theme is light. Forward a color
+  only when the caller set one (local value or style setter); otherwise `ClearValue` so the helper
+  control keeps its own theme expression.
+- **Native styles must not override the font** — a `MaterialNative{Kind}Style` stays based on the
+  framework default style and must not set `FontFamily`. The glass default styles use the framework
+  font, so forcing `MiSans` only in the native material changed control content fonts when the
+  material switched. A caller style that genuinely wants another font still sets it locally.
+  **The framework font is MiSans, and only `FontStyle.xaml` makes it so:** its
+  `ContentControlThemeFontFamily` / `PivotHeaderItemFontFamily` aliases are what every framework
+  template (button, ComboBox, NavigationViewItem, MenuFlyoutItem, `TitleBar`) reads. Deleting those
+  aliases (as the 2026-10-24 material rewrite did) leaves the `TextBlock` styles on MiSans but
+  silently switches *control content* to Segoe UI / Microsoft YaHei UI — both materials inherit the
+  mismatch, so it is a global font regression, not a material bug.
+- **Glass pointer motion lives on the control, not the template** — `PointerMotionHelper` writes
+  `Scale`/`Translation` on the control element itself, so swapping in a native style does not stop a
+  glass button's float/sway. `MaterialAppearance` neutralizes `RestScale`, `PointerOverScale`,
+  `PressedScale`, `FocusedScale`, `Elasticity` and `PointerDisplacement`, stops the composition
+  animations in the native material, and restores the values captured at load when glass returns.
+- **Captured appearance survives an unload** — `MaterialAppearance` keeps the caller style and the
+  control's own glass brush in a `ConditionalWeakTable` keyed by the control and only removes the
+  control from the refresh set in `Release`. Re-capturing on the next `Loaded` would record the
+  `MaterialNative{Kind}Style` that `ApplyCore` assigned as if the caller had set it, and the control
+  could never return to glass. An `Unloaded` that arrives after a newer `Loaded` is ignored with an
+  `IsLoaded` guard, matching the guard in the glass visual model
+  (`microsoft/microsoft-ui-xaml#8402`).
+- **The glass brush lives in `Background`** — a liquid-glass control assigns its `GlassBrush` to its
+  own `Background` in its constructor and its glass template only forwards that local value. A
+  template that forwards `Background` therefore paints the composition brush (or nothing) instead
+  of the theme brush, which is what made controls look blank outside the glass material. A caller
+  style that declares `Background` (accent/danger/setting styles) keeps its own fill in both
+  materials; a caller-assigned local `Background` binding is never overwritten.
+- **`LiquidGlassToggleSwitch` is not a `ToggleSwitch`** — it derives from `ToggleButton`, so
+  `ToggleSwitch`-typed `Style`s and `BehaviorBase<ToggleSwitch>`/`BehaviorBase<…>` behaviors do not
+  apply (a wrong behavior base throws `XamlParseException` while the page loads, and the frame then
+  silently stays on the previous page). Use `MaterialNativeToggleSwitchStyle` plus the
+  `Checked`/`Unchecked` events, and target behaviors at a base type the glass control satisfies
+  (see `ToggleSwitchHeaderHitTestVisibleBehavior`).
+- **The native toggle template must not reuse the glass element names** — `KubeToggleSwitchVisualModel`
+  looks up `SwitchKnob`, `SwitchKnobSurface` and `Track` by exact name on every template change.
+  Naming the native template's elements the same way lets the glass model attach its knob
+  translation/scale and composition track to the native switch, which leaves a glass-like surface
+  behind in the default material. Prefix the native names (`NativeSwitchKnob`, …). `ToggleButton`
+  never drives the native `ToggleSwitch`'s `ToggleStates`, so the knob movement lives in the
+  `CommonStates` Storyboards as a `TranslateTransform.X` animation.
+- **`shuxcth:MaterialSwap` hosts the kinds that cannot be restyled in place** — `Slider`,
+  `PasswordBox` and `SearchBox` glass types hide the native thumb or paint an inner control, so
+  those sites declare `MaterialSwap.Native` and `MaterialSwap.Glass` children. Keep event handlers
+  and code-behind name matching (`ReferenceEquals(sender, X)` pairs) on both instances.
 - Pages derive from
   [`UI/Xaml/Control/ScopedPage.cs`](src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/UI/Xaml/Control/ScopedPage.cs).
   `Loading` creates an `IServiceScope` from `XamlRoot.XamlContext().ServiceProvider`; a page's
@@ -301,7 +369,7 @@ the build fails with `CS9275`); write a normal constructor in that case.
   — singleton (`[Service(ServiceLifetime.Singleton, typeof(IMetadataService))]`), exposes
   `InitializeAsync()`, `FromCacheOrFileAsync<T>(MetadataFileStrategy, CancellationToken)` and the
   underlying `IMemoryCache`.
-- `serviceProvider.GetRequiredService<IMetadataService>().InitializeAsync()` at startup; pages then
+- `serviceProvider.GetRequiredService<IMetadataService>().InitializeInternalAsync()` at startup; pages then
   read through the `GetContextAsync` extensions
   (`Service/Metadata/ContextAbstraction/MetadataServiceContextExtension.cs`, dictionary/list caches —
   see the PERF items in `CODE_REVIEW.md`).
@@ -311,8 +379,6 @@ the build fails with `CS9275`); write a normal constructor in that case.
   [`Service/Network/NetworkRetryCoordinator.cs`](src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/Service/Network/NetworkRetryCoordinator.cs)
   (re-runs startup work after the network recovers — this one is the best-quality recent code in
   the repo and a good template).
-- ⚠️ `IMetadataServiceInitialization` still exposes the mechanically renamed
-  **`InitializepublicAsync`** — a defect, not a convention (TODO #1).
 
 ### 5.6 Plugin system
 
@@ -333,6 +399,14 @@ the build fails with `CS9275`); write a normal constructor in that case.
   `PluginsChanged` event (raised on the UI thread), because a page may be open before the background
   scan finishes. `GetAllPluginInfos()` = installed (enabled and disabled);
   `GetAllPlugins()` = live instances only.
+- **Enable/disable commits after the plugin hook** — `OnEnable`/`OnDisable` run *before* the package
+  move and before `PluginInfo.IsEnabled` changes, so a hook that throws leaves the plugin exactly as
+  the manager describes it (enabled and loaded) instead of half-applied. `PluginInfo` is an
+  `ObservableObject` bound by `PluginPage`, so its observable properties (`IsEnabled`, `IconPath`)
+  are only written on the main thread — `SetPluginEnabledAsync`/`SetPluginIconPathAsync` — because
+  enabling runs past `await … ConfigureAwait(false)`; assigning them there raised `PropertyChanged`
+  on a pool thread and faulted the binding (review N1 in
+  [`docs/code-review-contributors-2026-10.md`](docs/code-review-contributors-2026-10.md)).
 - Plugins receive the **root** service provider through `PluginContext` (full trust — document it
   when writing plugin docs).
 - The SDK ships as a NuGet package built from
@@ -367,11 +441,69 @@ the build fails with `CS9275`); write a normal constructor in that case.
 - `ValueTask` is preferred over `Task` where a synchronous completion is common; the generator's own
   analyzer (`SH003`) enforces this.
 
+### 5.9 Sentry performance instrumentation
+
+- A desktop app has no incoming request, so `TracesSampleRate = 1.0` alone produces no performance
+  data: every measured operation must start a transaction explicitly.
+  [`Core/Diagnostics/SentrySpanScope.cs`](src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/Core/Diagnostics/SentrySpanScope.cs)
+  is the only wrapper.
+  - `StartTransaction(name, operation)` — page load, startup step, migration.
+  - `StartCommand(typeName)` — a UI command; names the transaction `<Type>.<Method>` with operation
+    `ui.command`.
+  - `StartOperation(name, operation)` — a service entry point that can be a child of an active
+    command or the transaction root when a background job calls it.
+  - `StartChild(operation, description)` — nested work; **no-op when no transaction is active**, so
+    HTTP and SQL instrumentation never creates a transaction per request/statement.
+- Instrumentation outside view models:
+
+  | Area | Where | Span |
+  |---|---|---|
+  | Page load | `ViewModel.RunLoadAsync`, `UserViewModel.LoadAsync`, the five `ViewModelSlim` `LoadAsync` overrides | `<ViewModel>.Load` / `ui.load` |
+  | Startup redirect | `Bootstrap.Main`, `PrivateNamedPipeClient` | `app.startup.redirect`, `pipe.*` |
+  | HTTP | `SentryTracingHttpMessageHandler` (outermost client handler) | `http.client` |
+  | SQL | `SentryDbCommandInterceptor` (attached in `AddDatabase`) | `db.sql` |
+  | Repository / save | `RepositoryExtension.Execute`, `DbSetExtension` | `db.repository`, `db.save` |
+  | EF migration | `ServiceCollectionExtension.AddDatabase` | `db.migration` |
+  | Business services | Metadata, Git, Update, GachaLog, Achievement, User, DailyNote, game-record refresh, Plugin, Inventory, Cultivation, Backpack, game launch/package | `*.refresh` and similar |
+
+- Span data must not contain tokens, cookies, query strings or absolute user paths. File names and
+  entity names are fine; raw SQL (`db.statement`) carries parameter placeholders, not values.
+- Do not wrap a wait the user controls (game process lifetime, an open dialog) in a transaction;
+  start the span after the interaction, around the bounded work. Cheap synchronous commands (copy,
+  navigate, filter) intentionally stay untraced.
+
 ## 6. Coding Conventions (rules, not descriptions)
 
 - **MVVM first** — UI logic in ViewModels; code-behind only for view mechanics. No business
   decisions in `Page`/`Window` code-behind (`CODE_REVIEW.md#ARCH-04`).
+- **`x:Bind` starts at a typed `DataContext`** — a view that binds its view model declares one
+  shadow property in its code-behind
+  (`public new FooViewModel DataContext { get => Unsafe.As<FooViewModel>(base.DataContext); set => base.DataContext = value; }`,
+  with `using System.Runtime.CompilerServices;` in every such view — the getter does not use a checked cast),
+  and XAML writes `{x:Bind DataContext.Bar, Mode=OneWay}`. The shadow does **not** replace the
+  dependency property: `DataContext` is still the DP, so one-way tracking keeps working through
+  `RegisterPropertyChangedCallback(DataContextProperty)` and `DataContext` may be assigned later
+  (pages assign it in `Loading`). Never write `x:Bind ((vm:Type)DataContext).Bar` and never bind the
+  view model through `{Binding}` — the cast is per binding-site noise that this property removes.
+  (Element casts such as `((PivotItem)Pivot.SelectedItem).Tag` are a different case and stay.)
+  The property **cannot** move into a generic base such as `ScopedPage<TViewModel>`: the XAML root
+  tag *is* the generated partial's base-class declaration, so a code-behind base other than the tag
+  fails with `CS0263`, and WinUI XAML has no `x:TypeArguments` to spell `ScopedPage<FooViewModel>`
+  in the tag (verified; generic base members are also invisible to `x:Bind`).
+  A **source generator** cannot emit it either: `x:Bind` resolves members of the x:Class root from a
+  type snapshot that excludes generator output, so `{x:Bind Vm.Bar}` fails with `WMC1110 … not found
+  on type '<View>'` while the same member on the *view model* type resolves fine (verified on a
+  throwaway WinUI project; a build-time `*.g.cs` written into `obj` and added to `@(Compile)` does
+  work, but that extra build step was judged not worth it — the 30 hand-written lines stay).
 - **Async for I/O**, no UI-thread blocking, no `.Result`/`.Wait()` without a timeout.
+- **Replacing a persisted collection is parse-first and transactional** — build the complete new
+  row set first, then swap it in one transaction
+  ([`BackpackRepository.ReplaceBackpackItemRangeByArchiveId`](src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/Service/Backpack/BackpackRepository.cs)
+  is the template). Never delete and insert through separate scopes: a failure in between leaves the
+  user with an empty or partial collection and no error. A refresh that replaces stored data must
+  also return a truthful result when its source cannot be read — `RefreshByEmbeddedYae` parses the
+  Yae packet first and returns `false` (UI warning, old archive intact) instead of persisting a
+  partial parse (review N3).
 - **Guard clauses** — `ArgumentNullException.ThrowIfNull(x)` (237 uses) and
   `Verify.Operation(condition, "why")` (14 uses; `Verify`/`Requires` come from
   `Microsoft.VisualStudio.Validation` via `global using Microsoft;`). Prefer these over `!`,
@@ -397,13 +529,15 @@ the build fails with `CS9275`); write a normal constructor in that case.
   XAML. For implementation details, `internal`/`private` are acceptable and preferred (the
   generator's `SH001` even demands `internal` for non-contract types).
   **Never perform a repository-wide visibility rewrite** — the last one (a single commit touching
-  2017 files) is what produced `InitializepublicAsync` and 12 `SH001` suppressions
-  (`CODE_REVIEW.md#BUG-10`).
+  2017 files) produced the rename damage tracked by `CODE_REVIEW.md#BUG-10` and 12 `SH001`
+  suppressions.
 - **`unsafe`** is allowed for Win32 interop and hot paths only; keep it inside a small, documented
   API surface.
 - **Public API naming** — identifiers must read as English words. `public` must never appear inside
-  an identifier (`Readpublic`, `WritepublicAsync`, `InitializepublicAsync` are all rename damage,
-  `BUG-10`). When refactoring, prefer `Core`/`Async` suffixes.
+  an identifier; that is the `BUG-10` rename damage (the former `Readpublic`/`WritepublicAsync`/
+  `InitializepublicAsync` names now read `ReadInternal`/`WriteInternalAsync`/
+  `InitializeInternalAsync`). When refactoring implementation helpers, prefer a descriptive suffix
+  (`Internal`, `Core`, `Async`) over a visibility keyword.
 
 ## 7. Working in This Repo
 
@@ -421,8 +555,8 @@ the build fails with `CS9275`); write a normal constructor in that case.
   in the app (F5 or the built exe). State explicitly what you did and did not run.
 - **Keep edits scoped** — one `CODE_REVIEW.md` ID per PR where practical; reference it in the PR
   description (`Refs BUG-03`) and link issues with `Fixes #123`.
-- **Do not** change `.appxmanifest` capabilities, downgrade the SDK/`LangVersion`, or replace
-  existing services with new singletons/global state.
+- **Do not** change `.appxmanifest` capabilities, downgrade the SDK/`LangVersion`, reintroduce a
+  `global.json` SDK pin (see §1), or replace existing services with new singletons/global state.
 - **Documentation is part of the change** — if you change a fact this file asserts (framework
   version, branch, attribute, command name, threshold), update this file in the same PR, and append
   a row to `CODE_REVIEW.md` §14.
@@ -451,12 +585,22 @@ ID — do not "fix" these by documenting them as if they were intended.
 | 15 | `ScopedPage` creates its `IServiceScope` only on the first `Loading` (handler unsubscribed) and disposes a `CancellationTokenSource` field it keeps handing out — a second activation throws | `UI/Xaml/Control/ScopedPage.cs` | BUG-05 |
 | 16 | Legacy scope plumbing: 272 constructors/partial ctors take `IServiceProvider`, 171 `CreateScope()` calls, 4 `*ScopeContext` bags, 12 `Ioc.Default` uses | repo-wide | ARCH-01, ARCH-02 |
 | 17 | `.github/copilot-instructions.md` and `CONTRIBUTING.md` had pre-rename paths / wrong branch names (`src/Snap.Hutao`, `Snap.Hutao.sln`, `develop`, `dev-master`); corrected on 2026-10-11, keep them in sync | `.github/copilot-instructions.md`, `CONTRIBUTING.md` | ENG-10 |
-| 18 | `global.json` (the SDK pin referenced in §1) and `CODE_REVIEW.md` exist only as untracked files in the working tree — commit them, otherwise the pin and this review trail do not exist for a clean clone | `global.json`, `CODE_REVIEW.md` | — |
 
 ## 9. Changelog of this document
 
 | Date | Change |
 |---|---|
+| 2026-11-08 | Added Sentry performance instrumentation (§5.9): every page load and the startup named-pipe redirect start a transaction, and HTTP, SQL, repository/save, EF migration, metadata/git/update/gacha/achievement/user/daily-note/record/plugin/inventory/cultivation/backpack/game-launch/game-package work is captured as nested spans through `SentrySpanScope`; documented the transaction-vs-child policy and the "no user-controlled waits in a transaction" rule. |
+| 2026-11-08 | All 30 typed `DataContext` shadow properties in the binding views read the base dependency property through `Unsafe.As<T>` instead of a checked `(T)base.DataContext` cast, and every such view imports `System.Runtime.CompilerServices`; documented in §6. |
+| 2026-11-08 | `MaterialCardButton` no longer copies the host's resolved `Foreground` onto its inner buttons as a local value; it forwards only a caller-defined color and otherwise clears the local value, so home-card text keeps `ButtonForeground`'s theme expression instead of the application theme captured at construction (black text on dark cards). Documented the rule in §5.3. |
+| 2026-10-31 | Removed the `global.json` SDK pin (`chore: do not use global.json to control dotnet version`) and dropped TODO #18: the build uses the installed .NET 11 SDK, CI installs major `11`, and §1/§2/§7 now forbid reintroducing a pin. |
+| 2026-10-31 | Restored the pre-rename names `InitializeInternalAsync` (metadata initialization) and `ReadInternal`/`WriteInternal`/`FlushInternal` (Zstandard streams), removed TODOs #1/#2 and renumbered the drift table; §5.5 no longer records the rename defect. |
+| 2026-10-31 | Restored the `ContentControlThemeFontFamily` / `PivotHeaderItemFontFamily` → `MiSans` aliases and the MiSans fallback in `CascadiaMonoAndMiSans` that the 2026-10-24 material rewrite deleted; documented in §5.3 that those aliases are the only thing that makes framework control content MiSans. |
+| 2026-10-25 | Kept captured material appearance across unload/reload (`ConditionalWeakTable`) and ignored stale `Unloaded` events; removed the ToggleButton border/padding from the native toggle-switch template and bound its header through the control's Content alias; gave the native toggle its own element names and restored the knob `TranslateTransform` slide animation; made native styles stop overriding `FontFamily`; synchronized both `MaterialSwap` slider instances in the reliquary score dialog; neutralized `PointerMotionHelper` scale/translation and pointer lighting in the native material and restored them on glass; documented all of it in §5.3. |
+| 2026-10-24 | Backpack refresh now parses before it writes, reports a parse failure as `false` (warning + untouched archive) instead of success, and replaces stored items in one transaction; documented the parse-first/transactional rule in §6 (review N3). |
+| 2026-10-24 | Plugin enable/disable now commits after the plugin hook (`OnEnable`/`OnDisable` → package move → `IsEnabled`), and every `PluginInfo` observable write goes through a main-thread helper; documented the contract in §5.6 (review N1). |
+| 2026-10-24 | Replaced the cwc:SwitchPresenter material trees (317 blocks) with single glass instances plus MaterialAppearance/MaterialNative.xaml style-and-background switching; MaterialSwap for slider/password/search; documented the glass-brush, caller-background and ToggleSwitch/behavior rules in §5.3. |
+| 2026-10-24 | Removed the 921 `x:Bind ((vm:Type)DataContext)` casts: every binding view now declares one typed `DataContext` shadow property (§6); documented that `DataContext` stays a dependency property so one-way tracking is unchanged. |
 | 2026-10-20 | Enabled default R2R for Debug and Release; connected the SDK-selected images to local runnable output and MSIX deployment, switched all Cake packaging inputs to publish output, and added final-image header validation. |
 | 2026-10-20 | Separated JSON wire policy from reflection, added generated infrastructure/metadata collection contracts, static enum converters, typed ID/HTTP metadata APIs, and finite cultivation navigation. |
 | 2026-10-20 | Adopted source-generated settings/database JSON and EF's compiled model; preserved plugin/script support, storage formats, and migrations. Removed extra experiment scripts; retained optional AOT diagnostics. |

@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 // Adapted from Snap.Nicole.
 
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace Snap.Hutao.Remastered.UI.Xaml.Control.Markdown;

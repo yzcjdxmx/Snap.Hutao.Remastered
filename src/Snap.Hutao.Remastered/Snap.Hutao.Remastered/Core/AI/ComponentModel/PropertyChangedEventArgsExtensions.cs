@@ -2,8 +2,6 @@
 // Licensed under the MIT license.
 // Adapted from Snap.Nicole.
 
-using System.ComponentModel;
-
 namespace Snap.Hutao.Remastered.Core.AI.ComponentModel;
 
 internal static class PropertyChangedEventArgsExtensions

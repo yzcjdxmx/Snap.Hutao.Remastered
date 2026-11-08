@@ -1,17 +1,11 @@
 // Copyright (c) Snap Hutao RP. All rights reserved.
-using Microsoft.Extensions.Logging;
 using Snap.Hutao.Remastered.Service.GachaLog;
 using Snap.Hutao.Remastered.Service.Metadata.ContextAbstraction;
 using Snap.Hutao.Remastered.ViewModel.GachaLog;
 using Snap.Hutao.Remastered.Model.Intrinsic;
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
-using System.Linq;
-using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 
 using Snap.Hutao.Remastered.Service.AccountInsights;
 

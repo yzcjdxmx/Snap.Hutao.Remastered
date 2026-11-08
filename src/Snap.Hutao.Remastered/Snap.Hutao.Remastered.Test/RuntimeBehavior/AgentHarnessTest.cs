@@ -1,11 +1,8 @@
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using Snap.Hutao.Remastered.Service.AI.Models;
 using Snap.Hutao.Remastered.Service.AI.Observables;
-using Snap.Hutao.Remastered.Service.AI.Settings;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.ClientModel.Primitives;

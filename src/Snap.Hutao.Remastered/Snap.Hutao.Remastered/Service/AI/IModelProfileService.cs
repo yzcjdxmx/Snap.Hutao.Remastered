@@ -3,9 +3,6 @@
 // Adapted from Snap.Nicole.
 
 using Snap.Hutao.Remastered.Service.AI.Models;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Snap.Hutao.Remastered.Service.AI;
 

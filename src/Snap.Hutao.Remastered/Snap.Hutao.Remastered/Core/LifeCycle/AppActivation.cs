@@ -301,7 +301,7 @@ public sealed partial class AppActivation : IAppActivation, IAppActivationAction
             await Task.WhenAll(
             [
                 serviceProvider.GetRequiredService<HutaoUserOptions>().InitializeAsync().AsTask(),
-                serviceProvider.GetRequiredService<IMetadataService>().InitializepublicAsync().AsTask(),
+                serviceProvider.GetRequiredService<IMetadataService>().InitializeInternalAsync().AsTask(),
                 serviceProvider.GetRequiredService<IPluginService>().LoadAllPluginsAsync()
             ]).ConfigureAwait(false);
 
@@ -414,7 +414,7 @@ public sealed partial class AppActivation : IAppActivation, IAppActivationAction
         // If the guide is completed, we check if there's any unfulfilled resource category present.
         if (UnsafeLocalSetting.Get(SettingKeys.GuideState, GuideState.Language) >= GuideState.StaticResourceBegin)
         {
-            if (StaticResource.IsAnyUnfulfilledCategoryPresent())
+            if (serviceProvider.GetRequiredService<StaticResourceOptions>().PreloadResources && StaticResource.IsAnyUnfulfilledCategoryPresent())
             {
                 UnsafeLocalSetting.Set(SettingKeys.GuideState, GuideState.StaticResourceBegin);
             }

@@ -3,11 +3,7 @@
 // Adapted from Snap.Nicole.
 
 using Microsoft.Extensions.AI;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Snap.Hutao.Remastered.Service.AI.Compatibility.OpenAIChatCompletion;
 
