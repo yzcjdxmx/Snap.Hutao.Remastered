@@ -65,5 +65,5 @@ Write-Output "Built $outputName from $revision; native key matching and 7.2 rewa
 
 # Match the separate upstream 7.1 and 7.2 delivery modules.
 Build-CraftModule '270016179ea5c01ad9b76ea9331739c200ac3eb7' 'CraftModifiersIsland.dll'
-Build-CraftModule 'e309041f5a304b4bcb9090f63ae203dc7520b99c' 'CraftModifiersIsland_7.2.0.dll' $true
+Build-CraftModule '4714fc837c09af701e8219d8f8953bcd935e7d0d' 'CraftModifiersIsland_7.2.0.dll' $true
 

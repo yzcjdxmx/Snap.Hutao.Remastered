@@ -107,6 +107,9 @@ public static class SettingKeys
     public const string DailyNoteReminderNotify        = "Snap::Hutao::DailyNote::ReminderNotify";
     public const string DailyNoteSilentWhenPlayingGame = "Snap::Hutao::DailyNote::SilentWhenPlayingGame";
     public const string DailyNoteWebhookUrl            = "Snap::Hutao::DailyNote::Webhook::Url";
+    public const string DailyNoteTileBackgroundAvatarId = "Snap::Hutao::DailyNote::Tile::BackgroundAvatarId";
+    public const string DailyNoteTileBackgroundUid      = "Snap::Hutao::DailyNote::Tile::BackgroundUid";
+    public const string DailyNoteTileMsixHintShown      = "Snap::Hutao::DailyNote::Tile::MsixHintShown";
 
     // Geetest
     public const string GeetestCustomCompositeUrl = "Snap::Hutao::Geetest::CustomCompositeUrl";
@@ -160,6 +163,7 @@ public static class SettingKeys
     public const string LaunchWeakMapCheck                               = "Snap::Hutao::Game::Island::OpenMap::WeakCheck";
     public const string LaunchFastSkipTalk                               = "Snap::Hutao::Game::Island::Dialogue::SkipCooldown::Remove";
     public const string LaunchRedirectCatherine                          = "Snap::Hutao::Game::Island::DailyCommission::Catherine::Redirect";
+    public const string LaunchLegacyPaimonMenu                           = "Snap::Hutao::Game::Island::PaimonMenu::Legacy";
     public const string LaunchUsingOverlay                               = "Snap::Hutao::Game::Overlay";
     public const string LaunchOverlaySelectedCatalogId                   = "Snap::Hutao::Game::Overlay::CatalogId";
     public const string LaunchOverlayWindowIsVisible                     = "Snap::Hutao::Game::Overlay::Visible";

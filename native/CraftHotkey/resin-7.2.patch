@@ -1,28 +1,68 @@
 diff --git a/src/Snap.Hutao.Remastered.UnlockerIsland/hook/Hooks.cpp b/src/Snap.Hutao.Remastered.UnlockerIsland/hook/Hooks.cpp
-index 96c8a2f..1d560e2 100644
+index d819099..1306efe 100644
 --- a/src/Snap.Hutao.Remastered.UnlockerIsland/hook/Hooks.cpp
 +++ b/src/Snap.Hutao.Remastered.UnlockerIsland/hook/Hooks.cpp
-@@ -2,6 +2,7 @@
+@@ -1,6 +1,7 @@
+ ﻿#include "Hooks.h"
  
  #include "../framework.h"
- #include "../function/HooksShared.h"
 +#include "ResinListOffset.h"
+ #include "../function/HooksShared.h"
  #include "../function/FovOverride.h"
  #include "../function/DisablePlayerPerspective.h"
- #include "../function/DisablePlayerDiveMosaic.h"
-@@ -252,10 +253,12 @@ static void ResolveOffsetsFromPatterns(HookFunctionOffsets& offsets)
+@@ -182,35 +183,15 @@ DWORD ScanPlayerDiveMosaic()
+ // ===================================================================
+ static DWORD FindResinListFieldOffset(LPVOID function)
+ {
+-    if (function == nullptr)
+-    {
+-        return 0;
+-    }
+-
+-    const auto* code = (const uint8_t*)function;
+-
+     __try
+     {
+-        for (int i = 0; i + 11 <= 0x60; ++i)
+-        {
+-            // mov r64, [rbx+disp32]：REX.W + 8B + modrm(mod=10, rm=011)
+-            // 紧跟着是 test rcx,rcx 和 je（0F 84 rel32 或 74 rel8 都认）
+-            if (code[i] == 0x48 && code[i + 1] == 0x8B && (code[i + 2] & 0xC7) == 0x83 &&
+-                code[i + 7] == 0x48 && code[i + 8] == 0x85 && code[i + 9] == 0xC9 &&
+-                (code[i + 10] == 0x0F || code[i + 10] == 0x74))
+-            {
+-                DWORD displacement = 0;
+-                memcpy(&displacement, code + i + 3, sizeof(displacement));
+-                return displacement;
+-            }
+-        }
++        // Keep the 7.2 instruction and offset validated in the personal build.
++        return ResinListOffset::Read(static_cast<const unsigned char*>(function), 0x2E);
+     }
+     __except (EXCEPTION_EXECUTE_HANDLER)
+     {
+         return 0;
+     }
+-
+-    return 0;
+ }
+ 
+ // ===================================================================
+@@ -355,13 +336,11 @@ static void ResolveOffsetsFromPatterns(HookFunctionOffsets& offsets)
      if (offsets.SetupResinList != 0)
      {
          auto* funcAddr = GetFunctionAddress(offsets.SetupResinList);
 -        if (funcAddr)
--            offsets.ResinList = Scanner::ReadFieldOffset(funcAddr, 0x1A);
-+        // Match the published 7.2 module, not the stale public-source 0x1A.
-+        offsets.ResinList = ResinListOffset::Read(
-+            reinterpret_cast<const unsigned char*>(funcAddr), 0x2E);
++        offsets.ResinList = FindResinListFieldOffset(reinterpret_cast<LPVOID>(funcAddr));
 +        if (offsets.ResinList == 0)
+         {
+-            offsets.ResinList = FindResinListFieldOffset(funcAddr);
+-            if (offsets.ResinList == 0)
+-            {
+-                Log("ResinList: field offset not found in SetupResinList - resin filtering disabled");
+-            }
 +            offsets.SetupResinList = 0;
++            Log("ResinList: field offset not found in SetupResinList - resin filtering disabled");
+         }
      }
--    // If SetupResinList couldn't be resolved, ResinList stays as fallback.
- }
- 
- // ===================================================================
+     // If SetupResinList couldn't be resolved, ResinList stays as fallback.

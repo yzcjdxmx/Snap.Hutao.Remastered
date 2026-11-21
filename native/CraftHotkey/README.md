@@ -5,11 +5,10 @@
 
 原生源码固定为 SnapHutaoRemasteringProject/Snap.Hutao.Remastered.UnlockerIsland
 7.1 使用提交 270016179ea5c01ad9b76ea9331739c200ac3eb7；
-7.2 使用提交 e309041f5a304b4bcb9090f63ae203dc7520b99c（包含新的派蒙显示实现）。
+7.2 使用提交 4714fc837c09af701e8219d8f8953bcd935e7d0d（支持旧版派蒙菜单）。
 两者均为 MIT 许可证，各自应用同一份组合键补丁并编译，运行时按游戏版本选择。
 CI 下载该源码，应用 island.patch 和 CraftHotkeyBinding.h，再编译并打包 DLL。
-7.2 另外应用 resin-7.2.patch：公开源码仍从奖励函数的 0x1A 读取树脂列表字段，
-而 7.2 上游发行 DLL 已改为 0x27，并检查指令 48 8B 8B / 48 85 C9。
+7.2 另外应用 resin-7.2.patch，保留个人第 15 包实测通过的读取逻辑，从奖励函数的 0x27 取字段，并检查指令 48 8B 8B / 48 85 C9。
 个人模块按发行 DLL 的行为校正；不匹配或字段为零时不安装该奖励钩子。
 7.1 继续使用原来的 0x1A，不应用此补丁。ResinListOffset.h 的生产解析函数
 由现有 C++ Release 测试直接验证，覆盖正确字段、错误指令、短输入和空值。
