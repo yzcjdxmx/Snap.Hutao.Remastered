@@ -5,7 +5,7 @@
 
 原生源码固定为 SnapHutaoRemasteringProject/Snap.Hutao.Remastered.UnlockerIsland
 7.1 使用提交 270016179ea5c01ad9b76ea9331739c200ac3eb7；
-7.2 使用提交 4714fc837c09af701e8219d8f8953bcd935e7d0d（支持旧版派蒙菜单）。
+7.2 使用提交 1188db98fcc8cab2a349ba3962b48ac249c2fc80（支持运行时关闭旧版派蒙菜单）。
 两者均为 MIT 许可证，各自应用同一份组合键补丁并编译，运行时按游戏版本选择。
 CI 下载该源码，应用 island.patch 和 CraftHotkeyBinding.h，再编译并打包 DLL。
 7.2 另外应用 resin-7.2.patch，保留个人第 15 包实测通过的读取逻辑，从奖励函数的 0x27 取字段，并检查指令 48 8B 8B / 48 85 C9。
