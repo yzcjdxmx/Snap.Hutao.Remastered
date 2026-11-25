@@ -1,4 +1,4 @@
-name: Background FPS PR validation
+name: Background FPS Preview
 
 on:
   workflow_dispatch:
@@ -7,19 +7,17 @@ permissions:
   contents: read
 
 jobs:
-  validate:
+  package:
     runs-on: windows-latest
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 11.0.100
-
-      - name: Run Debug tests
-        shell: pwsh
-        run: dotnet test src/Snap.Hutao.Remastered/Snap.Hutao.Remastered.Test/Snap.Hutao.Remastered.Test.csproj -c Debug --logger "trx;LogFileName=background-fps.trx" -- RunConfiguration.TreatNoTestsAsError=true
 
       - name: Publish Debug Native AOT app
         shell: pwsh
@@ -29,6 +27,29 @@ jobs:
           -p:PublishReadyToRun=false -p:AppxPackageSigningEnabled=false -p:AppxBundle=Never
           -o artifacts/background-fps-aot
 
-      - name: Verify Native AOT output
+      - name: Prepare and verify preview
         shell: pwsh
-        run: ./scripts/Test-PackageRuntime.ps1 -PublishDirectory artifacts/background-fps-aot -RuntimeKind NativeAOT
+        run: |
+          $directory = 'artifacts/background-fps-aot'
+          & './scripts/Test-PackageRuntime.ps1' -PublishDirectory $directory -RuntimeKind NativeAOT
+          $symbols = Join-Path $directory 'Snap.Hutao.Remastered.pdb'
+          if (Test-Path -LiteralPath $symbols -PathType Leaf) {
+            Remove-Item -LiteralPath $symbols
+          }
+          $launcher = @'
+          @echo off
+          setlocal
+          set "SNAP_HUTAO_PROFILE_ROOT=%LOCALAPPDATA%\SnapHutao-BackgroundFPS-Preview"
+          pushd "%~dp0"
+          start "" "%~dp0Snap.Hutao.Remastered.exe"
+          popd
+          '@
+          [IO.File]::WriteAllText((Join-Path (Resolve-Path $directory) 'Start-BackgroundFPS-Preview.cmd'), $launcher.Replace("`r`n", "`n").Replace("`n", "`r`n") + "`r`n", [Text.Encoding]::ASCII)
+
+      - name: Upload portable preview
+        uses: actions/upload-artifact@v7
+        with:
+          name: Hutao-BackgroundFPS-Preview-x64
+          path: artifacts/background-fps-aot/
+          if-no-files-found: error
+          retention-days: 14
