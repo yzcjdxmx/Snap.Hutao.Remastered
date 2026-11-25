@@ -53,12 +53,12 @@ internal sealed class PresentMonFpsCapture
                 "--process_id", targetProcessId.ToString(CultureInfo.InvariantCulture),
                 "--output_stdout", "--v1_metrics", "--no_console_stats",
                 "--no_track_input", "--no_track_gpu", "--no_track_display", "--terminate_on_proc_exit");
-            capture.BeginErrorReadLine();
-
             try
             {
+                capture.BeginErrorReadLine();
                 PresentMonFpsSamples samples = new();
-                while (await capture.StandardOutput.ReadLineAsync(token).ConfigureAwait(false) is { } line)
+                // Cancelling the wait lets us stop the process even when its stdout pipe is idle.
+                while (await capture.StandardOutput.ReadLineAsync().WaitAsync(token).ConfigureAwait(false) is { } line)
                 {
                     if (samples.Add(line) is { } fps)
                     {

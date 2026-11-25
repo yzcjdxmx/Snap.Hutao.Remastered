@@ -92,7 +92,7 @@ public sealed partial class LaunchExecutionOverlayWindow : Microsoft.UI.Xaml.Win
     public void SetFpsTarget(int processId)
     {
         fpsGameProcessId = processId;
-        FpsToggle.IsEnabled = true;
+        FpsToggle.IsEnabled = processId > 0;
     }
 
     public Task StopFpsCaptureAsync()
