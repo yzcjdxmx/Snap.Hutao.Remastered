@@ -9,6 +9,27 @@
     mc:Ignorable="d">
 
     <Border x:Name="RootBorder">
-        <shuv:OverlayView x:Name="RootView"/>
+        <Grid ColumnSpacing="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="112"/>
+            </Grid.ColumnDefinitions>
+            <shuv:OverlayView x:Name="RootView"/>
+            <ToggleButton
+                x:Name="FpsToggle"
+                Grid.Column="1"
+                Margin="0,0,4,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                AutomationProperties.Name="实测 FPS"
+                Click="OnFpsToggleClick"
+                IsEnabled="False"
+                ToolTipService.ToolTip="显示游戏每秒提交的帧数。再次点击可停止采集。">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock HorizontalAlignment="Center" Text="实测 FPS"/>
+                    <TextBlock x:Name="FpsReading" HorizontalAlignment="Center" Text="关闭"/>
+                </StackPanel>
+            </ToggleButton>
+        </Grid>
     </Border>
 </Window>

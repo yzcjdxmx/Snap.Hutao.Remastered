@@ -1,247 +1,64 @@
-name: Snap Hutao Remastered Alpha
+name: Realtime FPS Preview
+
 on:
   workflow_dispatch:
-  push:
-    branches: [ dev ]
-    paths-ignore:
-      - '.gitattributes'
-      - '.github/**'
-      - '.gitignore'
-      - '.gitmodules'
-      - '**.md'
-      - 'LICENSE'
-      - '**.yml'
-  pull_request:
-    branches: [ dev ]
-    paths-ignore:
-      - '.gitattributes'
-      - '.github/**'
-      - '.gitignore'
-      - '.gitmodules'
-      - '**.md'
-      - 'LICENSE'
-      - '**.yml'
-      - '**.resx'
+
+permissions:
+  contents: read
 
 jobs:
-  test:
-    name: Full test suite (${{ matrix.configuration }})
+  package:
     runs-on: windows-latest
-    timeout-minutes: 25
-    permissions:
-      contents: read
-    strategy:
-      fail-fast: false
-      matrix:
-        configuration: [Debug, Release]
+    timeout-minutes: 35
     steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v6
+      - uses: actions/checkout@v7
         with:
-          dotnet-version: 11
+          persist-credentials: false
 
-      - name: Cache NuGet packages
-        uses: actions/cache@v6
+      - uses: actions/setup-dotnet@v6
         with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Snap.Hutao.Remastered.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
+          dotnet-version: 11.0.100
 
-      - name: Build test project
+      - name: Publish Debug Native AOT app
+        shell: pwsh
+        run: >-
+          dotnet publish src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/Snap.Hutao.Remastered.csproj
+          -c Debug -r win-x64 -p:Platform=x64 -p:PublishAot=true -p:PublishTrimmed=true
+          -p:PublishReadyToRun=false -p:AppxPackageSigningEnabled=false -p:AppxBundle=Never
+          -o artifacts/realtime-fps-aot
+
+      - name: Prepare and verify portable preview
         shell: pwsh
         run: |
-          dotnet build src/Snap.Hutao.Remastered/Snap.Hutao.Remastered.Test/Snap.Hutao.Remastered.Test.csproj -c ${{ matrix.configuration }}
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $directory = 'artifacts/realtime-fps-aot'
+          & './scripts/Test-PackageRuntime.ps1' -PublishDirectory $directory -RuntimeKind NativeAOT
+          $symbols = Join-Path $directory 'Snap.Hutao.Remastered.pdb'
+          if (Test-Path -LiteralPath $symbols -PathType Leaf) {
+            Remove-Item -LiteralPath $symbols
+          }
+          $presentMon = New-Item -Path $directory -Name PresentMon -ItemType Directory
+          $exe = Join-Path $presentMon.FullName 'PresentMon-2.6.0-x64.exe'
+          Invoke-WebRequest -Uri 'https://github.com/GameTechDev/PresentMon/releases/download/v2.6.0/PresentMon-2.6.0-x64.exe' -OutFile $exe
+          $sha = (Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash
+          if ($sha -ne 'B2A706BC6AD475749E3B7E3409263AA1E6906D45BDCF993F6DBC0F660188F1AF') {
+            throw 'Unexpected PresentMon SHA-256'
+          }
+          Copy-Item -LiteralPath 'preview/PresentMon-LICENSE.txt' -Destination (Join-Path $presentMon.FullName 'LICENSE.txt')
+          Copy-Item -LiteralPath 'preview/Readme.md' -Destination (Join-Path $directory 'Readme.md')
+          $launcher = @'
+          @echo off
+          setlocal
+          set "SNAP_HUTAO_PROFILE_ROOT=%LOCALAPPDATA%\SnapHutao-RealtimeFPS-Preview"
+          pushd "%~dp0"
+          start "" "%~dp0Snap.Hutao.Remastered.exe"
+          popd
+          '@
+          [IO.File]::WriteAllText((Join-Path (Resolve-Path $directory) 'Start-RealtimeFPS-Preview.cmd'), $launcher.Replace("`r`n", "`n").Replace("`n", "`r`n") + "`r`n", [Text.Encoding]::ASCII)
 
-      - name: Discover complete test suite
-        shell: pwsh
-        run: |
-          dotnet test src/Snap.Hutao.Remastered/Snap.Hutao.Remastered.Test/Snap.Hutao.Remastered.Test.csproj -c ${{ matrix.configuration }} --no-build --list-tests | Tee-Object -FilePath "$env:RUNNER_TEMP/test-discovery.txt"
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-      - name: Run complete test suite
-        id: tests
-        shell: pwsh
-        run: |
-          dotnet test src/Snap.Hutao.Remastered/Snap.Hutao.Remastered.Test/Snap.Hutao.Remastered.Test.csproj -c ${{ matrix.configuration }} --no-build --logger "trx;LogFileName=full-tests.trx" --results-directory "$env:RUNNER_TEMP/test-results" -- RunConfiguration.TreatNoTestsAsError=true
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-      - name: Upload test discovery and results
-        if: ${{ always() }}
+      - name: Upload portable preview
         uses: actions/upload-artifact@v7
         with:
-          name: alpha-full-test-results-${{ matrix.configuration }}
-          path: |
-            ${{ runner.temp }}/test-results/*.trx
-            ${{ runner.temp }}/test-discovery.txt
-          if-no-files-found: warn
+          name: Hutao-RealtimeFPS-Preview-x64
+          path: artifacts/realtime-fps-aot/
+          if-no-files-found: error
           retention-days: 14
-
-  build:
-    name: Build Native AOT
-    runs-on: windows-latest
-    outputs:
-      version: ${{ steps.cake.outputs.version }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Prepare optional bundled image snapshot
-        shell: pwsh
-        run: ./scripts/Get-BundledImages.ps1
-        env:
-          BUNDLED_IMAGES_URL: ${{ vars.BUNDLED_IMAGES_URL }}
-          BUNDLED_IMAGES_VERSION: ${{ vars.BUNDLED_IMAGES_VERSION }}
-          BUNDLED_IMAGES_SHA256: ${{ vars.BUNDLED_IMAGES_SHA256 }}
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v6
-        with:
-          dotnet-version: 11
-
-      - name: Cache NuGet packages
-        uses: actions/cache@v6
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Snap.Hutao.Remastered.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Cake (MSIX)
-        id: cake
-        shell: pwsh
-        run: dotnet tool restore && dotnet cake --publishAot=true
-        env:
-          VERSION_API_TOKEN: ${{ secrets.VERSION_API_TOKEN }}
-          CERTIFICATE: ${{ secrets.CERTIFICATE }}
-          PW: ${{ secrets.PW }}
-
-      - name: Upload Native AOT MSIX symbols
-        uses: actions/upload-artifact@v7
-        with:
-          name: NativeAOT-MSIX-Symbols-${{ steps.cake.outputs.version }}
-          path: ${{ github.workspace }}/artifacts/nativeaot-symbols/Snap.Hutao.Remastered.pdb
-          if-no-files-found: error
-
-      - name: Upload Native AOT symbols to Sentry
-        if: ${{ github.repository_owner == 'SnapHutaoRemasteringProject' && github.ref == 'refs/heads/dev' && github.event_name != 'pull_request' }}
-        continue-on-error: true
-        shell: pwsh
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_API_TOKEN }}
-        run: |
-          npx.cmd --yes --package=@sentry/cli sentry-cli debug-files upload --org snaphutaoremasteringproject --project snap-hutao-remastered artifacts/nativeaot-symbols/Snap.Hutao.Remastered.pdb
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-      - name: Upload signed msix
-        if: success() && github.event_name != 'pull_request'
-        uses: actions/upload-artifact@v7
-        with:
-          name: Snap.Hutao.Remastered.Alpha-${{ steps.cake.outputs.version }}
-          path: ${{ github.workspace }}/src/output/Snap.Hutao.Remastered.Alpha-${{ steps.cake.outputs.version }}.msix
-
-      - name: Upload Alpha AppPackages for R2 publication
-        if: ${{ success() && github.event_name != 'pull_request' }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: Alpha-AppPackages
-          path: ${{ github.workspace }}/AppPackages/Alpha
-          if-no-files-found: error
-
-      - name: Export sideload trust certificate
-        if: ${{ success() && github.event_name != 'pull_request' }}
-        shell: pwsh
-        run: ./scripts/Export-PackageCertificate.ps1 -PfxPath 'temp.pfx' -OutputPath 'temp-code-signing.cer'
-        env:
-          PW: ${{ secrets.PW }}
-
-      - name: Upload code-signing certificate
-        if: success() && github.event_name != 'pull_request'
-        uses: actions/upload-artifact@v7
-        with:
-          name: Snap.Hutao.Remastered.Alpha-SnapHutaoRemasteringProject-${{ steps.cake.outputs.version }}
-          path: ${{ github.workspace }}/temp-code-signing.cer
-
-      - name: Add summary
-        if: success() && github.event_name != 'pull_request'
-        shell: pwsh
-        run: |
-          $summary = "
-          构建模式：Native AOT
-
-          > [!WARNING]
-          > 该版本是由 CI 程序自动打包生成的 Alpha 测试版本，包含已经基本完工的新功能及问题修复
-
-          > [!IMPORTANT]
-          > 直接旁加载 MSIX 时，请将 SnapHutaoRemasteringProject 工件中的证书安装到 **受信任的人员（TrustedPeople）** 存储
-          "
-          echo $summary >> $Env:GITHUB_STEP_SUMMARY
-
-  publish_mirrorchyan:
-    name: Publish Alpha MSIX to MirrorChyan
-    needs: [build, test]
-    if: ${{ github.repository_owner == 'SnapHutaoRemasteringProject' && github.ref == 'refs/heads/dev' && github.event_name != 'pull_request' }}
-    runs-on: macos-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Download signed Alpha MSIX
-        uses: actions/download-artifact@v8
-        with:
-          name: Snap.Hutao.Remastered.Alpha-${{ needs.build.outputs.version }}
-
-      - name: Upload Alpha MSIX
-        uses: MirrorChyan/uploading-action@v1
-        with:
-          filetype: local
-          filename: Snap.Hutao.Remastered.Alpha-${{ needs.build.outputs.version }}.msix
-          version_name: ${{ needs.build.outputs.version }}
-          mirrorchyan_rid: SnapHutaoRemastered_msix
-          os: win
-          arch: x64
-          channel: alpha
-          upload_token: ${{ secrets.MirrorChyanUploadToken }}
-
-  publish_r2:
-    name: Publish Alpha App Installer
-    needs: [build, test]
-    if: ${{ github.event_name != 'pull_request' }}
-    runs-on: windows-latest
-    permissions:
-      contents: read
-    concurrency:
-      group: r2-alpha
-      cancel-in-progress: false
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Download Alpha AppPackages
-        uses: actions/download-artifact@v8
-        with:
-          name: Alpha-AppPackages
-          path: ${{ github.workspace }}/AppPackages/Alpha
-
-      - name: Install rclone
-        shell: pwsh
-        run: |
-          choco install rclone --yes --no-progress
-          if ($LASTEXITCODE -ne 0) { throw 'rclone installation failed.' }
-
-      - name: Replace Alpha App Installer feeds
-        shell: pwsh
-        env:
-          RCLONE_CONFIG_R2_TYPE: s3
-          RCLONE_CONFIG_R2_PROVIDER: Cloudflare
-          RCLONE_CONFIG_R2_REGION: auto
-          RCLONE_CONFIG_R2_NO_CHECK_BUCKET: 'true'
-          RCLONE_CONFIG_R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          RCLONE_CONFIG_R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          RCLONE_CONFIG_R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
-        run: |
-          ./scripts/Publish-AppPackagesToR2.ps1 -AppPackagesPath 'AppPackages' -Channel Alpha
-          if ($LASTEXITCODE -ne 0) { throw 'Alpha publication failed.' }

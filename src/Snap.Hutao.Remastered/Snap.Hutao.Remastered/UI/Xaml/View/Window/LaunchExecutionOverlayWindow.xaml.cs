@@ -1,9 +1,11 @@
 // Copyright (c) DGP Studio. All rights reserved.
 // Licensed under the MIT license.
 
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Snap.Hutao.Remastered.Core.Setting;
+using Snap.Hutao.Remastered.Service.Game.Launching;
 using Snap.Hutao.Remastered.UI.Input;
 using Snap.Hutao.Remastered.UI.Input.LowLevel;
 using Snap.Hutao.Remastered.UI.Windowing;
@@ -25,16 +27,23 @@ public sealed partial class LaunchExecutionOverlayWindow : Microsoft.UI.Xaml.Win
 {
     private readonly LowLevelKeyOptions lowLevelKeyOptions;
     private readonly ITaskContext taskContext;
+    private readonly DispatcherQueueTimer fpsTimer;
+    private PresentMonFpsCapture? fpsCapture;
+    private Task? fpsStopTask;
+    private int fpsGameProcessId;
 
     [WinRT.DynamicWindowsRuntimeCast(typeof(global::Microsoft.UI.Windowing.OverlappedPresenter))]
     public LaunchExecutionOverlayWindow(IServiceProvider serviceProvider)
     {
         InitializeComponent();
+        fpsTimer = DispatcherQueue.CreateTimer();
+        fpsTimer.Interval = TimeSpan.FromSeconds(1);
+        fpsTimer.Tick += OnFpsTimerTick;
 
         AppWindow.Title = "SnapHutaoLaunchExecutionOverlay";
         AppWindow.SafeIsShowInSwitchers(false);
 
-        SizeInt32 size = ScaledSizeInt32.CreateForWindow(476, 56, this);
+        SizeInt32 size = ScaledSizeInt32.CreateForWindow(592, 56, this);
 
         // Thanks to @Scighost for the following code
         if (AppWindow.Presenter is OverlappedPresenter presenter)
@@ -45,7 +54,7 @@ public sealed partial class LaunchExecutionOverlayWindow : Microsoft.UI.Xaml.Win
             presenter.SetBorderAndTitleBar(false, false);
             presenter.PreferredMinimumWidth = size.Width;
             presenter.PreferredMinimumHeight = size.Height;
-            presenter.PreferredMaximumWidth = size.Height;
+            presenter.PreferredMaximumWidth = size.Width;
             presenter.PreferredMaximumHeight = size.Height;
         }
 
@@ -72,13 +81,34 @@ public sealed partial class LaunchExecutionOverlayWindow : Microsoft.UI.Xaml.Win
 
     public FrameworkElement TitleBarCaptionAccess { get => RootBorder; }
 
-    public ImmutableArray<FrameworkElement> TitleBarPassthrough { get => []; }
+    public ImmutableArray<FrameworkElement> TitleBarPassthrough { get => [FpsToggle]; }
 
     public bool PreventClose { get; set; } = true;
 
     public bool HideByHotKey { get => !LocalSetting.Get(SettingKeys.LaunchOverlayWindowIsVisible, true); }
 
     public bool HideByEvent { get; set; }
+
+    public void SetFpsTarget(int processId)
+    {
+        fpsGameProcessId = processId;
+        FpsToggle.IsEnabled = true;
+    }
+
+    public Task StopFpsCaptureAsync()
+    {
+        if (fpsCapture is { } capture)
+        {
+            fpsCapture = null;
+            fpsTimer.Stop();
+            FpsToggle.IsChecked = false;
+            FpsToggle.IsEnabled = false;
+            FpsReading.Text = "关闭";
+            fpsStopTask = capture.StopAsync();
+        }
+
+        return fpsStopTask ?? Task.CompletedTask;
+    }
 
     public void OnMouseWheel(ref readonly PointerPointProperties data)
     {
@@ -92,8 +122,32 @@ public sealed partial class LaunchExecutionOverlayWindow : Microsoft.UI.Xaml.Win
 
     public void OnWindowClosed()
     {
+        fpsTimer.Tick -= OnFpsTimerTick;
+        _ = StopFpsCaptureAsync();
         InputLowLevelKeyboardSource.KeyDown -= OnLowLevelKeyDown;
         InputLowLevelKeyboardSource.Uninitialize();
+    }
+
+    private async void OnFpsToggleClick(object sender, RoutedEventArgs args)
+    {
+        if (FpsToggle.IsChecked is true)
+        {
+            fpsCapture = new(fpsGameProcessId);
+            FpsReading.Text = "等待数据";
+            fpsTimer.Start();
+            return;
+        }
+
+        await StopFpsCaptureAsync();
+        FpsToggle.IsEnabled = true;
+    }
+
+    private void OnFpsTimerTick(DispatcherQueueTimer sender, object args)
+    {
+        if (fpsCapture is { } capture)
+        {
+            FpsReading.Text = capture.Failed ? "采集失败" : capture.ReadFps()?.ToString("0") ?? "等待数据";
+        }
     }
 
     private void OnLowLevelKeyDown(LowLevelKeyEventArgs args)
