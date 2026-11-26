@@ -3203,6 +3203,18 @@ Space Available: {2}</value>
   <data name="ViewPageLaunchGamePerformancePanelDescription" xml:space="preserve">
     <value>Show measured FPS and 1% low when starting the game from Snap Hutao. Use windowed mode to reposition the panel.</value>
   </data>
+  <data name="ViewPageLaunchGamePerformancePanelScale" xml:space="preserve">
+    <value>UI scale (%)</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelBackground" xml:space="preserve">
+    <value>Background color</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelChooseColor" xml:space="preserve">
+    <value>Choose a color</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelOpacity" xml:space="preserve">
+    <value>Background opacity (%)</value>
+  </data>
   <data name="ViewPageLaunchGameOverlayHeader" xml:space="preserve">
     <value>In-Game Overlay</value>
   </data>

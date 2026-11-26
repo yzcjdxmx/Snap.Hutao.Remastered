@@ -170,6 +170,9 @@ public static class SettingKeys
     public const string LaunchOverlaySelectedCatalogId                   = "Snap::Hutao::Game::Overlay::CatalogId";
     public const string LaunchOverlayWindowIsVisible                     = "Snap::Hutao::Game::Overlay::Visible";
     public const string LaunchUsingPerformancePanel                     = "Snap::Hutao::Game::PerformancePanel";
+    public const string LaunchPerformancePanelScale                     = "Snap::Hutao::Game::PerformancePanel::Scale";
+    public const string LaunchPerformancePanelBackgroundRgb             = "Snap::Hutao::Game::PerformancePanel::BackgroundRgb";
+    public const string LaunchPerformancePanelBackgroundOpacity         = "Snap::Hutao::Game::PerformancePanel::BackgroundOpacity";
     public const string EnableBetaGameInstall                            = "Snap::Hutao::Game::Package::BetaGame::Enable";
     public const string LaunchOverridePackageConvertDirectoryPermissions = "Snap::Hutao::Game::Package::Convert::Directory::Permissions::Override";
     public const string DownloadSpeedLimitPerSecondInKiloByte            = "Snap::Hutao::Game::Package::DownloadSpeedLimitPerSecondInKiloByte";

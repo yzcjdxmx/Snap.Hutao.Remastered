@@ -28,8 +28,7 @@ public sealed class LaunchExecutionOverlayHandler : AbstractLaunchExecutionHandl
 
         if (context.LaunchOptions.UsingPerformancePanel.Value)
         {
-            performanceWindow = new(context.ServiceProvider, context.Process.Id);
-            performanceWindow.AppWindow.Show(false);
+            performanceWindow = new(context.ServiceProvider, context.LaunchOptions, context.Process.Id);
         }
     }
 

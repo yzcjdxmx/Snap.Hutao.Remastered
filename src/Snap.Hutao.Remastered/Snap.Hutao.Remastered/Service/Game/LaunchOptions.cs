@@ -14,6 +14,7 @@ using Snap.Hutao.Remastered.Service.Game.PathAbstraction;
 using Snap.Hutao.Remastered.Win32;
 using Snap.Hutao.Remastered.Win32.UI.Input.KeyboardAndMouse;
 using System.Collections.Immutable;
+using Windows.UI;
 
 namespace Snap.Hutao.Remastered.Service.Game;
 
@@ -202,6 +203,25 @@ public sealed partial class LaunchOptions : DbStoreOptions, IRestrictedGamePathA
 
     [field: MaybeNull]
     public IObservableProperty<bool> UsingPerformancePanel { get => field ??= CreateProperty(SettingKeys.LaunchUsingPerformancePanel, false); }
+
+    [field: MaybeNull]
+    public IObservableProperty<double> PerformancePanelScale { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelScale, 100D); }
+
+    [field: MaybeNull]
+    public IObservableProperty<double> PerformancePanelBackgroundOpacity { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelBackgroundOpacity, 89D); }
+
+    public Color PerformancePanelBackgroundColor
+    {
+        get
+        {
+            int rgb = PerformancePanelBackgroundRgb.Value;
+            return Color.FromArgb(255, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb);
+        }
+        set => PerformancePanelBackgroundRgb.Value = (value.R << 16) | (value.G << 8) | value.B;
+    }
+
+    [field: MaybeNull]
+    private IObservableProperty<int> PerformancePanelBackgroundRgb { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelBackgroundRgb, 0x1B2029); }
 
     [field: MaybeNull]
     public IObservableProperty<string> AdvancedStartProgramPath { get => field ??= CreateProperty(SettingKeys.LaunchAdvancedStartProgramPath, string.Empty); }

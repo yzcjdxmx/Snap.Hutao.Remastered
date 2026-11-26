@@ -3,35 +3,50 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="游戏性能">
-    <Border x:Name="RootBorder" Background="#E21B2029" CornerRadius="8" Padding="12,5">
-        <Grid ColumnSpacing="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="28"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel x:Name="FpsMetric" VerticalAlignment="Center">
-                <TextBlock FontSize="11" Foreground="#BBC9DB" Text="FPS"/>
-                <TextBlock x:Name="FpsValue" FontSize="23" FontWeight="SemiBold" Foreground="White" Text="—"/>
-            </StackPanel>
-            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                <TextBlock FontSize="11" Foreground="#BBC9DB" Text="1% Low"/>
-                <TextBlock x:Name="LowValue" FontSize="23" FontWeight="SemiBold" Foreground="White" Text="—"/>
-            </StackPanel>
-            <Button x:Name="CloseButton"
-                Grid.Column="2"
-                Width="28"
-                Height="28"
-                VerticalAlignment="Center"
-                Padding="0"
-                AutomationProperties.Name="关闭游戏性能面板"
-                Background="Transparent"
-                BorderThickness="0"
-                Click="OnCloseClick"
-                Foreground="#BBC9DB"
-                ToolTipService.ToolTip="关闭性能面板">
-                <FontIcon FontSize="12" Glyph="&#xE711;"/>
-            </Button>
-        </Grid>
-    </Border>
+    <Viewbox x:Name="DragSurface" Stretch="Uniform">
+        <Border x:Name="RootBorder" Width="270" Height="102"
+            HorizontalAlignment="Left" VerticalAlignment="Top"
+            CornerRadius="8" Padding="12,6">
+            <Grid ColumnSpacing="10" RowSpacing="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="28"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel x:Name="FpsMetric" VerticalAlignment="Center">
+                    <TextBlock x:Name="FpsLabel" FontSize="11" Text="FPS"/>
+                    <TextBlock x:Name="FpsValue" FontSize="23" FontWeight="SemiBold" Text="—"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock x:Name="LowLabel" FontSize="11" Text="1% Low"/>
+                    <TextBlock x:Name="LowValue" FontSize="23" FontWeight="SemiBold" Text="—"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" VerticalAlignment="Center">
+                    <TextBlock x:Name="CpuLabel" FontSize="11" Text="CPU 总占用 / 温度"/>
+                    <TextBlock x:Name="CpuValue" FontSize="13" FontWeight="SemiBold" Text="— · —"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock x:Name="GpuLabel" FontSize="11" Text="NVIDIA GPU"/>
+                    <TextBlock x:Name="GpuValue" FontSize="13" FontWeight="SemiBold" Text="— · —"/>
+                </StackPanel>
+                <Button x:Name="CloseButton"
+                    Grid.Column="2"
+                    Width="28"
+                    Height="28"
+                    VerticalAlignment="Center"
+                    Padding="0"
+                    AutomationProperties.Name="关闭游戏性能面板"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="OnCloseClick"
+                    ToolTipService.ToolTip="关闭性能面板">
+                    <FontIcon FontSize="12" Glyph="&#xE711;"/>
+                </Button>
+            </Grid>
+        </Border>
+    </Viewbox>
 </Window>

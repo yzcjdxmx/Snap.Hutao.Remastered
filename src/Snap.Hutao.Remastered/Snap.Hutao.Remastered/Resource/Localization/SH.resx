@@ -3300,6 +3300,18 @@
   <data name="ViewPageLaunchGamePerformancePanelDescription" xml:space="preserve">
     <value>从胡桃启动游戏时显示实测 FPS 和 1% Low。请在窗口模式调整面板位置。</value>
   </data>
+  <data name="ViewPageLaunchGamePerformancePanelScale" xml:space="preserve">
+    <value>界面缩放（%）</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelBackground" xml:space="preserve">
+    <value>背景颜色</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelChooseColor" xml:space="preserve">
+    <value>选择颜色</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelOpacity" xml:space="preserve">
+    <value>背景不透明度（%）</value>
+  </data>
   <data name="ViewPageLaunchGameOverlayHeader" xml:space="preserve">
     <value>悬浮窗</value>
   </data>

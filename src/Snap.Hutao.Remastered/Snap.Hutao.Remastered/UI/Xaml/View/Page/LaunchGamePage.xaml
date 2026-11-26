@@ -442,7 +442,7 @@
                                             </StackPanel>
                                         </cwc:SettingsCard>
                                         <!--  游戏性能面板  -->
-                                        <cwc:SettingsCard
+                                        <cwc:SettingsExpander
                                             Description="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelDescription}"
                                             Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelHeader}"
                                             HeaderIcon="{shuxm:FontIcon Glyph=&#xE9D9;}">
@@ -450,7 +450,36 @@
                                                 shuxcth:ControlMaterialState.IsManaged="True"
                                                 IsEnabled="{x:Bind shsg:LaunchOptions.IsGameRunning.Value, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                                                 IsOn="{x:Bind DataContext.LaunchOptions.UsingPerformancePanel.Value, Mode=TwoWay}"/>
-                                        </cwc:SettingsCard>
+                                            <cwc:SettingsExpander.Items>
+                                                <cwc:SettingsCard
+                                                    Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
+                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelScale}">
+                                                    <NumberBox Width="128" LargeChange="10" Maximum="170" Minimum="70" SmallChange="5"
+                                                        SpinButtonPlacementMode="Inline"
+                                                        Value="{x:Bind DataContext.LaunchOptions.PerformancePanelScale.Value, Mode=TwoWay}"/>
+                                                </cwc:SettingsCard>
+                                                <cwc:SettingsCard
+                                                    Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
+                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelBackground}">
+                                                    <Button Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelChooseColor}">
+                                                        <Button.Flyout>
+                                                            <Flyout>
+                                                                <ColorPicker
+                                                                    Color="{x:Bind DataContext.LaunchOptions.PerformancePanelBackgroundColor, Mode=TwoWay}"
+                                                                    IsAlphaEnabled="False"/>
+                                                            </Flyout>
+                                                        </Button.Flyout>
+                                                    </Button>
+                                                </cwc:SettingsCard>
+                                                <cwc:SettingsCard
+                                                    Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
+                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelOpacity}">
+                                                    <NumberBox Width="128" LargeChange="10" Maximum="100" Minimum="0" SmallChange="5"
+                                                        SpinButtonPlacementMode="Inline"
+                                                        Value="{x:Bind DataContext.LaunchOptions.PerformancePanelBackgroundOpacity.Value, Mode=TwoWay}"/>
+                                                </cwc:SettingsCard>
+                                            </cwc:SettingsExpander.Items>
+                                        </cwc:SettingsExpander>
                                         <!--  悬浮窗  -->
                                         <ScrollViewer>
                                             <cwc:SettingsExpander

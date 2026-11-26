@@ -5,6 +5,8 @@ using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using Snap.Hutao.Remastered.Service.Game;
 using Snap.Hutao.Remastered.Service.Game.Launching;
 using Snap.Hutao.Remastered.UI.Windowing;
 using Snap.Hutao.Remastered.UI.Windowing.Abstraction;
@@ -13,6 +15,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Windows.Graphics;
+using Windows.UI;
 using WinRT.Interop;
 
 namespace Snap.Hutao.Remastered.UI.Xaml.View.Window;
@@ -26,26 +29,32 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
     private const uint RefreshFrameWithoutActivating = 0x37; // SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED
 
     private readonly int gameProcessId;
+    private readonly LaunchOptions options;
     private readonly nint windowHandle;
     private readonly PresentMonFpsCapture capture;
+    private readonly PerformancePanelHardwareMonitor hardware;
     private readonly DispatcherQueueTimer timer;
+    private readonly SolidColorBrush backgroundBrush = new();
+    private readonly SolidColorBrush textBrush = new();
     private nint gameWindowHandle;
     private bool positionLocked;
+    private bool showWhenGameReturns = true;
+    private (double Scale, Color Background, double Opacity)? lastAppearance;
     private GamePresentation? lastPresentation;
     private int restackAttempts;
     private long lastRefresh;
     private Task? stopTask;
 
     [WinRT.DynamicWindowsRuntimeCast(typeof(global::Microsoft.UI.Windowing.OverlappedPresenter))]
-    public LaunchExecutionPerformanceWindow(IServiceProvider serviceProvider, int gameProcessId)
+    public LaunchExecutionPerformanceWindow(IServiceProvider serviceProvider, LaunchOptions options, int gameProcessId)
     {
         InitializeComponent();
 
+        this.options = options;
         this.gameProcessId = gameProcessId;
         windowHandle = WindowNative.GetWindowHandle(this);
         AppWindow.SafeIsShowInSwitchers(false);
 
-        SizeInt32 size = ScaledSizeInt32.CreateForWindow(230, 58, this);
         if (AppWindow.Presenter is OverlappedPresenter presenter)
         {
             presenter.IsMaximizable = false;
@@ -60,14 +69,17 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         SystemBackdrop = new TransparentBackdrop();
         this.InitializeController(serviceProvider.CreateScope().ServiceProvider);
         AppWindow.Title = "游戏性能";
-        AppWindow.Resize(size);
-        if (DisplayArea.GetFromWindowId(AppWindow.Id, DisplayAreaFallback.Primary) is { } display)
+        RootBorder.Background = backgroundBrush;
+        foreach (TextBlock label in new[] { FpsLabel, FpsValue, LowLabel, LowValue, CpuLabel, CpuValue, GpuLabel, GpuValue })
         {
-            RectInt32 area = display.WorkArea;
-            AppWindow.Move(new PointInt32 { X = area.X + area.Width - size.Width - 24, Y = area.Y + 24 });
+            label.Foreground = textBrush;
         }
 
+        CloseButton.Foreground = textBrush;
+        ApplyAppearance();
+        AppWindow.Hide();
         capture = new(gameProcessId);
+        hardware = new();
         timer = DispatcherQueue.CreateTimer();
         timer.Interval = TimeSpan.FromMilliseconds(250);
         timer.Tick += OnTick;
@@ -75,7 +87,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         timer.Start();
     }
 
-    public FrameworkElement TitleBarCaptionAccess => RootBorder;
+    public FrameworkElement TitleBarCaptionAccess => DragSurface;
 
     public ImmutableArray<FrameworkElement> TitleBarPassthrough => [CloseButton];
 
@@ -93,7 +105,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
     {
         timer.Stop();
         timer.Tick -= OnTick;
-        return stopTask ??= capture.StopAsync();
+        return stopTask ??= Task.WhenAll(capture.StopAsync(), hardware.StopAsync());
     }
 
     private void OnCloseClick(object sender, RoutedEventArgs args)
@@ -116,10 +128,56 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         }
 
         lastRefresh = Stopwatch.GetTimestamp();
+        ApplyAppearance();
         PresentMonFpsSample? sample = capture.ReadSample();
+        PanelHardwareValues hardwareValues = hardware.Read();
         FpsValue.Text = capture.Failed ? "失败" : sample?.Fps.ToString("0") ?? "—";
         LowValue.Text = sample?.LowFps?.ToString("0") ?? "—";
+        string cpuUsage = hardwareValues.CpuUsage is { } cpu ? $"{cpu:0}%" : "—";
+        string cpuTemperature = hardwareValues.CpuTemperature is { } cpuCelsius ? $"{cpuCelsius}°C" : "—";
+        string gpuUsage = hardwareValues.GpuUsage is { } gpu ? $"{gpu}%" : "—";
+        string gpuTemperature = hardwareValues.GpuTemperature is { } gpuCelsius ? $"{gpuCelsius}°C" : "—";
+        CpuValue.Text = $"{cpuUsage} · {cpuTemperature}";
+        GpuValue.Text = $"{gpuUsage} · {gpuTemperature}";
         ToolTipService.SetToolTip(FpsMetric, capture.Failed ? "采集失败，下次启动游戏时会重试" : null);
+    }
+
+    private void ApplyAppearance()
+    {
+        double configuredScale = options.PerformancePanelScale.Value;
+        double configuredOpacity = options.PerformancePanelBackgroundOpacity.Value;
+        double scale = double.IsFinite(configuredScale) ? Math.Clamp(configuredScale, 70, 170) / 100 : 1;
+        double opacity = double.IsFinite(configuredOpacity) ? Math.Clamp(configuredOpacity, 0, 100) / 100 : 0.89;
+        Color background = options.PerformancePanelBackgroundColor;
+        var appearance = (Scale: scale, Background: background, Opacity: opacity);
+        if (lastAppearance is { } previous && previous.Equals(appearance))
+        {
+            return;
+        }
+
+        bool first = lastAppearance is null;
+        lastAppearance = appearance;
+        backgroundBrush.Color = Color.FromArgb((byte)Math.Round(255 * opacity), background.R, background.G, background.B);
+        bool lightBackground = opacity >= 0.5 && (0.2126 * background.R + 0.7152 * background.G + 0.0722 * background.B) > 155;
+        textBrush.Color = lightBackground ? Color.FromArgb(255, 24, 29, 37) : Color.FromArgb(255, 235, 241, 247);
+        SizeInt32 size = ScaledSizeInt32.CreateForWindow((int)Math.Ceiling(RootBorder.Width * scale), (int)Math.Ceiling(RootBorder.Height * scale), this);
+        AppWindow.Resize(size);
+        if (DisplayArea.GetFromWindowId(AppWindow.Id, DisplayAreaFallback.Primary) is { } display)
+        {
+            RectInt32 area = display.WorkArea;
+            PointInt32 current = AppWindow.Position;
+            int maxX = Math.Max(area.X, area.X + area.Width - size.Width);
+            int maxY = Math.Max(area.Y, area.Y + area.Height - size.Height);
+            PointInt32 position = new()
+            {
+                X = Math.Clamp(first ? maxX - 24 : current.X, area.X, maxX),
+                Y = Math.Clamp(first ? area.Y + 24 : current.Y, area.Y, maxY),
+            };
+            if (position.X != current.X || position.Y != current.Y)
+            {
+                AppWindow.Move(position);
+            }
+        }
     }
 
     private void RestoreOrder()
@@ -133,6 +191,18 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
             gameWindowHandle = foreground;
         }
 
+        if (gameWindowHandle != 0 && IsIconic(gameWindowHandle))
+        {
+            if (AppWindow.IsVisible)
+            {
+                AppWindow.Hide();
+            }
+
+            showWhenGameReturns = true;
+            lastPresentation = null;
+            return;
+        }
+
         if (gameWindowHandle != 0 && GetWindowRect(gameWindowHandle, out WindowRect bounds))
         {
             SetPositionLocked(CoversMonitor(gameWindowHandle, bounds));
@@ -140,6 +210,13 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
             {
                 presentation = new(foreground, bounds.Left, bounds.Top, bounds.Right, bounds.Bottom);
             }
+        }
+
+        if (showWhenGameReturns && presentation is not null)
+        {
+            AppWindow.Show(false);
+            AppWindow.MoveInZOrderAtTop();
+            showWhenGameReturns = false;
         }
 
         if (presentation != lastPresentation)
@@ -204,6 +281,10 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
 
     [LibraryImport("user32.dll")]
     private static partial nint GetWindow(nint window, uint command);
+
+    [LibraryImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool IsIconic(nint window);
 
     [LibraryImport("user32.dll")]
     private static partial nint MonitorFromWindow(nint window, uint flags);
