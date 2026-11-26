@@ -3249,6 +3249,15 @@
   <data name="ViewPageLaunchGameRemoveOpenTeamProgressHeader" xml:space="preserve">
     <value>移除队伍配置进度条</value>
   </data>
+  <data name="ViewPageLaunchGamePathExecutableMissing" xml:space="preserve">
+    <value>未找到游戏本体</value>
+  </data>
+  <data name="ViewPageLaunchGamePathUnknownServer" xml:space="preserve">
+    <value>区服未识别</value>
+  </data>
+  <data name="ViewPageLaunchGamePathConvertedServer" xml:space="preserve">
+    <value>{0}（已转换，使用当前客户端）</value>
+  </data>
   <data name="ViewPageLaunchGameSelectGamePath" xml:space="preserve">
     <value>选择游戏路径</value>
   </data>

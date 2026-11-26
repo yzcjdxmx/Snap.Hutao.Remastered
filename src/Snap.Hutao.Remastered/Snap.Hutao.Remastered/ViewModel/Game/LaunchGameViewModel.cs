@@ -52,6 +52,7 @@ public sealed partial class LaunchGameViewModel : Abstraction.ViewModel, IViewMo
     private readonly IFileSystemPickerInteraction fileSystemPickerInteraction;
     private readonly AdvancedStartDelayedProgramStore store;
     private readonly IShellLinkInterop shellLinkInterop;
+    private LaunchScheme? lastDetectedLaunchScheme;
 
     [GeneratedConstructor]
     public partial LaunchGameViewModel(IServiceProvider serviceProvider);
@@ -88,7 +89,7 @@ public sealed partial class LaunchGameViewModel : Abstraction.ViewModel, IViewMo
 
     public IObservableProperty<GamePathEntry?> GamePathEntry { get => field ??= LaunchOptions.GamePathEntry.SetWithCondition(static (value, unloaded) => !unloaded.Value && value is not null, IsViewUnloaded); }
 
-    public IReadOnlyObservableProperty<string> DisplayGamePath { get => field ??= Property.Observe(LaunchOptions.GamePathEntry, static entry => SH.FormatViewModelLaunchGameDisplayGamePath(entry?.Path)); }
+    public IReadOnlyObservableProperty<string> DisplayGamePath { get => field ??= Property.Observe(LaunchOptions.GamePathEntry, static entry => SH.FormatViewModelLaunchGameDisplayGamePath(entry?.EffectivePath)); }
 
     public IReadOnlyObservableProperty<bool> GamePathEntryValid { get => field ??= Property.Observe(LaunchOptions.GamePathEntry, static entry => !string.IsNullOrEmpty(entry?.Path)).WithValueChangedCallback(static (v, vm) => vm.HandleGamePathEntryChangeAsync().SafeForget(), this); }
 
@@ -151,6 +152,7 @@ public sealed partial class LaunchGameViewModel : Abstraction.ViewModel, IViewMo
 
                 await taskContext.SwitchToMainThreadAsync();
                 await TargetSchemeFilteredGameAccountsView.SetAsync(currentScheme).ConfigureAwait(true);
+                lastDetectedLaunchScheme = currentScheme;
                 await GamePackageViewModel.ReloadAsync().ConfigureAwait(true);
             }
         }
@@ -189,6 +191,8 @@ public sealed partial class LaunchGameViewModel : Abstraction.ViewModel, IViewMo
             await serviceProvider.GetRequiredService<IGamePathService>().SilentLocateAllGamePathAsync().ConfigureAwait(false);
         }
 
+        await taskContext.SwitchToMainThreadAsync();
+        RefreshGamePathDetections();
         await HandleGamePathEntryChangeAsync().ConfigureAwait(false);
         Shared.ResumeLaunchExecutionAsync(this).SafeForget();
 
@@ -293,8 +297,16 @@ public sealed partial class LaunchGameViewModel : Abstraction.ViewModel, IViewMo
     private void ResetGamePath()
     {
         SentrySdk.AddBreadcrumb(BreadcrumbFactory.CreateUI("Reset game path", "LaunchGameViewModel.Command"));
+        RefreshGamePathDetections();
         LaunchOptions.GamePathEntry.Value = default;
-        _ = 1;
+    }
+
+    private void RefreshGamePathDetections()
+    {
+        foreach (GamePathEntry entry in LaunchOptions.GamePathEntries.Value)
+        {
+            entry.RefreshDetection();
+        }
     }
 
     [Command("RemoveGamePathEntryCommand")]
@@ -325,6 +337,19 @@ public sealed partial class LaunchGameViewModel : Abstraction.ViewModel, IViewMo
     private async Task LaunchAsync()
     {
         SentrySdk.AddBreadcrumb(BreadcrumbFactory.CreateUI("Launch game", "LaunchGameViewModel.Command"));
+
+        if (LaunchOptions.GamePathEntry.Value is { } selectedPath && !File.Exists(selectedPath.EffectivePath))
+        {
+            messenger.Send(InfoBarMessage.Error(SH.ViewPageLaunchGamePathExecutableMissing, selectedPath.Path));
+            return;
+        }
+
+        // An external conversion may have changed the active server while this page was open.
+        if (Shared.GetCurrentLaunchSchemeFromConfigurationFile(false) is { } detectedScheme &&
+            !ReferenceEquals(lastDetectedLaunchScheme, detectedScheme))
+        {
+            await HandleGamePathEntryChangeAsync().ConfigureAwait(false);
+        }
 
         if (LaunchOptions.AdvancedStartDelayedOnGameLaunch.Value)
         {

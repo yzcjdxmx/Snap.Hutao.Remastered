@@ -89,11 +89,18 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock
+                <StackPanel
                     Grid.Column="0"
-                    Padding="0,16"
+                    Margin="0,10,12,10"
                     VerticalAlignment="Center"
-                    Text="{x:Bind Path, Mode=OneWay}"/>
+                    Spacing="3">
+                    <TextBlock FontWeight="SemiBold" Text="{x:Bind DetectedServerLabel, Mode=OneWay}"/>
+                    <TextBlock
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Text="{x:Bind Path, Mode=OneWay}"
+                        TextTrimming="CharacterEllipsis"
+                        ToolTipService.ToolTip="{x:Bind Path, Mode=OneWay}"/>
+                </StackPanel>
                 <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
                 <wl:LiquidGlassButton
                     Grid.Column="1"

@@ -16,7 +16,11 @@ public static class GameConfiguration
 {
     public static ChannelOptions Read(IGameFileSystem gameFileSystem)
     {
-        string configFilePath = gameFileSystem.GameConfigurationFilePath;
+        return Read(gameFileSystem.GameConfigurationFilePath, gameFileSystem.GameDirectory, gameFileSystem.IsExecutableOversea);
+    }
+
+    internal static ChannelOptions Read(string configFilePath, string gameDirectory, bool isOversea, bool requireChannel = false)
+    {
         ImmutableArray<IniElement> elements;
         try
         {
@@ -32,7 +36,7 @@ public static class GameConfiguration
 
             if (HutaoNative.IsWin32(ex.HResult, [WIN32_ERROR.ERROR_NOT_READY, WIN32_ERROR.ERROR_NO_SUCH_DEVICE]))
             {
-                return ChannelOptions.DeviceNotFound(gameFileSystem.GameDirectory);
+                return ChannelOptions.DeviceNotFound(gameDirectory);
             }
 
             throw;
@@ -64,7 +68,9 @@ public static class GameConfiguration
             }
         }
 
-        return new(channel, subChannel, gameFileSystem.IsExecutableOversea);
+        return requireChannel && !int.TryParse(channel, out _)
+            ? ChannelOptions.ConfigurationFileReadFailed(configFilePath)
+            : new(channel, subChannel, isOversea);
     }
 
     public static bool Read(IGameFileSystem gameFileSystem, string parameterKey)

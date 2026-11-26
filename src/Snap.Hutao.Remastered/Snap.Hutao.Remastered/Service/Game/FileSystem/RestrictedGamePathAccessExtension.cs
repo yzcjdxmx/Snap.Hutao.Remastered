@@ -31,7 +31,15 @@ public static class RestrictedGamePathAccessExtension
                 return GameFileSystemErrorKind.GamePathLocked;
             }
 
-            fileSystem = GameFileSystem.Create(gamePath, releaser);
+            try
+            {
+                fileSystem = GameFileSystem.Create(GameExecutablePath.Resolve(gamePath), releaser);
+            }
+            catch
+            {
+                releaser.Dispose();
+                throw;
+            }
             SentrySdk.AddBreadcrumb(BreadcrumbFactory.CreateDebug($"[{trace}] Succeed", "TryGetGameFileSystem"));
             return GameFileSystemErrorKind.None;
         }
