@@ -14,6 +14,7 @@ using Snap.Hutao.Remastered.UI.Xaml.Media.Backdrop;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Windows.Graphics;
 using Windows.UI;
@@ -32,7 +33,6 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
     private readonly int gameProcessId;
     private readonly LaunchOptions options;
     private readonly nint windowHandle;
-    private readonly AppWindow panelWindow;
     private readonly PresentMonFpsCapture capture;
     private readonly PerformancePanelHardwareMonitor hardware;
     private readonly DispatcherQueueTimer timer;
@@ -58,7 +58,6 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         this.options = options;
         this.gameProcessId = gameProcessId;
         windowHandle = WindowNative.GetWindowHandle(this);
-        panelWindow = AppWindow;
         AppWindow.SafeIsShowInSwitchers(false);
 
         if (AppWindow.Presenter is OverlappedPresenter presenter)
@@ -78,18 +77,23 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         RootBorder.Background = backgroundBrush;
         metrics =
         [
-            new("FPS", () => options.PerformancePanelShowFps.Value, textBrush),
-            new("1% Low", () => options.PerformancePanelShowLow.Value, textBrush),
-            new("CPU 总占用", () => options.PerformancePanelShowCpuUsage.Value, textBrush),
-            new("CPU 温度", () => options.PerformancePanelShowCpuTemperature.Value, textBrush),
-            new("NVIDIA GPU 占用", () => options.PerformancePanelShowGpuUsage.Value, textBrush),
-            new("NVIDIA GPU 温度", () => options.PerformancePanelShowGpuTemperature.Value, textBrush),
-            new("时间", () => options.PerformancePanelShowTime.Value, textBrush),
+            new(FpsTile, FpsLabel, FpsValue, () => options.PerformancePanelShowFps.Value),
+            new(LowTile, LowLabel, LowValue, () => options.PerformancePanelShowLow.Value),
+            new(CpuUsageTile, CpuUsageLabel, CpuUsageValue, () => options.PerformancePanelShowCpuUsage.Value),
+            new(CpuTemperatureTile, CpuTemperatureLabel, CpuTemperatureValue, () => options.PerformancePanelShowCpuTemperature.Value),
+            new(GpuUsageTile, GpuUsageLabel, GpuUsageValue, () => options.PerformancePanelShowGpuUsage.Value),
+            new(GpuTemperatureTile, GpuTemperatureLabel, GpuTemperatureValue, () => options.PerformancePanelShowGpuTemperature.Value),
+            new(TimeTile, TimeLabel, TimeValue, () => options.PerformancePanelShowTime.Value),
         ];
+        foreach (MetricTile metric in metrics)
+        {
+            metric.Label.Foreground = textBrush;
+            metric.Value.Foreground = textBrush;
+        }
+
         CloseButton.Foreground = textBrush;
         ApplyAppearance();
         lastPosition = AppWindow.Position;
-        panelWindow.Changed += OnAppWindowChanged;
         AppWindow.Hide();
         capture = new(gameProcessId);
         hardware = new();
@@ -104,16 +108,24 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
 
     public ImmutableArray<FrameworkElement> TitleBarPassthrough => [CloseButton];
 
-    public Task CloseAndStopAsync()
+    public async Task CloseAndStopAsync()
     {
-        if (stopTask is { } existing)
+        try
         {
-            return existing;
-        }
+            if (stopTask is { } existing)
+            {
+                await existing;
+                return;
+            }
 
-        Task stopping = StopAsync();
-        Close();
-        return stopping;
+            Task stopping = StopAsync();
+            Close();
+            await stopping;
+        }
+        catch (Exception ex)
+        {
+            PerformancePanelDiagnostics.Report("close", ex);
+        }
     }
 
     private Task StopAsync()
@@ -122,24 +134,26 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         timer.Tick -= OnTick;
         if (stopTask is null)
         {
-            panelWindow.Changed -= OnAppWindowChanged;
-            if (options.PerformancePanelRememberPosition.Value)
-            {
-                options.PerformancePanelPosition.Value = FormattableString.Invariant($"{lastPosition.X},{lastPosition.Y}");
-            }
-
             stopTask = Task.WhenAll(capture.StopAsync(), hardware.StopAsync());
+            try
+            {
+                if (options.PerformancePanelRememberPosition.Value)
+                {
+                    if (GetWindowRect(windowHandle, out WindowRect bounds))
+                    {
+                        lastPosition = new PointInt32 { X = bounds.Left, Y = bounds.Top };
+                    }
+
+                    options.PerformancePanelPosition.Value = FormattableString.Invariant($"{lastPosition.X},{lastPosition.Y}");
+                }
+            }
+            catch (Exception ex)
+            {
+                PerformancePanelDiagnostics.Report("save position", ex);
+            }
         }
 
         return stopTask;
-    }
-
-    private void OnAppWindowChanged(AppWindow sender, AppWindowChangedEventArgs args)
-    {
-        if (args.DidPositionChange)
-        {
-            lastPosition = sender.Position;
-        }
     }
 
     private void OnCloseClick(object sender, RoutedEventArgs args)
@@ -147,13 +161,33 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         _ = CloseAndStopAsync();
     }
 
-    private void OnClosed(object sender, WindowEventArgs args)
+    private async void OnClosed(object sender, WindowEventArgs args)
     {
         Closed -= OnClosed;
-        _ = StopAsync();
+        try
+        {
+            await StopAsync();
+        }
+        catch (Exception ex)
+        {
+            PerformancePanelDiagnostics.Report("stop", ex);
+        }
     }
 
     private void OnTick(DispatcherQueueTimer sender, object args)
+    {
+        try
+        {
+            UpdatePanel();
+        }
+        catch (Exception ex)
+        {
+            PerformancePanelDiagnostics.Report("update", ex);
+            _ = CloseAndStopAsync();
+        }
+    }
+
+    private void UpdatePanel()
     {
         RestoreOrder();
         if (Stopwatch.GetElapsedTime(lastRefresh).TotalSeconds < 1)
@@ -162,6 +196,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         }
 
         lastRefresh = Stopwatch.GetTimestamp();
+        lastPosition = AppWindow.Position;
         ApplyAppearance();
         PresentMonFpsSample? sample = capture.ReadSample();
         PanelHardwareValues hardwareValues = hardware.Read();
@@ -265,39 +300,26 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
 
     private void ArrangeMetrics(int selection)
     {
-        MetricGrid.Children.Clear();
-        MetricGrid.RowDefinitions.Clear();
-        MetricGrid.ColumnDefinitions.Clear();
-
         int count = System.Numerics.BitOperations.PopCount((uint)selection);
         int columns = count > 1 ? 2 : 1;
-        for (int column = 0; column < columns; column++)
-        {
-            MetricGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-        }
-
         int slot = 0;
         for (int index = 0; index < metrics.Length; index++)
         {
+            StackPanel tile = metrics[index].Panel;
             if ((selection & (1 << index)) == 0)
             {
+                tile.Visibility = Visibility.Collapsed;
                 continue;
             }
 
-            StackPanel tile = metrics[index].Panel;
-            int row = slot / columns;
-            if (slot % columns == 0)
-            {
-                MetricGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40) });
-            }
-
-            Grid.SetRow(tile, row);
+            Grid.SetRow(tile, slot / columns);
             Grid.SetColumn(tile, slot % columns);
-            MetricGrid.Children.Add(tile);
+            Grid.SetColumnSpan(tile, columns == 1 ? 2 : 1);
+            tile.Visibility = Visibility.Visible;
             slot++;
         }
 
-        int rows = Math.Max(1, MetricGrid.RowDefinitions.Count);
+        int rows = Math.Max(1, (count + columns - 1) / columns);
         RootBorder.Width = columns == 1 ? 180 : 286;
         RootBorder.Height = 12 + 40 * rows + 4 * (rows - 1);
     }
@@ -385,7 +407,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
     private static bool CoversMonitor(nint gameWindow, WindowRect bounds)
     {
         nint monitor = MonitorFromWindow(gameWindow, 0); // MONITOR_DEFAULTTONULL
-        MonitorInfo info = new() { Size = Marshal.SizeOf<MonitorInfo>() };
+        MonitorInfo info = new() { Size = Unsafe.SizeOf<MonitorInfo>() };
         return monitor != 0 && GetMonitorInfoW(monitor, ref info) &&
             bounds.Left <= info.Monitor.Left && bounds.Top <= info.Monitor.Top &&
             bounds.Right >= info.Monitor.Right && bounds.Bottom >= info.Monitor.Bottom;
@@ -427,29 +449,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
 
     private readonly record struct GamePresentation(nint Handle, int Left, int Top, int Right, int Bottom);
 
-    private sealed class MetricTile
-    {
-        public MetricTile(string label, Func<bool> selected, SolidColorBrush textBrush)
-        {
-            Selected = selected;
-            Panel = new StackPanel();
-            Panel.Children.Add(new TextBlock { Text = label, FontSize = 11, Foreground = textBrush });
-            Value = new TextBlock
-            {
-                Text = "—",
-                FontSize = 18,
-                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-                Foreground = textBrush,
-            };
-            Panel.Children.Add(Value);
-        }
-
-        public StackPanel Panel { get; }
-
-        public TextBlock Value { get; }
-
-        public Func<bool> Selected { get; }
-    }
+    private sealed record MetricTile(StackPanel Panel, TextBlock Label, TextBlock Value, Func<bool> Selected);
 
     [StructLayout(LayoutKind.Sequential)]
     private struct WindowRect

@@ -12,7 +12,46 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="28"/>
                 </Grid.ColumnDefinitions>
-                <Grid x:Name="MetricGrid" ColumnSpacing="12" RowSpacing="4"/>
+                <Grid ColumnSpacing="12" RowSpacing="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel x:Name="FpsTile" Grid.Row="0" Grid.Column="0" Height="40">
+                        <TextBlock x:Name="FpsLabel" FontSize="11" Text="FPS"/>
+                        <TextBlock x:Name="FpsValue" FontSize="18" FontWeight="SemiBold" Text="—"/>
+                    </StackPanel>
+                    <StackPanel x:Name="LowTile" Grid.Row="0" Grid.Column="1" Height="40">
+                        <TextBlock x:Name="LowLabel" FontSize="11" Text="1% Low"/>
+                        <TextBlock x:Name="LowValue" FontSize="18" FontWeight="SemiBold" Text="—"/>
+                    </StackPanel>
+                    <StackPanel x:Name="CpuUsageTile" Grid.Row="1" Grid.Column="0" Height="40">
+                        <TextBlock x:Name="CpuUsageLabel" FontSize="11" Text="CPU 总占用"/>
+                        <TextBlock x:Name="CpuUsageValue" FontSize="18" FontWeight="SemiBold" Text="—"/>
+                    </StackPanel>
+                    <StackPanel x:Name="CpuTemperatureTile" Grid.Row="1" Grid.Column="1" Height="40">
+                        <TextBlock x:Name="CpuTemperatureLabel" FontSize="11" Text="CPU 温度"/>
+                        <TextBlock x:Name="CpuTemperatureValue" FontSize="18" FontWeight="SemiBold" Text="—"/>
+                    </StackPanel>
+                    <StackPanel x:Name="GpuUsageTile" Grid.Row="2" Grid.Column="0" Height="40">
+                        <TextBlock x:Name="GpuUsageLabel" FontSize="11" Text="NVIDIA GPU 占用"/>
+                        <TextBlock x:Name="GpuUsageValue" FontSize="18" FontWeight="SemiBold" Text="—"/>
+                    </StackPanel>
+                    <StackPanel x:Name="GpuTemperatureTile" Grid.Row="2" Grid.Column="1" Height="40">
+                        <TextBlock x:Name="GpuTemperatureLabel" FontSize="11" Text="NVIDIA GPU 温度"/>
+                        <TextBlock x:Name="GpuTemperatureValue" FontSize="18" FontWeight="SemiBold" Text="—"/>
+                    </StackPanel>
+                    <StackPanel x:Name="TimeTile" Grid.Row="3" Grid.Column="0" Height="40">
+                        <TextBlock x:Name="TimeLabel" FontSize="11" Text="时间"/>
+                        <TextBlock x:Name="TimeValue" FontSize="18" FontWeight="SemiBold" Text="—"/>
+                    </StackPanel>
+                </Grid>
                 <Button x:Name="CloseButton"
                     Grid.Column="1"
                     Width="28"
