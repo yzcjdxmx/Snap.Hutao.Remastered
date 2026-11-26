@@ -205,10 +205,10 @@ public sealed partial class LaunchOptions : DbStoreOptions, IRestrictedGamePathA
     public IObservableProperty<bool> UsingPerformancePanel { get => field ??= CreateProperty(SettingKeys.LaunchUsingPerformancePanel, false); }
 
     [field: MaybeNull]
-    public IObservableProperty<double> PerformancePanelScale { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelScale, 100D); }
+    public IObservableProperty<float> PerformancePanelScale { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelScale, 100F); }
 
     [field: MaybeNull]
-    public IObservableProperty<double> PerformancePanelBackgroundOpacity { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelBackgroundOpacity, 89D); }
+    public IObservableProperty<float> PerformancePanelBackgroundOpacity { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelBackgroundOpacity, 89F); }
 
     public Color PerformancePanelBackgroundColor
     {
