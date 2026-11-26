@@ -9,6 +9,24 @@
     mc:Ignorable="d">
 
     <Border x:Name="RootBorder">
-        <shuv:OverlayView x:Name="RootView"/>
+        <Grid ColumnSpacing="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="112"/>
+            </Grid.ColumnDefinitions>
+            <shuv:OverlayView x:Name="RootView"/>
+            <ToggleButton
+                x:Name="FpsToggle"
+                Grid.Column="1"
+                Margin="0,0,4,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                AutomationProperties.Name="游戏性能面板"
+                Click="OnFpsToggleClick"
+                IsEnabled="False"
+                ToolTipService.ToolTip="打开或关闭独立的 FPS 和 1% Low 性能面板。">
+                <TextBlock HorizontalAlignment="Center" Text="性能面板"/>
+            </ToggleButton>
+        </Grid>
     </Border>
 </Window>

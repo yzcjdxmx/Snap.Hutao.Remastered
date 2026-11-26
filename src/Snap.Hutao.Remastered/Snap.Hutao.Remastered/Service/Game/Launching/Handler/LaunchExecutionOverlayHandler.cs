@@ -20,6 +20,7 @@ public sealed class LaunchExecutionOverlayHandler : AbstractLaunchExecutionHandl
 
         await context.TaskContext.SwitchToMainThreadAsync();
         window = context.ServiceProvider.GetRequiredService<LaunchExecutionOverlayWindow>();
+        window.SetFpsTarget(context.Process.Id);
     }
 
     public override async ValueTask AfterAsync(AfterLaunchExecutionContext context)
@@ -30,6 +31,7 @@ public sealed class LaunchExecutionOverlayHandler : AbstractLaunchExecutionHandl
         }
 
         await context.TaskContext.SwitchToMainThreadAsync();
+        await window.StopFpsCaptureAsync();
         window.PreventClose = false;
         window.Close();
     }
