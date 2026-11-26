@@ -43,9 +43,12 @@ internal sealed class PerformancePanelHardwareMonitor
         cpuTemperatureTask = Task.Run(() => WatchCpuTemperatureAsync(token));
     }
 
-    public PanelHardwareValues Read()
+    public unsafe PanelHardwareValues Read()
     {
-        SystemTimes? current = GetSystemTimes(out long idle, out long kernel, out long user) ? new(idle, kernel, user) : null;
+        long idle;
+        long kernel;
+        long user;
+        SystemTimes? current = GetSystemTimes(&idle, &kernel, &user) != 0 ? new(idle, kernel, user) : null;
         double? cpuUsage = current is { } times && previousCpuTimes is { } previous ? times.UsageSince(previous) : null;
         previousCpuTimes = current;
 
@@ -180,8 +183,8 @@ internal sealed class PerformancePanelHardwareMonitor
 
     [DllImport("kernel32.dll", ExactSpelling = true)]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool GetSystemTimes(out long idle, out long kernel, out long user);
+    // BOOL and FILETIME pointers require no runtime marshalling.
+    private static extern unsafe int GetSystemTimes(long* idle, long* kernel, long* user);
 
     private sealed record GpuReading(uint? Usage, uint? Celsius, long Timestamp);
 

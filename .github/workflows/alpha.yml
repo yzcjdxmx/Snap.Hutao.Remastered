@@ -29,6 +29,19 @@ jobs:
           @'
           using Snap.Hutao.Remastered.Service.Game;
           using Snap.Hutao.Remastered.Service.Game.Launching;
+          using System.Runtime.InteropServices;
+
+          [assembly: System.Runtime.CompilerServices.DisableRuntimeMarshalling]
+
+          try
+          {
+              LegacyCpuImport.Read();
+              throw new InvalidOperationException("The v4.2 signature unexpectedly worked with runtime marshalling disabled.");
+          }
+          catch (MarshalDirectiveException)
+          {
+              Console.WriteLine("Reproduced the v4.2 CPU sampling failure.");
+          }
 
           foreach (string value in new[] { "NaN", "Infinity", "-Infinity", "1e100", "invalid", " " })
           {
@@ -56,6 +69,7 @@ jobs:
           {
               await monitor.StopAsync();
           }
+          Console.WriteLine("CPU sampling works with Native AOT and runtime marshalling disabled.");
 
           static void AssertPercentage(float expected, float actual)
           {
@@ -64,9 +78,19 @@ jobs:
                   throw new InvalidOperationException($"Expected {expected}, got {actual}.");
               }
           }
+
+          internal static class LegacyCpuImport
+          {
+              [DllImport("kernel32.dll", EntryPoint = "GetSystemTimes", ExactSpelling = true)]
+              [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+              [return: MarshalAs(UnmanagedType.Bool)]
+              private static extern bool GetSystemTimes(out long idle, out long kernel, out long user);
+
+              public static void Read() => _ = GetSystemTimes(out _, out _, out _);
+          }
           '@ | Set-Content -LiteralPath (Join-Path $probe 'Program.cs')
           $binary = Join-Path $probe 'aot'
-          dotnet publish $probe -c Release -r win-x64 -p:PublishAot=true -o $binary
+          dotnet publish $probe -c Release -r win-x64 -p:PublishAot=true -p:AllowUnsafeBlocks=true -o $binary
           & (Join-Path $binary 'HutaoCpuProbe.exe')
 
       - name: Publish Debug Native AOT app
@@ -108,7 +132,7 @@ jobs:
       - name: Upload portable preview
         uses: actions/upload-artifact@v7
         with:
-          name: Hutao-PerformancePanel-Preview-v4.2-x64
+          name: Hutao-PerformancePanel-Preview-v4.3-x64
           path: artifacts/performance-panel-aot/
           if-no-files-found: error
           retention-days: 14
