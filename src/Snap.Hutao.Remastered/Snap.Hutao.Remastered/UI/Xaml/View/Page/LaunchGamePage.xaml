@@ -454,9 +454,13 @@
                                                 <cwc:SettingsCard
                                                     Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
                                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelScale}">
-                                                    <NumberBox Width="128" LargeChange="10" Maximum="170" Minimum="70" SmallChange="5"
-                                                        SpinButtonPlacementMode="Inline"
-                                                        Value="{x:Bind DataContext.LaunchOptions.PerformancePanelScale.Value, Mode=TwoWay}"/>
+                                                    <StackPanel Orientation="Horizontal" Spacing="12">
+                                                        <Slider x:Name="PerformancePanelScaleSlider" Width="136" Maximum="170" Minimum="70"
+                                                            AutomationProperties.Name="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelScale}"
+                                                            Value="{x:Bind DataContext.LaunchOptions.PerformancePanelScale.Value, Mode=TwoWay}"/>
+                                                        <TextBlock Width="32" VerticalAlignment="Center"
+                                                            Text="{x:Bind PerformancePanelScaleSlider.Value, Mode=OneWay}"/>
+                                                    </StackPanel>
                                                 </cwc:SettingsCard>
                                                 <cwc:SettingsCard
                                                     Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
@@ -474,9 +478,53 @@
                                                 <cwc:SettingsCard
                                                     Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
                                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelOpacity}">
-                                                    <NumberBox Width="128" LargeChange="10" Maximum="100" Minimum="0" SmallChange="5"
-                                                        SpinButtonPlacementMode="Inline"
-                                                        Value="{x:Bind DataContext.LaunchOptions.PerformancePanelBackgroundOpacity.Value, Mode=TwoWay}"/>
+                                                    <StackPanel Orientation="Horizontal" Spacing="12">
+                                                        <Slider x:Name="PerformancePanelOpacitySlider" Width="136" Maximum="100" Minimum="0"
+                                                            AutomationProperties.Name="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelOpacity}"
+                                                            Value="{x:Bind DataContext.LaunchOptions.PerformancePanelBackgroundOpacity.Value, Mode=TwoWay}"/>
+                                                        <TextBlock Width="32" VerticalAlignment="Center"
+                                                            Text="{x:Bind PerformancePanelOpacitySlider.Value, Mode=OneWay}"/>
+                                                    </StackPanel>
+                                                </cwc:SettingsCard>
+                                                <cwc:SettingsCard
+                                                    Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
+                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShownMetrics}">
+                                                    <Button Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelChooseMetrics}">
+                                                        <Button.Flyout>
+                                                            <Flyout>
+                                                                <StackPanel Spacing="4">
+                                                                <ToggleSwitch
+                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowFps}"
+                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowFps.Value, Mode=TwoWay}"/>
+                                                                <ToggleSwitch
+                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowLow}"
+                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowLow.Value, Mode=TwoWay}"/>
+                                                                <ToggleSwitch
+                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowCpuUsage}"
+                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowCpuUsage.Value, Mode=TwoWay}"/>
+                                                                <ToggleSwitch
+                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowCpuTemperature}"
+                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowCpuTemperature.Value, Mode=TwoWay}"/>
+                                                                <ToggleSwitch
+                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowGpuUsage}"
+                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowGpuUsage.Value, Mode=TwoWay}"/>
+                                                                <ToggleSwitch
+                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowGpuTemperature}"
+                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowGpuTemperature.Value, Mode=TwoWay}"/>
+                                                                <ToggleSwitch
+                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowTime}"
+                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowTime.Value, Mode=TwoWay}"/>
+                                                                </StackPanel>
+                                                            </Flyout>
+                                                        </Button.Flyout>
+                                                    </Button>
+                                                </cwc:SettingsCard>
+                                                <cwc:SettingsCard
+                                                    Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
+                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelRememberPosition}">
+                                                    <wl:LiquidGlassToggleSwitch
+                                                        shuxcth:ControlMaterialState.IsManaged="True"
+                                                        IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelRememberPosition.Value, Mode=TwoWay}"/>
                                                 </cwc:SettingsCard>
                                             </cwc:SettingsExpander.Items>
                                         </cwc:SettingsExpander>

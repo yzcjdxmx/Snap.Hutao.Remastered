@@ -210,6 +210,33 @@ public sealed partial class LaunchOptions : DbStoreOptions, IRestrictedGamePathA
     [field: MaybeNull]
     public IObservableProperty<float> PerformancePanelBackgroundOpacity { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelBackgroundOpacity, 89F); }
 
+    [field: MaybeNull]
+    public IObservableProperty<bool> PerformancePanelShowFps { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelShowFps, true); }
+
+    [field: MaybeNull]
+    public IObservableProperty<bool> PerformancePanelShowLow { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelShowLow, true); }
+
+    [field: MaybeNull]
+    public IObservableProperty<bool> PerformancePanelShowCpuUsage { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelShowCpuUsage, true); }
+
+    [field: MaybeNull]
+    public IObservableProperty<bool> PerformancePanelShowCpuTemperature { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelShowCpuTemperature, true); }
+
+    [field: MaybeNull]
+    public IObservableProperty<bool> PerformancePanelShowGpuUsage { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelShowGpuUsage, true); }
+
+    [field: MaybeNull]
+    public IObservableProperty<bool> PerformancePanelShowGpuTemperature { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelShowGpuTemperature, true); }
+
+    [field: MaybeNull]
+    public IObservableProperty<bool> PerformancePanelShowTime { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelShowTime, true); }
+
+    [field: MaybeNull]
+    public IObservableProperty<bool> PerformancePanelRememberPosition { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelRememberPosition, true); }
+
+    [field: MaybeNull]
+    public IObservableProperty<string> PerformancePanelPosition { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelPosition, string.Empty); }
+
     public Color PerformancePanelBackgroundColor
     {
         get

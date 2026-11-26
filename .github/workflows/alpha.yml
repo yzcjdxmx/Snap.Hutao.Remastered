@@ -19,6 +19,34 @@ jobs:
         with:
           dotnet-version: 11.0.100
 
+      - name: Verify CPU sampling under Native AOT
+        shell: pwsh
+        run: |
+          $probe = Join-Path $env:RUNNER_TEMP 'HutaoCpuProbe'
+          dotnet new console --framework net11.0 --no-restore --output $probe
+          Copy-Item -LiteralPath 'src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/Service/Game/Launching/PerformancePanelHardwareMonitor.cs' -Destination $probe
+          @'
+          using Snap.Hutao.Remastered.Service.Game.Launching;
+
+          PerformancePanelHardwareMonitor monitor = new();
+          try
+          {
+              _ = monitor.Read();
+              await Task.Delay(1100);
+              if (monitor.Read().CpuUsage is not (>= 0 and <= 100))
+              {
+                  throw new InvalidOperationException("System CPU usage was unavailable in Native AOT.");
+              }
+          }
+          finally
+          {
+              await monitor.StopAsync();
+          }
+          '@ | Set-Content -LiteralPath (Join-Path $probe 'Program.cs')
+          $binary = Join-Path $probe 'aot'
+          dotnet publish $probe -c Release -r win-x64 -p:PublishAot=true -o $binary
+          & (Join-Path $binary 'HutaoCpuProbe.exe')
+
       - name: Publish Debug Native AOT app
         shell: pwsh
         run: >-
@@ -58,7 +86,7 @@ jobs:
       - name: Upload portable preview
         uses: actions/upload-artifact@v7
         with:
-          name: Hutao-PerformancePanel-Preview-v3-x64
+          name: Hutao-PerformancePanel-Preview-v4-x64
           path: artifacts/performance-panel-aot/
           if-no-files-found: error
           retention-days: 14

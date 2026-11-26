@@ -30,25 +30,35 @@ internal sealed class PerformancePanelHardwareMonitor
         """;
 
     private readonly CancellationTokenSource cancellation = new();
-    private readonly Task hardwareTask;
+    private readonly Task gpuTask;
     private readonly Task cpuTemperatureTask;
-    private HardwareReading? hardware;
+    private SystemTimes? previousCpuTimes;
+    private GpuReading? gpu;
     private TemperatureReading? cpuTemperature;
 
     public PerformancePanelHardwareMonitor()
     {
         CancellationToken token = cancellation.Token;
-        hardwareTask = Task.Run(() => UpdateHardwareAsync(token));
-        cpuTemperatureTask = Task.Run(() => UpdateCpuTemperatureAsync(token));
+        gpuTask = Task.Run(() => WatchGpuAsync(token));
+        cpuTemperatureTask = Task.Run(() => WatchCpuTemperatureAsync(token));
     }
 
     public PanelHardwareValues Read()
     {
-        HardwareReading? current = Volatile.Read(ref hardware);
+        SystemTimes? current = GetSystemTimes(out long idle, out long kernel, out long user) ? new(idle, kernel, user) : null;
+        double? cpuUsage = current is { } times && previousCpuTimes is { } previous ? times.UsageSince(previous) : null;
+        previousCpuTimes = current;
+
         TemperatureReading? temperature = Volatile.Read(ref cpuTemperature);
-        return new(current?.CpuUsage,
+        GpuReading? graphics = Volatile.Read(ref gpu);
+        if (graphics is not null && Stopwatch.GetElapsedTime(graphics.Timestamp).TotalSeconds >= 5)
+        {
+            graphics = null;
+        }
+
+        return new(cpuUsage,
             temperature is not null && Stopwatch.GetElapsedTime(temperature.Timestamp).TotalSeconds < 5 ? temperature.Celsius : null,
-            current?.GpuUsage, current?.GpuTemperature);
+            graphics?.Usage, graphics?.Celsius);
     }
 
     public async Task StopAsync()
@@ -56,32 +66,44 @@ internal sealed class PerformancePanelHardwareMonitor
         using (cancellation)
         {
             cancellation.Cancel();
-            await Task.WhenAll(hardwareTask, cpuTemperatureTask).ConfigureAwait(false);
+            await Task.WhenAll(gpuTask, cpuTemperatureTask).ConfigureAwait(false);
         }
     }
 
-    private async Task UpdateHardwareAsync(CancellationToken token)
+    private Task WatchGpuAsync(CancellationToken token)
     {
-        using NvidiaSensors? nvidia = NvidiaSensors.TryOpen();
-        using PeriodicTimer timer = new(TimeSpan.FromSeconds(1));
-        SystemTimes? previous = null;
-        try
+        string executable = Path.Combine(Environment.SystemDirectory, "nvidia-smi.exe");
+        if (!File.Exists(executable))
         {
-            do
-            {
-                SystemTimes? current = GetSystemTimes(out long idle, out long kernel, out long user)
-                    ? new(idle, kernel, user) : null;
-                double? cpuUsage = current is { } times && previous is { } older ? times.UsageSince(older) : null;
-                previous = current;
-                Volatile.Write(ref hardware, new HardwareReading(cpuUsage, nvidia?.ReadUsage(), nvidia?.ReadTemperature()));
-            } while (await timer.WaitForNextTickAsync(token).ConfigureAwait(false));
+            executable = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "NVIDIA Corporation", "NVSMI", "nvidia-smi.exe");
         }
-        catch (OperationCanceledException) when (token.IsCancellationRequested)
+
+        if (!File.Exists(executable))
         {
+            return Task.CompletedTask;
         }
+
+        return ReadLinesAsync(executable,
+            ["--id=0", "--query-gpu=utilization.gpu,temperature.gpu", "--format=csv,noheader,nounits", "--loop=1"],
+            AcceptGpuReading, token);
     }
 
-    private async Task UpdateCpuTemperatureAsync(CancellationToken token)
+    private void AcceptGpuReading(string line)
+    {
+        int comma = line.IndexOf(',');
+        if (comma < 0)
+        {
+            return;
+        }
+
+        uint? usage = uint.TryParse(line.AsSpan(0, comma), NumberStyles.Integer, CultureInfo.InvariantCulture, out uint percent) && percent <= 100
+            ? percent : null;
+        uint? temperature = uint.TryParse(line.AsSpan(comma + 1), NumberStyles.Integer, CultureInfo.InvariantCulture, out uint celsius) && celsius is > 0 and <= 125
+            ? celsius : null;
+        Volatile.Write(ref gpu, new GpuReading(usage, temperature, Stopwatch.GetTimestamp()));
+    }
+
+    private Task WatchCpuTemperatureAsync(CancellationToken token)
     {
         try
         {
@@ -89,21 +111,42 @@ internal sealed class PerformancePanelHardwareMonitor
                 @"HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\BIOS", "SystemManufacturer", null);
             if (manufacturer is not string name || !name.Contains("ASUS", StringComparison.OrdinalIgnoreCase))
             {
-                return;
+                return Task.CompletedTask;
             }
 
-            ProcessStartInfo info = new(Path.Combine(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe"))
+            string executable = Path.Combine(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe");
+            return ReadLinesAsync(executable, ["-NoLogo", "-NoProfile", "-NonInteractive", "-Command", ReadAsusTemperature], AcceptCpuTemperature, token);
+        }
+        catch (Exception ex) when (ex is UnauthorizedAccessException or SecurityException or IOException)
+        {
+            return Task.CompletedTask;
+        }
+    }
+
+    private void AcceptCpuTemperature(string line)
+    {
+        if (int.TryParse(line, NumberStyles.Integer, CultureInfo.InvariantCulture, out int celsius) && celsius is > 0 and <= 125)
+        {
+            Volatile.Write(ref cpuTemperature, new TemperatureReading(celsius, Stopwatch.GetTimestamp()));
+        }
+    }
+
+    private static async Task ReadLinesAsync(string executable, string[] arguments, Action<string> accept, CancellationToken token)
+    {
+        try
+        {
+            ProcessStartInfo info = new(executable)
             {
                 CreateNoWindow = true,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
             };
-            info.ArgumentList.Add("-NoLogo");
-            info.ArgumentList.Add("-NoProfile");
-            info.ArgumentList.Add("-NonInteractive");
-            info.ArgumentList.Add("-Command");
-            info.ArgumentList.Add(ReadAsusTemperature);
+            foreach (string argument in arguments)
+            {
+                info.ArgumentList.Add(argument);
+            }
+
             token.ThrowIfCancellationRequested();
             using Process? process = Process.Start(info);
             if (process is null)
@@ -116,11 +159,7 @@ internal sealed class PerformancePanelHardwareMonitor
                 process.BeginErrorReadLine();
                 while (await process.StandardOutput.ReadLineAsync().WaitAsync(token).ConfigureAwait(false) is { } line)
                 {
-                    if (int.TryParse(line, NumberStyles.Integer, CultureInfo.InvariantCulture, out int celsius) &&
-                        celsius is > 0 and <= 125)
-                    {
-                        Volatile.Write(ref cpuTemperature, new TemperatureReading(celsius, Stopwatch.GetTimestamp()));
-                    }
+                    accept(line);
                 }
             }
             finally
@@ -135,7 +174,7 @@ internal sealed class PerformancePanelHardwareMonitor
         catch (Exception ex) when (ex is Win32Exception or InvalidOperationException or IOException or
             OperationCanceledException or UnauthorizedAccessException or SecurityException)
         {
-            // Unsupported or inaccessible sensors leave the temperature unavailable.
+            // Unsupported or inaccessible sensors leave their readings unavailable.
         }
     }
 
@@ -144,7 +183,7 @@ internal sealed class PerformancePanelHardwareMonitor
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool GetSystemTimes(out long idle, out long kernel, out long user);
 
-    private sealed record HardwareReading(double? CpuUsage, uint? GpuUsage, uint? GpuTemperature);
+    private sealed record GpuReading(uint? Usage, uint? Celsius, long Timestamp);
 
     private sealed record TemperatureReading(int Celsius, long Timestamp);
 
@@ -159,82 +198,3 @@ internal sealed class PerformancePanelHardwareMonitor
 }
 
 internal readonly record struct PanelHardwareValues(double? CpuUsage, int? CpuTemperature, uint? GpuUsage, uint? GpuTemperature);
-
-internal sealed unsafe class NvidiaSensors : IDisposable
-{
-    private readonly nint library;
-    private readonly nint device;
-    private readonly delegate* unmanaged[Cdecl]<int> shutdown;
-    private readonly delegate* unmanaged[Cdecl]<nint, uint, uint*, int> temperature;
-    private readonly delegate* unmanaged[Cdecl]<nint, GpuUtilization*, int> utilization;
-
-    private NvidiaSensors(nint library, nint device, nint shutdown, nint temperature, nint utilization)
-    {
-        this.library = library;
-        this.device = device;
-        this.shutdown = (delegate* unmanaged[Cdecl]<int>)shutdown;
-        this.temperature = (delegate* unmanaged[Cdecl]<nint, uint, uint*, int>)temperature;
-        this.utilization = (delegate* unmanaged[Cdecl]<nint, GpuUtilization*, int>)utilization;
-    }
-
-    public static NvidiaSensors? TryOpen()
-    {
-        string[] paths =
-        [
-            Path.Combine(Environment.SystemDirectory, "nvml.dll"),
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "NVIDIA Corporation", "NVSMI", "nvml.dll"),
-        ];
-        foreach (string path in paths)
-        {
-            if (!NativeLibrary.TryLoad(path, out nint library))
-            {
-                continue;
-            }
-
-            if (NativeLibrary.TryGetExport(library, "nvmlInit_v2", out nint init) &&
-                NativeLibrary.TryGetExport(library, "nvmlShutdown", out nint shutdown) &&
-                NativeLibrary.TryGetExport(library, "nvmlDeviceGetHandleByIndex_v2", out nint getDevice) &&
-                ((delegate* unmanaged[Cdecl]<int>)init)() == 0)
-            {
-                nint device;
-                if (((delegate* unmanaged[Cdecl]<uint, nint*, int>)getDevice)(0, &device) == 0)
-                {
-                    NativeLibrary.TryGetExport(library, "nvmlDeviceGetTemperature", out nint temperature);
-                    NativeLibrary.TryGetExport(library, "nvmlDeviceGetUtilizationRates", out nint utilization);
-                    return new(library, device, shutdown, temperature, utilization);
-                }
-
-                _ = ((delegate* unmanaged[Cdecl]<int>)shutdown)();
-            }
-
-            NativeLibrary.Free(library);
-        }
-
-        return null;
-    }
-
-    public uint? ReadTemperature()
-    {
-        uint value;
-        return temperature != null && temperature(device, 0, &value) == 0 ? value : null; // NVML_TEMPERATURE_GPU
-    }
-
-    public uint? ReadUsage()
-    {
-        GpuUtilization value;
-        return utilization != null && utilization(device, &value) == 0 ? value.Gpu : null;
-    }
-
-    public void Dispose()
-    {
-        _ = shutdown();
-        NativeLibrary.Free(library);
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct GpuUtilization
-    {
-        public uint Gpu;
-        public uint Memory;
-    }
-}

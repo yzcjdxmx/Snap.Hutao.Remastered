@@ -173,6 +173,15 @@ public static class SettingKeys
     public const string LaunchPerformancePanelScale                     = "Snap::Hutao::Game::PerformancePanel::Scale";
     public const string LaunchPerformancePanelBackgroundRgb             = "Snap::Hutao::Game::PerformancePanel::BackgroundRgb";
     public const string LaunchPerformancePanelBackgroundOpacity         = "Snap::Hutao::Game::PerformancePanel::BackgroundOpacity";
+    public const string LaunchPerformancePanelShowFps                                   = "Snap::Hutao::Game::PerformancePanel::ShowFps";
+    public const string LaunchPerformancePanelShowLow                                   = "Snap::Hutao::Game::PerformancePanel::ShowLow";
+    public const string LaunchPerformancePanelShowCpuUsage                              = "Snap::Hutao::Game::PerformancePanel::ShowCpuUsage";
+    public const string LaunchPerformancePanelShowCpuTemperature                        = "Snap::Hutao::Game::PerformancePanel::ShowCpuTemperature";
+    public const string LaunchPerformancePanelShowGpuUsage                              = "Snap::Hutao::Game::PerformancePanel::ShowGpuUsage";
+    public const string LaunchPerformancePanelShowGpuTemperature                        = "Snap::Hutao::Game::PerformancePanel::ShowGpuTemperature";
+    public const string LaunchPerformancePanelShowTime                                  = "Snap::Hutao::Game::PerformancePanel::ShowTime";
+    public const string LaunchPerformancePanelRememberPosition                          = "Snap::Hutao::Game::PerformancePanel::RememberPosition";
+    public const string LaunchPerformancePanelPosition                   = "Snap::Hutao::Game::PerformancePanel::Position";
     public const string EnableBetaGameInstall                            = "Snap::Hutao::Game::Package::BetaGame::Enable";
     public const string LaunchOverridePackageConvertDirectoryPermissions = "Snap::Hutao::Game::Package::Convert::Directory::Permissions::Override";
     public const string DownloadSpeedLimitPerSecondInKiloByte            = "Snap::Hutao::Game::Package::DownloadSpeedLimitPerSecondInKiloByte";

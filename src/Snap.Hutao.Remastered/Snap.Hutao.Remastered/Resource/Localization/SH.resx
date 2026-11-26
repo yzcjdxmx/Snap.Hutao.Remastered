@@ -3312,6 +3312,36 @@
   <data name="ViewPageLaunchGamePerformancePanelOpacity" xml:space="preserve">
     <value>背景不透明度（%）</value>
   </data>
+  <data name="ViewPageLaunchGamePerformancePanelShowFps" xml:space="preserve">
+    <value>FPS</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelShowLow" xml:space="preserve">
+    <value>1% Low</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelShowCpuUsage" xml:space="preserve">
+    <value>CPU 占用率</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelShowCpuTemperature" xml:space="preserve">
+    <value>CPU 温度</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelShowGpuUsage" xml:space="preserve">
+    <value>GPU 占用率</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelShowGpuTemperature" xml:space="preserve">
+    <value>GPU 温度</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelShowTime" xml:space="preserve">
+    <value>实时时间</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelShownMetrics" xml:space="preserve">
+    <value>显示内容</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelChooseMetrics" xml:space="preserve">
+    <value>选择指标</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelRememberPosition" xml:space="preserve">
+    <value>记住上次位置</value>
+  </data>
   <data name="ViewPageLaunchGameOverlayHeader" xml:space="preserve">
     <value>悬浮窗</value>
   </data>

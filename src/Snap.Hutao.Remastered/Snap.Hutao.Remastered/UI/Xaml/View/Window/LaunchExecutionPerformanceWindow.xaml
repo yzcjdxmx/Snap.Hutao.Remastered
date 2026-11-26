@@ -7,37 +7,17 @@
         <Border x:Name="RootBorder" Width="270" Height="102"
             HorizontalAlignment="Left" VerticalAlignment="Top"
             CornerRadius="8" Padding="12,6">
-            <Grid ColumnSpacing="10" RowSpacing="4">
+            <Grid ColumnSpacing="10">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="28"/>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="48"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <StackPanel x:Name="FpsMetric" VerticalAlignment="Center">
-                    <TextBlock x:Name="FpsLabel" FontSize="11" Text="FPS"/>
-                    <TextBlock x:Name="FpsValue" FontSize="23" FontWeight="SemiBold" Text="—"/>
-                </StackPanel>
-                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                    <TextBlock x:Name="LowLabel" FontSize="11" Text="1% Low"/>
-                    <TextBlock x:Name="LowValue" FontSize="23" FontWeight="SemiBold" Text="—"/>
-                </StackPanel>
-                <StackPanel Grid.Row="1" VerticalAlignment="Center">
-                    <TextBlock x:Name="CpuLabel" FontSize="11" Text="CPU 总占用 / 温度"/>
-                    <TextBlock x:Name="CpuValue" FontSize="13" FontWeight="SemiBold" Text="— · —"/>
-                </StackPanel>
-                <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
-                    <TextBlock x:Name="GpuLabel" FontSize="11" Text="NVIDIA GPU"/>
-                    <TextBlock x:Name="GpuValue" FontSize="13" FontWeight="SemiBold" Text="— · —"/>
-                </StackPanel>
+                <Grid x:Name="MetricGrid" ColumnSpacing="12" RowSpacing="4"/>
                 <Button x:Name="CloseButton"
-                    Grid.Column="2"
+                    Grid.Column="1"
                     Width="28"
                     Height="28"
-                    VerticalAlignment="Center"
+                    VerticalAlignment="Top"
                     Padding="0"
                     AutomationProperties.Name="关闭游戏性能面板"
                     Background="Transparent"

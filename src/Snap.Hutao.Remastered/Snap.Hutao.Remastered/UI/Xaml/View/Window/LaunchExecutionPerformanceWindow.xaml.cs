@@ -13,6 +13,7 @@ using Snap.Hutao.Remastered.UI.Windowing.Abstraction;
 using Snap.Hutao.Remastered.UI.Xaml.Media.Backdrop;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using Windows.Graphics;
 using Windows.UI;
@@ -31,11 +32,15 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
     private readonly int gameProcessId;
     private readonly LaunchOptions options;
     private readonly nint windowHandle;
+    private readonly AppWindow panelWindow;
     private readonly PresentMonFpsCapture capture;
     private readonly PerformancePanelHardwareMonitor hardware;
     private readonly DispatcherQueueTimer timer;
     private readonly SolidColorBrush backgroundBrush = new();
     private readonly SolidColorBrush textBrush = new();
+    private readonly MetricTile[] metrics;
+    private PointInt32 lastPosition;
+    private int shownMetrics = -1;
     private nint gameWindowHandle;
     private bool positionLocked;
     private bool showWhenGameReturns = true;
@@ -53,6 +58,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         this.options = options;
         this.gameProcessId = gameProcessId;
         windowHandle = WindowNative.GetWindowHandle(this);
+        panelWindow = AppWindow;
         AppWindow.SafeIsShowInSwitchers(false);
 
         if (AppWindow.Presenter is OverlappedPresenter presenter)
@@ -70,13 +76,20 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         this.InitializeController(serviceProvider.CreateScope().ServiceProvider);
         AppWindow.Title = "游戏性能";
         RootBorder.Background = backgroundBrush;
-        foreach (TextBlock label in new[] { FpsLabel, FpsValue, LowLabel, LowValue, CpuLabel, CpuValue, GpuLabel, GpuValue })
-        {
-            label.Foreground = textBrush;
-        }
-
+        metrics =
+        [
+            new("FPS", () => options.PerformancePanelShowFps.Value, textBrush),
+            new("1% Low", () => options.PerformancePanelShowLow.Value, textBrush),
+            new("CPU 总占用", () => options.PerformancePanelShowCpuUsage.Value, textBrush),
+            new("CPU 温度", () => options.PerformancePanelShowCpuTemperature.Value, textBrush),
+            new("NVIDIA GPU 占用", () => options.PerformancePanelShowGpuUsage.Value, textBrush),
+            new("NVIDIA GPU 温度", () => options.PerformancePanelShowGpuTemperature.Value, textBrush),
+            new("时间", () => options.PerformancePanelShowTime.Value, textBrush),
+        ];
         CloseButton.Foreground = textBrush;
         ApplyAppearance();
+        lastPosition = AppWindow.Position;
+        panelWindow.Changed += OnAppWindowChanged;
         AppWindow.Hide();
         capture = new(gameProcessId);
         hardware = new();
@@ -93,24 +106,45 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
 
     public Task CloseAndStopAsync()
     {
-        if (stopTask is null)
+        if (stopTask is { } existing)
         {
-            Close();
+            return existing;
         }
 
-        return stopTask ?? StopAsync();
+        Task stopping = StopAsync();
+        Close();
+        return stopping;
     }
 
     private Task StopAsync()
     {
         timer.Stop();
         timer.Tick -= OnTick;
-        return stopTask ??= Task.WhenAll(capture.StopAsync(), hardware.StopAsync());
+        if (stopTask is null)
+        {
+            panelWindow.Changed -= OnAppWindowChanged;
+            if (options.PerformancePanelRememberPosition.Value)
+            {
+                options.PerformancePanelPosition.Value = FormattableString.Invariant($"{lastPosition.X},{lastPosition.Y}");
+            }
+
+            stopTask = Task.WhenAll(capture.StopAsync(), hardware.StopAsync());
+        }
+
+        return stopTask;
+    }
+
+    private void OnAppWindowChanged(AppWindow sender, AppWindowChangedEventArgs args)
+    {
+        if (args.DidPositionChange)
+        {
+            lastPosition = sender.Position;
+        }
     }
 
     private void OnCloseClick(object sender, RoutedEventArgs args)
     {
-        Close();
+        _ = CloseAndStopAsync();
     }
 
     private void OnClosed(object sender, WindowEventArgs args)
@@ -131,26 +165,50 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         ApplyAppearance();
         PresentMonFpsSample? sample = capture.ReadSample();
         PanelHardwareValues hardwareValues = hardware.Read();
-        FpsValue.Text = capture.Failed ? "失败" : sample?.Fps.ToString("0") ?? "—";
-        LowValue.Text = sample?.LowFps?.ToString("0") ?? "—";
-        string cpuUsage = hardwareValues.CpuUsage is { } cpu ? $"{cpu:0}%" : "—";
-        string cpuTemperature = hardwareValues.CpuTemperature is { } cpuCelsius ? $"{cpuCelsius}°C" : "—";
-        string gpuUsage = hardwareValues.GpuUsage is { } gpu ? $"{gpu}%" : "—";
-        string gpuTemperature = hardwareValues.GpuTemperature is { } gpuCelsius ? $"{gpuCelsius}°C" : "—";
-        CpuValue.Text = $"{cpuUsage} · {cpuTemperature}";
-        GpuValue.Text = $"{gpuUsage} · {gpuTemperature}";
-        ToolTipService.SetToolTip(FpsMetric, capture.Failed ? "采集失败，下次启动游戏时会重试" : null);
+        metrics[0].Value.Text = capture.Failed ? "失败" : sample?.Fps.ToString("0") ?? "—";
+        metrics[1].Value.Text = sample?.LowFps?.ToString("0") ?? "—";
+        metrics[2].Value.Text = hardwareValues.CpuUsage is { } cpu ? $"{cpu:0}%" : "—";
+        metrics[3].Value.Text = hardwareValues.CpuTemperature is { } cpuCelsius ? $"{cpuCelsius}°C" : "—";
+        metrics[4].Value.Text = hardwareValues.GpuUsage is { } gpu ? $"{gpu}%" : "—";
+        metrics[5].Value.Text = hardwareValues.GpuTemperature is { } gpuCelsius ? $"{gpuCelsius}°C" : "—";
+        metrics[6].Value.Text = DateTime.Now.ToString("HH:mm:ss", CultureInfo.InvariantCulture);
     }
 
     private void ApplyAppearance()
     {
+        int selected = 0;
+        for (int index = 0; index < metrics.Length; index++)
+        {
+            if (metrics[index].Selected())
+            {
+                selected |= 1 << index;
+            }
+        }
+
+        bool selectionChanged = selected != shownMetrics;
+        if (selectionChanged)
+        {
+            ArrangeMetrics(selected);
+            shownMetrics = selected;
+        }
+
+        if (selected == 0)
+        {
+            if (AppWindow.IsVisible)
+            {
+                AppWindow.Hide();
+            }
+
+            showWhenGameReturns = true;
+        }
+
         double configuredScale = options.PerformancePanelScale.Value;
         double configuredOpacity = options.PerformancePanelBackgroundOpacity.Value;
         double scale = double.IsFinite(configuredScale) ? Math.Clamp(configuredScale, 70, 170) / 100 : 1;
         double opacity = double.IsFinite(configuredOpacity) ? Math.Clamp(configuredOpacity, 0, 100) / 100 : 0.89;
         Color background = options.PerformancePanelBackgroundColor;
         var appearance = (Scale: scale, Background: background, Opacity: opacity);
-        if (lastAppearance is { } previous && previous.Equals(appearance))
+        if (!selectionChanged && lastAppearance is { } previous && previous.Equals(appearance))
         {
             return;
         }
@@ -162,22 +220,86 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         textBrush.Color = lightBackground ? Color.FromArgb(255, 24, 29, 37) : Color.FromArgb(255, 235, 241, 247);
         SizeInt32 size = ScaledSizeInt32.CreateForWindow((int)Math.Ceiling(RootBorder.Width * scale), (int)Math.Ceiling(RootBorder.Height * scale), this);
         AppWindow.Resize(size);
-        if (DisplayArea.GetFromWindowId(AppWindow.Id, DisplayAreaFallback.Primary) is { } display)
+        PointInt32 current = AppWindow.Position;
+        PointInt32 saved = default;
+        bool restoreSaved = first && TryReadPosition(out saved);
+        DisplayArea? display = restoreSaved
+            ? DisplayArea.GetFromPoint(saved, DisplayAreaFallback.Nearest)
+            : DisplayArea.GetFromWindowId(AppWindow.Id, DisplayAreaFallback.Primary);
+        if (display is not null)
         {
             RectInt32 area = display.WorkArea;
-            PointInt32 current = AppWindow.Position;
             int maxX = Math.Max(area.X, area.X + area.Width - size.Width);
             int maxY = Math.Max(area.Y, area.Y + area.Height - size.Height);
             PointInt32 position = new()
             {
-                X = Math.Clamp(first ? maxX - 24 : current.X, area.X, maxX),
-                Y = Math.Clamp(first ? area.Y + 24 : current.Y, area.Y, maxY),
+                X = Math.Clamp(restoreSaved ? saved.X : first ? maxX - 24 : current.X, area.X, maxX),
+                Y = Math.Clamp(restoreSaved ? saved.Y : first ? area.Y + 24 : current.Y, area.Y, maxY),
             };
             if (position.X != current.X || position.Y != current.Y)
             {
                 AppWindow.Move(position);
             }
         }
+    }
+
+    private bool TryReadPosition(out PointInt32 position)
+    {
+        position = default;
+        if (!options.PerformancePanelRememberPosition.Value)
+        {
+            return false;
+        }
+
+        string[] coordinates = options.PerformancePanelPosition.Value.Split(',', 2);
+        if (coordinates.Length != 2 ||
+            !int.TryParse(coordinates[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out int x) ||
+            !int.TryParse(coordinates[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out int y))
+        {
+            return false;
+        }
+
+        position = new PointInt32 { X = x, Y = y };
+        return true;
+    }
+
+    private void ArrangeMetrics(int selection)
+    {
+        MetricGrid.Children.Clear();
+        MetricGrid.RowDefinitions.Clear();
+        MetricGrid.ColumnDefinitions.Clear();
+
+        int count = System.Numerics.BitOperations.PopCount((uint)selection);
+        int columns = count > 1 ? 2 : 1;
+        for (int column = 0; column < columns; column++)
+        {
+            MetricGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        }
+
+        int slot = 0;
+        for (int index = 0; index < metrics.Length; index++)
+        {
+            if ((selection & (1 << index)) == 0)
+            {
+                continue;
+            }
+
+            StackPanel tile = metrics[index].Panel;
+            int row = slot / columns;
+            if (slot % columns == 0)
+            {
+                MetricGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40) });
+            }
+
+            Grid.SetRow(tile, row);
+            Grid.SetColumn(tile, slot % columns);
+            MetricGrid.Children.Add(tile);
+            slot++;
+        }
+
+        int rows = Math.Max(1, MetricGrid.RowDefinitions.Count);
+        RootBorder.Width = columns == 1 ? 180 : 286;
+        RootBorder.Height = 12 + 40 * rows + 4 * (rows - 1);
     }
 
     private void RestoreOrder()
@@ -212,7 +334,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
             }
         }
 
-        if (showWhenGameReturns && presentation is not null)
+        if (showWhenGameReturns && shownMetrics > 0 && presentation is not null)
         {
             AppWindow.Show(false);
             AppWindow.MoveInZOrderAtTop();
@@ -304,6 +426,30 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
     private static partial bool SetWindowPos(nint window, nint after, int x, int y, int width, int height, uint flags);
 
     private readonly record struct GamePresentation(nint Handle, int Left, int Top, int Right, int Bottom);
+
+    private sealed class MetricTile
+    {
+        public MetricTile(string label, Func<bool> selected, SolidColorBrush textBrush)
+        {
+            Selected = selected;
+            Panel = new StackPanel();
+            Panel.Children.Add(new TextBlock { Text = label, FontSize = 11, Foreground = textBrush });
+            Value = new TextBlock
+            {
+                Text = "—",
+                FontSize = 18,
+                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+                Foreground = textBrush,
+            };
+            Panel.Children.Add(Value);
+        }
+
+        public StackPanel Panel { get; }
+
+        public TextBlock Value { get; }
+
+        public Func<bool> Selected { get; }
+    }
 
     [StructLayout(LayoutKind.Sequential)]
     private struct WindowRect

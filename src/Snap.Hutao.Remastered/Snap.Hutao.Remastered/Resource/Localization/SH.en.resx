@@ -3215,6 +3215,36 @@ Space Available: {2}</value>
   <data name="ViewPageLaunchGamePerformancePanelOpacity" xml:space="preserve">
     <value>Background opacity (%)</value>
   </data>
+  <data name="ViewPageLaunchGamePerformancePanelShowFps" xml:space="preserve">
+    <value>FPS</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelShowLow" xml:space="preserve">
+    <value>1% low</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelShowCpuUsage" xml:space="preserve">
+    <value>CPU usage</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelShowCpuTemperature" xml:space="preserve">
+    <value>CPU temperature</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelShowGpuUsage" xml:space="preserve">
+    <value>GPU usage</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelShowGpuTemperature" xml:space="preserve">
+    <value>GPU temperature</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelShowTime" xml:space="preserve">
+    <value>Local time</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelShownMetrics" xml:space="preserve">
+    <value>Displayed metrics</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelChooseMetrics" xml:space="preserve">
+    <value>Choose metrics</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelRememberPosition" xml:space="preserve">
+    <value>Remember last position</value>
+  </data>
   <data name="ViewPageLaunchGameOverlayHeader" xml:space="preserve">
     <value>In-Game Overlay</value>
   </data>
