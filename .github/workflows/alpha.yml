@@ -19,14 +19,28 @@ jobs:
         with:
           dotnet-version: 11.0.100
 
-      - name: Verify CPU sampling under Native AOT
+      - name: Verify CPU sampling and legacy panel settings under Native AOT
         shell: pwsh
         run: |
           $probe = Join-Path $env:RUNNER_TEMP 'HutaoCpuProbe'
           dotnet new console --framework net11.0 --no-restore --output $probe
           Copy-Item -LiteralPath 'src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/Service/Game/Launching/PerformancePanelHardwareMonitor.cs' -Destination $probe
+          Copy-Item -LiteralPath 'src/Snap.Hutao.Remastered/Snap.Hutao.Remastered/Service/Game/PerformancePanelPercentage.cs' -Destination $probe
           @'
+          using Snap.Hutao.Remastered.Service.Game;
           using Snap.Hutao.Remastered.Service.Game.Launching;
+
+          foreach (string value in new[] { "NaN", "Infinity", "-Infinity", "1e100", "invalid", " " })
+          {
+              AssertPercentage(89, PerformancePanelPercentage.Parse(value, 89, 0, 100));
+              AssertPercentage(100, PerformancePanelPercentage.Parse(value, 100, 70, 170));
+          }
+          AssertPercentage(89, PerformancePanelPercentage.Normalize(float.NaN, 89, 0, 100));
+          AssertPercentage(0, PerformancePanelPercentage.Parse("0", 89, 0, 100));
+          AssertPercentage(100, PerformancePanelPercentage.Parse("140", 89, 0, 100));
+          AssertPercentage(70, PerformancePanelPercentage.Parse("50", 100, 70, 170));
+          AssertPercentage(170, PerformancePanelPercentage.Parse("200", 100, 70, 170));
+          AssertPercentage(125, PerformancePanelPercentage.Parse("125", 100, 70, 170));
 
           PerformancePanelHardwareMonitor monitor = new();
           try
@@ -41,6 +55,14 @@ jobs:
           finally
           {
               await monitor.StopAsync();
+          }
+
+          static void AssertPercentage(float expected, float actual)
+          {
+              if (expected != actual)
+              {
+                  throw new InvalidOperationException($"Expected {expected}, got {actual}.");
+              }
           }
           '@ | Set-Content -LiteralPath (Join-Path $probe 'Program.cs')
           $binary = Join-Path $probe 'aot'
@@ -86,7 +108,7 @@ jobs:
       - name: Upload portable preview
         uses: actions/upload-artifact@v7
         with:
-          name: Hutao-PerformancePanel-Preview-v4-x64
+          name: Hutao-PerformancePanel-Preview-v4.1-x64
           path: artifacts/performance-panel-aot/
           if-no-files-found: error
           retention-days: 14

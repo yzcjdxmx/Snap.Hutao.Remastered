@@ -14,6 +14,7 @@ using Snap.Hutao.Remastered.Service.Game.PathAbstraction;
 using Snap.Hutao.Remastered.Win32;
 using Snap.Hutao.Remastered.Win32.UI.Input.KeyboardAndMouse;
 using System.Collections.Immutable;
+using System.Globalization;
 using Windows.UI;
 
 namespace Snap.Hutao.Remastered.Service.Game;
@@ -205,10 +206,16 @@ public sealed partial class LaunchOptions : DbStoreOptions, IRestrictedGamePathA
     public IObservableProperty<bool> UsingPerformancePanel { get => field ??= CreateProperty(SettingKeys.LaunchUsingPerformancePanel, false); }
 
     [field: MaybeNull]
-    public IObservableProperty<float> PerformancePanelScale { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelScale, 100F); }
+    public IObservableProperty<float> PerformancePanelScale
+    {
+        get => field ??= CreatePerformancePanelPercentage(SettingKeys.LaunchPerformancePanelScale, 100F, 70F, 170F);
+    }
 
     [field: MaybeNull]
-    public IObservableProperty<float> PerformancePanelBackgroundOpacity { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelBackgroundOpacity, 89F); }
+    public IObservableProperty<float> PerformancePanelBackgroundOpacity
+    {
+        get => field ??= CreatePerformancePanelPercentage(SettingKeys.LaunchPerformancePanelBackgroundOpacity, 89F, 0F, 100F);
+    }
 
     [field: MaybeNull]
     public IObservableProperty<bool> PerformancePanelShowFps { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelShowFps, true); }
@@ -258,6 +265,14 @@ public sealed partial class LaunchOptions : DbStoreOptions, IRestrictedGamePathA
 
     [field: MaybeNull]
     public IObservableProperty<bool> AdvancedStartDelayedOnGameLaunch { get => field ??= CreateProperty(SettingKeys.LaunchAdvancedStartDelayedOnGameLaunch, false); }
+
+    private IObservableProperty<float> CreatePerformancePanelPercentage(string key, float fallback, float minimum, float maximum)
+    {
+        return CreatePropertyForStructUsingCustom(
+            key, fallback,
+            value => PerformancePanelPercentage.Parse(value, fallback, minimum, maximum),
+            value => PerformancePanelPercentage.Normalize(value, fallback, minimum, maximum).ToString(CultureInfo.CurrentCulture));
+    }
 
     private static int InitializeTargetFpsWithScreenFps()
     {
