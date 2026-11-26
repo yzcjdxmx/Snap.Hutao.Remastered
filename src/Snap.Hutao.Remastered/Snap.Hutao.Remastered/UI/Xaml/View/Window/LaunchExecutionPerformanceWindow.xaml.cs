@@ -6,6 +6,7 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
 using Snap.Hutao.Remastered.Service.Game;
 using Snap.Hutao.Remastered.Service.Game.Launching;
 using Snap.Hutao.Remastered.UI.Windowing;
@@ -18,6 +19,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Windows.Graphics;
 using Windows.UI;
+using Windows.UI.ViewManagement;
 using WinRT.Interop;
 
 namespace Snap.Hutao.Remastered.UI.Xaml.View.Window;
@@ -29,6 +31,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
     private const int ExtendedStyleIndex = -20;
     private const int ClickThroughStyles = 0x08000020; // WS_EX_NOACTIVATE | WS_EX_TRANSPARENT
     private const uint RefreshFrameWithoutActivating = 0x37; // SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED
+    private static readonly TimeSpan FadeDuration = TimeSpan.FromMilliseconds(150);
 
     private readonly int gameProcessId;
     private readonly LaunchOptions options;
@@ -36,6 +39,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
     private readonly PresentMonFpsCapture capture;
     private readonly PerformancePanelHardwareMonitor hardware;
     private readonly DispatcherQueueTimer timer;
+    private readonly UISettings uiSettings = new();
     private readonly SolidColorBrush backgroundBrush = new();
     private readonly SolidColorBrush textBrush = new();
     private readonly MetricTile[] metrics;
@@ -47,7 +51,10 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
     private (double Scale, Color Background, double Opacity)? lastAppearance;
     private GamePresentation? lastPresentation;
     private int restackAttempts;
+    private long lastRestackCheck;
     private long lastRefresh;
+    private Storyboard? visibilityTransition;
+    private long visibilityTransitionStarted;
     private Task? stopTask;
 
     [WinRT.DynamicWindowsRuntimeCast(typeof(global::Microsoft.UI.Windowing.OverlappedPresenter))]
@@ -98,7 +105,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         capture = new(gameProcessId);
         hardware = new();
         timer = DispatcherQueue.CreateTimer();
-        timer.Interval = TimeSpan.FromMilliseconds(250);
+        timer.Interval = TimeSpan.FromMilliseconds(75);
         timer.Tick += OnTick;
         Closed += OnClosed;
         timer.Start();
@@ -134,6 +141,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         timer.Tick -= OnTick;
         if (stopTask is null)
         {
+            StopVisibilityTransition();
             stopTask = Task.WhenAll(capture.StopAsync(), hardware.StopAsync());
             try
             {
@@ -190,6 +198,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
     private void UpdatePanel()
     {
         RestoreOrder();
+        FinishVisibilityTransition();
         if (Stopwatch.GetElapsedTime(lastRefresh).TotalSeconds < 1)
         {
             return;
@@ -227,14 +236,10 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
             shownMetrics = selected;
         }
 
-        if (selected == 0)
+        if (selectionChanged && selected == 0)
         {
-            if (AppWindow.IsVisible)
-            {
-                AppWindow.Hide();
-            }
-
             showWhenGameReturns = true;
+            SetPanelVisibility(false, animate: false);
         }
 
         double configuredScale = options.PerformancePanelScale.Value;
@@ -337,12 +342,12 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
 
         if (gameWindowHandle != 0 && IsIconic(gameWindowHandle))
         {
-            if (AppWindow.IsVisible)
+            if (!showWhenGameReturns)
             {
-                AppWindow.Hide();
+                showWhenGameReturns = true;
+                SetPanelVisibility(false);
             }
 
-            showWhenGameReturns = true;
             lastPresentation = null;
             return;
         }
@@ -358,22 +363,24 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
 
         if (showWhenGameReturns && shownMetrics > 0 && presentation is not null)
         {
-            AppWindow.Show(false);
-            AppWindow.MoveInZOrderAtTop();
             showWhenGameReturns = false;
+            SetPanelVisibility(true);
         }
 
         if (presentation != lastPresentation)
         {
             lastPresentation = presentation;
             restackAttempts = 0;
+            lastRestackCheck = 0;
         }
 
-        if (presentation is null || restackAttempts >= 2 || !AppWindow.IsVisible)
+        if (presentation is null || restackAttempts >= 2 || !AppWindow.IsVisible ||
+            Stopwatch.GetElapsedTime(lastRestackCheck).TotalMilliseconds < 250)
         {
             return;
         }
 
+        lastRestackCheck = Stopwatch.GetTimestamp();
         // The game can jump above other topmost windows while entering full screen.
         // Limit attempts for each game rectangle / foreground interval.
         nint above = GetWindow(windowHandle, 3); // GW_HWNDPREV
@@ -388,6 +395,65 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
 
             above = GetWindow(above, 3);
         }
+    }
+
+    private void SetPanelVisibility(bool visible, bool animate = true)
+    {
+        bool wasVisible = AppWindow.IsVisible;
+        double from = wasVisible ? RootBorder.Opacity : 0;
+        double to = visible ? 1 : 0;
+        StopVisibilityTransition();
+
+        bool fade = animate && from != to && uiSettings.AnimationsEnabled;
+        RootBorder.Opacity = fade ? from : to;
+        if (visible)
+        {
+            AppWindow.Show(false);
+            AppWindow.MoveInZOrderAtTop();
+        }
+
+        if (fade)
+        {
+            DoubleAnimation opacity = new()
+            {
+                From = from,
+                To = to,
+                Duration = new(FadeDuration),
+                EasingFunction = new QuadraticEase { EasingMode = visible ? EasingMode.EaseOut : EasingMode.EaseIn },
+            };
+            Storyboard.SetTarget(opacity, RootBorder);
+            Storyboard.SetTargetProperty(opacity, nameof(UIElement.Opacity));
+            Storyboard storyboard = new();
+            storyboard.Children.Add(opacity);
+            storyboard.Begin();
+            visibilityTransition = storyboard;
+            visibilityTransitionStarted = Stopwatch.GetTimestamp();
+        }
+        else if (!visible && wasVisible)
+        {
+            AppWindow.Hide();
+        }
+    }
+
+    private void FinishVisibilityTransition()
+    {
+        if (visibilityTransition is null || Stopwatch.GetElapsedTime(visibilityTransitionStarted) < FadeDuration)
+        {
+            return;
+        }
+
+        RootBorder.Opacity = showWhenGameReturns ? 0 : 1;
+        StopVisibilityTransition();
+        if (showWhenGameReturns)
+        {
+            AppWindow.Hide();
+        }
+    }
+
+    private void StopVisibilityTransition()
+    {
+        visibilityTransition?.Stop();
+        visibilityTransition = null;
     }
 
     private void SetPositionLocked(bool locked)
