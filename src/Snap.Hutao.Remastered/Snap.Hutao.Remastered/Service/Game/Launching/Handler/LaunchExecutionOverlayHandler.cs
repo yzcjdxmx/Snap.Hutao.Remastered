@@ -10,29 +10,46 @@ namespace Snap.Hutao.Remastered.Service.Game.Launching.Handler;
 public sealed class LaunchExecutionOverlayHandler : AbstractLaunchExecutionHandler
 {
     private LaunchExecutionOverlayWindow? window;
+    private LaunchExecutionPerformanceWindow? performanceWindow;
 
     public override async ValueTask ExecuteAsync(LaunchExecutionContext context)
     {
-        if (!HutaoRuntime.IsProcessElevated || !context.LaunchOptions.UsingOverlay.Value)
+        if (!HutaoRuntime.IsProcessElevated ||
+            (!context.LaunchOptions.UsingOverlay.Value && !context.LaunchOptions.UsingPerformancePanel.Value))
         {
             return;
         }
 
         await context.TaskContext.SwitchToMainThreadAsync();
-        window = context.ServiceProvider.GetRequiredService<LaunchExecutionOverlayWindow>();
-        window.SetFpsTarget(context.Process.Id);
+        if (context.LaunchOptions.UsingOverlay.Value)
+        {
+            window = context.ServiceProvider.GetRequiredService<LaunchExecutionOverlayWindow>();
+        }
+
+        if (context.LaunchOptions.UsingPerformancePanel.Value)
+        {
+            performanceWindow = new(context.ServiceProvider, context.Process.Id);
+            performanceWindow.AppWindow.Show(false);
+        }
     }
 
     public override async ValueTask AfterAsync(AfterLaunchExecutionContext context)
     {
-        if (window is null)
+        if (window is null && performanceWindow is null)
         {
             return;
         }
 
         await context.TaskContext.SwitchToMainThreadAsync();
-        await window.StopFpsCaptureAsync();
-        window.PreventClose = false;
-        window.Close();
+        if (window is { } overlay)
+        {
+            overlay.PreventClose = false;
+            overlay.Close();
+        }
+
+        if (performanceWindow is { } panel)
+        {
+            await panel.CloseAndStopAsync();
+        }
     }
 }

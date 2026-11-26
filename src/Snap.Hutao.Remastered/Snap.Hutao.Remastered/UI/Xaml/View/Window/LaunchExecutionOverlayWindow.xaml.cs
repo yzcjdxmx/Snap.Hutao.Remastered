@@ -25,22 +25,16 @@ public sealed partial class LaunchExecutionOverlayWindow : Microsoft.UI.Xaml.Win
 {
     private readonly LowLevelKeyOptions lowLevelKeyOptions;
     private readonly ITaskContext taskContext;
-    private readonly IServiceProvider serviceProvider;
-    private LaunchExecutionPerformanceWindow? performancePanel;
-    private Task? fpsStopTask;
-    private int fpsGameProcessId;
-    private bool isClosed;
 
     [WinRT.DynamicWindowsRuntimeCast(typeof(global::Microsoft.UI.Windowing.OverlappedPresenter))]
     public LaunchExecutionOverlayWindow(IServiceProvider serviceProvider)
     {
         InitializeComponent();
-        this.serviceProvider = serviceProvider;
 
         AppWindow.Title = "SnapHutaoLaunchExecutionOverlay";
         AppWindow.SafeIsShowInSwitchers(false);
 
-        SizeInt32 size = ScaledSizeInt32.CreateForWindow(592, 56, this);
+        SizeInt32 size = ScaledSizeInt32.CreateForWindow(476, 56, this);
 
         // Thanks to @Scighost for the following code
         if (AppWindow.Presenter is OverlappedPresenter presenter)
@@ -51,7 +45,7 @@ public sealed partial class LaunchExecutionOverlayWindow : Microsoft.UI.Xaml.Win
             presenter.SetBorderAndTitleBar(false, false);
             presenter.PreferredMinimumWidth = size.Width;
             presenter.PreferredMinimumHeight = size.Height;
-            presenter.PreferredMaximumWidth = size.Width;
+            presenter.PreferredMaximumWidth = size.Height;
             presenter.PreferredMaximumHeight = size.Height;
         }
 
@@ -78,30 +72,13 @@ public sealed partial class LaunchExecutionOverlayWindow : Microsoft.UI.Xaml.Win
 
     public FrameworkElement TitleBarCaptionAccess { get => RootBorder; }
 
-    public ImmutableArray<FrameworkElement> TitleBarPassthrough { get => [FpsToggle]; }
+    public ImmutableArray<FrameworkElement> TitleBarPassthrough { get => []; }
 
     public bool PreventClose { get; set; } = true;
 
     public bool HideByHotKey { get => !LocalSetting.Get(SettingKeys.LaunchOverlayWindowIsVisible, true); }
 
     public bool HideByEvent { get; set; }
-
-    public void SetFpsTarget(int processId)
-    {
-        fpsGameProcessId = processId;
-        FpsToggle.IsEnabled = processId > 0;
-    }
-
-    public Task StopFpsCaptureAsync()
-    {
-        if (performancePanel is { } panel)
-        {
-            fpsStopTask = panel.StopAsync();
-            panel.Close();
-        }
-
-        return fpsStopTask ?? Task.CompletedTask;
-    }
 
     public void OnMouseWheel(ref readonly PointerPointProperties data)
     {
@@ -115,40 +92,8 @@ public sealed partial class LaunchExecutionOverlayWindow : Microsoft.UI.Xaml.Win
 
     public void OnWindowClosed()
     {
-        isClosed = true;
-        _ = StopFpsCaptureAsync();
         InputLowLevelKeyboardSource.KeyDown -= OnLowLevelKeyDown;
         InputLowLevelKeyboardSource.Uninitialize();
-    }
-
-    private void OnFpsToggleClick(object sender, RoutedEventArgs args)
-    {
-        if (FpsToggle.IsChecked is true)
-        {
-            performancePanel = new(serviceProvider, fpsGameProcessId, AppWindow.Id);
-            performancePanel.Closed += OnPerformancePanelClosed;
-            performancePanel.AppWindow.Show(false);
-            return;
-        }
-
-        _ = StopFpsCaptureAsync();
-    }
-
-    private async void OnPerformancePanelClosed(object sender, WindowEventArgs args)
-    {
-        if (performancePanel is { } panel && sender == panel)
-        {
-            performancePanel = null;
-            panel.Closed -= OnPerformancePanelClosed;
-            FpsToggle.IsChecked = false;
-            FpsToggle.IsEnabled = false;
-            fpsStopTask = panel.StopAsync();
-            await fpsStopTask;
-            if (!isClosed)
-            {
-                FpsToggle.IsEnabled = true;
-            }
-        }
     }
 
     private void OnLowLevelKeyDown(LowLevelKeyEventArgs args)

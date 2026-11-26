@@ -1,7 +1,6 @@
 // Copyright (c) Snap Hutao RP. All rights reserved.
 // Licensed under the MIT license.
 
-using Microsoft.UI;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
@@ -22,17 +21,23 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
     IXamlWindowExtendContentIntoTitleBar,
     IWindowNeedEraseBackground
 {
+    private const int ExtendedStyleIndex = -20;
+    private const int ClickThroughStyles = 0x08000020; // WS_EX_NOACTIVATE | WS_EX_TRANSPARENT
+    private const uint RefreshFrameWithoutActivating = 0x37; // SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED
+
     private readonly int gameProcessId;
     private readonly nint windowHandle;
     private readonly PresentMonFpsCapture capture;
     private readonly DispatcherQueueTimer timer;
+    private nint gameWindowHandle;
+    private bool positionLocked;
     private GamePresentation? lastPresentation;
     private int restackAttempts;
     private long lastRefresh;
     private Task? stopTask;
 
     [WinRT.DynamicWindowsRuntimeCast(typeof(global::Microsoft.UI.Windowing.OverlappedPresenter))]
-    public LaunchExecutionPerformanceWindow(IServiceProvider serviceProvider, int gameProcessId, WindowId ownerWindow)
+    public LaunchExecutionPerformanceWindow(IServiceProvider serviceProvider, int gameProcessId)
     {
         InitializeComponent();
 
@@ -56,7 +61,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         this.InitializeController(serviceProvider.CreateScope().ServiceProvider);
         AppWindow.Title = "游戏性能";
         AppWindow.Resize(size);
-        if (DisplayArea.GetFromWindowId(ownerWindow, DisplayAreaFallback.Primary) is { } display)
+        if (DisplayArea.GetFromWindowId(AppWindow.Id, DisplayAreaFallback.Primary) is { } display)
         {
             RectInt32 area = display.WorkArea;
             AppWindow.Move(new PointInt32 { X = area.X + area.Width - size.Width - 24, Y = area.Y + 24 });
@@ -66,6 +71,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         timer = DispatcherQueue.CreateTimer();
         timer.Interval = TimeSpan.FromMilliseconds(250);
         timer.Tick += OnTick;
+        Closed += OnClosed;
         timer.Start();
     }
 
@@ -73,7 +79,17 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
 
     public ImmutableArray<FrameworkElement> TitleBarPassthrough => [CloseButton];
 
-    public Task StopAsync()
+    public Task CloseAndStopAsync()
+    {
+        if (stopTask is null)
+        {
+            Close();
+        }
+
+        return stopTask ?? StopAsync();
+    }
+
+    private Task StopAsync()
     {
         timer.Stop();
         timer.Tick -= OnTick;
@@ -83,6 +99,12 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
     private void OnCloseClick(object sender, RoutedEventArgs args)
     {
         Close();
+    }
+
+    private void OnClosed(object sender, WindowEventArgs args)
+    {
+        Closed -= OnClosed;
+        _ = StopAsync();
     }
 
     private void OnTick(DispatcherQueueTimer sender, object args)
@@ -95,19 +117,29 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
 
         lastRefresh = Stopwatch.GetTimestamp();
         PresentMonFpsSample? sample = capture.ReadSample();
-        FpsValue.Text = sample?.Fps.ToString("0") ?? "—";
+        FpsValue.Text = capture.Failed ? "失败" : sample?.Fps.ToString("0") ?? "—";
         LowValue.Text = sample?.LowFps?.ToString("0") ?? "—";
-        ToolTipService.SetToolTip(FpsMetric, capture.Failed ? "采集失败，可关闭面板后重新开启" : null);
+        ToolTipService.SetToolTip(FpsMetric, capture.Failed ? "采集失败，下次启动游戏时会重试" : null);
     }
 
     private void RestoreOrder()
     {
         nint foreground = GetForegroundWindow();
         GamePresentation? presentation = null;
-        if (foreground != 0 && GetWindowThreadProcessId(foreground, out uint processId) != 0 &&
-            processId == gameProcessId && GetWindowRect(foreground, out WindowRect bounds))
+        bool gameIsForeground = foreground != 0 && GetWindowThreadProcessId(foreground, out uint processId) != 0 &&
+            processId == gameProcessId;
+        if (gameIsForeground)
         {
-            presentation = new(foreground, bounds.Left, bounds.Top, bounds.Right, bounds.Bottom);
+            gameWindowHandle = foreground;
+        }
+
+        if (gameWindowHandle != 0 && GetWindowRect(gameWindowHandle, out WindowRect bounds))
+        {
+            SetPositionLocked(CoversMonitor(gameWindowHandle, bounds));
+            if (gameIsForeground)
+            {
+                presentation = new(foreground, bounds.Left, bounds.Top, bounds.Right, bounds.Bottom);
+            }
         }
 
         if (presentation != lastPresentation)
@@ -137,6 +169,29 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         }
     }
 
+    private void SetPositionLocked(bool locked)
+    {
+        if (locked == positionLocked)
+        {
+            return;
+        }
+
+        int current = GetWindowLongW(windowHandle, ExtendedStyleIndex);
+        int desired = locked ? current | ClickThroughStyles : current & ~ClickThroughStyles;
+        SetWindowLongW(windowHandle, ExtendedStyleIndex, desired);
+        SetWindowPos(windowHandle, 0, 0, 0, 0, 0, RefreshFrameWithoutActivating);
+        positionLocked = (GetWindowLongW(windowHandle, ExtendedStyleIndex) & ClickThroughStyles) == ClickThroughStyles;
+    }
+
+    private static bool CoversMonitor(nint gameWindow, WindowRect bounds)
+    {
+        nint monitor = MonitorFromWindow(gameWindow, 0); // MONITOR_DEFAULTTONULL
+        MonitorInfo info = new() { Size = Marshal.SizeOf<MonitorInfo>() };
+        return monitor != 0 && GetMonitorInfoW(monitor, ref info) &&
+            bounds.Left <= info.Monitor.Left && bounds.Top <= info.Monitor.Top &&
+            bounds.Right >= info.Monitor.Right && bounds.Bottom >= info.Monitor.Bottom;
+    }
+
     [LibraryImport("user32.dll")]
     private static partial nint GetForegroundWindow();
 
@@ -150,6 +205,23 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
     [LibraryImport("user32.dll")]
     private static partial nint GetWindow(nint window, uint command);
 
+    [LibraryImport("user32.dll")]
+    private static partial nint MonitorFromWindow(nint window, uint flags);
+
+    [LibraryImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool GetMonitorInfoW(nint monitor, ref MonitorInfo info);
+
+    [LibraryImport("user32.dll")]
+    private static partial int GetWindowLongW(nint window, int index);
+
+    [LibraryImport("user32.dll")]
+    private static partial int SetWindowLongW(nint window, int index, int value);
+
+    [LibraryImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool SetWindowPos(nint window, nint after, int x, int y, int width, int height, uint flags);
+
     private readonly record struct GamePresentation(nint Handle, int Left, int Top, int Right, int Bottom);
 
     [StructLayout(LayoutKind.Sequential)]
@@ -159,5 +231,14 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         public int Top;
         public int Right;
         public int Bottom;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct MonitorInfo
+    {
+        public int Size;
+        public WindowRect Monitor;
+        public WindowRect Work;
+        public uint Flags;
     }
 }

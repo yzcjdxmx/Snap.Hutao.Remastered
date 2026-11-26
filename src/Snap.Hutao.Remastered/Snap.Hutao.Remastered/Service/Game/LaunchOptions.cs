@@ -201,6 +201,9 @@ public sealed partial class LaunchOptions : DbStoreOptions, IRestrictedGamePathA
     public IObservableProperty<bool> UsingOverlay { get => field ??= CreateProperty(SettingKeys.LaunchUsingOverlay, false); }
 
     [field: MaybeNull]
+    public IObservableProperty<bool> UsingPerformancePanel { get => field ??= CreateProperty(SettingKeys.LaunchUsingPerformancePanel, false); }
+
+    [field: MaybeNull]
     public IObservableProperty<string> AdvancedStartProgramPath { get => field ??= CreateProperty(SettingKeys.LaunchAdvancedStartProgramPath, string.Empty); }
 
     [field: MaybeNull]

@@ -3197,6 +3197,12 @@ Space Available: {2}</value>
   <data name="ViewPageLaunchGameOverlayDescription" xml:space="preserve">
     <value>You need to enable the notification area icon in settings, and may require borderless window mode for proper display.</value>
   </data>
+  <data name="ViewPageLaunchGamePerformancePanelHeader" xml:space="preserve">
+    <value>Game performance panel</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelDescription" xml:space="preserve">
+    <value>Show measured FPS and 1% low when starting the game from Snap Hutao. Use windowed mode to reposition the panel.</value>
+  </data>
   <data name="ViewPageLaunchGameOverlayHeader" xml:space="preserve">
     <value>In-Game Overlay</value>
   </data>

@@ -441,6 +441,16 @@
                                                 </shuxc:SizeRestrictedContentControl>
                                             </StackPanel>
                                         </cwc:SettingsCard>
+                                        <!--  游戏性能面板  -->
+                                        <cwc:SettingsCard
+                                            Description="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelDescription}"
+                                            Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelHeader}"
+                                            HeaderIcon="{shuxm:FontIcon Glyph=&#xE9D9;}">
+                                            <wl:LiquidGlassToggleSwitch
+                                                shuxcth:ControlMaterialState.IsManaged="True"
+                                                IsEnabled="{x:Bind shsg:LaunchOptions.IsGameRunning.Value, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
+                                                IsOn="{x:Bind DataContext.LaunchOptions.UsingPerformancePanel.Value, Mode=TwoWay}"/>
+                                        </cwc:SettingsCard>
                                         <!--  悬浮窗  -->
                                         <ScrollViewer>
                                             <cwc:SettingsExpander

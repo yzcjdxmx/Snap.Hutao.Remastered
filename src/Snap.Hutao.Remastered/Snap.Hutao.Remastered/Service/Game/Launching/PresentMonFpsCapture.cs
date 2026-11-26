@@ -156,8 +156,9 @@ internal sealed class PresentMonFpsSamples
     {
         // PresentMon v2.6.0 v1 CSV: swap chain, relative time, and milliseconds between presents.
         ReadOnlySpan<char> row = line.AsSpan();
+        // The first ten columns are always present. Reserve one range for any optional trailing columns.
         Span<Range> columns = stackalloc Range[11];
-        if (row.Split(columns, ',') < columns.Length ||
+        if (row.Split(columns, ',') < 10 ||
             !ulong.TryParse(row[columns[2]].TrimStart("0x"), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out ulong swapChain) ||
             !double.TryParse(row[columns[7]], NumberStyles.Float, CultureInfo.InvariantCulture, out double timestamp) ||
             !double.IsFinite(timestamp) ||

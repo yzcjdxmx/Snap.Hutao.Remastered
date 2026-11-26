@@ -3294,6 +3294,12 @@
   <data name="ViewPageLaunchGameOverlayDescription" xml:space="preserve">
     <value>需要在设置中启用通知区域图标，可能需要启用无边框窗口选项来正确显示</value>
   </data>
+  <data name="ViewPageLaunchGamePerformancePanelHeader" xml:space="preserve">
+    <value>游戏性能面板</value>
+  </data>
+  <data name="ViewPageLaunchGamePerformancePanelDescription" xml:space="preserve">
+    <value>从胡桃启动游戏时显示实测 FPS 和 1% Low。请在窗口模式调整面板位置。</value>
+  </data>
   <data name="ViewPageLaunchGameOverlayHeader" xml:space="preserve">
     <value>悬浮窗</value>
   </data>
