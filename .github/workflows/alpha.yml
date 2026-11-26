@@ -95,6 +95,13 @@ jobs:
           dotnet publish $probe -c Release -r win-x64 -p:PublishAot=true -p:AllowUnsafeBlocks=true -o $binary
           & (Join-Path $binary 'HutaoCpuProbe.exe')
 
+      - name: Verify foreground and background target selection
+        shell: pwsh
+        run: >-
+          dotnet test src/Snap.Hutao.Remastered/Snap.Hutao.Remastered.Test/Snap.Hutao.Remastered.Test.csproj
+          --configuration Debug --filter FullyQualifiedName~IslandFrameRateTest
+          -- RunConfiguration.TreatNoTestsAsError=true
+
       - name: Publish Debug Native AOT app
         shell: pwsh
         run: >-
@@ -134,7 +141,7 @@ jobs:
       - name: Upload portable preview
         uses: actions/upload-artifact@v7
         with:
-          name: Hutao-PerformancePanel-Preview-v4.5-x64
+          name: Hutao-PerformancePanel-Preview-v4.6-x64
           path: artifacts/performance-panel-aot/
           if-no-files-found: error
           retention-days: 14

@@ -6367,4 +6367,13 @@ Ordinary launch does not require Island support. Compatibility is checked separa
   <data name="ViewShortcutEditorWarningToolTip" xml:space="preserve">
     <value>It's recommended to use a modifier key (like Ctrl, Alt, or Win) along with it.</value>
   </data>
+  <data name="ViewPageLaunchGameBackgroundFpsToggleHeader" xml:space="preserve">
+    <value>Limit frame rate in the background</value>
+  </data>
+  <data name="ViewPageLaunchGameBackgroundFpsHeader" xml:space="preserve">
+    <value>Background target FPS</value>
+  </data>
+  <data name="ViewPageLaunchGameBackgroundFpsDescription" xml:space="preserve">
+    <value>Keep a separate frame rate while the game is in the background. Requires the frame rate hot switch.</value>
+  </data>
 </root>

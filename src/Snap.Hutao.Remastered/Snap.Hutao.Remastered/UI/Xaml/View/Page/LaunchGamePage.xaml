@@ -441,93 +441,6 @@
                                                 </shuxc:SizeRestrictedContentControl>
                                             </StackPanel>
                                         </cwc:SettingsCard>
-                                        <!--  游戏性能面板  -->
-                                        <cwc:SettingsExpander
-                                            Description="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelDescription}"
-                                            Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelHeader}"
-                                            HeaderIcon="{shuxm:FontIcon Glyph=&#xE9D9;}">
-                                            <wl:LiquidGlassToggleSwitch
-                                                shuxcth:ControlMaterialState.IsManaged="True"
-                                                IsEnabled="{x:Bind shsg:LaunchOptions.IsGameRunning.Value, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
-                                                IsOn="{x:Bind DataContext.LaunchOptions.UsingPerformancePanel.Value, Mode=TwoWay}"/>
-                                            <cwc:SettingsExpander.Items>
-                                                <cwc:SettingsCard
-                                                    Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
-                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelScale}">
-                                                    <StackPanel Orientation="Horizontal" Spacing="12">
-                                                        <Slider x:Name="PerformancePanelScaleSlider" Width="136" Maximum="170" Minimum="50"
-                                                            AutomationProperties.Name="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelScale}"
-                                                            Value="{x:Bind DataContext.LaunchOptions.PerformancePanelScale.Value, Mode=TwoWay}"/>
-                                                        <TextBlock Width="32" VerticalAlignment="Center"
-                                                            Text="{x:Bind PerformancePanelScaleSlider.Value, Mode=OneWay}"/>
-                                                    </StackPanel>
-                                                </cwc:SettingsCard>
-                                                <cwc:SettingsCard
-                                                    Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
-                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelBackground}">
-                                                    <Button Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelChooseColor}">
-                                                        <Button.Flyout>
-                                                            <Flyout>
-                                                                <ColorPicker
-                                                                    Color="{x:Bind DataContext.LaunchOptions.PerformancePanelBackgroundColor, Mode=TwoWay}"
-                                                                    IsAlphaEnabled="False"/>
-                                                            </Flyout>
-                                                        </Button.Flyout>
-                                                    </Button>
-                                                </cwc:SettingsCard>
-                                                <cwc:SettingsCard
-                                                    Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
-                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelOpacity}">
-                                                    <StackPanel Orientation="Horizontal" Spacing="12">
-                                                        <Slider x:Name="PerformancePanelOpacitySlider" Width="136" Maximum="100" Minimum="0"
-                                                            AutomationProperties.Name="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelOpacity}"
-                                                            Value="{x:Bind DataContext.LaunchOptions.PerformancePanelBackgroundOpacity.Value, Mode=TwoWay}"/>
-                                                        <TextBlock Width="32" VerticalAlignment="Center"
-                                                            Text="{x:Bind PerformancePanelOpacitySlider.Value, Mode=OneWay}"/>
-                                                    </StackPanel>
-                                                </cwc:SettingsCard>
-                                                <cwc:SettingsCard
-                                                    Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
-                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShownMetrics}">
-                                                    <Button Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelChooseMetrics}">
-                                                        <Button.Flyout>
-                                                            <Flyout>
-                                                                <StackPanel Spacing="4">
-                                                                <ToggleSwitch
-                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowFps}"
-                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowFps.Value, Mode=TwoWay}"/>
-                                                                <ToggleSwitch
-                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowLow}"
-                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowLow.Value, Mode=TwoWay}"/>
-                                                                <ToggleSwitch
-                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowCpuUsage}"
-                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowCpuUsage.Value, Mode=TwoWay}"/>
-                                                                <ToggleSwitch
-                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowCpuTemperature}"
-                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowCpuTemperature.Value, Mode=TwoWay}"/>
-                                                                <ToggleSwitch
-                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowGpuUsage}"
-                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowGpuUsage.Value, Mode=TwoWay}"/>
-                                                                <ToggleSwitch
-                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowGpuTemperature}"
-                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowGpuTemperature.Value, Mode=TwoWay}"/>
-                                                                <ToggleSwitch
-                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowTime}"
-                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowTime.Value, Mode=TwoWay}"/>
-                                                                </StackPanel>
-                                                            </Flyout>
-                                                        </Button.Flyout>
-                                                    </Button>
-                                                </cwc:SettingsCard>
-                                                <cwc:SettingsCard
-                                                    Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
-                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelRememberPosition}">
-                                                    <wl:LiquidGlassToggleSwitch
-                                                        shuxcth:ControlMaterialState.IsManaged="True"
-                                                        IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelRememberPosition.Value, Mode=TwoWay}"/>
-                                                </cwc:SettingsCard>
-                                            </cwc:SettingsExpander.Items>
-                                        </cwc:SettingsExpander>
                                         <!--  悬浮窗  -->
                                         <ScrollViewer>
                                             <cwc:SettingsExpander
@@ -570,6 +483,115 @@
                                     </StackPanel>
                                 </Border>
                             </Grid>
+                        </Border>
+
+                        <!--  游戏性能面板  -->
+                        <Border
+                            cw:Effects.Shadow="{ThemeResource CompatCardShadow}"
+                            Visibility="{shuxm:VisibleWhenProcessElevated}">
+                            <cwc:SettingsExpander
+                                Description="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelDescription}"
+                                Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelHeader}"
+                                HeaderIcon="{shuxm:FontIcon Glyph=&#xE9D9;}">
+                                <wl:LiquidGlassToggleSwitch
+                                    shuxcth:ControlMaterialState.IsManaged="True"
+                                    IsEnabled="{x:Bind shsg:LaunchOptions.IsGameRunning.Value, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
+                                    IsOn="{x:Bind DataContext.LaunchOptions.UsingPerformancePanel.Value, Mode=TwoWay}"/>
+                                <cwc:SettingsExpander.Items>
+                                    <Grid
+                                        x:Name="PerformancePanelSettingsGrid"
+                                        RowSpacing="{ThemeResource SettingsCardSpacing}"
+                                        SizeChanged="OnPerformancePanelSettingsSizeChanged">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="0"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Spacing="{ThemeResource SettingsCardSpacing}">
+                                            <cwc:SettingsCard
+                                                Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
+                                                Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelScale}">
+                                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                                    <Slider x:Name="PerformancePanelScaleSlider" Width="136" Maximum="170" Minimum="50"
+                                                        AutomationProperties.Name="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelScale}"
+                                                        Value="{x:Bind DataContext.LaunchOptions.PerformancePanelScale.Value, Mode=TwoWay}"/>
+                                                    <TextBlock Width="32" VerticalAlignment="Center"
+                                                        Text="{x:Bind PerformancePanelScaleSlider.Value, Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </cwc:SettingsCard>
+                                            <cwc:SettingsCard
+                                                Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
+                                                Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelBackground}">
+                                                <Button Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelChooseColor}">
+                                                    <Button.Flyout>
+                                                        <Flyout>
+                                                            <ColorPicker
+                                                                Color="{x:Bind DataContext.LaunchOptions.PerformancePanelBackgroundColor, Mode=TwoWay}"
+                                                                IsAlphaEnabled="False"/>
+                                                        </Flyout>
+                                                    </Button.Flyout>
+                                                </Button>
+                                            </cwc:SettingsCard>
+                                            <cwc:SettingsCard
+                                                Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
+                                                Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelOpacity}">
+                                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                                    <Slider x:Name="PerformancePanelOpacitySlider" Width="136" Maximum="100" Minimum="0"
+                                                        AutomationProperties.Name="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelOpacity}"
+                                                        Value="{x:Bind DataContext.LaunchOptions.PerformancePanelBackgroundOpacity.Value, Mode=TwoWay}"/>
+                                                    <TextBlock Width="32" VerticalAlignment="Center"
+                                                        Text="{x:Bind PerformancePanelOpacitySlider.Value, Mode=OneWay}"/>
+                                                </StackPanel>
+                                            </cwc:SettingsCard>
+                                        </StackPanel>
+                                        <StackPanel x:Name="PerformancePanelContentSettings" Grid.Row="1" Spacing="{ThemeResource SettingsCardSpacing}">
+                                            <cwc:SettingsCard
+                                                Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
+                                                Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShownMetrics}">
+                                                <Button Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelChooseMetrics}">
+                                                    <Button.Flyout>
+                                                        <Flyout>
+                                                            <StackPanel Spacing="4">
+                                                                <ToggleSwitch
+                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowFps}"
+                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowFps.Value, Mode=TwoWay}"/>
+                                                                <ToggleSwitch
+                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowLow}"
+                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowLow.Value, Mode=TwoWay}"/>
+                                                                <ToggleSwitch
+                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowCpuUsage}"
+                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowCpuUsage.Value, Mode=TwoWay}"/>
+                                                                <ToggleSwitch
+                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowCpuTemperature}"
+                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowCpuTemperature.Value, Mode=TwoWay}"/>
+                                                                <ToggleSwitch
+                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowGpuUsage}"
+                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowGpuUsage.Value, Mode=TwoWay}"/>
+                                                                <ToggleSwitch
+                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowGpuTemperature}"
+                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowGpuTemperature.Value, Mode=TwoWay}"/>
+                                                                <ToggleSwitch
+                                                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowTime}"
+                                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelShowTime.Value, Mode=TwoWay}"/>
+                                                            </StackPanel>
+                                                        </Flyout>
+                                                    </Button.Flyout>
+                                                </Button>
+                                            </cwc:SettingsCard>
+                                            <cwc:SettingsCard
+                                                Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
+                                                Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelRememberPosition}">
+                                                <wl:LiquidGlassToggleSwitch
+                                                    shuxcth:ControlMaterialState.IsManaged="True"
+                                                    IsOn="{x:Bind DataContext.LaunchOptions.PerformancePanelRememberPosition.Value, Mode=TwoWay}"/>
+                                            </cwc:SettingsCard>
+                                        </StackPanel>
+                                    </Grid>
+                                </cwc:SettingsExpander.Items>
+                            </cwc:SettingsExpander>
                         </Border>
 
                         <!--  账户操作  -->
@@ -1160,6 +1182,8 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
 
                                 <wl:LiquidGlassToggleSwitch
@@ -1257,8 +1281,29 @@
                                     ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameDisablePlayerPerspectiveDescription}"/>
 
                                 <wl:LiquidGlassToggleSwitch
-                                    x:Name="HideQuestBannerToggleSwitch"
                                     Grid.Row="2"
+                                    Grid.Column="0"
+                                    shuxcth:ControlMaterialState.IsManaged="True"
+                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGameBackgroundFpsToggleHeader}"
+                                    IsEnabled="{x:Bind DataContext.LaunchOptions.IsSetTargetFrameRateEnabled.Value, Mode=OneWay}"
+                                    IsOn="{x:Bind DataContext.LaunchOptions.IsBackgroundFrameRateEnabled.Value, Mode=TwoWay}"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameBackgroundFpsDescription}"/>
+                                <NumberBox
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Padding="10,8,6,6"
+                                    essential:NumberBoxHelper.AcrylicWorkaround="True"
+                                    Header="{shuxm:ResourceString Name=ViewPageLaunchGameBackgroundFpsHeader}"
+                                    IsEnabled="{x:Bind DataContext.LaunchOptions.IsBackgroundFrameRateEnabled.Value, Mode=OneWay}"
+                                    Maximum="2000"
+                                    Minimum="1"
+                                    SpinButtonPlacementMode="Inline"
+                                    ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameBackgroundFpsDescription}"
+                                    Value="{x:Bind DataContext.LaunchOptions.BackgroundTargetFps.Value, Mode=TwoWay}"/>
+
+                                <wl:LiquidGlassToggleSwitch
+                                    x:Name="HideQuestBannerToggleSwitch"
+                                    Grid.Row="3"
                                     Grid.Column="0"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     IsOn="{x:Bind DataContext.LaunchOptions.HideQuestBanner.Value, Mode=TwoWay}"
@@ -1293,7 +1338,7 @@
                                 <TeachingTip
                                     x:Name="HideQuestBannerTeachingTip"
                                     Title="{shuxm:ResourceString Name=ViewPageLaunchGameHideQuestBannerHotSwitchHeader}"
-                                    Grid.Row="2"
+                                    Grid.Row="3"
                                     Grid.Column="0"
                                     IsLightDismissEnabled="True"
                                     Subtitle="{shuxm:ResourceString Name=ViewPageLaunchGameHideQuestBannerHotSwitchDescription}"
@@ -1303,7 +1348,7 @@
                                     </TeachingTip.HeroContent>
                                 </TeachingTip>
                                 <wl:LiquidGlassToggleSwitch
-                                    Grid.Row="2"
+                                    Grid.Row="3"
                                     Grid.Column="1"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameRemoveOpenTeamProgressHeader}"
@@ -1312,7 +1357,7 @@
                                     OnContent="{shuxm:ResourceString Name=ViewPageLaunchGameDisableFogOn}"
                                     ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameRemoveOpenTeamProgressDescription}"/>
                                 <wl:LiquidGlassToggleSwitch
-                                    Grid.Row="2"
+                                    Grid.Row="3"
                                     Grid.Column="2"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameDisablePlayerDiveMosaicHeader}"
@@ -1320,7 +1365,7 @@
                                     OffContent="{shuxm:ResourceString Name=ViewPageLaunchGameDisableFogOff}"
                                     OnContent="{shuxm:ResourceString Name=ViewPageLaunchGameDisableFogOn}"/>
                                 <wl:LiquidGlassToggleSwitch
-                                    Grid.Row="3"
+                                    Grid.Row="4"
                                     Grid.Column="0"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameEventCameraMoveHotSwitchHeader}"
@@ -1329,7 +1374,7 @@
                                     OnContent="{shuxm:ResourceString Name=ViewPageLaunchGameDisableFogOn}"
                                     ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameHotSwitchDescription}"/>
                                 <wl:LiquidGlassToggleSwitch
-                                    Grid.Row="3"
+                                    Grid.Row="4"
                                     Grid.Column="1"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewOverlayDisableShowDamageTextToolTip}"
@@ -1340,7 +1385,7 @@
 
                                 <wl:LiquidGlassToggleSwitch
                                     x:Name="RedirectCatherineToggleSwitch"
-                                    Grid.Row="3"
+                                    Grid.Row="4"
                                     Grid.Column="2"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     IsOn="{x:Bind DataContext.LaunchOptions.RedirectCatherine.Value, Mode=TwoWay}"
@@ -1373,7 +1418,7 @@
                                 <TeachingTip
                                     x:Name="RedirectCatherineTeachingTip"
                                     Title="{shuxm:ResourceString Name=ViewPageLaunchGameIslandRedirectCatherineHeader}"
-                                    Grid.Row="3"
+                                    Grid.Row="4"
                                     Grid.Column="2"
                                     IsLightDismissEnabled="True"
                                     Subtitle="{shuxm:ResourceString Name=ViewPageLaunchGameIslandRedirectCatherineTeachingTipSubtitle}"
@@ -1384,7 +1429,7 @@
                                 </TeachingTip>
                                 <wl:LiquidGlassToggleSwitch
                                     x:Name="RedirectCombineEntryToggleSwitch"
-                                    Grid.Row="4"
+                                    Grid.Row="5"
                                     Grid.Column="0"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     IsOn="{x:Bind DataContext.LaunchOptions.RedirectCombineEntry.Value, Mode=TwoWay}"
@@ -1418,7 +1463,7 @@
                                 <TeachingTip
                                     x:Name="RedirectCombineEntryTeachingTip"
                                     Title="{shuxm:ResourceString Name=ViewPageLaunchGameIslandRedirectCombineEntryHeader}"
-                                    Grid.Row="4"
+                                    Grid.Row="5"
                                     Grid.Column="0"
                                     IsLightDismissEnabled="True"
                                     Subtitle="{shuxm:ResourceString Name=ViewPageLaunchGameIslandRedirectCombineEntryDescription}"
@@ -1428,7 +1473,7 @@
                                     </TeachingTip.HeroContent>
                                 </TeachingTip>
                                 <StackPanel
-                                    Grid.Row="4"
+                                    Grid.Row="5"
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
                                     Spacing="4"
@@ -1438,14 +1483,14 @@
                                 </StackPanel>
 
                                 <wl:LiquidGlassToggleSwitch
-                                    Grid.Row="4"
+                                    Grid.Row="5"
                                     Grid.Column="2"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandLegacyPaimonMenuHeader}"
                                     IsOn="{x:Bind DataContext.LaunchOptions.LegacyPaimonMenu.Value, Mode=TwoWay}"
                                     ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameIslandLegacyPaimonMenuDescription}"/>
                                 <wl:LiquidGlassToggleSwitch
-                                    Grid.Row="5"
+                                    Grid.Row="6"
                                     Grid.Column="0"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameEnableInLevelClockPageSpeedUpHeader}"
@@ -1455,27 +1500,27 @@
                                     ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameEnableInLevelClockPageSpeedUpDescription}"/>
 
                                 <wl:LiquidGlassToggleSwitch
-                                    Grid.Row="5"
+                                    Grid.Row="6"
                                     Grid.Column="1"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandWeakMapCheckHeader}"
                                     IsOn="{x:Bind DataContext.LaunchOptions.WeakMapCheck.Value, Mode=TwoWay}"/>
                                 <wl:LiquidGlassToggleSwitch
-                                    Grid.Row="5"
+                                    Grid.Row="6"
                                     Grid.Column="2"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandUsingTouchScreenHeader}"
                                     IsEnabled="{x:Bind shsg:LaunchOptions.IsGameRunning.Value, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                                     IsOn="{x:Bind DataContext.LaunchOptions.UsingTouchScreen.Value, Mode=TwoWay}"/>
                                 <wl:LiquidGlassToggleSwitch
-                                    Grid.Row="6"
+                                    Grid.Row="7"
                                     Grid.Column="0"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandGamepadHotSwitchEnabledHeader}"
                                     IsOn="{x:Bind DataContext.LaunchOptions.GamepadHotSwitchEnabled.Value, Mode=TwoWay}"
                                     ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameIslandGamepadHotSwitchEnabledDescription}"/>
                                 <wl:LiquidGlassToggleSwitch
-                                    Grid.Row="6"
+                                    Grid.Row="7"
                                     Grid.Column="1"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandDisplayPaimonHeader}"
@@ -1484,7 +1529,7 @@
 
                                 <wl:LiquidGlassToggleSwitch
                                     x:Name="OriginalResinAllowedToggleSwitch"
-                                    Grid.Row="6"
+                                    Grid.Row="7"
                                     Grid.Column="2"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandResinListItemAllowOriginalResinHeader}"
@@ -1492,7 +1537,7 @@
                                     Unchecked="ResinListItemToggle_Toggled"/>
                                 <wl:LiquidGlassToggleSwitch
                                     x:Name="PrimogemAllowedToggleSwitch"
-                                    Grid.Row="7"
+                                    Grid.Row="8"
                                     Grid.Column="0"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandResinListItemAllowPrimogemHeader}"
@@ -1500,7 +1545,7 @@
                                     Unchecked="ResinListItemToggle_Toggled"/>
                                 <wl:LiquidGlassToggleSwitch
                                     x:Name="FragileResinAllowedToggleSwitch"
-                                    Grid.Row="7"
+                                    Grid.Row="8"
                                     Grid.Column="1"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandResinListItemAllowFragileResinHeader}"
@@ -1508,7 +1553,7 @@
                                     Unchecked="ResinListItemToggle_Toggled"/>
                                 <wl:LiquidGlassToggleSwitch
                                     x:Name="TransientResinAllowedToggleSwitch"
-                                    Grid.Row="7"
+                                    Grid.Row="8"
                                     Grid.Column="2"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandResinListItemAllowTransientResinHeader}"
@@ -1516,14 +1561,14 @@
                                     Unchecked="ResinListItemToggle_Toggled"/>
                                 <wl:LiquidGlassToggleSwitch
                                     x:Name="CondensedResinAllowedToggleSwitch"
-                                    Grid.Row="8"
+                                    Grid.Row="9"
                                     Grid.Column="0"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandResinListItemAllowCondensedResinHeader}"
                                     IsOn="{x:Bind DataContext.LaunchOptions.ResinListItemId220007Allowed.Value, Mode=TwoWay}"
                                     Unchecked="ResinListItemToggle_Toggled"/>
                                 <wl:LiquidGlassToggleSwitch
-                                    Grid.Row="8"
+                                    Grid.Row="9"
                                     Grid.Column="1"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandHideGrassHeader}"
@@ -1531,14 +1576,14 @@
                                     ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameIslandHideGrassDescription}"/>
                                 <!--  Hidden items should be at the end  -->
                                 <wl:LiquidGlassToggleSwitch
-                                    Grid.Row="8"
+                                    Grid.Row="9"
                                     Grid.Column="2"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandDebugModeHeader}"
                                     IsOn="{x:Bind DataContext.LaunchOptions.DebugMode.Value, Mode=TwoWay}"
                                     ToolTipService.ToolTip="{shuxm:ResourceString Name=ViewPageLaunchGameIslandDebugModeDescription}"/>
                                 <wl:LiquidGlassToggleSwitch
-                                    Grid.Row="9"
+                                    Grid.Row="10"
                                     Grid.Column="0"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGameIslandHidePlayerInfoHeader}"
@@ -1547,7 +1592,7 @@
                                     Visibility="{x:Bind DataContext.IsDeveloperAndLoggedIn, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
                                 <wl:LiquidGlassToggleSwitch
                                     x:Name="FastSkipTalkToggleSwitch"
-                                    Grid.Row="9"
+                                    Grid.Row="10"
                                     Grid.Column="1"
                                     shuxcth:ControlMaterialState.IsManaged="True"
                                     Checked="FastSkipTalkToggleSwitch_Toggled"
