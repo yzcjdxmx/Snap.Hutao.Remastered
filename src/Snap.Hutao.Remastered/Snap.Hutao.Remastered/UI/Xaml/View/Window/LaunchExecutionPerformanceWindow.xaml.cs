@@ -239,7 +239,7 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
 
         double configuredScale = options.PerformancePanelScale.Value;
         double configuredOpacity = options.PerformancePanelBackgroundOpacity.Value;
-        double scale = double.IsFinite(configuredScale) ? Math.Clamp(configuredScale, 70, 170) / 100 : 1;
+        double scale = double.IsFinite(configuredScale) ? Math.Clamp(configuredScale, 50, 170) / 100 : 1;
         double opacity = double.IsFinite(configuredOpacity) ? Math.Clamp(configuredOpacity, 0, 100) / 100 : 0.89;
         Color background = options.PerformancePanelBackgroundColor;
         var appearance = (Scale: scale, Background: background, Opacity: opacity);

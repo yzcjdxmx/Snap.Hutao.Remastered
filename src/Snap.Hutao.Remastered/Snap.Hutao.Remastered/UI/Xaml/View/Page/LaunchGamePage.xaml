@@ -455,7 +455,7 @@
                                                     Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
                                                     Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelScale}">
                                                     <StackPanel Orientation="Horizontal" Spacing="12">
-                                                        <Slider x:Name="PerformancePanelScaleSlider" Width="136" Maximum="170" Minimum="70"
+                                                        <Slider x:Name="PerformancePanelScaleSlider" Width="136" Maximum="170" Minimum="50"
                                                             AutomationProperties.Name="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelScale}"
                                                             Value="{x:Bind DataContext.LaunchOptions.PerformancePanelScale.Value, Mode=TwoWay}"/>
                                                         <TextBlock Width="32" VerticalAlignment="Center"

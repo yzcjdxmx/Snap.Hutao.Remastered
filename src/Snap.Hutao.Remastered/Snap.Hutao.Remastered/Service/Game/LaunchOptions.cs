@@ -208,7 +208,7 @@ public sealed partial class LaunchOptions : DbStoreOptions, IRestrictedGamePathA
     [field: MaybeNull]
     public IObservableProperty<float> PerformancePanelScale
     {
-        get => field ??= CreatePerformancePanelPercentage(SettingKeys.LaunchPerformancePanelScale, 100F, 70F, 170F);
+        get => field ??= CreatePerformancePanelPercentage(SettingKeys.LaunchPerformancePanelScale, 100F, 50F, 170F);
     }
 
     [field: MaybeNull]

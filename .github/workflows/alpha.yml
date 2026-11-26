@@ -46,14 +46,16 @@ jobs:
           foreach (string value in new[] { "NaN", "Infinity", "-Infinity", "1e100", "invalid", " " })
           {
               AssertPercentage(89, PerformancePanelPercentage.Parse(value, 89, 0, 100));
-              AssertPercentage(100, PerformancePanelPercentage.Parse(value, 100, 70, 170));
+              AssertPercentage(100, PerformancePanelPercentage.Parse(value, 100, 50, 170));
           }
           AssertPercentage(89, PerformancePanelPercentage.Normalize(float.NaN, 89, 0, 100));
           AssertPercentage(0, PerformancePanelPercentage.Parse("0", 89, 0, 100));
           AssertPercentage(100, PerformancePanelPercentage.Parse("140", 89, 0, 100));
-          AssertPercentage(70, PerformancePanelPercentage.Parse("50", 100, 70, 170));
-          AssertPercentage(170, PerformancePanelPercentage.Parse("200", 100, 70, 170));
-          AssertPercentage(125, PerformancePanelPercentage.Parse("125", 100, 70, 170));
+          AssertPercentage(50, PerformancePanelPercentage.Parse("40", 100, 50, 170));
+          AssertPercentage(50, PerformancePanelPercentage.Parse("50", 100, 50, 170));
+          AssertPercentage(60, PerformancePanelPercentage.Parse("60", 100, 50, 170));
+          AssertPercentage(170, PerformancePanelPercentage.Parse("200", 100, 50, 170));
+          AssertPercentage(125, PerformancePanelPercentage.Parse("125", 100, 50, 170));
 
           PerformancePanelHardwareMonitor monitor = new();
           try
@@ -132,7 +134,7 @@ jobs:
       - name: Upload portable preview
         uses: actions/upload-artifact@v7
         with:
-          name: Hutao-PerformancePanel-Preview-v4.3-x64
+          name: Hutao-PerformancePanel-Preview-v4.4-x64
           path: artifacts/performance-panel-aot/
           if-no-files-found: error
           retention-days: 14
