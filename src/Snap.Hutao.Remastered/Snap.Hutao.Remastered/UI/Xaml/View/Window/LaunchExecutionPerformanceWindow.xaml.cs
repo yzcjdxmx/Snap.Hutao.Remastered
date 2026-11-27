@@ -84,18 +84,18 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         RootBorder.Background = backgroundBrush;
         metrics =
         [
-            new(FpsTile, FpsLabel, FpsValue, () => options.PerformancePanelShowFps.Value),
-            new(LowTile, LowLabel, LowValue, () => options.PerformancePanelShowLow.Value),
-            new(CpuUsageTile, CpuUsageLabel, CpuUsageValue, () => options.PerformancePanelShowCpuUsage.Value),
-            new(CpuTemperatureTile, CpuTemperatureLabel, CpuTemperatureValue, () => options.PerformancePanelShowCpuTemperature.Value),
-            new(GpuUsageTile, GpuUsageLabel, GpuUsageValue, () => options.PerformancePanelShowGpuUsage.Value),
-            new(GpuTemperatureTile, GpuTemperatureLabel, GpuTemperatureValue, () => options.PerformancePanelShowGpuTemperature.Value),
-            new(TimeTile, TimeLabel, TimeValue, () => options.PerformancePanelShowTime.Value),
+            new(PerformancePanelMetric.Fps, FpsTile, FpsLabel, FpsValue, () => options.PerformancePanelShowFps.Value),
+            new(PerformancePanelMetric.Low, LowTile, LowLabel, LowValue, () => options.PerformancePanelShowLow.Value),
+            new(PerformancePanelMetric.CpuUsage, CpuUsageTile, CpuUsageLabel, CpuUsageValue, () => options.PerformancePanelShowCpuUsage.Value),
+            new(PerformancePanelMetric.CpuTemperature, CpuTemperatureTile, CpuTemperatureLabel, CpuTemperatureValue, () => options.PerformancePanelShowCpuTemperature.Value),
+            new(PerformancePanelMetric.GpuUsage, GpuUsageTile, GpuUsageLabel, GpuUsageValue, () => options.PerformancePanelShowGpuUsage.Value),
+            new(PerformancePanelMetric.GpuTemperature, GpuTemperatureTile, GpuTemperatureLabel, GpuTemperatureValue, () => options.PerformancePanelShowGpuTemperature.Value),
+            new(PerformancePanelMetric.Time, TimeTile, TimeLabel, TimeValue, () => options.PerformancePanelShowTime.Value),
         ];
         foreach (MetricTile metric in metrics)
         {
-            metric.Label.Foreground = textBrush;
-            metric.Value.Foreground = textBrush;
+            metric.Label.Foreground = metric.Brush;
+            metric.Value.Foreground = metric.Brush;
         }
 
         CloseButton.Foreground = textBrush;
@@ -247,7 +247,8 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         double scale = double.IsFinite(configuredScale) ? Math.Clamp(configuredScale, 50, 170) / 100 : 1;
         double opacity = double.IsFinite(configuredOpacity) ? Math.Clamp(configuredOpacity, 0, 100) / 100 : 0.89;
         Color background = options.PerformancePanelBackgroundColor;
-        var appearance = (Scale: scale, Background: background, Opacity: opacity);
+        UpdateMetricColors();
+        (double Scale, Color Background, double Opacity) appearance = (scale, background, opacity);
         if (!selectionChanged && lastAppearance is { } previous && previous.Equals(appearance))
         {
             return;
@@ -256,8 +257,6 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
         bool first = lastAppearance is null;
         lastAppearance = appearance;
         backgroundBrush.Color = Color.FromArgb((byte)Math.Round(255 * opacity), background.R, background.G, background.B);
-        bool lightBackground = opacity >= 0.5 && (0.2126 * background.R + 0.7152 * background.G + 0.0722 * background.B) > 155;
-        textBrush.Color = lightBackground ? Color.FromArgb(255, 24, 29, 37) : Color.FromArgb(255, 235, 241, 247);
         SizeInt32 size = ScaledSizeInt32.CreateForWindow((int)Math.Ceiling(RootBorder.Width * scale), (int)Math.Ceiling(RootBorder.Height * scale), this);
         AppWindow.Resize(size);
         PointInt32 current = AppWindow.Position;
@@ -279,6 +278,24 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
             if (position.X != current.X || position.Y != current.Y)
             {
                 AppWindow.Move(position);
+            }
+        }
+    }
+
+    private void UpdateMetricColors()
+    {
+        Color automatic = options.GetPerformancePanelDefaultTextColor();
+        if (!textBrush.Color.Equals(automatic))
+        {
+            textBrush.Color = automatic;
+        }
+
+        foreach (MetricTile metric in metrics)
+        {
+            Color color = options.GetPerformancePanelMetricColor(metric.Metric) ?? automatic;
+            if (!metric.Brush.Color.Equals(color))
+            {
+                metric.Brush.Color = color;
             }
         }
     }
@@ -515,7 +532,10 @@ public sealed partial class LaunchExecutionPerformanceWindow : Microsoft.UI.Xaml
 
     private readonly record struct GamePresentation(nint Handle, int Left, int Top, int Right, int Bottom);
 
-    private sealed record MetricTile(StackPanel Panel, TextBlock Label, TextBlock Value, Func<bool> Selected);
+    private sealed record MetricTile(PerformancePanelMetric Metric, StackPanel Panel, TextBlock Label, TextBlock Value, Func<bool> Selected)
+    {
+        public SolidColorBrush Brush { get; } = new();
+    }
 
     [StructLayout(LayoutKind.Sequential)]
     private struct WindowRect

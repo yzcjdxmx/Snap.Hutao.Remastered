@@ -264,6 +264,9 @@ public sealed partial class LaunchOptions : DbStoreOptions, IRestrictedGamePathA
     private IObservableProperty<int> PerformancePanelBackgroundRgb { get => field ??= CreateProperty(SettingKeys.LaunchPerformancePanelBackgroundRgb, 0x1B2029); }
 
     [field: MaybeNull]
+    private Dictionary<PerformancePanelMetric, IObservableProperty<int>> PerformancePanelMetricColors { get => field ??= new(); }
+
+    [field: MaybeNull]
     public IObservableProperty<string> AdvancedStartProgramPath { get => field ??= CreateProperty(SettingKeys.LaunchAdvancedStartProgramPath, string.Empty); }
 
     [field: MaybeNull]
@@ -271,6 +274,38 @@ public sealed partial class LaunchOptions : DbStoreOptions, IRestrictedGamePathA
 
     [field: MaybeNull]
     public IObservableProperty<bool> AdvancedStartDelayedOnGameLaunch { get => field ??= CreateProperty(SettingKeys.LaunchAdvancedStartDelayedOnGameLaunch, false); }
+
+    internal Color GetPerformancePanelDefaultTextColor()
+    {
+        Color background = PerformancePanelBackgroundColor;
+        float opacity = PerformancePanelBackgroundOpacity.Value;
+        bool lightBackground = opacity >= 50 && (0.2126 * background.R + 0.7152 * background.G + 0.0722 * background.B) > 155;
+        return lightBackground ? Color.FromArgb(255, 24, 29, 37) : Color.FromArgb(255, 235, 241, 247);
+    }
+
+    internal Color? GetPerformancePanelMetricColor(PerformancePanelMetric metric)
+    {
+        int rgb = GetPerformancePanelMetricColorProperty(metric).Value;
+        return rgb is >= 0 and <= 0xFFFFFF ? Color.FromArgb(255, (byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb) : null;
+    }
+
+    internal void SetPerformancePanelMetricColor(PerformancePanelMetric metric, Color? color)
+    {
+        GetPerformancePanelMetricColorProperty(metric).Value = color is { } value
+            ? (value.R << 16) | (value.G << 8) | value.B
+            : -1;
+    }
+
+    private IObservableProperty<int> GetPerformancePanelMetricColorProperty(PerformancePanelMetric metric)
+    {
+        if (!PerformancePanelMetricColors.TryGetValue(metric, out IObservableProperty<int>? property))
+        {
+            property = CreateProperty(SettingKeys.LaunchPerformancePanelMetricColorPrefix + metric, -1);
+            PerformancePanelMetricColors.Add(metric, property);
+        }
+
+        return property;
+    }
 
     private IObservableProperty<float> CreatePerformancePanelPercentage(string key, float fallback, float minimum, float maximum)
     {

@@ -569,6 +569,41 @@
                                         </cwc:SettingsCard>
                                         <cwc:SettingsCard
                                             Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
+                                            Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelMetricColors}">
+                                            <Button Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelChooseColor}">
+                                                <Button.Flyout>
+                                                    <Flyout Opening="OnPerformanceMetricColorsOpening">
+                                                        <StackPanel Spacing="12">
+                                                            <ComboBox
+                                                                x:Name="PerformanceMetricSelector"
+                                                                HorizontalAlignment="Stretch"
+                                                                AutomationProperties.Name="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelMetricColors}"
+                                                                SelectionChanged="OnPerformanceMetricSelectionChanged">
+                                                                <ComboBoxItem Tag="Fps" Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowFps}"/>
+                                                                <ComboBoxItem Tag="Low" Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowLow}"/>
+                                                                <ComboBoxItem Tag="CpuUsage" Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowCpuUsage}"/>
+                                                                <ComboBoxItem Tag="CpuTemperature" Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowCpuTemperature}"/>
+                                                                <ComboBoxItem Tag="GpuUsage" Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowGpuUsage}"/>
+                                                                <ComboBoxItem Tag="GpuTemperature" Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowGpuTemperature}"/>
+                                                                <ComboBoxItem Tag="Time" Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelShowTime}"/>
+                                                            </ComboBox>
+                                                            <ColorPicker x:Name="PerformanceMetricColorPicker" IsAlphaEnabled="False"/>
+                                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                                <Button
+                                                                    Click="OnPerformanceMetricColorApply"
+                                                                    Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelApplyMetricColor}"
+                                                                    Style="{StaticResource AccentButtonStyle}"/>
+                                                                <Button
+                                                                    Click="OnPerformanceMetricColorReset"
+                                                                    Content="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelResetMetricColor}"/>
+                                                            </StackPanel>
+                                                        </StackPanel>
+                                                    </Flyout>
+                                                </Button.Flyout>
+                                            </Button>
+                                        </cwc:SettingsCard>
+                                        <cwc:SettingsCard
+                                            Padding="{ThemeResource SettingsCardAlignSettingsExpanderPadding}"
                                             Header="{shuxm:ResourceString Name=ViewPageLaunchGamePerformancePanelRememberPosition}">
                                             <wl:LiquidGlassToggleSwitch
                                                 shuxcth:ControlMaterialState.IsManaged="True"
