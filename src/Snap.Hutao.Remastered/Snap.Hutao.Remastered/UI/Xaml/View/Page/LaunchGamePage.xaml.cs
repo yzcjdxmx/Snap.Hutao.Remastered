@@ -24,23 +24,6 @@ public sealed partial class LaunchGamePage : ScopedPage
         InitializeComponent();
     }
 
-    private void OnPerformancePanelSettingsSizeChanged(object sender, SizeChangedEventArgs args)
-    {
-        const double TwoColumnMinimumWidth = 720;
-        bool useColumns = args.NewSize.Width >= TwoColumnMinimumWidth;
-        Grid grid = PerformancePanelSettingsGrid;
-        ColumnDefinition secondColumn = grid.ColumnDefinitions[1];
-        if (useColumns == secondColumn.Width.IsStar)
-        {
-            return;
-        }
-
-        secondColumn.Width = useColumns ? new GridLength(1, GridUnitType.Star) : new GridLength(0);
-        grid.ColumnSpacing = useColumns ? 8 : 0;
-        Grid.SetRow(PerformancePanelContentSettings, useColumns ? 0 : 1);
-        Grid.SetColumn(PerformancePanelContentSettings, useColumns ? 1 : 0);
-    }
-
     // Templates have their own data context. Assign only the command, without
     // storing the page VM in a native resource object's DataContext property.
     private void OnTemplateCommandLoaded(object sender, RoutedEventArgs args)
